@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
             <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
                 ☰
             </button>
-            <strong>Kerstknallers</strong>
+            <strong>Play it Forward</strong>
             <ul id="nav-menu">
-                <li><a href="kerstknallers.html">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="alerts.html">Alerts</a></li>
                 <li><a href="tts.html">Text To Speech</a></li>
                 <li><a href="soundeffects.html">Sound Effects</a></li>
