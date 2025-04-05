@@ -909,13 +909,13 @@
             const row = button.closest('tr');
             const effectName = row.cells[1].innerText.trim();
             navigator.clipboard.writeText(effectName).then(() => {
-                alert(`Redeem '${effectName}' gekopieerd naar het klembord!`);
+                alert(`Effectnaam '${effectName}' gekopieerd naar het klembord!`);
             }).catch(err => {
                 console.error('Kopiëren mislukt', err);
             });
         }
 
-        let sortDirection = [true, true, true, true]; // Eén richting per kolom
+        let sortDirection = [true, true, true]; // Eén richting per kolom
 
 function sortTable(n) {
     const table = document.querySelector("table");
@@ -983,6 +983,8 @@ function sortTable(n) {
             sortTable(0);
             updateRowCount();
         });
+        const redeemCount = document.querySelectorAll('#redeemTable tr').length;
+        localStorage.setItem('redeemCount', redeemCount);
     </script>
 
 </body>
