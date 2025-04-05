@@ -915,7 +915,7 @@
             });
         }
 
-        let sortDirection = [true, true, true]; // Eén richting per kolom
+        let sortDirection = [true, true, true, true]; // Eén richting per kolom
 
 function sortTable(n) {
     const table = document.querySelector("table");
@@ -983,8 +983,6 @@ function sortTable(n) {
             sortTable(0);
             updateRowCount();
         });
-        const redeemCount = document.querySelectorAll('#redeemTable tr').length;
-        localStorage.setItem('redeemCount', redeemCount);
     </script>
 
 </body>
