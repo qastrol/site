@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alerts | Qastrol</title>
+    <title>Noob-Points redeems | Qastrol</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images\facicon.png">
-    <meta property="og:title" content="Alerts | Qastrol">
-    <meta property="og:description" content="Een speciale website voor de Play it Forward livestream van Qastrol. Voeg alerts, TTS stemmen en sound effects toe aan je donaties!">
+    <meta property="og:title" content="Noob-Points redeems | Qastrol">
+    <meta property="og:description" content="Een speciale website voor de Redeems, TTS stemmen en geluidseffecten van de livestream van Qastrol.">
     <meta property="og:url" content="https://qastrol.github.io/site/index.html">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="nl_NL">
@@ -22,15 +22,15 @@
     <div id="navbar">Navigatiebalk wordt geladen...</div>
     <div class="content">
         <br><br><br>
-    <h1>Alerts</h1>
+    <h1>Redeems</h1>
     <p>Hieronder staan alle Noob-Points redeems die je kan gebruiken.
         <br><br> 
         De meeste redeems zijn video's, maar er zijn ook interactieve redeems. Je kan ze gebruiken door !redeem en dan de redeemcode te typen in de chat. Als je genoeg Noob-Points hebt, kan je de redeem gebruiken. Klik op de knop "Kopieer" om de redeemcode te kopiëren naar je klembord.
         <br><br> 
         <!-- Zoekveld -->
-    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op alertnaam of beschrijving..." style="padding: 8px; width: 100%; max-width: 400px; margin: 10px 0;">
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op redeemnaam of beschrijving..." style="padding: 8px; width: 100%; max-width: 400px; margin: 10px 0;">
 
-    <p>Aantal alerts: <span id="rowCount">0</span></p>
+    <p>Aantal redeems: <span id="rowCount">0</span></p>
 
     <table>
         <thead>
@@ -42,7 +42,7 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody id="alertTable">
+        <tbody id="redeemTable">
             <tr>
                 <td>150 goals!</td>
                 <td>150goals</td>
@@ -930,7 +930,7 @@
             const row = button.closest('tr');
             const effectName = row.cells[1].innerText.trim();
             navigator.clipboard.writeText(effectName).then(() => {
-                alert(`Effectnaam '${effectName}' gekopieerd naar het klembord!`);
+                alert(`Redeem '${effectName}' gekopieerd naar het klembord!`);
             }).catch(err => {
                 console.error('Kopiëren mislukt', err);
             });
@@ -1004,8 +1004,8 @@ function sortTable(n) {
             sortTable(0);
             updateRowCount();
         });
-        const alertCount = document.querySelectorAll('#alertTable tr').length;
-        localStorage.setItem('alertCount', alertCount);
+        const redeemCount = document.querySelectorAll('#redeemTable tr').length;
+        localStorage.setItem('redeemCount', redeemCount);
     </script>
 
 </body>

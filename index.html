@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images\facicon.png">
     <meta property="og:title" content="Qastrol">
-    <meta property="og:description" content="Een speciale website voor de TTS stemmen en geluidseffecten van de livestream van Qastrol.">
+    <meta property="og:description" content="Een speciale website voor de Redeems, TTS stemmen en geluidseffecten van de livestream van Qastrol.">
     <meta property="og:url" content="https://qastrol.github.io/site/index.html">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="nl_NL">
@@ -28,6 +28,12 @@
         <p><strong>Hoe werkt het?</strong></p>
 
         <ul>
+            <li>Met !redeem kan je je Noob-Points uitgeven voor redeems.
+                <ul>
+                    <li> Er zijn zowel video-, audioredeems, en ze kunnen interactief zijn.</li>
+                    <li> Met !points kan je zien hoeveel Noob-Points je hebt.</li>
+                    <li> <a href="noobpoints.html">Bekijk alle <span id="redeemCount"></span> TTS-stemmen</a></li>
+                </ul>
             <li>Bij de TTS kanaalpunten-redeem kan je je eigen Text To Speech-stemmen uitkiezen (dit kunnen meerdere stemmen per bericht zijn).
             <ul>
                 <li> Deze kunnen gecombineerd worden met alerts en sound effects.</li>
@@ -74,6 +80,8 @@
                             rowCount = doc.querySelectorAll('#alertTable tr').length;
                         } else if (key === 'soundEffects') {
                             rowCount = doc.querySelectorAll('#soundEffectsTable tr').length;
+                        } else if (key === 'redeems') {
+                            rowCount = doc.querySelectorAll('#redeemsTable tr').length;
                         } else if (key === 'tts') {
                             rowCount = doc.querySelectorAll('#ttsTable tr').length;
                         }
