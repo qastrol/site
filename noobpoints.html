@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts | Qastrol</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images\facicon.png">
+    <meta property="og:title" content="Alerts | Qastrol">
+    <meta property="og:description" content="Een speciale website voor de Play it Forward livestream van Qastrol. Voeg alerts, TTS stemmen en sound effects toe aan je donaties!">
+    <meta property="og:url" content="https://qastrol.github.io/site/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+    <script src="nav.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+
+
+    <!-- Navigatiebalk wordt hier geladen -->
+    <div id="navbar">Navigatiebalk wordt geladen...</div>
+    <div class="content">
+        <br><br><br>
+    <h1>Alerts</h1>
+    <p>Hieronder staan alle Noob-Points redeems die je kan gebruiken.
+        <br><br> 
+        De meeste redeems zijn video's, maar er zijn ook interactieve redeems. Je kan ze gebruiken door !redeem en dan de redeemcode te typen in de chat. Als je genoeg Noob-Points hebt, kan je de redeem gebruiken. Klik op de knop "Kopieer" om de redeemcode te kopiëren naar je klembord.
+        <br><br> 
+        <!-- Zoekveld -->
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op alertnaam of beschrijving..." style="padding: 8px; width: 100%; max-width: 400px; margin: 10px 0;">
+
+    <p>Aantal alerts: <span id="rowCount">0</span></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="sortable" onclick="sortTable(0)">Redeemnaam</th>
+                <th class="sortable" onclick="sortTable(1)">Redeemcode</th>
+                <th class="sortable" onclick="sortTable(2)">Beschrijving</th>
+                <th class="sortable" onclick="sortTable(3)">Redeemkosten</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="alertTable">
+            <tr>
+                <td>150 goals!</td>
+                <td>150goals</td>
+                <td>Gefeliciteerd Qastrol, je hebt het gedaan! Qastrol heeft 150 goals gescoord</td>
+                <td>1000</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+    </div>
+    </body>
+
+    <script>
+        // Functie om effectnaam te kopiëren naar klembord
+        function copyToClipboard(button) {
+            const row = button.closest('tr');
+            const effectName = row.cells[1].innerText.trim();
+            navigator.clipboard.writeText(effectName).then(() => {
+                alert(`Effectnaam '${effectName}' gekopieerd naar het klembord!`);
+            }).catch(err => {
+                console.error('Kopiëren mislukt', err);
+            });
+        }
+
+        let sortDirection = [true, true, true]; // Eén richting per kolom
+
+function sortTable(n) {
+    const table = document.querySelector("table");
+    const rows = Array.from(table.rows).slice(1);
+
+    const isNumeric = rows.every(row => !isNaN(row.cells[n].innerText.trim()));
+    const sortedRows = rows.sort((rowA, rowB) => {
+        const textA = rowA.cells[n].innerText.trim();
+        const textB = rowB.cells[n].innerText.trim();
+        if (isNumeric) {
+            return parseFloat(textA) - parseFloat(textB);
+        }
+        return textA.localeCompare(textB);
+    });
+
+    if (!sortDirection[n]) {
+        sortedRows.reverse();
+    }
+
+    sortedRows.forEach(row => table.appendChild(row));
+    sortDirection[n] = !sortDirection[n];
+}
+
+
+        // Functie om de tabel te filteren en het aantal zichtbare rijen bij te werken
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const table = document.querySelector("table");
+            const rows = table.getElementsByTagName("tr");
+            let visibleCount = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName("td");
+                let matchFound = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent || cells[j].innerText;
+                    if (cellText.toLowerCase().indexOf(filter) > -1) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = matchFound ? "" : "none";
+                if (matchFound) {
+                    visibleCount++;
+                }
+            }
+
+            // Werk het dynamische getal bij
+            document.getElementById("rowCount").textContent = visibleCount;
+        }
+
+        // Functie om het aantal zichtbare rijen te berekenen bij pagina-initialisatie
+        function updateRowCount() {
+            const table = document.querySelector("table");
+            const rows = Array.from(table.getElementsByTagName("tr")).slice(1);
+            const visibleCount = rows.filter(row => row.style.display !== "none").length;
+            document.getElementById("rowCount").textContent = visibleCount;
+        }
+
+        // Standaard sorteren en initialiseren van rijen bij het laden van de pagina
+        document.addEventListener("DOMContentLoaded", function() {
+            sortTable(0);
+            updateRowCount();
+        });
+        const alertCount = document.querySelectorAll('#alertTable tr').length;
+        localStorage.setItem('alertCount', alertCount);
+    </script>
+
+</body>
+</html>
