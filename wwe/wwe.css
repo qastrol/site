@@ -1,0 +1,113 @@
+    body {
+      background-image: url('https://www.transparenttextures.com/patterns/brick-wall.png');
+      background-color: #000000;
+      color: #00FF00;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      cursor: pointer;
+      animation: bgscroll 20s linear infinite;
+    }
+
+    @keyframes bgscroll {
+      from { background-position: 0 0; }
+      to { background-position: 1000px 1000px; }
+    }
+
+    .marquee {
+      background-color: #FF00FF;
+      color: yellow;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 5px;
+      border: 6px ridge #FFFF00;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      width: 92%;
+      margin: auto;
+      border: 6px dotted #00FFFF;
+      padding: 10px;
+      background-color: #000033;
+      box-shadow: 0 0 20px #FF00FF;
+    }
+
+    .header {
+      text-align: center;
+      font-size: 40px;
+      color: #FF0000;
+      text-shadow: 3px 3px 5px #00FFFF;
+      border: 5px double #00FF00;
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #111144;
+    }
+
+    .blink {
+      animation: blink 1s steps(2, start) infinite;
+      color: red;
+      background-color: yellow;
+      padding: 4px;
+      border: 3px dashed red;
+    }
+
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+
+    .gif-deco {
+      width: 100px;
+      border: 3px inset #00FF00;
+      margin: 10px;
+    }
+
+    table {
+      width: 100%;
+      border: 3px groove lime;
+      background-color: #003300;
+      color: #FFFFFF;
+      font-size: 16px;
+    }
+
+    td, th {
+      padding: 10px;
+      border: 2px solid #00FF00;
+      text-align: left;
+    }
+
+    a {
+      color: cyan;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    a:hover {
+      color: magenta;
+      background-color: yellow;
+    }
+
+    ul {
+      list-style-image: url("https://www.animatedimages.org/data/media/562/animated-star-image-0040.gif");
+      padding-left: 30px;
+    }
+
+    hr {
+      border: 4px ridge #FF00FF;
+      margin: 40px 0;
+    }
+
+.under-construction {
+  border: 3px dashed yellow;
+  background-color: black;
+  color: red;
+  padding: 15px;
+  margin-top: 30px;
+  font-family: 'Comic Sans MS', cursive;
+  text-align: center;
+  box-shadow: 0 0 15px yellow;
+}
+
+.under-construction img {
+  margin: 10px 0;
+}
