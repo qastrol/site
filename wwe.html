@@ -169,18 +169,18 @@
     <h2>🎤 DE DEELNEMERS</h2>
     <!-- De deelnemers zijn: Stephan van Baarle (DENK), Thierry Baudet (FvD), Mirjam Bikker (ChristenUnie), Henri Bontenbal (CDA), Laurens Dassen (Volt), Jimmy Dijk (SP), Joost Eerdmans (JA21), Rob Jetten (D66), Esther Ouwehand (PvdD), Caroline van der Plas (BBB), Chris Stoffer (SGP), Frans Timmermans (GroenLinks-PvdA), Eddy van Hijum (Nieuw Sociaal Contract), Geert Wilders (PVV), Dilan Yeşilgöz (VVD) en één speciale uitdager! -->
     <ul>
-        <li>🤔 Stephan "Slamvan Baarle" van Baarle (DENK)</li>
+        <li>🤔 Stephan "The Baarle-Beast" van Baarle (DENK)</li>
         <li>🏛️ Thierry "De Forum Fenix" Baudet (FvD)</li>
-        <li>⛪ Mirjam "Holy Hammer" Bikker (ChristenUnie)</li>
+        <li>⛪ Mirjam "Holy Mirjam" Bikker (ChristenUnie)</li>
         <li>💣 Henri "The Bonten-Bomb" Bontenbal (CDA)</li>
         <li>⚛️ Laurens "De Volt Shock" Dassen (Volt)</li>
         <li>🍅 Jimmy "De Groningen Glory" Dijk (SP)</li>
         <li>👍 Joost "De Rotterdam Rumble" Eerdmans (JA21)</li>
         <li>✏️ Rob "De Democratische Dynamo" Jetten (D66)</li>
-        <li>🐈 Esther "The Animal Avenger" Ouwehand (PvdD)</li>
+        <li>🐈 Esther "Green Mean Machine" Ouwehand (PvdD)</li>
         <li>☘️ Caroline "De Heggenschaar" van der Plas (BBB)</li>
         <li>🙏 Chris "The Psalmslammer" Stoffer (SGP)</li>
-        <li>🌍 Frans "The Euro Enforcer" Timmermans (GroenLinks-PvdA)</li>
+        <li>🌍 Frans "The European Enforcer" Timmermans (GroenLinks-PvdA)</li>
         <li>📜 Eddy "The Omtzigt Avenger" van Hijum (Nieuw Sociaal Contract)</li>
         <li>🦅 Geert "The Freedom Fighter" Wilders (PVV)</li>
         <li>⚡️ Dilan "Volksworstelaar voor Vernietiging en Destructie" Yeşilgöz (VVD)</li>
@@ -213,7 +213,13 @@
 </div>
 
 
+
+
     <hr>
+    <p style="text-align:center; font-size:12px;">
+  <img src="https://www.webdesignmuseum.org/upload/browser-badges/netscape_4_bestviewed.gif" alt="Best viewed in Netscape Navigator 4">
+</p>
+
     <p style="text-align:center; font-size: 12px;"><a href="#">Terug naar boven ↑</a></p>
   </div>
 
@@ -224,4 +230,19 @@
   // Zet volume op 20% (0.0 = stil, 1.0 = maximaal)
   const audio = document.getElementById("wwe-muziek");
   audio.volume = 0.3;
+
+    var trail = ["💥", "✨", "🌟", "🔥"];
+  var index = 0;
+  document.addEventListener("mousemove", function(e) {
+    let trailElem = document.createElement("div");
+    trailElem.textContent = trail[index++ % trail.length];
+    trailElem.style.position = "absolute";
+    trailElem.style.left = e.pageX + "px";
+    trailElem.style.top = e.pageY + "px";
+    trailElem.style.fontSize = "20px";
+    trailElem.style.pointerEvents = "none";
+    trailElem.style.zIndex = 9999;
+    document.body.appendChild(trailElem);
+    setTimeout(() => trailElem.remove(), 500);
+  });
 </script>
