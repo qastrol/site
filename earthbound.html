@@ -75,6 +75,15 @@
 
 <body>
   <h1>EarthBound Enemy Survivor</h1>
+
+  <div style="text-align: center; margin-top: 10px;">
+    <label>
+      <input type="checkbox" id="toggleEliminated" checked />
+      Hide eliminated enemies
+    </label>
+  </div>
+
+
   <div class="grid">
     <div class="enemy-card">
       <img src="earthbound/ramblinevilmushroom.png" alt="Ramblin Evil Mushroom" class="enemy-img" />
@@ -97,7 +106,7 @@
       <div class="name">New Age Retro Hippie</div>
     </div>
 
-    <div class="enemy-card">
+    <div class="enemy-card" data-eliminated="true">
       <img src="earthbound/unassuminglocalguy.png" alt="Unassuming Local Guy" class="enemy-img" />
       <div><span class="emoji">🇩</span></div>
       <div class="name">Unassuming Local Guy</div>
@@ -125,7 +134,7 @@
       <div class="name">Territorial Oak, Hostile Elder Oak</div>
     </div>
 
-    <div class="enemy-card">
+    <div class="enemy-card" data-eliminated="true">
       <img src="earthbound/insanecultist.png" alt="Insane Cultist" class="enemy-img" />
       <div><span class="emoji">🇬</span></div>
       <div class="name">Insane Cultist</div>
@@ -423,7 +432,7 @@
   <div class="name">Titanic Ant, Gigantic Ant</div>
 </div>
 
-<div class="enemy-card">
+<div class="enemy-card" data-eliminated="true" data-eliminated="true">
   <img src="earthbound/captainstrong.png" alt="Captain Strong" class="enemy-img" />
   <img src="earthbound/overzealouscop.png" alt="Over Zealous Cop" class="enemy-img" />
   <div><span class="emoji">⬆️</span></div>
@@ -443,7 +452,7 @@
   <div class="name">Mondo Mole, Guardian Digger</div>
 </div>
 
-<div class="enemy-card">
+<div class="enemy-card" data-eliminated="true">
   <img src="earthbound/masterbelch.png" alt="Master Belch" class="enemy-img" />
   <img src="earthbound/masterbarf.png" alt="Master Barf" class="enemy-img" />
   <img src="earthbound/bigpileofpuke.png" alt="Big Pile of Puke" class="enemy-img" />
@@ -457,7 +466,7 @@
   <div class="name">Trillionage Sprout</div>
 </div>
 
-<div class="enemy-card">
+<div class="enemy-card" data-eliminated="true">
   <img src="earthbound/deptstorespook.png" alt="Dept. Store Spook" class="enemy-img" />
   <img src="earthbound/lessermook.png" alt="Lesser Mook" class="enemy-img" />
   <img src="earthbound/mooksenior.png" alt="Mook Senior" class="enemy-img" />
@@ -537,51 +546,49 @@
     });
   });
 
-  const imageFolder = "/earthbound/";
-  const imageExtensions = [".png", ".jpg", ".jpeg", ".webp"];
+  const checkbox = document.getElementById('toggleEliminated');
+  const enemyCards = document.querySelectorAll('.enemy-card');
 
-  function normalizeName(name) {
-    return name
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")  // Verwijder accenten
-      .replace(/[^a-z0-9]/g, "");       // Alleen a-z en 0-9
+  function filterEnemies() {
+    const hideEliminated = checkbox.checked;
+    enemyCards.forEach(card => {
+      const eliminated = card.dataset.eliminated === 'true';
+      if (hideEliminated && eliminated) {
+        card.style.display = 'none';
+      } else {
+        card.style.display = '';
+      }
+    });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".enemy-card").forEach(card => {
-      const nameBlock = card.querySelector(".name");
-      const imageBlock = card.querySelector(".images");
+  checkbox.addEventListener('change', filterEnemies);
 
-      const raw = nameBlock.textContent;
-      const nameVariants = raw.split(/,|\(|\)|\/|–|-/).map(n => n.trim()).filter(Boolean);
+  window.addEventListener('DOMContentLoaded', filterEnemies);
 
-      const addedImages = new Set(); // voorkom dubbele afbeeldingen
+    document.addEventListener("DOMContentLoaded", () => {
+    const eliminatedCards = document.querySelectorAll(".enemy-card[data-eliminated='true']");
+    
+    eliminatedCards.forEach(card => {
+      const eliminatedLabel = document.createElement("div");
+      eliminatedLabel.textContent = "ELIMINATED";
+      eliminatedLabel.style.color = "red";
+      eliminatedLabel.style.fontWeight = "bold";
+      eliminatedLabel.style.marginTop = "8px";
+      eliminatedLabel.style.fontSize = "16px";
+      eliminatedLabel.style.textTransform = "uppercase";
+      card.appendChild(eliminatedLabel);
+    });
 
-      nameVariants.forEach(name => {
-        const base = normalizeName(name);
-
-        imageExtensions.forEach(ext => {
-          const filename = imageFolder + base + ext;
-
-          if (addedImages.has(filename)) return; // sla over als al toegevoegd
-
-          const img = new Image();
-          img.src = filename;
-          img.alt = name;
-          img.className = "enemy-img";
-
-          img.onload = () => {
-            imageBlock.appendChild(img);
-            addedImages.add(filename);
-          };
-
-          img.onerror = () => {
-            img.remove(); // schoonhouden
-          };
-        });
+    const toggle = document.getElementById("toggleEliminated");
+    toggle.addEventListener("change", () => {
+      eliminatedCards.forEach(card => {
+        card.style.display = toggle.checked ? "none" : "block";
       });
     });
+
+    if (document.getElementById("toggleEliminated").checked) {
+      eliminatedCards.forEach(card => card.style.display = "none");
+    }
   });
 </script>
 
