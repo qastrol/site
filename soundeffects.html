@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Effects | Qastrol</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images\facicon.png">
+    <meta property="og:title" content="Sound Effects | Qastrol">
+    <meta property="og:description" content="Een speciale website voor de Redeems, TTS stemmen en geluidseffecten van de livestream van Qastrol.">
+    <meta property="og:url" content="https://qastrol.github.io/site/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+    <script src="nav.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+</head>
+<body>
+
+    <!-- Navigatiebalk wordt hier geladen -->
+    <div id="navbar">Navigatiebalk wordt geladen...</div>
+
+    <div class="content">
+        <br><br><br>
+    <h1>Sound Effects</h1>
+    <p>Hieronder staan de beschikbare sound effects.</p>
+    <p>Deze geluiden kan je toevoegen aan het tekstvak van de kanaalpunten-redeem en dan zullen ze in het TTS-bericht worden afgespeeld. Je kan meerdere sound effects per bericht gebruiken</p>
+    <p>Klik op de knop om de soundeffectnaam naar het klembord te kopiëren en in je bericht te gebruiken.</p>
+
+    <!-- Zoekveld voor de Sound Effects -->
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op soundeffectnaam of beschrijving..." style="padding: 8px; width: 100%; max-width: 400px; margin: 10px 0;">
+    <p>Aantal sound effects: <span id="counter">0</span></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Soundeffectnaam</th>
+                <th onclick="sortTable(1)">Beschrijving</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody id="soundEffectsTable">
+            <tr>
+                <td>(airhorn)</td>
+                <td>Een typische meme-luchthoorn</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(alweereenwinnaar)</td>
+                <td>Alweer een winnaar! Een kermis-sound effect</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(augh)</td>
+                <td>HUUUUUUUUUUUUUUUUAAAAAAAAAAAAAAAAAAAGH</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(biem)</td>
+                <td>BIEM!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(bonk)</td>
+                <td>BONK!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(bruh)</td>
+                <td>Bruh</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(cave)</td>
+                <td>Minecraft grotgeluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(challenger)</td>
+                <td>Een nieuwe challenger in Super Smash Bros</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(creeper)</td>
+                <td>Creeper explosie geluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(crickets)</td>
+                <td>Krekels die fluiten 😴</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(cringe)</td>
+                <td>Cringe</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(criticalhit)</td>
+                <td>Een critical hit in Super Smash Bros.</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(crowbar)</td>
+                <td>Half-Life 1 crowbar geluidseffect</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(damage)</td>
+                <td>Look at all this damage!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(disappointed)</td>
+                <td>Wanneer iets teleurstellends gebeurd in Spongebob</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(door)</td>
+                <td>Een Minecraft deur</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(drink)</td>
+                <td>Wanneer je drinkt in Minecraft</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(eat)</td>
+                <td>Wanneer je eet in Minecraft</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(enderman)</td>
+                <td>Wanneer een Enderman teleporteerd</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(euroschreeuw)</td>
+                <td>AAAAAAAAAAAAAAAAAAAAAAAAAA</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(failure)</td>
+                <td>"Failure" - Super Smash Bros Melee aankondiger</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(fallguys)</td>
+                <td>Wanneer je een ronde verliest in Fall Guys</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(fart)</td>
+                <td>Reverb Scheetgeluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(finale)</td>
+                <td>De finale van De Slimste Mens is gespeeld!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(gameover)</td>
+                <td>Game over in New Super Mario Bros.</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(gas)</td>
+                <td>Gas - Jerma985</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(goeiemiddag)</td>
+                <td>Goeiemiddag</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(heybuurman)</td>
+                <td>Hey buurman! Ajeto buur!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(hiereeneuro)</td>
+                <td>Hier een euro, AAAAAAAAAAAAAAAA</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(intro)</td>
+                <td>Harde Hugo community sound effect 😳</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(join)</td>
+                <td>Iemand joined de Discord call</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(kloppen)</td>
+                <td>Iemand klopt op de deur</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(knolpower)</td>
+                <td>Het is tijd voor wat Knolpower! Dikke vette peace!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(leave)</td>
+                <td>Iemand verlaat de Discord call</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(meow)</td>
+                <td>Een miauwende kat in Minecraft</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(mosterd)</td>
+                <td>Mosterd - Reitse Spanninga</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(oef)</td>
+                <td>Oef - Minecraft Steve</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(opjemuil)</td>
+                <td>Op je muil, gauw!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(ping)</td>
+                <td>Discord-ping geluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(pipe)</td>
+                <td>een pijp die valt</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(rctlaugh)</td>
+                <td>RCT2 lachen geluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(rctscream)</td>
+                <td>RCT2 schreeuw geluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(scorn)</td>
+                <td>SCORN - Jerma985</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(shock)</td>
+                <td>Wanneer iets schokkends in SpongeBob gebeurt</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(sinisterlaugh)</td>
+                <td>Sinister lachen geluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(slimstemens)</td>
+                <td>Het bumpergeluid van D Slimste Mens (ter Wereld)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(sus)</td>
+                <td>Het geluid wanneer je je rol ziet in Among Us. Sus</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(taxonweb)</td>
+                <td>Taxonweb.be</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(tickle)</td>
+                <td>Een tekenfilm kietel geluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(tnt)</td>
+                <td>Een Minecraft TNT explosie</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(toilet)</td>
+                <td>Een WC die doorgespoeld wordt</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(twohours)</td>
+                <td>2 uur later</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(usb)</td>
+                <td>Wanneer een USB-apparaat wordt verbonden aan de PC</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(verdomme)</td>
+                <td>"Verdomme" - Martien Meiland</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(villager)</td>
+                <td>Minecraft Villager geluid</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(vineboom)</td>
+                <td>De Vineboom meme</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(watgoed)</td>
+                <td>"Wat goed" - Martien Meiland</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(whip)</td>
+                <td>ZWEEPslag</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(witch)</td>
+                <td>Een enge heksenlach</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(woef)</td>
+                <td>Minecraft hond</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(wow)</td>
+                <td>Het anime "Wow" geluid, veel gebruikt als meme</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(zombie)</td>
+                <td>Minecraft zombie</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(ns)</td>
+                <td>Het omroepgeluid op het NS-treinstation. Beste reizigers!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(boulevard)</td>
+                <td>De tune van RTL Boulevard!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(hema)</td>
+                <td>Het fluitdeuntje van de HEMA!</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(missed)</td>
+                <td>Oh I missed! Wario heeft iets gemist in Mario Party 1</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(ohmygod)</td>
+                <td>Wario heeft het helemaal gehad in Mario Party 1 en gooit er een vloekterm uit</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(ah)</td>
+                <td>Het deuntje van de Albert Heijn</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(shutdown)</td>
+                <td>Het geluid wanneer je Windows XP afsluit</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(yup)</td>
+                <td>Peter Griffin die yup zegt</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(violin)</td>
+                <td>Een zeer verdrietige viool, van de meme</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(error)</td>
+                <td>Een foutmelding in Windows XP</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(punch)</td>
+                <td>Er wordt een klap uitgedeeld</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(wide)</td>
+                <td>Iemand loopt heel wijd, de meme</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(wauw)</td>
+                <td>Eddy Wally zegt "Wow"</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(startup)</td>
+                <td>Je start je Windows XP computer op</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(internet)</td>
+                <td>Het geluid van het opstarten van inbelinternet</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(eendje)</td>
+                <td>kwak</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(fortnite)</td>
+                <td>Je gaat neer in Fortnite</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>(illuminati)</td>
+                <td>❔</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+    <script>
+        // Functie om effectnaam of stemnaam te kopiëren naar klembord
+        function copyToClipboard(button) {
+    // Zoek de rij van de knop en vervolgens de eerste cel (de soundeffectnaam)
+    const row = button.closest('tr'); // Zoek de rij van de knop
+    const soundEffectName = row.querySelector('td').innerText.trim(); // Pak de tekst uit de eerste cel
+
+    // Kopieer de tekst naar het klembord
+    navigator.clipboard.writeText(soundEffectName).then(() => {
+        alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
+    }).catch(err => {
+        console.error('Kopiëren mislukt', err);
+    });
+}
+
+
+        function updateCounter() {
+    const table = document.querySelector("table");
+    const rows = table.getElementsByTagName("tr");
+    let visibleRows = 0;
+
+    // Tel het aantal zichtbare rijen (geen verborgen rijen door filter)
+    for (let i = 1; i < rows.length; i++) {
+        if (rows[i].style.display !== "none") {
+            visibleRows++;
+        }
+    }
+
+    // Werk de teller bij
+    document.getElementById("counter").textContent = visibleRows;
+}
+
+
+        let sortDirection = [true, true, true]; // array om de sorteer volgorde bij te houden
+
+        // Functie om de tabel te sorteren
+        function sortTable(n) {
+    const table = document.querySelector("table");
+    const rows = Array.from(table.rows).slice(1); // Haal alle rijen, behalve de kopjes
+
+    // Bepaal of we numeriek moeten sorteren
+    const isNumeric = !isNaN(rows[0].cells[n].innerText.trim());
+
+    const sortedRows = rows.sort((rowA, rowB) => {
+        const textA = rowA.cells[n].innerText.trim();
+        const textB = rowB.cells[n].innerText.trim();
+
+        if (isNumeric) {
+            // Sorteren op numerieke waarden
+            return parseFloat(textA) - parseFloat(textB);
+        } else {
+            // Sorteren op tekst (case-insensitive)
+            return textA.localeCompare(textB, 'nl', { sensitivity: 'base' });
+        }
+    });
+
+    if (!sortDirection[n]) {
+        sortedRows.reverse(); // Omkeren als het in aflopende volgorde moet
+    }
+
+    // Voeg de gesorteerde rijen terug in de tabel
+    sortedRows.forEach(row => table.appendChild(row));
+
+    // Verander de sorteervolgorde voor de volgende keer
+    sortDirection[n] = !sortDirection[n];
+
+    // Werk de teller bij na sorteren
+    updateCounter();
+}
+
+
+        function searchTable() {
+    const input = document.getElementById("searchInput");
+    const filter = input.value.toLowerCase();  // Haal de zoekterm op en zet deze om naar kleine letters
+    const table = document.querySelector("table");
+    const rows = table.getElementsByTagName("tr");  // Alle rijen in de tabel
+
+    // Loop door alle rijen van de tabel (behalve de koprij)
+    for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        let matchFound = false;
+
+        // Zoek door alle cellen in de rij
+        for (let j = 0; j < cells.length; j++) {
+            const cellText = cells[j].textContent || cells[j].innerText;
+            if (cellText.toLowerCase().indexOf(filter) > -1) {
+                matchFound = true;
+                break; // Stop met zoeken als er een match is
+            }
+        }
+
+        // Toon of verberg de rij op basis van de zoekterm
+        rows[i].style.display = matchFound ? "" : "none";
+    }
+
+    // Werk de teller bij na filteren
+    updateCounter();
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    sortTable(0); // Sorteer op de eerste kolom (effectnaam)
+    updateCounter(); // Update de teller bij pagina load
+});
+
+
+        // Inline HTML van de navigatiebalk als fallback
+        document.addEventListener('DOMContentLoaded', (event) => {
+    const modeToggle = document.getElementById('mode-toggle');
+    const body = document.body;
+
+    // Check the saved mode preference
+    if (localStorage.getItem('dark-mode') === 'true') {
+        body.classList.add('dark-mode');
+    }
+
+    modeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        // Save the mode preference
+        localStorage.setItem('dark-mode', body.classList.contains('dark-mode'));
+    });
+});
+const soundEffectCount = document.querySelectorAll('#soundEffectsTable tr').length;
+localStorage.setItem('soundEffectCount', soundEffectCount);
+    </script>
+
+</body>
+</html>

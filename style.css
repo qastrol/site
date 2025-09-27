@@ -1,0 +1,192 @@
+:root {
+    /* Light mode kleuren */
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --nav-background-color: #4CAF50;
+    --nav-text-color: #ffffff;
+    --table-background-color: #ffffff;
+    --table-text-color: #000000;
+    --table-border-color: #dddddd;
+    --table-header-background-color: #4CAF50;
+    --button-background-color: #008CBA;
+    --button-text-color: #ffffff;
+    --button-hover-background-color: #005f73;
+}
+
+/* Dark mode kleuren */
+[data-theme="dark"] {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --nav-background-color: #333333;
+    --nav-text-color: #ffffff;
+    --table-background-color: #333333;
+    --table-text-color: #dddddd;
+    --table-border-color: #444444;
+    --table-header-background-color: #444444;
+    --button-background-color: #555555;
+    --button-text-color: #ffffff;
+    --button-hover-background-color: #777777;
+}
+
+/* Algemene styling voor body en tekst */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    max-width: 1800px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.content {
+    padding: 0 5%;
+}
+
+/* Media query voor grotere schermen (vanaf 1024px en breder) */
+@media (min-width: 1024px) {
+    body {
+        padding: 0 10%; /* Verhoog de padding naar 10% voor grotere schermen */
+    }
+}
+
+/* Media query voor schermen tussen 768px en 1024px */
+@media (max-width: 1024px) and (min-width: 768px) {
+    body {
+        padding: 0 7%; /* Verminder de padding voor schermen tussen 768px en 1024px */
+    }
+}
+
+/* Verberg standaard het menu op mobiele schermen */
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+        flex-direction: column;
+        background-color: var(--nav-background-color);
+        position: absolute;
+        top: 50px; /* Zorg ervoor dat het onder de navigatiebalk verschijnt */
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 999;
+        transition: max-height 0.3s ease-in-out;
+        max-height: 0;
+        overflow: hidden;
+    }
+
+    nav ul.show {
+        display: flex;
+        max-height: 300px; /* Pas aan op basis van de menu-inhoud */
+    }
+
+    nav .hamburger {
+        display: block;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: var(--nav-text-color);
+        background: none;
+        border: none;
+        outline: none;
+    }
+}
+
+/* Verberg de hamburger op grotere schermen */
+@media (min-width: 769px) {
+    nav .hamburger {
+        display: none;
+    }
+}
+/* Styling voor de tabel */
+table {
+    width: 100%;
+    max-width: 1920px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--table-background-color);
+    color: var(--table-text-color);
+    border: 1px solid var(--table-border-color);
+}
+
+/* Tabel cellen (th, td) */
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+/* Stijl voor de klikbare kopjes */
+th {
+    cursor: pointer;
+    background-color: var(--table-header-background-color);
+    color: var(--table-text-color);
+    font-size: 1.1em;
+    padding: 10px;
+    text-align: left;
+    transition: background-color 0.3s ease, text-decoration 0.3s ease;
+}
+
+/* Hover-effect voor de tabel */
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Toevoeging voor dark mode hover effect */
+}
+
+th:hover {
+    background-color: #45a049;
+    text-decoration: underline;
+}
+
+/* Styling voor knoppen */
+button {
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--button-hover-background-color);
+}
+
+/* Styling voor de kopjes en de links in de navigatie */
+nav {
+    background-color: var(--nav-background-color);
+    color: var(--nav-text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* Styling voor de kopjes en de links in de navigatie */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav a {
+    color: var(--nav-text-color);
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: var(--button-hover-background-color);
+    color: var(--button-text-color);
+    border-radius: 5px;
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver</title>
+    <meta property="og:title" content="Sudoku oplosser">
+    <meta property="og:description" content="Koek">
+    <meta property="og:url" content="https://qastrol.github.io/site/sudoku/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            margin: 20px 0;
+        }
+        textarea, pre {
+            width: 80%;
+            max-width: 600px;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            font-family: monospace;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sudoku Solver</h1>
+    <textarea id="inputPuzzle" rows="10" placeholder="Enter your Sudoku puzzle here..."></textarea>
+    <button onclick="solveSudoku()">Solve Sudoku</button>
+    <button onclick="copySolution()">Copy Solution</button>
+    <pre id="output" class="output"></pre>
+
+    <script>
+        function parseSudoku(puzzleStr) {
+            const grid = [];
+            puzzleStr.split('\n').forEach(line => {
+                if (line.includes('|')) {
+                    const row = [];
+                    for (const char of line) {
+                        if (char >= '1' && char <= '9') {
+                            row.push(parseInt(char, 10));
+                        } else if (char === '.') {
+                            row.push(0);
+                        }
+                    }
+                    if (row.length) grid.push(row);
+                }
+            });
+            return grid;
+        }
+
+        function formatSudoku(grid, originalFormat) {
+            const formatted = [];
+            let gridIndex = 0;
+            originalFormat.split('\n').forEach(line => {
+                if (line.includes('|')) {
+                    let formattedLine = '';
+                    for (const char of line) {
+                        if (char === '.') {
+                            const row = Math.floor(gridIndex / 9);
+                            const col = gridIndex % 9;
+                            formattedLine += grid[row][col];
+                            gridIndex++;
+                        } else if (char >= '1' && char <= '9') {
+                            formattedLine += char;
+                            gridIndex++;
+                        } else {
+                            formattedLine += char;
+                        }
+                    }
+                    formatted.push(formattedLine);
+                } else {
+                    formatted.push(line);
+                }
+            });
+            return formatted.join('\n');
+        }
+
+        function isValid(grid, row, col, num) {
+            for (let i = 0; i < 9; i++) {
+                if (grid[row][i] === num || grid[i][col] === num) return false;
+            }
+            const startRow = Math.floor(row / 3) * 3;
+            const startCol = Math.floor(col / 3) * 3;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (grid[startRow + i][startCol + j] === num) return false;
+                }
+            }
+            return true;
+        }
+
+        function solveSudokuRecursive(grid) {
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    if (grid[row][col] === 0) {
+                        for (let num = 1; num <= 9; num++) {
+                            if (isValid(grid, row, col, num)) {
+                                grid[row][col] = num;
+                                if (solveSudokuRecursive(grid)) return true;
+                                grid[row][col] = 0;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function solveSudoku() {
+            const input = document.getElementById('inputPuzzle').value;
+            const grid = parseSudoku(input);
+            const originalFormat = input;
+
+            if (solveSudokuRecursive(grid)) {
+                const solvedPuzzle = formatSudoku(grid, originalFormat);
+                document.getElementById('output').textContent = solvedPuzzle;
+            } else {
+                document.getElementById('output').textContent = 'No solution found.';
+            }
+        }
+
+        function copySolution() {
+            const outputText = document.getElementById('output').textContent;
+
+            // Controleer of de output bestaat
+            if (outputText && outputText !== 'No solution found.') {
+                const textToCopy = `;antwoord ${outputText}`;
+
+                // Maak een tijdelijke textarea om de tekst in te zetten en te kopiëren
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = textToCopy;
+                document.body.appendChild(tempTextArea);
+
+                // Selecteer de tekst en kopieer deze naar het klembord
+                tempTextArea.select();
+                document.execCommand('copy');
+                
+                // Verwijder de tijdelijke textarea
+                document.body.removeChild(tempTextArea);
+
+                // Optioneel: toon een alert of een ander bericht aan de gebruiker
+                alert('Solution copied to clipboard!');
+            } else {
+                alert('No solution available to copy.');
+            }
+        }
+    </script>
+</body>
+</html>

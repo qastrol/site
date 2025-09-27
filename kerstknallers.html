@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Qastrol, Wout en Hugo bij KerstKnallers</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images\facicon.png">
+    <meta property="og:title" content="Qastrol bij Play it Forward">
+    <meta property="og:description" content="Een speciale website voor de Play it Forward livestream van Qastrol. Voeg alerts, TTS stemmen en sound effects toe aan je donaties!">
+    <meta property="og:url" content="https://qastrol.github.io/site/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+
+    <!-- Laad Font Awesome voor iconen -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigatiebalk wordt hier geladen -->
+    <div id="navbar">Navigatie wordt geladen...</div>
+
+    <!-- Welkomstbericht en inhoud voor de homepage -->
+    <div class="content">
+        <br><br><br>
+        <h1>Welkom!</h1>
+        <p>Dit is een speciale website voor de Play it Forward livestream van Qastrol, zaterdag 8 maart 2025 van 15:00 tot 17:00.</p>
+        <p><strong>Hoe werkt het?</strong></p>
+
+        <ul>
+            <li>Aan elke donatie tijdens deze livestream kan je één alert toevoegen.</li>
+                <ul>
+                <li>Let op: je kan maar één alert per donatie toevoegen!</li>
+                <li><a href="alerts.html">Bekijk alle <span id="alertsCount"></span> alerts</a></li>
+                </ul>
+            <li>Ook kan je je eigen Text To Speech-stemmen uitkiezen (dit kunnen meerdere stemmen per bericht zijn).
+            <ul>
+                <li> Deze kunnen gecombineerd worden met alerts en sound effects.</li>
+                <li> Sommige TTS-stemmen zijn alleen in het Engels beschikbaar.</li>
+                <li> <a href="tts.html">Bekijk alle <span id="ttsCount"></span> TTS-stemmen</a></li>
+                </ul>
+            <li>Je kan ook sound effects toevoegen aan je bericht.
+            <ul>
+                <li>Deze kunnen gecombineerd worden met alerts en TTS stemmen.</li>
+                <li> <a href="soundeffects.html">Bekijk alle <span id="soundEffectsCount"></span> sound effects</a></li>
+            </ul>
+            <li>Voeg de gewenste alerts, TTS stemmen en sound effects toe aan het vak "Comments" bij de donatiepagina.</li>
+            <ul>
+                <li>Alles werkt vanaf ieder donatiebedrag.</li>
+                <li><a href="https://donate.tiltify.com/@nielswalta/retro-2025" target="_blank">Doneer hier!</a></li>
+            </ul>
+
+        </ul>
+
+        <p><strong>Voorbeeld:</strong></p>
+        <p>Als je de Noob-Power alert wilt gebruiken, samen met de "frank" en "vanrossem" TTS stemmen en het "fart" sound effect, dan kan je dit in je donatiebericht zetten:</p>
+        <p><code> &lt;noobpower&gt; frank: dit is een test vanrossem: hallo (fart)</code></p>
+
+    </div>
+
+    </div>
+
+    <!-- Verwijzing naar nav.js, laad het script aan het einde van de body -->
+    <script src="nav.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const counts = {
+                alerts: 'alerts.html',
+                soundEffects: 'soundeffects.html',
+                tts: 'tts.html'
+            };
+    
+            Object.entries(counts).forEach(([key, url]) => {
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        let rowCount;
+    
+                        if (key === 'alerts') {
+                            rowCount = doc.querySelectorAll('#alertTable tr').length;
+                        } else if (key === 'soundEffects') {
+                            rowCount = doc.querySelectorAll('#soundEffectsTable tr').length;
+                        } else if (key === 'tts') {
+                            rowCount = doc.querySelectorAll('#ttsTable tr').length;
+                        }
+    
+                        document.getElementById(`${key}Count`).textContent = rowCount;
+                    })
+                    .catch(() => {
+                        document.getElementById(`${key}Count`).textContent = '';
+                    });
+            });
+        });
+    </script>
+    
+</body>
+</html>

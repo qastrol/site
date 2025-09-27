@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text To Speech-stemmen | Qastrol</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images\facicon.png">
+    <meta property="og:title" content="Text To Speech-stemmen | Qastrol">
+    <meta property="og:description" content="Een speciale website voor de Redeems, TTS stemmen en geluidseffecten van de livestream van Qastrol.">
+    <meta property="og:url" content="https://qastrol.github.io/site/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+    <script src="nav.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+
+    <!-- Navigatiebalk wordt hier geladen -->
+    <div id="navbar">Navigatiebalk wordt geladen...</div>
+
+
+    <div class="content">
+        <br><br><br>
+    <h1>Text To Speech-stemmen</h1>
+    <p>Hieronder staan de beschikbare TTS-stemmen. Kopieer de stemnaam naar het tekstvak van de kanaalpunten-redeem om deze te gebruiken in de stream. 
+        <br><br>
+        Er zijn verschillende TTS-stemmen beschikbaar, zoals de gewone stemmen van Google en  Microsoft, maar ook AI-stemmen. Je kan meerdere stemmen tegelijk gebruiken in je donatiebericht.
+        <br><br>
+        De AI-stemmen van ElevenLabs werken zowel in het Engels als Nederlands. Bij de stemmen van Microsoft en Google verschilt dit per stem. De Engelse AI stemmen werken niet in het Nederlands.
+        <br><br>
+
+    <!-- Zoekveld voor de TTS-stemmen -->
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op stemnaam of beschrijving..." style="padding: 8px; width: 100%; max-width: 400px; margin: 10px 0;">
+
+    <p>Aantal TTS stemmen: <span id="rowCount">0</span></p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Stemnaam</th>
+                <th onclick="sortTable(1)">Beschrijving</th>
+                <th onclick="sortTable(2)">TTS Categorie</th>
+                <th>Actie</th>
+            </tr>
+        </thead>
+        <tbody id="ttsTable">
+            <!-- Voorbeeld TTS stemmen -->
+            <tr>
+                <td>david:</td>
+                <td>De Engelse mannelijke Microsoft-stem.</td>
+                <td>Microsoft</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>trump:</td>
+                <td>Donald Trump als Engelse AI-stem</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>vanrossem:</td>
+                <td>Maarten van Rossem, bekend van o.a. De Slimste Mens</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>gertverhulst:</td>
+                <td>Gert Verhulst van Studio 100</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>npo1:</td>
+                <td>De zenderstem van Nederland 1</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>sbs6:</td>
+                <td>De zenderstem van SBS6.</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>wilders:</td>
+                <td>Geert Wilders, partijleider van de PVV</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>enzoknol:</td>
+                <td>Enzo Knolpower!</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>asmr2:</td>
+                <td>Een Engelse ASMR stem die niet in het Nederlands werkt!</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>baldi:</td>
+                <td>Baldi van Baldi's Basics!</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>biden:</td>
+                <td>Joe Biden! Joe Biden!</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>eminem:</td>
+                <td>Het is Slim Shady die je bericht in het Engels rapt</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>french:</td>
+                <td>Een TTS met een Frans accent die Engels spreekt</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>glados:</td>
+                <td>GLaDoS van Portal</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>jazz:</td>
+                <td>Een Engelse jazz-zanger zingt je bericht!</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>kkona:</td>
+                <td>Een Engelse AI-stem van iemand met een Amerikaans accent</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>klaus:</td>
+                <td>Een Engelse AI-stem van iemand met een Duits accent</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>morganfreeman:</td>
+                <td>Morgan Freeman, de bekende acteur</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>plankton:</td>
+                <td>Plankton (van de Engelse Spongebob)</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>shapiro:</td>
+                <td>Ben Shapiro</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>stanleyparable:</td>
+                <td>de aankondiger van The Stanley Parable</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>spongebob:</td>
+                <td>Spongebob van de Engelse versie van Spongebob Squarepants</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>watchmojo:</td>
+                <td>de aankondiger van Watch Mojo</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>weeknd:</td>
+                <td>The Weekend zingt je bericht</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>stefan:</td>
+                <td>De tweede Vlaamse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>henk:</td>
+                <td>De tweede Nederlandse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>tom:</td>
+                <td>De derde Nederlandse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>anna:</td>
+                <td>De eerste Nederlandse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>emma:</td>
+                <td>De vierde Nederlandse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>julia:</td>
+                <td>De vijfde Nederlandse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>martine:</td>
+                <td>De eerste Vlaamse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>inge:</td>
+                <td>De zesde Nederlandse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>niels:</td>
+                <td>De zevende Nederlandse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>jan:</td>
+                <td>De vierde Vlaamse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>astrid:</td>
+                <td>De derde Vlaamse TTS stem van Google.</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>jinek:</td>
+                <td>Eva Jinek maar dan als AI</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>kidv:</td>
+                <td>Jeroen Kijk in de Vegte, bekend als de voice-over van RTL Boulevard en B&B Vol Liefde</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>dickschoof:</td>
+                <td>De minister-president van Nederland</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>tellsell:</td>
+                <td>De Tell Sell stem</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>meiland:</td>
+                <td>Martien Meiland, bekend van Chateau Meiland</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>ernie:</td>
+                <td>Ernie van Bert & Ernie</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>ns:</td>
+                <td>De omroepstem op treinstations als AI-stem</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>mielmonteur:</td>
+                <td>Miel Monteur, bekend van de videogames</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>franklammers:</td>
+                <td>Frank Lammers van de Jumbo en Undercover</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>freriks:</td>
+                <td>Philip Freriks van het NOS Journaal</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>lubach:</td>
+                <td>Arjen Lubach van Zondag met Lubach en de Avondshow</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>robtrip:</td>
+                <td>Rob Trip van het NOS Journaal</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>harry:</td>
+                <td>De Britse mannelijke stem van Google</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>news:</td>
+                <td>De Britse mannelijke nieuwsstem van Google</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>lucy:</td>
+                <td>De Britse vrouwelijke stem van Google</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>hazel:</td>            
+                <td>De vrouwelijke Engelse stem van Microsoft</td>
+                <td>Microsoft</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>jansmit:</td>            
+                <td>Jan Smit, de volkszanger uit Volendam</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>gordon:</td>            
+                <td>Gordon Heuckeroth</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>bartsimpson:</td>            
+                <td>Bart Simpson van The Simpsons</td>
+                <td>Engelse AI (werkt niet in het Nederlands)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>bassie:</td>            
+                <td>Bassie van Bassie en Adriaan</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>adriaan:</td>            
+                <td>Adriaan van Bassie en Adriaan</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>asmr:</td>            
+                <td>Een Nederlandse ASMR-stem, maar deze werkt ook in het Engels</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>halo:</td>            
+                <td>Killtacular! De Halo-aankondiger (werkt beter in het Engels, maar werkt ook soort van in het Nederlands)</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>piepstem:</td>            
+                <td>Harry Piekema was het! De zelfde stem als "henk:", maar dan een hogere stemtoon. Bekend van Among Us</td>
+                <td>Google</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>joling:</td>            
+                <td>Gerard Joling als TTS-stem!</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>bauer:</td>            
+                <td>Frans Bauer als TTS-stem!</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>qastrol:</td>            
+                <td>Qastrol als AI-stem!</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>sinterklaas:</td>            
+                <td>Sinterklaas als AI-stem! Dag hoor!</td>
+                <td>AI (ElevenLabs)</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <!-- Voeg meer stemmen hier toe -->
+        </tbody>
+    </table>
+</div>
+</body>
+
+    <script>
+        // Functie om effectnaam of stemnaam te kopiëren naar klembord
+        function copyToClipboard(button) {
+    // Zoek de rij van de knop en vervolgens de eerste cel (de soundeffectnaam)
+    const row = button.closest('tr'); // Zoek de rij van de knop
+    const soundEffectName = row.cells[0].innerText.trim(); // Pak de tekst uit de eerste cel
+
+    navigator.clipboard.writeText(soundEffectName).then(() => {
+        alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
+    }).catch(err => {
+        console.error('Kopiëren mislukt', err);
+    });
+}
+
+
+
+        let sortDirection = [true, true, true]; // array om de sorteer volgorde bij te houden
+
+        // Functie om de tabel te sorteren
+        function sortTable(n) {
+            const table = document.querySelector("table");
+            const rows = Array.from(table.rows).slice(1); // Haal alle rijen, behalve de kopjes
+
+            // Bepaal of we numeriek moeten sorteren
+            const isNumeric = !isNaN(rows[0].cells[n].innerText.trim());
+
+            const sortedRows = rows.sort((rowA, rowB) => {
+                const textA = rowA.cells[n].innerText.trim();
+                const textB = rowB.cells[n].innerText.trim();
+
+                if (isNumeric) {
+                    // Sorteren op numerieke waarden
+                    return parseFloat(textA) - parseFloat(textB);
+                } else {
+                    // Sorteren op tekst (case-insensitive)
+                    return textA.localeCompare(textB, 'nl', { sensitivity: 'base' });
+                }
+            });
+
+            if (!sortDirection[n]) {
+                sortedRows.reverse(); // Omkeren als het in aflopende volgorde moet
+            }
+
+            // Voeg de gesorteerde rijen terug in de tabel
+            sortedRows.forEach(row => table.appendChild(row));
+
+            // Verander de sorteervolgorde voor de volgende keer
+            sortDirection[n] = !sortDirection[n];
+        }
+
+        // Functie om de tabel te filteren op basis van de zoekopdracht
+        function updateRowCount() {
+        const table = document.querySelector("table");
+        const rows = table.getElementsByTagName("tr");  // Alle rijen in de tabel
+        let visibleRowCount = 0;
+
+        // Loop door alle rijen en tel de zichtbare rijen
+        for (let i = 1; i < rows.length; i++) {
+            if (rows[i].style.display !== "none") {  // Controleer of de rij zichtbaar is
+                visibleRowCount++;
+            }
+        }
+
+        // Werk de counter bij in de UI
+        document.getElementById("rowCount").textContent = visibleRowCount;
+    }
+
+    // Functie om de tabel te filteren op basis van de zoekopdracht
+    function searchTable() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toLowerCase();  // Haal de zoekterm op en zet deze om naar kleine letters
+        const table = document.querySelector("table");
+        const rows = table.getElementsByTagName("tr");  // Alle rijen in de tabel
+
+        // Loop door alle rijen van de tabel (behalve de koprij)
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName("td");
+            let matchFound = false;
+
+            // Zoek door alle cellen in de rij
+            for (let j = 0; j < cells.length; j++) {
+                const cellText = cells[j].textContent || cells[j].innerText;
+                if (cellText.toLowerCase().indexOf(filter) > -1) {
+                    matchFound = true;
+                    break; // Stop met zoeken als er een match is
+                }
+            }
+
+            // Toon of verberg de rij op basis van de zoekterm
+            rows[i].style.display = matchFound ? "" : "none";
+        }
+
+        // Werk de zichtbare rijcounter bij
+        updateRowCount();
+    }
+        
+
+        // Sorteren op 'Stemnaam' bij het laden van de pagina
+        document.addEventListener("DOMContentLoaded", function() {
+            sortTable(0); // Sorteer op de eerste kolom (stemnaam)
+            updateRowCount(); // Update de rijteller
+        });
+        const ttsCount = document.querySelectorAll('#ttsTable tr').length;
+        localStorage.setItem('ttsCount', ttsCount);
+    </script>
+
+</body>
+</html>

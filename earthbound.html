@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta property="og:title" content="EarthBound Enemy Survivor">
+  <meta property="og:description" content="Resource for all the enemies from the Earthbound Enemy Survivor">
+  <meta property="og:url" content="https://qastrol.github.io/site/earthbound.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <title>EarthBound Enemy Survivor</title>
+  <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f7f7fa;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .enemy-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .enemy-card:hover {
+      transform: scale(1.03);
+    }
+
+    .emoji {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    margin: 4px 0;
+    }
+
+    .eleven {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    margin: 4px 0;
+    }
+
+    .name {
+      font-weight: bold;
+      color: #444;
+      font-size: 14px;
+    }
+    .enemy-img {
+  max-width: 80px;
+  max-height: 80px;
+  margin: 4px;
+  border-radius: 6px;
+}
+.images {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+  </style>
+</head>
+
+<body>
+  <h1>EarthBound Enemy Survivor</h1>
+
+  <div style="text-align: center; margin-top: 10px;">
+    <label>
+      <input type="checkbox" id="toggleEliminated" checked />
+      Hide eliminated enemies
+    </label>
+  </div>
+
+
+  <div class="grid">
+    <div class="enemy-card">
+      <img src="earthbound/ramblinevilmushroom.png" alt="Ramblin Evil Mushroom" class="enemy-img" />
+      <img src="earthbound/struttinevilmushroom1.png" alt="Struttin Evil Mushroom" class="enemy-img" />
+        <img src="earthbound/struttinevilmushroom2.png" alt="Struttin Evil Mushroom" class="enemy-img" />
+      <div><span class="emoji">🇦</span></div>
+      <div class="name">Ramblin' Evil Mushroom, Struttin' Evil Mushroom</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/mobilesprout.png" alt="Mobile Sprout" class="enemy-img" />
+      <img src="earthbound/toughmobilesprout.png" alt="Tough Mobile Sprout" class="enemy-img" />
+      <div><span class="emoji">🇧</span></div>
+      <div class="name">Mobile Sprout, Tough Mobile Sprout</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/newageretrohippie.png" alt="New Age Retro Hippie" class="enemy-img" />
+      <div><span class="emoji">🇨</span></div>
+      <div class="name">New Age Retro Hippie</div>
+    </div>
+
+    <div class="enemy-card" data-eliminated="true">
+      <img src="earthbound/unassuminglocalguy.png" alt="Unassuming Local Guy" class="enemy-img" />
+      <div><span class="emoji">🇩</span></div>
+      <div class="name">Unassuming Local Guy</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/lilufo.png" alt="Lil' UFO" class="enemy-img" />
+      <img src="earthbound/highclassufo.png" alt="High-class UFO" class="enemy-img" />
+      <div><span class="emoji">🟥</span></div>
+      <div class="name">Lil' UFO, High-class UFO</div>
+    </div>
+
+    <div class="enemy-card" data-eliminated="true">
+      <img src="earthbound/spinningrobo.png" alt="Spinning Robo" class="enemy-img" />
+      <img src="earthbound/whirlingrobo.png" alt="Whirling Robo" class="enemy-img" />
+      <img src="earthbound/hyperspinningrobo.png" alt="Hyper Spinning Robo" class="enemy-img" />
+      <div><span class="emoji">🇪</span></div>
+      <div class="name">Spinning Robo Series (Spinning Robo, Whirling Robo, Hyper Spinning Robo)</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/territorialoak.png" alt="Territorial Oak" class="enemy-img" />
+      <img src="earthbound/hostileelderoak.png" alt="Hostile Elder Oak" class="enemy-img" />
+      <div><span class="emoji">🇫</span></div>
+      <div class="name">Territorial Oak, Hostile Elder Oak</div>
+    </div>
+
+    <div class="enemy-card" data-eliminated="true">
+      <img src="earthbound/insanecultist.png" alt="Insane Cultist" class="enemy-img" />
+      <div><span class="emoji">🇬</span></div>
+      <div class="name">Insane Cultist</div>
+    </div>
+
+    <div class="enemy-card" data-eliminated="true">
+      <img src="earthbound/putridmoldyman.png" alt="Putrid Moldyman" class="enemy-img" />
+      <div><span class="emoji">🇭</span></div>
+      <div class="name">Putrid Moldyman</div>
+    </div>
+
+    <div class="enemy-card" data-eliminated="true">
+      <img src="earthbound/caveboy.png" alt="Cave Boy" class="enemy-img" />
+      <div><span class="emoji">🟧</span></div>
+      <div class="name">Cave Boy</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/madduck.png" alt="Mad Duck" class="enemy-img" />
+      <div><span class="emoji">🇮</span></div>
+      <div class="name">Mad Duck</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/worthlessprotoplasm.png" alt="Worthless Protoplasm" class="enemy-img" />
+      <div><span class="emoji">🇯</span></div>
+      <div class="name">Worthless Protoplasm</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/armoredfrog.png" alt="Armored Frog" class="enemy-img" />
+      <div><span class="emoji">🇰</span></div>
+      <div class="name">Armored Frog</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/plaincrocodile.png" alt="Plain Crocodile" class="enemy-img" />
+      <img src="earthbound/strongcrocodile.png" alt="Strong Crocodile" class="enemy-img" />
+      <img src="earthbound/hardcrocodile.png" alt="Hard Crocodile" class="enemy-img" />
+      <div><span class="emoji">🇱</span></div>
+      <div class="name">Plain Crocodile, Strong Crocodile, Hard Crocodile</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/foppy.png" alt="Foppy" class="enemy-img" />
+      <img src="earthbound/fobby.png" alt="Fobby" class="enemy-img" />
+      <div><span class="emoji">🟨</span></div>
+      <div class="name">Foppy, Fobby</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/ranboob.png" alt="Ranoob" class="enemy-img" />
+      <div><span class="emoji">🇲</span></div>
+      <div class="name">Ranboob</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/crestedbooka.png" alt="Crested Booka" class="enemy-img" />
+      <img src="earthbound/greatcrestedbooka.png" alt="Great Crested Booka" class="enemy-img" />
+      <div><span class="emoji">🇳</span></div>
+      <div class="name">Crested Booka, Great Crested Booka</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/cutelilufo.png" alt="Cute Lil' UFO" class="enemy-img" />
+      <img src="earthbound/beautifulufo.png" alt="Beautiful UFO" class="enemy-img" />
+      <div><span class="emoji">🇴</span></div>
+      <div class="name">Cute Lil' UFO, Beautiful UFO</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/skelpion.png" alt="Skelpion" class="enemy-img" />
+      <img src="earthbound/dreadskelpion.png" alt="Dread Skelpion" class="enemy-img" />
+      <div><span class="emoji">🇵</span></div>
+      <div class="name">Skelpion, Dread Skelpion</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/smilinsphere.png" alt="Smilin' Sphere" class="enemy-img" />
+      <img src="earthbound/uncontrollablesphere.png" alt="Uncontrollable Sphere" class="enemy-img" />
+      <div><span class="emoji">🟩</span></div>
+      <div class="name">Smilin' Sphere, Uncontrollable Sphere</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/crazedsign.png" alt="Crazed Sign" class="enemy-img" />
+      <div><span class="emoji">🇶</span></div>
+      <div class="name">Crazed Sign</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/madtaxi.png" alt="Mad Taxi" class="enemy-img" />
+      <div><span class="emoji">🇷</span></div>
+      <div class="name">Mad Taxi</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/nooseman.png" alt="Noose Man" class="enemy-img" />
+      <div><span class="emoji">🇸</span></div>
+      <div class="name">Noose Man</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/musica.png" alt="Musica" class="enemy-img" />
+      <div><span class="emoji">🇹</span></div>
+      <div class="name">Musica</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/mysticalrecord.png" alt="Mystical Record" class="enemy-img" />
+      <div><span class="emoji">🟪</span></div>
+      <div class="name">Mystical Record</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/scaldingcoffeecup.png" alt="Scalding Coffee Cup" class="enemy-img" />
+      <div><span class="emoji">🇺</span></div>
+      <div class="name">Scalding Coffee Cup</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/abstractart.png" alt="Abstract Art" class="enemy-img" />
+      <div><span class="emoji">🇻</span></div>
+      <div class="name">Abstract Art</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/dalisclock.png" alt="Dali's Clock" class="enemy-img" />
+      <div><span class="emoji">🇼</span></div>
+      <div class="name">Dali's Clock</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/enragedfireplug.png" alt="Enraged Fire Plug" class="enemy-img" />
+      <div><span class="emoji">🇽</span></div>
+      <div class="name">Enraged Fire Plug</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/robopump.png" alt="Robo-pump" class="enemy-img" />
+      <div><span class="emoji">🔳</span></div>
+      <div class="name">Robo-pump</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/conductingmenace.png" alt="Conducting Menace" class="enemy-img" />
+      <img src="earthbound/conductingspirit.png" alt="Conducting Spirit" class="enemy-img" />
+      <div><span class="emoji">🇾</span></div>
+      <div class="name">Conducting Menace, Conducting Spirit</div>
+    </div>
+
+    <div class="enemy-card">
+      <img src="earthbound/kissofdeath.png" alt="Kiss of Death" class="enemy-img" />
+      <img src="earthbound/frenchkissofdeath.png" alt="French Kiss of Death" class="enemy-img" />
+      <div><span class="emoji">🇿</span></div>
+      <div class="name">Kiss of Death, French Kiss of Death</div>
+    </div>
+    
+<div class="enemy-card">
+  <img src="earthbound/tangoo.png" alt="Tangoo" class="enemy-img" />
+  <div><span class="emoji">⏺️</span></div>
+  <div class="name">Tangoo</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/marauderoctobot.png" alt="Marauder Octobot" class="enemy-img" />
+  <img src="earthbound/militaryoctobot.png" alt="Military Octobot" class="enemy-img" />
+  <img src="earthbound/mechanicaloctobot.png" alt="Mechanical Octobot" class="enemy-img" />
+  <img src="earthbound/ultimateoctobot.png" alt="Ultimate Octobot" class="enemy-img" />
+  <div><span class="emoji">⏹️</span></div>
+  <div class="name">Octobot Series (Marauder Octobot, Military Octobot, Mechanical Octobot, Ultimate Octobot)</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/guardianhieroglyph.png" alt="Guardian Hieroglyph" class="enemy-img" />
+  <div><span class="emoji">🟫</span></div>
+  <div class="name">Guardian Hieroglyph</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/lethalasphieroglyph.png" alt="Lethal Asp Hieroglyph" class="enemy-img" />
+  <div><span class="emoji">1️⃣</span></div>
+  <div class="name">Lethal Asp Hieroglyph</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/demonicpetunia.png" alt="Demonic Petunia" class="enemy-img" />
+  <div><span class="emoji">2️⃣</span></div>
+  <div class="name">Demonic Petunia</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/manlyfish.png" alt="Manly Fish" class="enemy-img" />
+  <img src="earthbound/manlyfishsbrother.png" alt="Manly Fish's Brother" class="enemy-img" />
+  <div><span class="emoji">3️⃣</span></div>
+  <div class="name">Manly Fish, Manly Fish's Brother</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/woolyshambler.png" alt="Wooly Shambler" class="enemy-img" />
+  <img src="earthbound/wildnwoolyshambler.png" alt="Wild 'n Wooly Shambler" class="enemy-img" />
+  <div><span class="emoji">4️⃣</span></div>
+  <div class="name">Wooly Shambler, Wild 'n Wooly Shambler</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/atomicpowerrobot.png" alt="Atomic Power Robot" class="enemy-img" />
+  <img src="earthbound/nuclearreactorrobot.png" alt="Nuclear Reactor Robot" class="enemy-img" />
+  <div><span class="emoji">⬜</span></div>
+  <div class="name">Atomic Power Robot, Nuclear Reactor Robot</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/chomposaur.png" alt="Chomposaur" class="enemy-img" />
+  <div><span class="emoji">5️⃣</span></div>
+  <div class="name">Chomposaur</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/wetnosaur.png" alt="Wetnosaur" class="enemy-img" />
+  <div><span class="emoji">6️⃣</span></div>
+  <div class="name">Wetnosaur</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/egoorb.png" alt="Ego Orb" class="enemy-img" />
+  <div><span class="emoji">7️⃣</span></div>
+  <div class="name">Ego Orb</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/evilelemental.png" alt="Evil Elemental" class="enemy-img" />
+  <div><span class="emoji">8️⃣</span></div>
+  <div class="name">Evil Elemental</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/psychicpsycho.png" alt="Psychic Psycho" class="enemy-img" />
+  <img src="earthbound/majorpsychicpsycho.png" alt="Major Psychic Psycho" class="enemy-img" />
+  <div><span class="emoji">⚕️</span></div>
+  <div class="name">Psychic Psycho, Major Psychic Psycho</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/carefreebomb.png" alt="Care Free Bomb" class="enemy-img" />
+  <div><span class="emoji">9️⃣</span></div>
+  <div class="name">Care Free Bomb</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/electroswoosh.png" alt="Electro Swoosh" class="enemy-img" />
+  <div><span class="emoji">🔟</span></div>
+  <div class="name">Electro Swoosh</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/loadeddice.png" alt="Loaded Dice" class="enemy-img" />
+  <div><img src="eleven.webp" alt="Eleven" class="eleven"/></div>
+  <div class="name">Loaded Dice</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/mrmolecule.png" alt="Mr. Molecule" class="enemy-img" />
+  <div><span class="emoji">0️⃣</span></div>
+  <div class="name">Mr. Molecule</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/evileye.png" alt="Evil Eye" class="enemy-img" />
+  <div><span class="emoji">♀️</span></div>
+  <div class="name">Evil Eye</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/starmanjunior.png" alt="Starman Junior" class="enemy-img" />
+  <img src="earthbound/starman.png" alt="Starman" class="enemy-img" />
+  <img src="earthbound/starmansuper.png" alt="Starman Super" class="enemy-img" />
+  <img src="earthbound/starmandeluxe.png" alt="Starman Deluxe" class="enemy-img" />
+  <img src="earthbound/ghostofstarman.png" alt="Ghost of Starman" class="enemy-img" />
+  <img src="earthbound/finalstarman.png" alt="Final Starman" class="enemy-img" />
+  <div><span class="emoji">⬅️</span></div>
+  <div class="name">Starmen (Starman Junior/Starman, Starman Super, Starman Deluxe, Ghost of Starman, Final Starman)</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/frank.png" alt="Frank" class="enemy-img" />
+  <div><span class="emoji">➡️</span></div>
+  <div class="name">Frank</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/titanicant.png" alt="Titanic Ant" class="enemy-img" />
+  <img src="earthbound/giganticant.png" alt="Gigantic Ant" class="enemy-img" />
+  <div><span class="emoji">⬇️</span></div>
+  <div class="name">Titanic Ant, Gigantic Ant</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true" data-eliminated="true">
+  <img src="earthbound/captainstrong.png" alt="Captain Strong" class="enemy-img" />
+  <img src="earthbound/overzealouscop.png" alt="Over Zealous Cop" class="enemy-img" />
+  <div><span class="emoji">⬆️</span></div>
+  <div class="name">Captain Strong, Over Zealous Cop</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/mrcarpainter.png" alt="Mr. Carpainter" class="enemy-img" />
+  <div><span class="emoji">⚧</span></div>
+  <div class="name">Mr. Carpainter</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/mondomole.png" alt="Mondo Mole" class="enemy-img" />
+  <img src="earthbound/guardiandigger.png" alt="Guardian Digger" class="enemy-img" />
+  <div><span class="emoji">🔤</span></div>
+  <div class="name">Mondo Mole, Guardian Digger</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/masterbelch.png" alt="Master Belch" class="enemy-img" />
+  <img src="earthbound/masterbarf.png" alt="Master Barf" class="enemy-img" />
+  <img src="earthbound/bigpileofpuke.png" alt="Big Pile of Puke" class="enemy-img" />
+  <div><span class="emoji">🆓</span></div>
+  <div class="name">Master Belch/Master Barf, Big Pile of Puke</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/trillionagesprout.png" alt="Trillionage Sprout" class="enemy-img" />
+  <div><span class="emoji">🆒</span></div>
+  <div class="name">Trillionage Sprout</div>
+</div>
+
+<div class="enemy-card" data-eliminated="true">
+  <img src="earthbound/deptstorespook.png" alt="Dept. Store Spook" class="enemy-img" />
+  <img src="earthbound/lessermook.png" alt="Lesser Mook" class="enemy-img" />
+  <img src="earthbound/mooksenior.png" alt="Mook Senior" class="enemy-img" />
+  <div><span class="emoji">🆗</span></div>
+  <div class="name">Mooks (Dept. Store Spook, Lesser Mook, Mook Senior)</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/evilmanimani.png" alt="Mani-Mani Statue" class="enemy-img" />
+  <img src="earthbound/nesssnightmare.png" alt="Ness's Nightmare" class="enemy-img" />
+  <div><span class="emoji">✅</span></div>
+  <div class="name">Mani-Mani Statue, Ness's Nightmare</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/clumsyrobot.png" alt="Clumsy Robot" class="enemy-img" />
+  <div><span class="emoji">🆙</span></div>
+  <div class="name">Clumsy Robot</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/shrooom!.png" alt="Shrooom!" class="enemy-img" />
+  <div><span class="emoji">🏧</span></div>
+  <div class="name">Shrooom!</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/plagueratofdoom.png" alt="Plague Rat of Doom" class="enemy-img" />
+  <div><span class="emoji">🆖</span></div>
+  <div class="name">Plague Rat of Doom</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/thunderandstorm.png" alt="Thunder and Storm" class="enemy-img" />
+  <div><span class="emoji">🔄</span></div>
+  <div class="name">Thunder and Storm</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/kraken.png" alt="Kraken" class="enemy-img" />
+  <img src="earthbound/bionickraken.png" alt="Bionic Kraken" class="enemy-img" />
+  <div><span class="emoji">☮️</span></div>
+  <div class="name">Kraken, Bionic Kraken</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/electrospecter.png" alt="Electro Specter" class="enemy-img" />
+  <div><span class="emoji">💟</span></div>
+  <div class="name">Electro Specter</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/carbondog.png" alt="Carbon Dog" class="enemy-img" />
+  <img src="earthbound/diamonddog.png" alt="Diamond Dog" class="enemy-img" />
+  <div><span class="emoji">🆚</span></div>
+  <div class="name">Carbon Dog/Diamond Dog</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/heavilyarmedpokey.png" alt="Porky Minch" class="enemy-img" />
+  <div><span class="emoji">❇️</span></div>
+  <div class="name">Porky Minch</div>
+</div>
+
+<div class="enemy-card">
+  <img src="earthbound/giygas.png" alt="Giygas" class="enemy-img" />
+  <div><span class="emoji">🆘</span></div>
+  <div class="name">Giygas</div>
+</div>
+
+  </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    twemoji.parse(document.body, {
+      folder: 'svg',
+      ext: '.svg'
+    });
+  });
+
+  const checkbox = document.getElementById('toggleEliminated');
+  const enemyCards = document.querySelectorAll('.enemy-card');
+
+  function filterEnemies() {
+    const hideEliminated = checkbox.checked;
+    enemyCards.forEach(card => {
+      const eliminated = card.dataset.eliminated === 'true';
+      if (hideEliminated && eliminated) {
+        card.style.display = 'none';
+      } else {
+        card.style.display = '';
+      }
+    });
+  }
+
+  checkbox.addEventListener('change', filterEnemies);
+
+  window.addEventListener('DOMContentLoaded', filterEnemies);
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const eliminatedCards = document.querySelectorAll(".enemy-card[data-eliminated='true']");
+    
+    eliminatedCards.forEach(card => {
+      const eliminatedLabel = document.createElement("div");
+      eliminatedLabel.textContent = "ELIMINATED";
+      eliminatedLabel.style.color = "red";
+      eliminatedLabel.style.fontWeight = "bold";
+      eliminatedLabel.style.marginTop = "8px";
+      eliminatedLabel.style.fontSize = "16px";
+      eliminatedLabel.style.textTransform = "uppercase";
+      card.appendChild(eliminatedLabel);
+    });
+
+    const toggle = document.getElementById("toggleEliminated");
+    toggle.addEventListener("change", () => {
+      eliminatedCards.forEach(card => {
+        card.style.display = toggle.checked ? "none" : "block";
+      });
+    });
+
+    if (document.getElementById("toggleEliminated").checked) {
+      eliminatedCards.forEach(card => card.style.display = "none");
+    }
+  });
+</script>
+
+</body>
+</html>
