@@ -190,3 +190,106 @@ nav a:hover {
     color: var(--button-text-color);
     border-radius: 5px;
 }
+
+/* Nieuwe two-column layout voor filter sidebar + hoofdinformatie */
+.panel-grid {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.sidebar {
+    width: 260px;
+    min-width: 200px;
+    background: rgba(0,0,0,0.03);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.main-area {
+    flex: 1 1 auto;
+    min-width: 0; /* zorgt dat de tabel niet breekt buiten container */
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.05em;
+}
+
+.filter-group {
+    margin-bottom: 12px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.category-list {
+    max-height: 260px;
+    overflow: auto;
+    padding: 6px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.6);
+}
+
+/* Responsive: op small screens stapelen we de sidebar boven de inhoud */
+@media (max-width: 900px) {
+    .panel-grid {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .content { padding: 12px; }
+}
+
+/* Preview modal styles */
+.preview-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+.preview-modal {
+    background: var(--background-color);
+    color: var(--text-color);
+    width: 90%;
+    max-width: 720px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    padding: 16px;
+}
+.preview-header {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.preview-body { text-align: center; }
+.preview-body img, .preview-body video { max-width: 100%; height: auto; border-radius:6px; }
+.preview-body audio, .preview-body video { width: 100%; }
+.preview-controls { margin-top: 10px; display:flex; gap:8px; justify-content:center; }
+.preview-close { background: transparent; border: none; font-size: 1.2em; cursor: pointer; color: var(--text-color); }
+.preview-copy { background: var(--button-background-color); color: var(--button-text-color); border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.preview-notfound { color: #888; padding: 24px 0; }
+
+/* Visual cue for items that have a preview available */
+.has-preview {
+    color: #0a58ca; /* link blue */
+    text-decoration: underline;
+    cursor: pointer;
+}
+.has-preview:hover {
+    color: #084298;
+}
