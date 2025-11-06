@@ -103,22 +103,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const matchesVideo = (f) => /\.(mp4|webm)(?:$|[?#])/i.test(f);
             const mappingFiles = (typeof window.getAlertsFiles === 'function') ? window.getAlertsFiles(name) : (window.alertsLinks && window.alertsLinks[name]) || [];
             if (mappingFiles && mappingFiles.length > 0) {
-                // pick first available video (.webm preferred)
+                // Prefer video files (.webm/.mp4) but accept audio (.mp3/.ogg) as fallback
                 const prefer = ['.webm', '.mp4'];
+                const audioExts = ['.mp3', '.ogg'];
                 let chosen = null;
+                let chosenType = null;
                 for (const ext of prefer) {
                     const found = mappingFiles.find(f => f.toLowerCase().endsWith(ext));
-                    if (found) { chosen = found; break; }
+                    if (found) { chosen = found; chosenType = 'video'; break; }
                 }
-                if (!chosen) chosen = mappingFiles.find(f => matchesVideo(f));
+                if (!chosen) {
+                    for (const ext of audioExts) {
+                        const found = mappingFiles.find(f => f.toLowerCase().endsWith(ext));
+                        if (found) { chosen = found; chosenType = 'audio'; break; }
+                    }
+                }
 
                 if (chosen) {
                     body.innerHTML = '';
-                    const v = document.createElement('video');
-                    v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-                    // set src only when preview is opened to avoid preloading
-                    v.src = chosen;
-                    body.appendChild(v);
+                    if (chosenType === 'video') {
+                        const v = document.createElement('video');
+                        v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
+                        v.src = chosen;
+                        body.appendChild(v);
+                    } else {
+                        const a = document.createElement('audio');
+                        a.controls = true; a.preload = 'metadata';
+                        a.src = chosen;
+                        body.appendChild(a);
+                    }
                     return;
                 }
             }
@@ -165,6 +178,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
             }
+            // check audio extensions as fallback
+            for (const ext of ['.mp3', '.ogg']) {
+                const url = base + ext;
+                if (await tryHead(url)) {
+                    body.innerHTML = '';
+                    const a = document.createElement('audio');
+                    a.controls = true; a.preload = 'metadata';
+                    a.src = url;
+                    body.appendChild(a);
+                    return;
+                }
+            }
 
             body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
         })();
@@ -176,13 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = normalizeNameForFile(codeOrName);
         // 1) check generated mapping for video files
         try {
-            const matchesVideo = (f) => /\.(mp4|webm)(?:$|[?#])/i.test(f);
+            const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
             if (typeof window.getAlertsFiles === 'function') {
                 const files = window.getAlertsFiles(name) || [];
-                if (files.some(matchesVideo)) { cb(true); return; }
+                if (files.some(matchesMedia)) { cb(true); return; }
             } else if (typeof window.alertsLinks !== 'undefined') {
                 const files = window.alertsLinks[name] || [];
-                if (files.some(matchesVideo)) { cb(true); return; }
+                if (files.some(matchesMedia)) { cb(true); return; }
             }
         } catch (e) {
             // ignore and fall back
@@ -246,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const href = a.getAttribute('href') || '';
                 const lower = href.toLowerCase();
-                const isLocalVideo = lower.includes('/alerts/') || lower.match(/\.(mp4|webm)(?:$|[?#])/i);
+                const isLocalVideo = lower.includes('/alerts/') || lower.match(/\.(mp4|webm|mp3|ogg)(?:$|[?#])/i);
                 if (isLocalVideo) {
                     a.addEventListener('click', (ev) => {
                         ev.preventDefault();

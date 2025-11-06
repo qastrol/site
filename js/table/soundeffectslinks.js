@@ -239,6 +239,9 @@ const soundeffectsLinks = {
   ],
   "yup": [
     "soundeffects/yup.mp3"
+  ],
+  "ehet": [
+    "soundeffects/ehet.mp3"
   ]
 };
 window.soundeffectsLinks = soundeffectsLinks;

@@ -351,6 +351,21 @@ const alertsLinks = {
   ],
   "zorgwekkend": [
     "alerts/zorgwekkend.mp4"
+  ],
+  "200vissen": [
+    "alerts/200vissen.mp3"
+  ],
+  "150goals": [
+    "alerts/150goals.mp3"
+  ],
+  "chatleeg": [
+    "alerts/chatleeg.webm"
+  ],
+  "dislike": [
+    "alerts/dislike.mp4"
+  ],
+  "manydoors": [
+    "alerts/manydoors.mp4"
   ]
 };
 window.alertsLinks = alertsLinks;

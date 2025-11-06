@@ -46,7 +46,7 @@ const soundeffectsTable = [
 	{ name: "(scorn)", description: "SCORN - Jerma985", category: ["Meme", "Internet"] },
 	{ name: "(shock)", description: "Wanneer iets schokkends in SpongeBob gebeurt", category: ["TV"] },
 	{ name: "(sinisterlaugh)", description: "Sinister lachen geluid", category: ["Meme"] },
-	{ name: "(slimstemens)", description: "Het bumpergeluid van D Slimste Mens (ter Wereld)", category: ["TV"] },
+	{ name: "(slimstemens)", description: "Het bumpergeluid van De Slimste Mens (ter Wereld)", category: ["TV"] },
 	{ name: "(sus)", description: "Het geluid wanneer je je rol ziet in Among Us. Sus", category: ["Gaming"] },
 	{ name: "(taxonweb)", description: "Taxonweb.be", category: ["TV"] },
 	{ name: "(tickle)", description: "Een tekenfilm kietel geluid", category: ["Meme", "TV"] },
@@ -80,5 +80,6 @@ const soundeffectsTable = [
 	{ name: "(internet)", description: "Het geluid van het opstarten van inbelinternet", category: ["Computer"] },
 	{ name: "(eendje)", description: "kwak", category: ["Natuur"] },
 	{ name: "(fortnite)", description: "Je gaat neer in Fortnite", category: ["Gaming"] },
-	{ name: "(illuminati)", description: "❔", category: ["Meme"] }
+	{ name: "(illuminati)", description: "❔", category: ["Meme"] },
+	{ name: "(ehet)", description: "De Eigen Huis en Tuin jingle", category: ["TV"] }
 ];

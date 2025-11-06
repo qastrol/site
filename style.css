@@ -151,45 +151,105 @@ button:hover {
     background-color: var(--button-hover-background-color);
 }
 
-/* Styling voor de kopjes en de links in de navigatie */
-nav {
+/* Site header / navigatie */
+.site-header {
     background-color: var(--nav-background-color);
     color: var(--nav-text-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    padding: 0 20px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
-/* Styling voor de kopjes en de links in de navigatie */
-nav ul {
-    list-style-type: none;
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 56px;
+}
+
+.site-branding .site-title {
+    color: var(--nav-text-color);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.35rem;
+}
+
+.site-nav ul {
+    list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
+    gap: 18px;
     align-items: center;
-    gap: 20px;
 }
 
-nav a {
+.site-nav a,
+.site-nav button {
     color: var(--nav-text-color);
     text-decoration: none;
-    font-size: 1.1em;
-    padding: 10px 15px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1rem;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-nav a:hover {
+.site-nav a:hover,
+.site-nav button:hover {
     background-color: var(--button-hover-background-color);
     color: var(--button-text-color);
-    border-radius: 5px;
+    border-radius: 6px;
 }
+
+/* Hamburger button (hidden on large screens) */
+.hamburger {
+    display: none;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    background: var(--nav-text-color);
+    margin: 5px 0;
+    border-radius: 2px;
+    width: 24px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Mobile: stack nav under header and show hamburger */
+@media (max-width: 768px) {
+    .nav-container { padding: 0 12px; }
+    .site-nav ul {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        background-color: var(--nav-background-color);
+        flex-direction: column;
+        gap: 0;
+        padding: 8px 0;
+        z-index: 1000;
+    }
+    .site-nav ul.show { display: flex; }
+    .site-nav li { padding: 6px 16px; }
+    .hamburger { display: block; }
+}
+
+/* Ensure page content starts below fixed header */
+.content { padding-top: 72px; }
 
 /* Nieuwe two-column layout voor filter sidebar + hoofdinformatie */
 .panel-grid {

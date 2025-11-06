@@ -1,26 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
     const navContainer = document.getElementById("navbar");
 
-    // Navigatie HTML direct insluiten
-    const navHTML = `
-        <nav>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
-                ☰
-            </button>
-            <strong>Qastrol</strong>
-            <ul id="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="noobpoints.html">Noob-Points!</a></li>
-                <li><a href="tts.html">TTS-stemmen</a></li>
-                <li><a href="soundeffects.html">Sound Effects</a></li>
-                <li>
-                    <button id="mode-toggle" title="Zet dark mode aan/uit">
-                        <i id="mode-icon" class="fas fa-sun"></i>
+        // Navigatie HTML direct insluiten (brand links, navigatie rechts)
+        const navHTML = `
+            <header class="site-header">
+                <div class="nav-container">
+                    <div class="site-branding">
+                        <a href="index.html" class="site-title">Qastrol</a>
+                    </div>
+                    <nav class="site-nav" aria-label="Hoofd navigatie">
+                        <ul id="nav-menu">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="noobpoints.html">Noob-Points!</a></li>
+                            <li><a href="tts.html">TTS-stemmen</a></li>
+                            <li><a href="soundeffects.html">Sound Effects</a></li>
+                            <li>
+                                <button id="mode-toggle" title="Zet dark mode aan/uit">
+                                    <i id="mode-icon" class="fas fa-sun"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </button>
-                </li>
-            </ul>
-        </nav>
-    `;
+                </div>
+            </header>
+        `;
 
     // Voeg de navigatie HTML toe aan de container
     navContainer.innerHTML = navHTML;

@@ -135,22 +135,33 @@ function sortTable(n) {
             try {
                 const mappingFiles = (typeof window.getAlertsFiles === 'function') ? window.getAlertsFiles(name) : (window.alertsLinks && window.alertsLinks[name]) || [];
                 if (mappingFiles && mappingFiles.length > 0) {
-                    // Only consider video files for alerts previews (.mp4, .webm).
+                    // Prefer video files for alerts previews (.mp4, .webm), but
+                    // also accept audio files (.mp3, .ogg) if present in the mapping.
                     const videoExts = ['.webm', '.mp4'];
+                    const audioExts = ['.mp3', '.ogg'];
                     let chosen = null;
+                    let chosenType = null;
                     for (const f of mappingFiles) {
                         const ext = (f.split('.').pop() || '').toLowerCase();
                         const dotExt = '.' + ext;
-                        if (videoExts.includes(dotExt)) { chosen = { url: f }; break; }
+                        if (videoExts.includes(dotExt)) { chosen = f; chosenType = 'video'; break; }
+                        if (audioExts.includes(dotExt) && !chosen) { chosen = f; chosenType = 'audio'; }
                     }
 
                     if (chosen) {
                         body.innerHTML = '';
-                        const v = document.createElement('video');
-                        v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-                        // set src only now to avoid preloading
-                        v.src = chosen.url;
-                        body.appendChild(v);
+                        if (chosenType === 'video') {
+                            const v = document.createElement('video');
+                            v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
+                            // set src only now to avoid preloading
+                            v.src = chosen;
+                            body.appendChild(v);
+                        } else {
+                            const a = document.createElement('audio');
+                            a.controls = true; a.preload = 'metadata';
+                            a.src = chosen;
+                            body.appendChild(a);
+                        }
                         return;
                     }
                 }
@@ -204,14 +215,15 @@ function sortTable(n) {
 
             // If a generated mapping is available, consult it first to avoid any network checks.
             try {
-                // Prefer the generated mapping but only consider video files (.mp4/.webm)
-                const matchesVideo = (f) => /\.(mp4|webm)(?:$|[?#])/i.test(f);
+                // Prefer the generated mapping and accept video (.mp4/.webm)
+                // and audio (.mp3/.ogg) as valid preview files.
+                const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
                 if (typeof window.getAlertsFiles === 'function') {
                     const files = window.getAlertsFiles(name) || [];
-                    if (files.some(matchesVideo)) { cb(true); return; }
+                    if (files.some(matchesMedia)) { cb(true); return; }
                 } else if (typeof window.alertsLinks !== 'undefined') {
                     const files = window.alertsLinks[name] || [];
-                    if (files.some(matchesVideo)) { cb(true); return; }
+                    if (files.some(matchesMedia)) { cb(true); return; }
                 }
             } catch (e) {
                 // ignore and fall back to HTTP probing
@@ -219,8 +231,14 @@ function sortTable(n) {
 
             // sequence: video-only (HTTP-based probing) — only check .webm/.mp4
             (async () => {
+                // Check video first, then audio. We only probe a small set of
+                // extensions to avoid extra network work.
                 const videoExts = ['.webm', '.mp4'];
                 for (const e of videoExts) {
+                    if (await _checkUrlExists(base + e)) { cb(true); return; }
+                }
+                const audioExts = ['.mp3', '.ogg'];
+                for (const e of audioExts) {
                     if (await _checkUrlExists(base + e)) { cb(true); return; }
                 }
                 // no local video found: no preview available
@@ -250,7 +268,7 @@ function sortTable(n) {
                     const href = a.getAttribute('href') || '';
                     const lower = href.toLowerCase();
                     // If the link targets the alerts folder or a media file extension, intercept it
-                    const isLocalAlert = lower.includes('/alerts/') || lower.match(/\.(mp4|webm)(?:$|[?#])/i);
+                    const isLocalAlert = lower.includes('/alerts/') || lower.match(/\.(mp4|webm|mp3|ogg)(?:$|[?#])/i);
                     if (isLocalAlert) {
                         a.addEventListener('click', (ev) => {
                             ev.preventDefault();
