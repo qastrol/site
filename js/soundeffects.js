@@ -345,6 +345,19 @@ function applySort() {
 
     // Helper to check if a preview file exists (image -> audio -> video)
     function previewExists(folder, displayName, cb) {
+        // Prefer the pre-generated mapping when available to avoid creating
+        // media elements (which can trigger network requests). The mapping is
+        // expected to be written to `window.soundeffectsLinks` by the generator.
+        try {
+            const key = normalizeNameForFile(displayName);
+            if (window && window.soundeffectsLinks && Array.isArray(window.soundeffectsLinks[key])) {
+                cb(window.soundeffectsLinks[key].length > 0);
+                return;
+            }
+        } catch (e) {
+            // fall back to probing below
+        }
+
         const name = normalizeNameForFile(displayName);
         const base = `${folder}/${name}`;
         const img = new Image();
@@ -372,11 +385,26 @@ function applySort() {
             if (!first) return;
             const display = first.innerText.trim();
             first.title = 'Klik voor voorbeeld';
+            // Use generated mapping if available to avoid probing/loading media files
+            try {
+                const key = normalizeNameForFile(display);
+                if (window && window.soundeffectsLinks && Array.isArray(window.soundeffectsLinks[key]) && window.soundeffectsLinks[key].length > 0) {
+                    // mark as having a preview; do not create audio elements yet
+                    first.classList.add('has-preview');
+                    first.addEventListener('click', () => showPreview('soundeffects', display));
+                    return;
+                }
+            } catch (e) {
+                // fall back to probing below
+            }
+
+            // Fallback: attach click handler and probe (may trigger small metadata requests)
             first.addEventListener('click', () => showPreview('soundeffects', display));
             previewExists('soundeffects', display, (exists) => {
                 if (exists) first.classList.add('has-preview');
             });
         });
+
         // Also intercept anchors inside the table that point to local media so the
         // browser doesn't navigate / preload them. Instead open the preview overlay.
         const anchors = document.querySelectorAll('#soundEffectsTable a[href]');
