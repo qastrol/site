@@ -314,36 +314,38 @@ function applySort() {
 
         const base = `${folder}/${name}`;
 
-        function tryImage(exts, i) {
-            if (i >= exts.length) return tryAudio(['.mp3','.ogg','.wav'], 0);
-            const img = new Image();
-            img.onload = () => { body.innerHTML = ''; body.appendChild(img); };
-            img.onerror = () => tryImage(exts, i+1);
-            img.src = base + exts[i];
+        // If we have an explicit mapping, use it directly to avoid probing
+        try {
+            const key = normalizeNameForFile(displayName);
+            if (window && window.soundeffectsLinks && Array.isArray(window.soundeffectsLinks[key]) && window.soundeffectsLinks[key].length > 0) {
+                body.innerHTML = '';
+                const audioPath = window.soundeffectsLinks[key][0];
+                const a = document.createElement('audio');
+                a.controls = true; a.preload = 'metadata';
+                a.src = audioPath;
+                body.appendChild(a);
+                return;
+            }
+        } catch (e) {
+            // fall back to probing
         }
 
-        function tryAudio(exts, i) {
-            if (i >= exts.length) return tryVideo(['.webm','.mp4','.ogg'], 0);
+        // Only try audio extensions (.mp3, .ogg). Other extensions are ignored.
+        const exts = ['.mp3', '.ogg'];
+        let i = 0;
+        function tryAudioExt() {
+            if (i >= exts.length) { body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>'; return; }
             const a = document.createElement('audio');
             a.controls = true; a.preload = 'metadata';
             a.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(a); };
-            a.onerror = () => tryAudio(exts, i+1);
+            a.onerror = () => { i++; tryAudioExt(); };
             a.src = base + exts[i];
         }
 
-        function tryVideo(exts, i) {
-            if (i >= exts.length) { body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>'; return; }
-            const v = document.createElement('video');
-            v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-            v.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(v); };
-            v.onerror = () => tryVideo(exts, i+1);
-            v.src = base + exts[i];
-        }
-
-        tryImage(['.png','.jpg','.jpeg','.gif','.webp'], 0);
+        tryAudioExt();
     }
 
-    // Helper to check if a preview file exists (image -> audio -> video)
+    // Helper to check if a preview file exists (only audio .mp3/.ogg)
     function previewExists(folder, displayName, cb) {
         // Prefer the pre-generated mapping when available to avoid creating
         // media elements (which can trigger network requests). The mapping is
@@ -358,23 +360,20 @@ function applySort() {
             // fall back to probing below
         }
 
+        // Probe only audio extensions (.mp3, .ogg).
         const name = normalizeNameForFile(displayName);
         const base = `${folder}/${name}`;
-        const img = new Image();
+        const exts = ['.mp3', '.ogg'];
+        let idx = 0;
         let done = false;
-        img.onload = () => { if (!done) { done = true; cb(true); } };
-        img.onerror = () => {
+        function tryNext() {
+            if (idx >= exts.length) { if (!done) { done = true; cb(false); } return; }
             const a = document.createElement('audio');
             a.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
-            a.onerror = () => {
-                const v = document.createElement('video');
-                v.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
-                v.onerror = () => { if (!done) { done = true; cb(false); } };
-                v.src = base + '.mp4';
-            };
-            a.src = base + '.mp3';
-        };
-        img.src = base + '.png';
+            a.onerror = () => { idx++; tryNext(); };
+            a.src = base + exts[idx];
+        }
+        tryNext();
     }
 
     // Attach preview handlers to first-column names and mark those with previews

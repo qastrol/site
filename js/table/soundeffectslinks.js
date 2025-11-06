@@ -236,6 +236,9 @@ const soundeffectsLinks = {
   ],
   "zombie": [
     "soundeffects/zombie.mp3"
+  ],
+  "yup": [
+    "soundeffects/yup.mp3"
   ]
 };
 window.soundeffectsLinks = soundeffectsLinks;
