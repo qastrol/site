@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <strong>Qastrol</strong>
             <ul id="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="alerts.html">Play it Forward-alerts</a></li>
                 <li><a href="noobpoints.html">Noob-Points!</a></li>
                 <li><a href="tts.html">TTS-stemmen</a></li>
                 <li><a href="soundeffects.html">Sound Effects</a></li>
