@@ -135,53 +135,23 @@ function sortTable(n) {
             try {
                 const mappingFiles = (typeof window.getAlertsFiles === 'function') ? window.getAlertsFiles(name) : (window.alertsLinks && window.alertsLinks[name]) || [];
                 if (mappingFiles && mappingFiles.length > 0) {
-                    // prefer image -> audio -> video
+                    // Only consider video files for alerts previews (.mp4, .webm).
                     const videoExts = ['.webm', '.mp4'];
-
                     let chosen = null;
                     for (const f of mappingFiles) {
                         const ext = (f.split('.').pop() || '').toLowerCase();
                         const dotExt = '.' + ext;
-                        if (imgExts.includes(dotExt)) { chosen = { type: 'image', url: f }; break; }
-                    }
-                    if (!chosen) {
-                        for (const f of mappingFiles) {
-                            const ext = (f.split('.').pop() || '').toLowerCase();
-                            const dotExt = '.' + ext;
-                            if (audioExts.includes(dotExt)) { chosen = { type: 'audio', url: f }; break; }
-                        }
-                    }
-                    if (!chosen) {
-                        for (const f of mappingFiles) {
-                            const ext = (f.split('.').pop() || '').toLowerCase();
-                            const dotExt = '.' + ext;
-                            if (videoExts.includes(dotExt)) { chosen = { type: 'video', url: f }; break; }
-                        }
+                        if (videoExts.includes(dotExt)) { chosen = { url: f }; break; }
                     }
 
                     if (chosen) {
                         body.innerHTML = '';
-                        if (chosen.type === 'image') {
-                            const img = new Image();
-                            img.alt = displayName;
-                            img.src = chosen.url; // load only now
-                            body.appendChild(img);
-                            return;
-                        }
-                        if (chosen.type === 'audio') {
-                            const a = document.createElement('audio');
-                            a.controls = true; a.preload = 'metadata';
-                            a.src = chosen.url;
-                            body.appendChild(a);
-                            return;
-                        }
-                        if (chosen.type === 'video') {
-                            const v = document.createElement('video');
-                            v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-                            v.src = chosen.url;
-                            body.appendChild(v);
-                            return;
-                        }
+                        const v = document.createElement('video');
+                        v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
+                        // set src only now to avoid preloading
+                        v.src = chosen.url;
+                        body.appendChild(v);
+                        return;
                     }
                 }
             } catch (e) {
@@ -192,23 +162,6 @@ function sortTable(n) {
             // trigger small network checks, used only when mapping is not available)
             const base = `${folder}/${name}`;
 
-            function tryImage(exts, i) {
-                if (i >= exts.length) return tryAudio(['.mp3','.ogg','.wav'], 0);
-                const img = new Image();
-                img.onload = () => { body.innerHTML = ''; body.appendChild(img); };
-                img.onerror = () => tryImage(exts, i+1);
-                img.src = base + exts[i];
-            }
-
-            function tryAudio(exts, i) {
-                if (i >= exts.length) return tryVideo(['.webm','.mp4','.ogg'], 0);
-                const a = document.createElement('audio');
-                a.controls = true; a.preload = 'metadata';
-                a.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(a); };
-                a.onerror = () => tryAudio(exts, i+1);
-                a.src = base + exts[i];
-            }
-
             function tryVideo(exts, i) {
                 if (i >= exts.length) { body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>'; return; }
                 const v = document.createElement('video');
@@ -218,7 +171,6 @@ function sortTable(n) {
                 v.src = base + exts[i];
             }
 
-            tryImage(['.png','.jpg','.jpeg','.gif','.webp'], 0);
         }
 
         // Helper to check if a preview file exists (image -> audio -> video)
@@ -252,33 +204,26 @@ function sortTable(n) {
 
             // If a generated mapping is available, consult it first to avoid any network checks.
             try {
-                if (typeof window.hasAlertPreview === 'function') {
-                    if (window.hasAlertPreview(name)) { cb(true); return; }
+                // Prefer the generated mapping but only consider video files (.mp4/.webm)
+                const matchesVideo = (f) => /\.(mp4|webm)(?:$|[?#])/i.test(f);
+                if (typeof window.getAlertsFiles === 'function') {
+                    const files = window.getAlertsFiles(name) || [];
+                    if (files.some(matchesVideo)) { cb(true); return; }
                 } else if (typeof window.alertsLinks !== 'undefined') {
-                    if (window.alertsLinks[name] && window.alertsLinks[name].length > 0) { cb(true); return; }
+                    const files = window.alertsLinks[name] || [];
+                    if (files.some(matchesVideo)) { cb(true); return; }
                 }
             } catch (e) {
                 // ignore and fall back to HTTP probing
             }
 
-            // sequence: images -> audio -> video (HTTP-based probing)
+            // sequence: video-only (HTTP-based probing) — only check .webm/.mp4
             (async () => {
-                const imgExts = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
-                for (const e of imgExts) {
-                    if (await _checkUrlExists(base + e)) { cb(true); return; }
-                }
-
-                const audioExts = ['.mp3', '.ogg', '.wav'];
-                for (const e of audioExts) {
-                    if (await _checkUrlExists(base + e)) { cb(true); return; }
-                }
-
-                const videoExts = ['.webm', '.mp4', '.ogg'];
+                const videoExts = ['.webm', '.mp4'];
                 for (const e of videoExts) {
                     if (await _checkUrlExists(base + e)) { cb(true); return; }
                 }
-
-                // no local media found: no preview available
+                // no local video found: no preview available
                 cb(false);
             })();
         }
@@ -299,13 +244,13 @@ function sortTable(n) {
 
             // Intercept any anchor that points to a local alerts media file or folder
             // so the media isn't loaded until the preview overlay is requested.
-            const anchors = document.querySelectorAll('#alertTable a[href]');
+                    const anchors = document.querySelectorAll('#alertTable a[href]');
             anchors.forEach(a => {
                 try {
                     const href = a.getAttribute('href') || '';
                     const lower = href.toLowerCase();
                     // If the link targets the alerts folder or a media file extension, intercept it
-                    const isLocalAlert = lower.includes('/alerts/') || lower.match(/\.(mp4|webm|mp3|ogg|wav|png|jpg|jpeg|gif|webp)(?:$|[?#])/i);
+                    const isLocalAlert = lower.includes('/alerts/') || lower.match(/\.(mp4|webm)(?:$|[?#])/i);
                     if (isLocalAlert) {
                         a.addEventListener('click', (ev) => {
                             ev.preventDefault();

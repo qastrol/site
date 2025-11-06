@@ -97,90 +97,126 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        const base = `${folder}/${name}`;
+        // Prefer generated mapping (alertsLinks) which lists files present in /alerts/
+        // This avoids creating elements which could trigger downloads at page load.
+        try {
+            const matchesVideo = (f) => /\.(mp4|webm)(?:$|[?#])/i.test(f);
+            const mappingFiles = (typeof window.getAlertsFiles === 'function') ? window.getAlertsFiles(name) : (window.alertsLinks && window.alertsLinks[name]) || [];
+            if (mappingFiles && mappingFiles.length > 0) {
+                // pick first available video (.webm preferred)
+                const prefer = ['.webm', '.mp4'];
+                let chosen = null;
+                for (const ext of prefer) {
+                    const found = mappingFiles.find(f => f.toLowerCase().endsWith(ext));
+                    if (found) { chosen = found; break; }
+                }
+                if (!chosen) chosen = mappingFiles.find(f => matchesVideo(f));
 
-        function tryImage(exts, i) {
-            if (i >= exts.length) return tryAudio(['.mp3','.ogg','.wav'], 0);
-            const img = new Image();
-            img.onload = () => { body.innerHTML = ''; body.appendChild(img); };
-            img.onerror = () => tryImage(exts, i+1);
-            img.src = base + exts[i];
-        }
-
-        function tryAudio(exts, i) {
-            if (i >= exts.length) return tryVideo(['.webm','.mp4','.ogg'], 0);
-            const a = document.createElement('audio');
-            a.controls = true; a.preload = 'metadata';
-            a.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(a); };
-            a.onerror = () => tryAudio(exts, i+1);
-            a.src = base + exts[i];
-        }
-
-        function tryVideo(exts, i) {
-            if (i >= exts.length) {
-                // fallback: check for iframe mapping
-                const iframes = (typeof window.noobpointsIframes !== 'undefined') ? window.noobpointsIframes : null;
-                const mapped = iframes && (iframes[name] || iframes[code]);
-                if (mapped) {
-                    body.innerHTML = mapped;
+                if (chosen) {
+                    body.innerHTML = '';
+                    const v = document.createElement('video');
+                    v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
+                    // set src only when preview is opened to avoid preloading
+                    v.src = chosen;
+                    body.appendChild(v);
                     return;
                 }
-                body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
-                return;
             }
-            const v = document.createElement('video');
-            v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-            v.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(v); };
-            v.onerror = () => tryVideo(exts, i+1);
-            v.src = base + exts[i];
+        } catch (e) {
+            // continue to fallback behavior if mapping not available
         }
 
-        tryImage(['.png','.jpg','.jpeg','.gif','.webp'], 0);
+        // fallback: if no mapping present, try iframe mapping (youtube/twitch) first
+        const iframes = (typeof window.noobpointsIframes !== 'undefined') ? window.noobpointsIframes : null;
+        const mapped = iframes && (iframes[name] || iframes[code]);
+        if (mapped) {
+            body.innerHTML = mapped;
+            return;
+        }
+
+        // final fallback: perform a lightweight HTTP check for video existence and then create element
+        const base = `${folder}/${name}`;
+        (async () => {
+            const tryHead = async (url) => {
+                try {
+                    const r = await fetch(url, { method: 'HEAD' });
+                    if (r && r.ok) return true;
+                    if (r && (r.status === 405 || r.status === 501)) {
+                        const rr = await fetch(url, { method: 'GET', headers: { 'Range': 'bytes=0-0' } });
+                        return Boolean(rr && rr.ok);
+                    }
+                } catch (err) {
+                    try {
+                        const rr = await fetch(url, { method: 'GET', headers: { 'Range': 'bytes=0-0' } });
+                        return Boolean(rr && rr.ok);
+                    } catch (e) { return false; }
+                }
+                return false;
+            };
+
+            for (const ext of ['.webm', '.mp4']) {
+                const url = base + ext;
+                if (await tryHead(url)) {
+                    body.innerHTML = '';
+                    const v = document.createElement('video');
+                    v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
+                    v.src = url;
+                    body.appendChild(v);
+                    return;
+                }
+            }
+
+            body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
+        })();
     }
 
-    // Helper to check if a preview file exists (image -> audio -> video)
+    // Helper to check if a preview video exists (only .webm/.mp4 for redeems)
+    // Prefer the generated mapping to avoid network probes. Calls cb(true/false).
     function previewExists(folder, codeOrName, cb) {
         const name = normalizeNameForFile(codeOrName);
-        const base = `${folder}/${name}`;
-        let done = false;
-
-        // try images first
-        const imgExts = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
-        const tryImage = (i) => {
-            if (i >= imgExts.length) return tryAudio(0);
-            const img = new Image();
-            img.onload = () => { if (!done) { done = true; cb(true); } };
-            img.onerror = () => tryImage(i+1);
-            img.src = base + imgExts[i];
-        };
-
-        // then audio
-        const audioExts = ['.mp3', '.ogg', '.wav'];
-        const tryAudio = (i) => {
-            if (i >= audioExts.length) return tryVideo(0);
-            const a = document.createElement('audio');
-            a.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
-            a.onerror = () => tryAudio(i+1);
-            a.src = base + audioExts[i];
-        };
-
-        // then video (check several extensions)
-        const videoExts = ['.webm', '.mp4', '.ogg'];
-        const tryVideo = (i) => {
-            if (i >= videoExts.length) {
-                // finally, check iframe mapping
-                const iframes = (typeof window.noobpointsIframes !== 'undefined') ? window.noobpointsIframes : null;
-                const mapped = iframes && (iframes[name] || iframes[codeOrName]);
-                if (!done) { done = true; cb(Boolean(mapped)); }
-                return;
+        // 1) check generated mapping for video files
+        try {
+            const matchesVideo = (f) => /\.(mp4|webm)(?:$|[?#])/i.test(f);
+            if (typeof window.getAlertsFiles === 'function') {
+                const files = window.getAlertsFiles(name) || [];
+                if (files.some(matchesVideo)) { cb(true); return; }
+            } else if (typeof window.alertsLinks !== 'undefined') {
+                const files = window.alertsLinks[name] || [];
+                if (files.some(matchesVideo)) { cb(true); return; }
             }
-            const v = document.createElement('video');
-            v.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
-            v.onerror = () => tryVideo(i+1);
-            v.src = base + videoExts[i];
-        };
+        } catch (e) {
+            // ignore and fall back
+        }
 
-        tryImage(0);
+        // 2) fallback: lightweight HTTP HEAD / Range check for video files
+        (async () => {
+            const base = `${folder}/${name}`;
+            const tryHead = async (url) => {
+                try {
+                    const r = await fetch(url, { method: 'HEAD' });
+                    if (r && r.ok) return true;
+                    if (r && (r.status === 405 || r.status === 501)) {
+                        const rr = await fetch(url, { method: 'GET', headers: { 'Range': 'bytes=0-0' } });
+                        return Boolean(rr && rr.ok);
+                    }
+                } catch (err) {
+                    try {
+                        const rr = await fetch(url, { method: 'GET', headers: { 'Range': 'bytes=0-0' } });
+                        return Boolean(rr && rr.ok);
+                    } catch (e) { return false; }
+                }
+                return false;
+            };
+
+            for (const ext of ['.webm', '.mp4']) {
+                if (await tryHead(base + ext)) { cb(true); return; }
+            }
+
+            // 3) finally check iframe mapping as last resort
+            const iframes = (typeof window.noobpointsIframes !== 'undefined') ? window.noobpointsIframes : null;
+            const mapped = iframes && (iframes[name] || iframes[codeOrName]);
+            cb(Boolean(mapped));
+        })();
     }
 
     // Attach preview handlers to first-column names and mark those with previews
@@ -201,6 +237,26 @@ document.addEventListener('DOMContentLoaded', () => {
             previewExists('alerts', code || display, (exists) => {
                 if (exists) newFirst.classList.add('has-preview');
             });
+        });
+
+        // Intercept anchors inside the table that point to alert videos so they
+        // don't trigger navigation or downloads; open preview overlay instead.
+        const anchors = document.querySelectorAll('#redeemTable a[href]');
+        anchors.forEach(a => {
+            try {
+                const href = a.getAttribute('href') || '';
+                const lower = href.toLowerCase();
+                const isLocalVideo = lower.includes('/alerts/') || lower.match(/\.(mp4|webm)(?:$|[?#])/i);
+                if (isLocalVideo) {
+                    a.addEventListener('click', (ev) => {
+                        ev.preventDefault();
+                        const filename = href.split('/').pop().split(/[?#]/)[0] || a.innerText.trim();
+                        const name = filename.replace(/\.[^/.]+$/, '');
+                        showPreview('alerts', name, name);
+                    });
+                    a.rel = (a.rel || '') + ' noopener';
+                }
+            } catch (e) { /* ignore */ }
         });
     }
 
