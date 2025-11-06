@@ -377,4 +377,25 @@ function applySort() {
                 if (exists) first.classList.add('has-preview');
             });
         });
+        // Also intercept anchors inside the table that point to local media so the
+        // browser doesn't navigate / preload them. Instead open the preview overlay.
+        const anchors = document.querySelectorAll('#soundEffectsTable a[href]');
+        anchors.forEach(a => {
+            try {
+                const href = a.getAttribute('href') || '';
+                const lower = href.toLowerCase();
+                const isLocalMedia = lower.includes('/soundeffects/') || lower.match(/\.(mp4|webm|mp3|ogg|wav|png|jpg|jpeg|gif|webp)(?:$|[?#])/i);
+                if (isLocalMedia) {
+                    a.addEventListener('click', (ev) => {
+                        ev.preventDefault();
+                        const filename = href.split('/').pop().split(/[?#]/)[0] || a.innerText.trim();
+                        const name = filename.replace(/\.[^/.]+$/, '');
+                        showPreview('soundeffects', name);
+                    });
+                    a.rel = (a.rel || '') + ' noopener';
+                }
+            } catch (e) {
+                // ignore
+            }
+        });
     }
