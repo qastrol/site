@@ -356,6 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // initial setup: build filters and render
     buildCategoryFilters();
     renderNoobPointsTable(dataSource);
+    // expose total redeems count for the index page (stored as a simple value)
+    try { localStorage.setItem('redeemsCount', String(dataSource.length)); } catch (e) { /* noop */ }
 
     // applySort: expose a global function so the inline onchange in the select works
     function applySortInternal() {
