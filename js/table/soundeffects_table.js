@@ -81,5 +81,6 @@ const soundeffectsTable = [
 	{ name: "(eendje)", description: "kwak", category: ["Natuur"] },
 	{ name: "(fortnite)", description: "Je gaat neer in Fortnite", category: ["Gaming"] },
 	{ name: "(illuminati)", description: "❔", category: ["Meme"] },
-	{ name: "(ehet)", description: "De Eigen Huis en Tuin jingle", category: ["TV"] }
+	{ name: "(ehet)", description: "De Eigen Huis en Tuin jingle", category: ["TV"] },
+	{ name: "(boos)", description: "Boze meme schreeuw", category: ["Meme"] }
 ];
