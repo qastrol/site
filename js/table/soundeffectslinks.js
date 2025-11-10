@@ -242,6 +242,9 @@ const soundeffectsLinks = {
   ],
   "ehet": [
     "soundeffects/ehet.mp3"
+  ],
+  "boos": [
+    "soundeffects/boos.mp3"
   ]
 };
 window.soundeffectsLinks = soundeffectsLinks;

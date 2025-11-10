@@ -121,7 +121,7 @@ function renderTtsTable() {
     const normalCheckbox = document.querySelector('#filterNormal');
     const aiChecked = aiCheckbox ? aiCheckbox.checked : false;
     const normalChecked = normalCheckbox ? normalCheckbox.checked : false;
-        const checkedLangInputs = Array.from(document.querySelectorAll('#categoryFilters input[data-type="lang"]:checked'));
+    const checkedLangInputs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked'));
         const checkedLangs = checkedLangInputs.map(cb => cb.value);
 
         // Loop door alle tbody rijen
@@ -176,8 +176,12 @@ function renderTtsTable() {
         // (init later after building filters)
         // Bouw dynamisch de categorie-checkboxes op basis van de tabelinhoud
         function buildCategoryFilters() {
-            const container = document.getElementById('categoryFilters');
-            if (!container) return;
+            // Populate three separate containers so each <details> can toggle independently
+            const catContainer = document.getElementById('categoryFilters');
+            const typeContainer = document.getElementById('typeFilters');
+            const langContainer = document.getElementById('languageFilters');
+            if (!catContainer || !typeContainer || !langContainer) return;
+
             // Build filters from the data array (ttsTable) rather than DOM rows
             const data = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable : [];
             const categories = new Set();
@@ -187,12 +191,13 @@ function renderTtsTable() {
                 (item.languages || []).forEach(l => langs.add(l));
             });
 
-            container.innerHTML = '';
+            catContainer.innerHTML = '';
+            typeContainer.innerHTML = '';
+            langContainer.innerHTML = '';
 
-            // Category checkboxes
+            // Category checkboxes (in category container)
             const catTitle = document.createElement('div');
-            catTitle.innerHTML = '<strong>Categorieën</strong>';
-            container.appendChild(catTitle);
+            catContainer.appendChild(catTitle);
             categories.forEach(cat => {
                 const id = 'cat_' + cat.replace(/[^a-z0-9]/gi, '_');
                 const wrapper = document.createElement('label');
@@ -210,13 +215,12 @@ function renderTtsTable() {
                 span.style.fontWeight = 'normal';
                 span.textContent = ' ' + cat;
                 wrapper.appendChild(span);
-                container.appendChild(wrapper);
+                catContainer.appendChild(wrapper);
             });
 
-            // Type filters: AI-stemmen / Gewone TTS-stemmen
+            // Type filters: AI-stemmen / Gewone TTS-stemmen (in type container)
             const typeTitle = document.createElement('div');
-            typeTitle.innerHTML = '<strong>Type stem:</strong>';
-            container.appendChild(typeTitle);
+            typeContainer.appendChild(typeTitle);
 
             const aiWrapper = document.createElement('label');
             aiWrapper.style.display = 'block';
@@ -232,7 +236,7 @@ function renderTtsTable() {
             aiSpan.style.fontWeight = 'normal';
             aiSpan.textContent = ' AI-stemmen';
             aiWrapper.appendChild(aiSpan);
-            container.appendChild(aiWrapper);
+            typeContainer.appendChild(aiWrapper);
 
             const normalWrapper = document.createElement('label');
             normalWrapper.style.display = 'block';
@@ -248,12 +252,11 @@ function renderTtsTable() {
             normalSpan.style.fontWeight = 'normal';
             normalSpan.textContent = ' Gewone TTS-stemmen';
             normalWrapper.appendChild(normalSpan);
-            container.appendChild(normalWrapper);
+            typeContainer.appendChild(normalWrapper);
 
-            // Language filters
+            // Language filters (in language container)
             const langTitle = document.createElement('div');
-            langTitle.innerHTML = '<strong>Talen</strong>';
-            container.appendChild(langTitle);
+            langContainer.appendChild(langTitle);
             // normalize ordering: put '*' first if present
             const langList = Array.from(langs).sort((a,b)=>{ if (a==='*') return -1; if (b==='*') return 1; return a.localeCompare(b); });
             // map codes to readable labels
@@ -278,7 +281,7 @@ function renderTtsTable() {
                 langSpan.style.fontWeight = 'normal';
                 langSpan.textContent = ' ' + langLabel(l);
                 lw.appendChild(langSpan);
-                container.appendChild(lw);
+                langContainer.appendChild(lw);
             });
         }
 

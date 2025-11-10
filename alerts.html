@@ -32,26 +32,34 @@
         - Je kan ook <a href ="tts.html">TTS stemmen</a> en <a href="soundeffects.html">sound effects</a> toevoegen aan je donatie. Deze kunnen gecombineerd worden met alerts.
     </p>
         <div class="panel-grid">
-            <aside class="sidebar">
-                <h3>Filters</h3>
-                <div class="filter-group">
-                    <label for="searchInput">Zoek</label>
-                    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op alertnaam of beschrijving..." style="padding: 8px; width: 100%; margin: 6px 0;">
-                </div>
-                <div class="filter-group">
-                    <label for="sortSelect">Sorteer</label>
-                    <select id="sortSelect" onchange="applySort()" style="width:100%; padding:6px; margin-bottom:8px;">
+            <!-- Filter panel: on mobile the whole panel is collapsed by default and expanded via the button -->
+            <aside class="sidebar filter-panel" id="filterPanel">
+                <button class="filter-toggle" id="filterToggle" aria-expanded="false">Filters</button>
+                <h3 class="filter-title">Filters</h3>
+
+                <details class="filter-option" open>
+                    <summary>Zoek</summary>
+                    <div class="filter-group">
+                        <label for="searchInput">Zoek</label>
+                        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op alertnaam of beschrijving..." style="padding: 8px; width: 100%; margin: 6px 0;">
+                    </div>
+                </details>
+
+                <!-- Sorteer selector is displayed above the table in the main area -->
+
+                <p style="margin-top:12px">Aantal alerts: <span id="rowCount">0</span></p>
+            </aside>
+
+            <main class="main-area">
+                <div class="controls-row" style="margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                    <label for="sortSelect" style="font-weight:600;">Sorteer op:</label>
+                    <select id="sortSelect" onchange="applySort()" style="padding:6px;">
                         <option value="0:asc">Naam (A → Z)</option>
                         <option value="0:desc">Naam (Z → A)</option>
                         <option value="1:asc">Beschrijving (A → Z)</option>
                         <option value="1:desc">Beschrijving (Z → A)</option>
                     </select>
                 </div>
-
-                <p style="margin-top:12px">Aantal alerts: <span id="rowCount">0</span></p>
-            </aside>
-
-            <main class="main-area">
                 <table>
                     <thead>
                         <tr>
@@ -72,6 +80,7 @@
     <!-- Generated alerts links (created by tools/generate_alerts_links.py) -->
     <script src="js/table/alertslinks.js"></script>
     <script src="js/load_alerts_links.js"></script>
+    <script src="js/filter_menu.js"></script>
     <script src="js/script.js"></script>
     <script src="js/table/alerts_table.js"></script>
     <script src="js/alerts.js"></script>

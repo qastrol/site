@@ -29,33 +29,42 @@
     <p>Klik op de knop om de soundeffectnaam naar het klembord te kopiëren en in je bericht te gebruiken.</p>
 
     <div class="panel-grid">
-        <aside class="sidebar">
-            <h3>Filters</h3>
-            <div class="filter-group">
-                <label for="searchInput">Zoek</label>
-                <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op soundeffectnaam of beschrijving..." style="padding: 8px; width: 100%; margin: 6px 0;">
-            </div>
-            <div class="filter-group">
-                <label for="categoryFilters">Categorieën</label>
-                <div id="categoryFilters" style="margin:6px 0">
-                    <!-- Category checkboxes are injected here by js/soundeffects.js -->
+        <aside class="sidebar filter-panel" id="filterPanel">
+            <button class="filter-toggle" id="filterToggle" aria-expanded="false">Filters</button>
+            <h3 class="filter-title">Filters</h3>
+
+            <details class="filter-option" open>
+                <summary>Zoek</summary>
+                <div class="filter-group">
+                    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op soundeffectnaam of beschrijving..." style="padding: 8px; width: 100%; margin: 6px 0;">
                 </div>
-            </div>
-            <div class="filter-group">
-                <label for="sortSelect">Sorteer</label>
-                <select id="sortSelect" onchange="applySort()" style="width:100%; padding:6px; margin-bottom:8px;">
-                    <option value="0:asc">Naam (A → Z)</option>
-                    <option value="0:desc">Naam (Z → A)</option>
-                    <option value="1:asc">Beschrijving (A → Z)</option>
-                    <option value="1:desc">Beschrijving (Z → A)</option>
-                </select>
-                <button onclick="applySort()">Toepassen</button>
-            </div>
+            </details>
+
+            <details class="filter-option" open>
+                <summary>Categorieën</summary>
+                <div class="filter-group">
+                    <div id="categoryFilters" style="margin:6px 0">
+                        <!-- Category checkboxes are injected here by js/soundeffects.js -->
+                    </div>
+                </div>
+            </details>
+
+            <!-- Sorteer selector moved to above the table -->
 
             <p style="margin-top:12px">Aantal sound effects: <span id="counter">0</span></p>
         </aside>
 
         <main class="main-area">
+            <div class="controls-row" style="margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                <label for="sortSelect" style="font-weight:600;">Sorteer op:</label>
+                <select id="sortSelect" onchange="applySort()" style="padding:6px;">
+                    <option value="0:asc">Naam (A → Z)</option>
+                    <option value="0:desc">Naam (Z → A)</option>
+                    <option value="1:asc">Beschrijving (A → Z)</option>
+                    <option value="1:desc">Beschrijving (Z → A)</option>
+                </select>
+            </div>
+
             <table>
         <thead>
             <tr>
@@ -71,6 +80,7 @@
         </div>
 
     <script src="js/script.js"></script>
+    <script src="js/filter_menu.js"></script>
     <script src="js/table/soundeffects_table.js"></script>
     <script src="js/table/soundeffectslinks.js"></script>
     <script src="js/soundeffects.js"></script>

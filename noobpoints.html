@@ -30,21 +30,35 @@
         <br><br>
 
     <div class="panel-grid">
-        <aside class="sidebar">
-            <h3>Filters</h3>
-            <div class="filter-group">
-                <label for="searchInput">Zoek</label>
-                <input type="text" id="searchInput" placeholder="Zoek op redeemnaam of beschrijving..." style="padding: 8px; width: 100%; margin: 6px 0;">
-            </div>
-            <div class="filter-group">
-                <label for="categoryFilters">Categorieën</label>
-                <div id="categoryFilters" style="margin:6px 0">
-                    <!-- Category checkboxes are injected here by js/noobpoints.js -->
+        <aside class="sidebar filter-panel" id="filterPanel">
+            <button class="filter-toggle" id="filterToggle" aria-expanded="false">Filters</button>
+            <h3 class="filter-title">Filters</h3>
+
+            <details class="filter-option" open>
+                <summary>Zoek</summary>
+                <div class="filter-group">
+                    <input type="text" id="searchInput" placeholder="Zoek op redeemnaam of beschrijving..." style="padding: 8px; width: 100%; margin: 6px 0;">
                 </div>
-            </div>
-            <div class="filter-group">
-                <label for="sortSelect">Sorteer</label>
-                <select id="sortSelect" onchange="applySort()" style="width:100%; padding:6px; margin-bottom:8px;">
+            </details>
+
+            <details class="filter-option" open>
+                <summary>Categorieën</summary>
+                <div class="filter-group">
+                    <div id="categoryFilters" style="margin:6px 0">
+                        <!-- Category checkboxes are injected here by js/noobpoints.js -->
+                    </div>
+                </div>
+            </details>
+
+            <!-- Sorteer selector moved to above the table -->
+
+            <p style="margin-top:12px">Aantal redeems: <span id="rowCount">0</span></p>
+        </aside>
+
+        <main class="main-area">
+            <div class="controls-row" style="margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                <label for="sortSelect" style="font-weight:600;">Sorteer op:</label>
+                <select id="sortSelect" onchange="applySort()" style="padding:6px;">
                     <option value="0:asc">Naam (A → Z)</option>
                     <option value="0:desc">Naam (Z → A)</option>
                     <option value="1:asc">Code (A → Z)</option>
@@ -55,10 +69,6 @@
                 <button onclick="applySort()">Toepassen</button>
             </div>
 
-            <p style="margin-top:12px">Aantal redeems: <span id="rowCount">0</span></p>
-        </aside>
-
-        <main class="main-area">
             <table>
                 <thead id="redeemTableHeader">
                     <tr>
@@ -81,6 +91,7 @@
     <!-- Generated alerts links mapping (optional) -->
     <script src="js/table/alertslinks.js"></script>
     <script src="js/load_alerts_links.js"></script>
+    <script src="js/filter_menu.js"></script>
     <script src="js/noobpoints.js"></script>
 
 </body>

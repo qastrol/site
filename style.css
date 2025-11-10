@@ -13,6 +13,11 @@
     --button-hover-background-color: #005f73;
 }
 
+/* Use border-box everywhere to avoid unexpected width calculations that cause overflow */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 /* Dark mode kleuren */
 [data-theme="dark"] {
     --background-color: #121212;
@@ -277,6 +282,25 @@ button:hover {
     overflow: auto;
 }
 
+/* Prevent horizontal scrolling inside the sidebar by hiding any accidental overflow
+   and ensuring form controls respect the container width. */
+.sidebar { overflow-x: hidden; }
+.sidebar .filter-group input[type="text"],
+.sidebar .filter-group select,
+.sidebar .filter-group input[type="search"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Reduce default width slightly for long inputs so they don't push layout on very small screens */
+@media (max-width: 420px) {
+    .sidebar .filter-group input[type="text"],
+    .sidebar .filter-group select {
+        max-width: calc(100% - 8px);
+    }
+}
+
 .main-area {
     flex: 1 1 auto;
     min-width: 0; /* zorgt dat de tabel niet breekt buiten container */
@@ -365,4 +389,59 @@ button:hover {
 }
 .has-preview:hover {
     color: #084298;
+}
+
+/* Filter panel responsive/collapse styles */
+.filter-toggle {
+    display: none; /* hidden on desktop by default */
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: var(--button-background-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+details.filter-option {
+    margin-bottom: 10px;
+}
+
+details.filter-option > summary {
+    cursor: pointer;
+    font-weight: 700;
+    padding: 8px 6px;
+    list-style: none;
+    outline: none;
+}
+
+details.filter-option[open] > summary::after {
+    content: "▲";
+    float: right;
+}
+
+details.filter-option:not([open]) > summary::after {
+    content: "▼";
+    float: right;
+}
+
+/* When the panel is collapsed (mobile), hide the sidebar content except the toggle */
+.filter-panel.collapsed {
+    display: none;
+}
+
+/* On small screens, show the filter toggle and make the panel collapsible */
+@media (max-width: 900px) {
+    .filter-toggle { display: block; }
+    .panel-grid { gap: 12px; }
+    /* The sidebar will be toggled by JS; when visible ensure full width */
+    .sidebar.filter-panel { width: 100%; position: static; max-height: none; overflow: visible; }
+}
+
+/* On large screens ensure the toggle is hidden and the panel always visible */
+@media (min-width: 901px) {
+    .filter-panel { display: block !important; }
 }
