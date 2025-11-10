@@ -72,11 +72,36 @@ function sortTable(n) {
             document.getElementById("rowCount").textContent = visibleCount;
         }
 
-        // Standaard sorteren en initialiseren van rijen bij het laden van de pagina
-        document.addEventListener("DOMContentLoaded", function() {
-            sortTable(0);
-            updateRowCount();
-        });
+        // Render the alerts table from the `alertsTable` data source.
+        function renderAlertsTable() {
+            const tbody = document.getElementById('alertTable');
+            if (!tbody) return;
+            // clear existing content
+            tbody.innerHTML = '';
+            if (typeof alertsTable === 'undefined' || !Array.isArray(alertsTable)) return;
+
+            alertsTable.forEach(item => {
+                const tr = document.createElement('tr');
+                const tdName = document.createElement('td');
+                tdName.textContent = item.name || '';
+                tdName.title = 'Klik voor voorbeeld';
+                const tdDesc = document.createElement('td');
+                tdDesc.innerHTML = item.description || '';
+                const tdCode = document.createElement('td');
+                tdCode.textContent = item.code || '';
+                const tdAct = document.createElement('td');
+                const btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = 'Kopieer';
+                btn.addEventListener('click', function() { copyToClipboard(this); });
+                tdAct.appendChild(btn);
+                tr.appendChild(tdName);
+                tr.appendChild(tdDesc);
+                tr.appendChild(tdCode);
+                tr.appendChild(tdAct);
+                tbody.appendChild(tr);
+            });
+        }
         // Hook voor de sort select in de sidebar
         function applySort() {
             const sel = document.getElementById('sortSelect');
@@ -247,7 +272,7 @@ function sortTable(n) {
         }
 
         // Attach preview handlers to first-column names and mark those with previews
-        (function attachPreviewHandlers(){
+        function attachPreviewHandlers(){
             const rows = document.querySelectorAll('#alertTable tr');
             rows.forEach(r => {
                 const first = r.querySelector('td:first-child');
@@ -262,7 +287,7 @@ function sortTable(n) {
 
             // Intercept any anchor that points to a local alerts media file or folder
             // so the media isn't loaded until the preview overlay is requested.
-                    const anchors = document.querySelectorAll('#alertTable a[href]');
+            const anchors = document.querySelectorAll('#alertTable a[href]');
             anchors.forEach(a => {
                 try {
                     const href = a.getAttribute('href') || '';
@@ -284,4 +309,19 @@ function sortTable(n) {
                     // ignore
                 }
             });
-        })();
+        }
+
+        // Initialize on DOMContentLoaded: render table, attach handlers and sort
+        document.addEventListener("DOMContentLoaded", function() {
+            renderAlertsTable();
+            attachPreviewHandlers();
+            // apply initial sort (respect selector)
+            const sel = document.getElementById('sortSelect');
+            if (sel) {
+                const [colStr, dir] = sel.value.split(':');
+                const col = parseInt(colStr, 10);
+                sortDirection[col] = (dir === 'asc');
+            }
+            sortTable(0);
+            updateRowCount();
+        });
