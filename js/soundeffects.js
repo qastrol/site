@@ -1,59 +1,67 @@
         // Functie om effectnaam of stemnaam te kopiëren naar klembord
         function copyToClipboard(button) {
-    // Zoek de rij van de knop en vervolgens de eerste cel (de soundeffectnaam)
-    const row = button.closest('tr'); // Zoek de rij van de knop
-    const soundEffectName = row.querySelector('td').innerText.trim(); // Pak de tekst uit de eerste cel
-
-    // Kopieer de tekst naar het klembord
-    navigator.clipboard.writeText(soundEffectName).then(() => {
-        alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
-    }).catch(err => {
-        console.error('Kopiëren mislukt', err);
-    });
-}
+            const li = button.closest('li');
+            const nameEl = li ? li.querySelector('.item-name') : null;
+            const soundEffectName = nameEl ? nameEl.innerText.trim() : '';
+            if (!soundEffectName) return;
+            navigator.clipboard.writeText(soundEffectName).then(() => {
+                alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
+            }).catch(err => {
+                console.error('Kopiëren mislukt', err);
+            });
+        }
 
 
         function updateCounter() {
-            const tbody = document.getElementById('soundEffectsTable');
-            if (!tbody) return;
-            const rows = Array.from(tbody.rows);
-            const visibleRows = rows.filter(r => r.style.display !== 'none').length;
+            const items = Array.from(document.querySelectorAll('#soundEffectsList li'));
+            const visibleRows = items.filter(r => r.style.display !== 'none').length;
             document.getElementById('counter').textContent = visibleRows;
-}
+        }
 
 
         let sortDirection = [true, true, true]; // array om de sorteer volgorde bij te houden
 
-        // Functie om de tabel te sorteren
+        // Functie om de tabel te sorteren (operates on list)
         function sortTable(n) {
-            const tbody = document.getElementById('soundEffectsTable');
-            if (!tbody) return;
-            const rows = Array.from(tbody.rows);
-            if (!rows.length) return;
+            const list = document.getElementById('soundEffectsList');
+            if (!list) return;
+            const items = Array.from(list.children);
+            if (!items.length) return;
 
-            const isNumeric = !isNaN(rows[0].cells[n].innerText.trim());
+            // Support sorting by categories (dataset.categories) as column 1
+            if (n === 1) {
+                items.sort((a, b) => {
+                    const ac = (a.dataset.categories || '').toLowerCase();
+                    const bc = (b.dataset.categories || '').toLowerCase();
+                    return ac.localeCompare(bc, 'nl', { sensitivity: 'base' });
+                });
+            } else {
+                const colMap = { 0: '.item-name', 2: '.item-desc' };
+                const sel = colMap[n] || '.item-name';
 
-            const sortedRows = rows.sort((rowA, rowB) => {
-                const textA = rowA.cells[n].innerText.trim();
-                const textB = rowB.cells[n].innerText.trim();
+                const isNumeric = items.every(li => {
+                    const el = li.querySelector(sel);
+                    return el && !isNaN(el.innerText.trim());
+                });
 
-                if (isNumeric) return parseFloat(textA) - parseFloat(textB);
-                return textA.localeCompare(textB, 'nl', { sensitivity: 'base' });
-            });
+                items.sort((a, b) => {
+                    const aEl = a.querySelector(sel);
+                    const bEl = b.querySelector(sel);
+                    const textA = aEl ? aEl.innerText.trim() : '';
+                    const textB = bEl ? bEl.innerText.trim() : '';
+                    if (isNumeric) return (parseFloat(textA) || 0) - (parseFloat(textB) || 0);
+                    return textA.localeCompare(textB, 'nl', { sensitivity: 'base' });
+                });
+            }
 
-            if (!sortDirection[n]) sortedRows.reverse();
-
-            // Re-append into tbody
-            sortedRows.forEach(r => tbody.appendChild(r));
+            if (!sortDirection[n]) items.reverse();
+            items.forEach(it => list.appendChild(it));
             sortDirection[n] = !sortDirection[n];
             updateCounter();
-}
+        }
 
 
-        function searchTable() {
-            // Rebuild the visible table from the data source so non-matching rows are removed entirely.
-            refreshTable();
-}
+        function searchTable() { refreshTable(); }
 
         // Returns true if the given item matches the search text and category selections
         function itemMatchesFilters(item, searchLower, selectedCats) {
@@ -80,47 +88,55 @@
         }
 
         function refreshTable() {
-            const tbody = document.getElementById('soundEffectsTable');
-            if (!tbody) return;
+            const list = document.getElementById('soundEffectsList');
+            if (!list) return;
             if (typeof soundeffectsTable === 'undefined' || !Array.isArray(soundeffectsTable)) return;
 
             const input = document.getElementById('searchInput');
             const searchLower = input ? (input.value || '').toLowerCase() : '';
             const selectedCats = getSelectedCategories();
 
-            // filter data source
             const filtered = soundeffectsTable.filter(item => itemMatchesFilters(item, searchLower, selectedCats));
-
-            // clear and render only filtered rows
-            tbody.innerHTML = '';
+            list.innerHTML = '';
             filtered.forEach(item => {
-                const tr = document.createElement('tr');
-                // compute categories array for this item (support multiple input shapes)
+                const li = document.createElement('li');
+                li.className = 'item-listing__item';
+
+                // categories
                 let cats = [];
                 if (Array.isArray(item.categories)) cats = item.categories.map(String);
                 else if (item && item.categories && typeof item.categories === 'string') cats = item.categories.split(',').map(s => s.trim()).filter(Boolean);
                 else if (Array.isArray(item.category)) cats = item.category.map(String);
                 else if (item && item.category && typeof item.category === 'string') cats = item.category.split(',').map(s => s.trim()).filter(Boolean);
-                if (cats.length) tr.dataset.categories = cats.join('|');
+                if (cats.length) {
+                    cats.sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+                    li.dataset.categories = cats.join('|');
+                }
 
-                const tdName = document.createElement('td');
-                tdName.textContent = item.name || '';
-                tdName.title = 'Klik voor voorbeeld';
-                const tdDesc = document.createElement('td');
-                tdDesc.textContent = item.description || '';
-                const tdAct = document.createElement('td');
-                const btn = document.createElement('button');
-                btn.className = 'copy-btn';
-                btn.textContent = 'Kopieer';
-                btn.addEventListener('click', function() { copyToClipboard(this); });
-                tdAct.appendChild(btn);
-                tr.appendChild(tdName);
-                tr.appendChild(tdDesc);
-                tr.appendChild(tdAct);
-                tbody.appendChild(tr);
+                const main = document.createElement('div'); main.className = 'item-listing__main';
+                const left = document.createElement('div'); left.className = 'item-listing__left';
+                const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || '';
+                name.title = 'Klik voor voorbeeld';
+
+                // info row: categories (comma separated)
+                const info = document.createElement('div'); info.className = 'item-langs';
+                info.textContent = cats.length ? cats.join(', ') : '';
+
+                const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
+                left.appendChild(name);
+                if (info.textContent) left.appendChild(info);
+                left.appendChild(desc);
+
+                const meta = document.createElement('div'); meta.className = 'item-meta';
+                const actions = document.createElement('div'); actions.className = 'item-actions';
+                const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function() { copyToClipboard(this); });
+                actions.appendChild(btn);
+                meta.appendChild(actions);
+
+                main.appendChild(left); main.appendChild(meta); li.appendChild(main);
+                list.appendChild(li);
             });
 
-            // update counters and preview handlers
             localStorage.setItem('soundEffectCount', soundeffectsTable.length);
             updateCounter();
             attachPreviewHandlers();
@@ -191,46 +207,45 @@
 
 
 function renderSoundEffectsTable() {
-    const tbody = document.getElementById('soundEffectsTable');
-    if (!tbody) return;
-    // Clear existing
-    tbody.innerHTML = '';
+    const list = document.getElementById('soundEffectsList');
+    if (!list) return;
+    list.innerHTML = '';
     if (typeof soundeffectsTable === 'undefined' || !Array.isArray(soundeffectsTable)) return;
 
     soundeffectsTable.forEach(item => {
-        const tr = document.createElement('tr');
-        // compute categories array for this item (support multiple input shapes)
-        let cats = [];
+        const li = document.createElement('li');
+        li.className = 'item-listing__item';
+    // compute categories for this item
+    let cats = [];
         if (Array.isArray(item.categories)) cats = item.categories.map(String);
         else if (item && item.categories && typeof item.categories === 'string') cats = item.categories.split(',').map(s => s.trim()).filter(Boolean);
         else if (Array.isArray(item.category)) cats = item.category.map(String);
         else if (item && item.category && typeof item.category === 'string') cats = item.category.split(',').map(s => s.trim()).filter(Boolean);
-        if (cats.length) tr.dataset.categories = cats.join('|');
-        const tdName = document.createElement('td');
-        tdName.textContent = item.name || '';
-        tdName.title = 'Klik voor voorbeeld';
-        const tdDesc = document.createElement('td');
-        tdDesc.textContent = item.description || '';
-        const tdAct = document.createElement('td');
-        const btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Kopieer';
-        btn.addEventListener('click', function() { copyToClipboard(this); });
-        tdAct.appendChild(btn);
-        tr.appendChild(tdName);
-        tr.appendChild(tdDesc);
-        tr.appendChild(tdAct);
-        tbody.appendChild(tr);
+        if (cats.length) {
+            cats.sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+            li.dataset.categories = cats.join('|');
+        }
+
+        const main = document.createElement('div'); main.className = 'item-listing__main';
+        const left = document.createElement('div'); left.className = 'item-listing__left';
+        const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || ''; name.title = 'Klik voor voorbeeld';
+    const info = document.createElement('div'); info.className = 'item-langs'; info.textContent = cats.length ? cats.join(', ') : '';
+        const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
+        left.appendChild(name); if (info.textContent) left.appendChild(info); left.appendChild(desc);
+        const meta = document.createElement('div'); meta.className = 'item-meta';
+        const actions = document.createElement('div'); actions.className = 'item-actions';
+        const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function() { copyToClipboard(this); });
+        actions.appendChild(btn); meta.appendChild(actions);
+        main.appendChild(left); main.appendChild(meta); li.appendChild(main);
+        list.appendChild(li);
     });
 
-    // store count
     localStorage.setItem('soundEffectCount', soundeffectsTable.length);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
     renderSoundEffectsTable();
     buildCategoryFilters();
-    // apply initial sort (respect selector)
     const sel = document.getElementById('sortSelect');
     if (sel) {
         const [colStr, dir] = sel.value.split(':');
@@ -378,9 +393,9 @@ function applySort() {
 
     // Attach preview handlers to first-column names and mark those with previews
     function attachPreviewHandlers(){
-        const rows = document.querySelectorAll('#soundEffectsTable tr');
+        const rows = document.querySelectorAll('#soundEffectsList li');
         rows.forEach(r => {
-            const first = r.querySelector('td:first-child');
+            const first = r.querySelector('.item-name');
             if (!first) return;
             const display = first.innerText.trim();
             first.title = 'Klik voor voorbeeld';
@@ -404,9 +419,9 @@ function applySort() {
             });
         });
 
-        // Also intercept anchors inside the table that point to local media so the
+        // Also intercept anchors inside the list that point to local media so the
         // browser doesn't navigate / preload them. Instead open the preview overlay.
-        const anchors = document.querySelectorAll('#soundEffectsTable a[href]');
+        const anchors = document.querySelectorAll('#soundEffectsList a[href]');
         anchors.forEach(a => {
             try {
                 const href = a.getAttribute('href') || '';

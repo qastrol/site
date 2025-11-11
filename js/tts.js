@@ -1,118 +1,153 @@
         // Functie om effectnaam of stemnaam te kopiëren naar klembord
         function copyToClipboard(button) {
-    // Zoek de rij van de knop en vervolgens de eerste cel (de soundeffectnaam)
-    const row = button.closest('tr'); // Zoek de rij van de knop
-    const soundEffectName = row.cells[0].innerText.trim(); // Pak de tekst uit de eerste cel
-
-    navigator.clipboard.writeText(soundEffectName).then(() => {
-        alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
-    }).catch(err => {
-        console.error('Kopiëren mislukt', err);
-    });
-}
+            const li = button.closest('li');
+            const nameEl = li ? li.querySelector('.item-name') : null;
+            const soundEffectName = nameEl ? nameEl.innerText.trim() : '';
+            if (!soundEffectName) return;
+            navigator.clipboard.writeText(soundEffectName).then(() => {
+                alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
+            }).catch(err => {
+                console.error('Kopiëren mislukt', err);
+            });
+        }
 
 // Render the ttsTable array into the DOM table body
 function renderTtsTable() {
-    const tbody = document.getElementById('ttsTable');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    // Prefer the module/global variable `ttsTable` (declared in js/table/tts_table.js)
+    const list = document.getElementById('ttsList');
+    if (!list) return;
+    list.innerHTML = '';
     const data = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable : [];
     if (data.length === 0) return;
 
     data.forEach(item => {
-        const tr = document.createElement('tr');
+        const li = document.createElement('li');
+        li.className = 'item-listing__item';
 
-        const tdName = document.createElement('td');
-        tdName.textContent = item.name || '';
-        tdName.className = 'tts-name';
-        tdName.style.cursor = 'pointer';
-        tr.appendChild(tdName);
+        const main = document.createElement('div');
+        main.className = 'item-listing__main';
 
-        const tdDesc = document.createElement('td');
-        tdDesc.textContent = item.description || '';
-        tr.appendChild(tdDesc);
+        const left = document.createElement('div');
+        left.className = 'item-listing__left';
+        const name = document.createElement('div');
+        name.className = 'item-name';
+        name.textContent = item.name || '';
+        name.style.cursor = 'pointer';
+        left.appendChild(name);
 
-        const tdCat = document.createElement('td');
-        tdCat.textContent = item.category || '';
-        tr.appendChild(tdCat);
+        // small info segment: languages and optional AI label
+        const info = document.createElement('div');
+        info.className = 'item-langs';
+        const langsArr = Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : []);
+        const langLabel = (codes) => {
+            if (!codes || codes.length === 0) return '';
+            const mapped = codes.map(c => {
+                if (c === '*') return 'Engels & Nederlands';
+                if (c === 'en') return 'Engels';
+                if (c === 'nl') return 'Nederlands';
+                return c;
+            });
+            if (mapped.length === 2) return mapped.join(' & ');
+            return mapped.join(', ');
+        };
+    const humanLangs = langLabel(langsArr);
+    // Build combined info: category • languages • AI-stem (omit empty parts)
+    const infoParts = [];
+    if (item.category) infoParts.push(item.category);
+    if (humanLangs) infoParts.push(humanLangs);
+    if (item.isAI) infoParts.push('AI-stem');
+    info.textContent = infoParts.join(' • ');
+        left.appendChild(info);
 
-        const tdAction = document.createElement('td');
+        const desc = document.createElement('div');
+        desc.className = 'item-desc';
+        desc.textContent = item.description || '';
+        left.appendChild(desc);
+
+    const meta = document.createElement('div');
+    meta.className = 'item-meta';
+
+        const actions = document.createElement('div');
+        actions.className = 'item-actions';
         const btn = document.createElement('button');
         btn.className = 'copy-btn';
         btn.textContent = 'Kopieer';
         btn.addEventListener('click', function(){ copyToClipboard(this); });
-        tdAction.appendChild(btn);
-        tr.appendChild(tdAction);
+        actions.appendChild(btn);
 
-        // attach dataset attributes so filters can use metadata
-        tr.dataset.name = (item.name || '').toString();
-        tr.dataset.category = (item.category || '').toString();
-        tr.dataset.isai = item.isAI ? '1' : '0';
-        tr.dataset.languages = (item.languages || []).join(',');
+        meta.appendChild(actions);
 
-        tbody.appendChild(tr);
+        main.appendChild(left);
+        main.appendChild(meta);
+        li.appendChild(main);
+
+    li.dataset.name = (item.name || '').toString();
+    li.dataset.category = (item.category || '').toString();
+    li.dataset.isai = item.isAI ? '1' : '0';
+    li.dataset.languages = (Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : [])).join(',');
+
+        list.appendChild(li);
     });
 }
 
 
 
-        let sortDirection = [true, true, true]; // array om de sorteer volgorde bij te houden
+        let sortDirection = [true, true, true, true]; // array om de sorteer volgorde bij te houden (incl. languages)
 
-        // Functie om de tabel te sorteren
+        // Functie om de tabel te sorteren (operates on the list view)
         function sortTable(n) {
-            const table = document.querySelector("table");
-            if (!table) return;
-            // Prefer the first tbody (body rows only)
-            const tbody = table.tBodies && table.tBodies[0];
-            const rows = tbody ? Array.from(tbody.rows) : [];
-            if (rows.length === 0) return; // nothing to sort
+            const list = document.getElementById('ttsList');
+            if (!list) return;
+            const items = Array.from(list.children);
+            if (items.length === 0) return;
 
-            // Bepaal of we numeriek moeten sorteren (veilig controleren of cel bestaat)
-            const firstCell = rows[0].cells[n];
-            const isNumeric = firstCell && !isNaN(firstCell.innerText.trim());
+            // new column order: 0=name, 1=category (dataset), 2=languages, 3=description
+            const colMap = { 0: '.item-name', 1: null, 2: '.item-langs', 3: '.item-desc' };
+            const sel = colMap[n];
 
-            const sortedRows = rows.sort((rowA, rowB) => {
-                const textA = rowA.cells[n].innerText.trim();
-                const textB = rowB.cells[n].innerText.trim();
-
-                if (isNumeric) {
-                    // Sorteren op numerieke waarden
-                    return parseFloat(textA) - parseFloat(textB);
+            const isNumeric = items.every(li => {
+                let txt = '';
+                if (sel) {
+                    const el = li.querySelector(sel);
+                    txt = el ? el.innerText.trim() : '';
                 } else {
-                    // Sorteren op tekst (case-insensitive)
-                    return textA.localeCompare(textB, 'nl', { sensitivity: 'base' });
+                    txt = li.dataset.category || '';
                 }
+                return txt !== '' && !isNaN(txt);
             });
 
-            if (!sortDirection[n]) {
-                sortedRows.reverse(); // Omkeren als het in aflopende volgorde moet
-            }
+            items.sort((a, b) => {
+                let aText = '';
+                let bText = '';
+                if (sel) {
+                    const aEl = a.querySelector(sel);
+                    const bEl = b.querySelector(sel);
+                    aText = aEl ? aEl.innerText.trim() : '';
+                    bText = bEl ? bEl.innerText.trim() : '';
+                } else {
+                    aText = a.dataset.category || '';
+                    bText = b.dataset.category || '';
+                }
+                if (isNumeric) return (parseFloat(aText) || 0) - (parseFloat(bText) || 0);
+                return aText.localeCompare(bText, 'nl', { sensitivity: 'base' });
+            });
 
-            // Voeg de gesorteerde rijen terug in de tbody
-            sortedRows.forEach(row => tbody.appendChild(row));
-
-            // Verander de sorteervolgorde voor de volgende keer
+            if (!sortDirection[n]) items.reverse();
+            items.forEach(it => list.appendChild(it));
             sortDirection[n] = !sortDirection[n];
         }
 
         // Functie om de tabel te filteren op basis van de zoekopdracht
         function updateRowCount() {
-        const tbody = document.querySelector('table tbody#ttsTable');
-        const rows = tbody ? Array.from(tbody.rows) : [];
-        const visibleRowCount = rows.reduce((acc, r) => acc + (r.style.display !== 'none' ? 1 : 0), 0);
-        document.getElementById("rowCount").textContent = visibleRowCount;
-    }
+            const items = Array.from(document.querySelectorAll('#ttsList li'));
+            const visibleRowCount = items.reduce((acc, r) => acc + (r.style.display !== 'none' ? 1 : 0), 0);
+            document.getElementById("rowCount").textContent = visibleRowCount;
+        }
 
     // Functie om de tabel te filteren op basis van de zoekopdracht
-    function searchTable() {
-        const input = document.getElementById("searchInput");
-        const filter = input.value.toLowerCase();  // Haal de zoekterm op en zet deze om naar kleine letters
-        const table = document.querySelector("table");
-
-        // Work with tbody rows only
-        const tbody = document.querySelector('table tbody#ttsTable');
-        const rows = tbody ? Array.from(tbody.rows) : [];
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = (input ? input.value : '').toLowerCase();
+            const rows = Array.from(document.querySelectorAll('#ttsList li'));
 
         // Bepaal geselecteerde filters
         const checkedCategoryInputs = Array.from(document.querySelectorAll('#categoryFilters input[data-type="category"]:checked'));
@@ -125,48 +160,34 @@ function renderTtsTable() {
         const checkedLangs = checkedLangInputs.map(cb => cb.value);
 
         // Loop door alle tbody rijen
-        rows.forEach(row => {
-            const cells = row.getElementsByTagName("td");
-            let textMatch = false;
+            rows.forEach(row => {
+                const text = row.innerText || '';
+                const textMatch = !filter || text.toLowerCase().indexOf(filter) > -1;
 
-            // Zoek door alle cellen in de rij op tekst
-            for (let j = 0; j < cells.length; j++) {
-                const cellText = cells[j].textContent || cells[j].innerText;
-                if (cellText.toLowerCase().indexOf(filter) > -1) {
-                    textMatch = true;
-                    break;
+                // Category match (on dataset)
+                const categoryText = row.dataset.category || '';
+                let categoryMatch = true;
+                if (checkedCats.length > 0) categoryMatch = checkedCats.indexOf(categoryText) !== -1;
+
+                // Type filter (AI vs normal)
+                let aiMatch = true;
+                if (aiChecked || normalChecked) {
+                    if (aiChecked && !normalChecked) aiMatch = row.dataset.isai === '1';
+                    else if (!aiChecked && normalChecked) aiMatch = row.dataset.isai !== '1';
+                    else aiMatch = true;
                 }
-            }
 
-            // Categorie match (op basis van dataset)
-            const categoryText = row.dataset.category || '';
-            let categoryMatch = true;
-            if (checkedCats.length > 0) categoryMatch = checkedCats.indexOf(categoryText) !== -1;
-
-            // Type filter (AI vs normal)
-            let aiMatch = true;
-            // If neither checked -> no type filter (show all)
-            if (aiChecked || normalChecked) {
-                if (aiChecked && !normalChecked) aiMatch = row.dataset.isai === '1';
-                else if (!aiChecked && normalChecked) aiMatch = row.dataset.isai !== '1';
-                else aiMatch = true; // both checked -> show all
-            }
-
-            // Languages filter
-            let langMatch = true;
-            if (checkedLangs.length > 0) {
-                const rowLangs = (row.dataset.languages || '').split(',').map(s => s.trim()).filter(Boolean);
-                // if row supports all languages ('*'), it matches any selection
-                if (rowLangs.indexOf('*') !== -1) {
-                    langMatch = true;
-                } else {
-                    langMatch = checkedLangs.some(l => rowLangs.indexOf(l) !== -1);
+                // Languages filter
+                let langMatch = true;
+                if (checkedLangs.length > 0) {
+                    const rowLangs = (row.dataset.languages || '').split(',').map(s => s.trim()).filter(Boolean);
+                    if (rowLangs.indexOf('*') !== -1) langMatch = true;
+                    else langMatch = checkedLangs.some(l => rowLangs.indexOf(l) !== -1);
                 }
-            }
 
-            const matchFound = textMatch && categoryMatch && aiMatch && langMatch;
-            row.style.display = matchFound ? "" : "none";
-        });
+                const matchFound = textMatch && categoryMatch && aiMatch && langMatch;
+                row.style.display = matchFound ? '' : 'none';
+            });
 
         // Werk de zichtbare rijcounter bij
         updateRowCount();
@@ -303,7 +324,7 @@ function renderTtsTable() {
             sortDirection[col] = (dir === 'asc');
             sortTable(col);
         }
-    const ttsCount = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable.length : document.querySelectorAll('#ttsTable tr').length;
+    const ttsCount = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable.length : document.querySelectorAll('#ttsList li').length;
     localStorage.setItem('ttsCount', ttsCount);
 
         /* Preview modal: show image/audio/video files from /tts/ folder named after normalized stem name */
@@ -404,20 +425,14 @@ function renderTtsTable() {
 
         // Attach preview handlers to first-column names, and mark those with previews
         function attachPreviewHandlers(){
-            const rows = document.querySelectorAll('#ttsTable tr');
+            const rows = document.querySelectorAll('#ttsList li');
             rows.forEach(r => {
-                const first = r.querySelector('td:first-child');
+                const first = r.querySelector('.item-name');
                 if (!first) return;
                 const display = first.innerText.trim();
-                // Default: make clickable but only style if preview exists
                 first.title = 'Klik voor voorbeeld';
                 first.addEventListener('click', () => showPreview('tts', display));
-                // Check presence of preview and style accordingly
-                previewExists('tts', display, (exists) => {
-                    if (exists) {
-                        first.classList.add('has-preview');
-                    }
-                });
+                previewExists('tts', display, (exists) => { if (exists) first.classList.add('has-preview'); });
             });
         }
 

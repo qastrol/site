@@ -75,23 +75,33 @@
                     <select id="sortSelect" onchange="applySort()" style="padding:6px;">
                         <option value="0:asc">Naam (A → Z)</option>
                         <option value="0:desc">Naam (Z → A)</option>
-                        <option value="1:asc">Beschrijving (A → Z)</option>
-                        <option value="1:desc">Beschrijving (Z → A)</option>
+                        <option value="1:asc">TTS (A → Z)</option>
+                        <option value="1:desc">TTS (Z → A)</option>
+                        <option value="2:asc">Taal (A → Z)</option>
+                        <option value="2:desc">Taal (Z → A)</option>
+                        <option value="3:asc">Beschrijving (A → Z)</option>
+                        <option value="3:desc">Beschrijving (Z → A)</option>
                     </select>
+                    <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th onclick="sortTable(0)">Stemnaam</th>
-                            <th onclick="sortTable(1)">Beschrijving</th>
-                            <th>Categorie</th>
-                            <th>Actie</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ttsTable">
-                        <!-- Rows are rendered from js/table/tts_table.js by js/tts.js -->
-                    </tbody>
-                </table>
+                <div class="item-listing__header" role="toolbar" aria-label="Sorteer kolommen">
+                    <div class="header-left">
+                        <button class="header-btn" onclick="sortTable(0)">Stemnaam</button>
+                        <span class="header-sub">/</span>
+                        <button class="header-btn" onclick="sortTable(1)">TTS-dienst</button>
+                        <span class="header-sub">/</span>
+                        <button class="header-btn" onclick="sortTable(2)">Talen</button>
+                        <span class="header-sub">/</span>
+                        <button class="header-btn" onclick="sortTable(3)">Beschrijving</button>
+                    </div>
+                    <div class="header-meta">
+                        <div style="width:12px"></div>
+                        <div>Actie</div>
+                    </div>
+                </div>
+                <ul id="ttsList" class="item-listing">
+                    <!-- items rendered by js/tts.js using ttsTable -->
+                </ul>
             </main>
         </div>
 

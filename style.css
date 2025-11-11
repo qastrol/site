@@ -64,25 +64,44 @@ body {
 
 /* Verberg standaard het menu op mobiele schermen */
 @media (max-width: 768px) {
+    /* keep positioning flexible: top is set dynamically from JS so we don't hard-code offsets */
     nav ul {
         display: none;
         flex-direction: column;
         background-color: var(--nav-background-color);
         position: absolute;
-        top: 50px; /* Zorg ervoor dat het onder de navigatiebalk verschijnt */
+        top: auto; /* allow JS to set header-height so menu appears directly under header */
         left: 0;
         right: 0;
         width: 100%;
-        z-index: 999;
-        transition: max-height 0.3s ease-in-out;
+        z-index: 9999;
+        transition: max-height 0.3s ease-in-out, transform 0.18s ease;
         max-height: 0;
         overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
     }
 
     nav ul.show {
         display: flex;
-        max-height: 300px; /* Pas aan op basis van de menu-inhoud */
+        max-height: 100vh; /* let it expand as needed */
     }
+
+    /* Make each menu item a full-width, touch-friendly button like fleurvanryn */
+    nav ul li a,
+    nav ul li button {
+        display: block;
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 1.05rem;
+        text-align: left;
+        color: var(--nav-text-color);
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    /* separator between items */
+    nav ul li + li { border-top: 1px solid rgba(0,0,0,0.06); }
 
     nav .hamburger {
         display: block;
@@ -233,24 +252,86 @@ button:hover {
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* Mobile: stack nav under header and show hamburger */
+/* Mobile: stack nav under header and show hamburger (enhanced) */
 @media (max-width: 768px) {
     .nav-container { padding: 0 12px; }
+    /* do not hard-code top here; JS computes header height and sets inline style */
     .site-nav ul {
         display: none;
         position: absolute;
-        top: 56px;
+        top: auto;
         left: 0;
         right: 0;
         background-color: var(--nav-background-color);
         flex-direction: column;
         gap: 0;
-        padding: 8px 0;
-        z-index: 1000;
+        padding: 0;
+        z-index: 10000;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
     }
-    .site-nav ul.show { display: flex; }
-    .site-nav li { padding: 6px 16px; }
+    .site-nav ul.show { display: flex; max-height: 100vh; overflow: auto; }
+    .site-nav li { padding: 0; }
+    .site-nav ul li a,
+    .site-nav ul li button { padding: 14px 20px; font-size: 1.05rem; }
     .hamburger { display: block; }
+}
+
+/* Mobile-only filter open button (placed under the sort control) */
+.mobile-filter-open {
+    display: none; /* default hidden on desktop */
+    background: var(--button-background-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .mobile-filter-open { display: block; width: 100%; margin-top: 8px; }
+}
+
+/* On small screens hide the sidebar's internal 'Filters' toggle/title to avoid
+   duplicate labels — the mobile open button (under sort) and the overlay header
+   provide the single 'Filters' control/heading. */
+@media (max-width: 900px) {
+    .sidebar.filter-panel .filter-toggle,
+    .sidebar.filter-panel .filter-title {
+        display: none;
+    }
+}
+
+/* Fullscreen mobile filter overlay */
+#mobileFilterOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    z-index: 20000;
+    align-items: stretch;
+    justify-content: center;
+}
+
+#mobileFilterOverlay.open { display: flex; }
+
+#mobileFilterOverlay .overlay-panel {
+    background: var(--background-color);
+    color: var(--text-color);
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
+    overflow: auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+#mobileFilterOverlay .overlay-header {
+    display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px;
+}
+
+#mobileFilterOverlay .overlay-close {
+    background: transparent; border: none; font-size: 1.6rem; cursor: pointer; padding: 6px; color: var(--text-color);
 }
 
 /* Ensure page content starts below fixed header */
@@ -344,7 +425,30 @@ button:hover {
         overflow: visible;
     }
 
-    .content { padding: 12px; }
+     /* Reduce horizontal padding so redeem items fit exactly on small screens
+         and minimize unnecessary white space on left and right.
+         Remove left padding entirely so redeem rectangles sit flush to the
+         left edge of the viewport on mobile as requested. */
+     .content { padding: 4px 6px 4px 0; }
+
+    /* Ensure item-list rows don't add extra horizontal margins and have
+       smaller internal padding on mobile to avoid overflow while keeping
+       touch targets comfortable. */
+    .item-listing { margin: 12px 0; }
+    .item-listing__item {
+        /* slightly reduce horizontal padding so the overall card width is smaller */
+        padding: 10px 6px;
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 6px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    /* Reduce gaps within the main listing area to further avoid horizontal growth */
+    .item-listing__main { gap: 8px; }
 }
 
 /* Preview modal styles */
@@ -445,3 +549,185 @@ details.filter-option:not([open]) > summary::after {
 @media (min-width: 901px) {
     .filter-panel { display: block !important; }
 }
+
+/* New responsive item-listing (card-like rows that behave like table rows)
+   Each <li> is full width inside the main content area and can grow in height
+   depending on content. On wider screens the meta/actions are aligned to the right.
+*/
+.item-listing {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+    display: block;
+}
+.item-listing__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--table-border-color);
+    border-radius: 8px;
+    background: var(--table-background-color);
+    margin-bottom: 10px;
+}
+.item-listing__main {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* Header / legend that lines up with item columns */
+.item-listing__header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 12px;
+    color: var(--table-text-color);
+    font-weight: 700;
+    border-bottom: 1px solid var(--table-border-color);
+    margin-bottom: 8px;
+    background: transparent;
+}
+.item-listing__header .header-left { flex: 1 1 auto; min-width: 0; }
+.item-listing__header .header-meta { flex-shrink: 0; display:flex; gap:12px; align-items:center; }
+
+/* Hide the legend on very small screens where items stack and labels are obvious */
+@media (max-width: 640px) {
+    .item-listing__header { display: none; }
+}
+
+/* Header buttons used as sortable column labels */
+.item-listing__header .header-btn {
+    background: transparent;
+    border: none;
+    color: var(--table-text-color);
+    font-weight: 700;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+.item-listing__header .header-btn:hover,
+.item-listing__header .header-btn:focus {
+    text-decoration: underline;
+    outline: none;
+}
+
+.item-listing__header .header-sub { color: rgba(0,0,0,0.65); font-weight:400; margin-left:8px; }
+.item-listing__left {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.item-name {
+    font-weight: 700;
+    font-size: 1.00rem; /* slightly smaller for a subtler look */
+    margin-bottom: 6px;
+}
+.item-desc { color: rgba(0,0,0,0.7); font-size: 0.95rem; }
+
+/* Subtle languages / AI info segment placed between name and description */
+.item-langs {
+    font-size: 0.86rem;
+    color: rgba(0,0,0,0.55);
+    margin-bottom: 6px;
+    font-style: normal;
+}
+
+/* Dark theme override for subtle info text */
+[data-theme="dark"] .item-langs {
+    color: rgba(255,255,255,0.6);
+}
+.item-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+    margin-top: 6px;
+}
+.item-code { font-family: monospace; background: rgba(0,0,0,0.03); padding: 4px 6px; border-radius:4px; }
+.item-code-inline { display: none; font-family: monospace; background: rgba(0,0,0,0.03); padding: 4px 6px; border-radius:4px; margin-bottom:6px; }
+.item-actions { display:flex; gap:8px; }
+
+@media(min-width:900px) {
+    .item-listing__item { flex-direction: row; align-items: center; }
+    .item-listing__main { flex: 1 1 auto; }
+    .item-meta { margin-top: 0; }
+    /* Hide inline code on desktop and ensure meta code is visible */
+    .item-code-inline { display: none; }
+    .item-meta .item-code { display: block; }
+}
+
+/* On small screens show the inline code under the name and hide the meta code */
+@media (max-width: 899px) {
+    .item-code-inline { display: block; }
+    .item-meta .item-code { display: none; }
+}
+
+/* Mobile layout for redeem code + copy button */
+@media (max-width: 899px) {
+    .mobile-code-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom:6px; }
+    .mobile-code-left { display: flex; gap: 8px; align-items: center; flex: 1 1 auto; min-width: 0; }
+    .mobile-code-label { font-weight: 600; font-size: 0.9rem; color: rgba(0,0,0,0.7); white-space:nowrap; }
+    /* Reserve slightly less space to the right of the code so the whole card can be narrower */
+    .mobile-code-left .item-code-inline { flex: 1 1 auto; max-width: calc(100% - 64px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .mobile-copy-code {
+        background: var(--button-background-color);
+        color: var(--button-text-color);
+        border: none;
+        padding: 6px;
+        border-radius: 6px;
+        cursor: pointer;
+        flex: 0 0 48px; /* reserve a fixed smaller width for the button */
+        min-width: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .mobile-copy-code:active { transform: translateY(1px); }
+    /* ensure desktop meta copy button stays hidden on mobile to avoid duplicates */
+    .item-meta .item-code { display: none; }
+    .item-meta .copy-code { display: none; }
+}
+
+/* Hide mobile-specific elements on desktop */
+@media (min-width: 900px) {
+    .mobile-code-row { display: none; }
+}
+
+/* Soundeffects-specific: place the copy button inside the card on mobile
+   so it doesn't overflow the viewport. Scoped to .soundeffects-page. */
+@media (max-width: 899px) {
+    .soundeffects-page .item-listing__item {
+        position: relative;
+        /* make the card full-width but with very small internal padding so it looks compact */
+        padding: 6px 56px 6px 6px; /* top/right/bottom/left */
+        min-height: 48px;
+        box-sizing: border-box;
+    }
+
+    /* position actions (copy button) inside the card at top-right */
+    .soundeffects-page .item-actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 2;
+    }
+    .soundeffects-page .item-actions .copy-btn {
+        padding: 6px 8px;
+        min-width: 44px;
+        font-size: 0.9rem;
+    }
+
+    /* Make left column compact: limit its width to ~50% so content appears smaller visually
+       while the card itself remains full-bleed. Keep text left-aligned and allow wrapping. */
+    .soundeffects-page .item-listing__left {
+        max-width: 50%;
+        flex: 0 0 50%;
+        margin-right: 8px; /* small gap before absolute actions */
+        text-align: left;
+        overflow: visible;
+    }
+
+    /* Ensure main container keeps items stacked correctly */
+    .soundeffects-page .item-listing__main { align-items: flex-start; }
+}
+

@@ -58,20 +58,24 @@
                         <option value="1:asc">Beschrijving (A → Z)</option>
                         <option value="1:desc">Beschrijving (Z → A)</option>
                     </select>
+                    <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="sortable" onclick="sortTable(0)">Alertnaam</th>
-                            <th class="sortable" onclick="sortTable(1)">Beschrijving</th>
-                            <th class="sortable" onclick="sortTable(2)">Alertcode</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="alertTable">
-                        <!-- rows generated from js/table/alerts_table.js -->
-                    </tbody>
-                </table>
+                <!-- Responsive listing replaces the old table to show items as rows/cards -->
+                <div class="item-listing__header" role="toolbar" aria-label="Sorteer kolommen">
+                    <div class="header-left">
+                        <button class="header-btn" onclick="sortTable(0)">Naam</button>
+                        <span class="header-sub">/</span>
+                        <button class="header-btn" onclick="sortTable(1)">Beschrijving</button>
+                    </div>
+                    <div class="header-meta">
+                        <button class="header-btn" onclick="sortTable(2)">Code</button>
+                        <div style="width:12px"></div>
+                        <div>Actie</div>
+                    </div>
+                </div>
+                <ul id="alertList" class="item-listing">
+                    <!-- items are rendered by js/alerts.js from alertsTable -->
+                </ul>
                 <br><br>
             </main>
         </div>

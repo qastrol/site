@@ -16,7 +16,7 @@
 
 
 </head>
-<body>
+<body class="soundeffects-page">
 
     <!-- Navigatiebalk wordt hier geladen -->
     <div id="navbar">Navigatiebalk wordt geladen...</div>
@@ -58,25 +58,31 @@
             <div class="controls-row" style="margin-bottom:12px; display:flex; align-items:center; gap:8px;">
                 <label for="sortSelect" style="font-weight:600;">Sorteer op:</label>
                 <select id="sortSelect" onchange="applySort()" style="padding:6px;">
-                    <option value="0:asc">Naam (A → Z)</option>
-                    <option value="0:desc">Naam (Z → A)</option>
-                    <option value="1:asc">Beschrijving (A → Z)</option>
-                    <option value="1:desc">Beschrijving (Z → A)</option>
+                        <option value="0:asc">Naam (A → Z)</option>
+                        <option value="0:desc">Naam (Z → A)</option>
+                        <option value="1:asc">Categorieën (A → Z)</option>
+                        <option value="1:desc">Categorieën (Z → A)</option>
+                        <option value="2:asc">Beschrijving (A → Z)</option>
+                        <option value="2:desc">Beschrijving (Z → A)</option>
                 </select>
+                <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
             </div>
 
-            <table>
-        <thead>
-            <tr>
-                <th onclick="sortTable(0)">Soundeffectnaam</th>
-                <th onclick="sortTable(1)">Beschrijving</th>
-                <th>Actie</th>
-            </tr>
-        </thead>
-        <tbody id="soundEffectsTable">
-            <!-- Rows are rendered from js/table/soundeffects_table.js -->
-        </tbody>
-    </table>
+                <div class="item-listing__header" role="toolbar" aria-label="Sorteer kolommen">
+                <div class="header-left">
+                    <button class="header-btn" onclick="sortTable(0)">Naam</button>
+                    <span class="header-sub">/</span>
+                    <button class="header-btn" onclick="sortTable(1)">Categorieën</button>
+                    <span class="header-sub">/</span>
+                    <button class="header-btn" onclick="sortTable(2)">Beschrijving</button>
+                </div>
+                <div class="header-meta">
+                    <div>Actie</div>
+                </div>
+            </div>
+            <ul id="soundEffectsList" class="item-listing">
+                <!-- items rendered by js/soundeffects.js from soundeffectsTable -->
+            </ul>
         </div>
 
     <script src="js/script.js"></script>

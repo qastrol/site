@@ -9,52 +9,111 @@ document.addEventListener('DOMContentLoaded', () => {
     // prefer the lexical binding if present, otherwise fall back to window property
     const dataSource = (typeof noobPointsTable !== 'undefined') ? noobPointsTable : window.noobPointsTable;
 
+    // prefer the new list container, fall back to legacy table body if present
+    const listEl = document.getElementById('redeemList');
     const tbody = document.getElementById('redeemTable');
     const searchInput = document.getElementById('searchInput');
     const counter = document.getElementById('rowCount');
+    // cost filter elements
+    const minCostInput = document.getElementById('minCostInput');
+    const maxCostInput = document.getElementById('maxCostInput');
+    const costRangeMin = document.getElementById('costRangeMin');
+    const costRangeMax = document.getElementById('costRangeMax');
 
     function renderNoobPointsTable(items) {
-        tbody.innerHTML = '';
-    items.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.dataset.code = item.code || '';
-            tr.dataset.cost = item.cost || '';
-            tr.dataset.name = item.name || '';
+        // If new list container exists, render into it; otherwise render into tbody
+        if (listEl) listEl.innerHTML = '';
+        if (tbody) tbody.innerHTML = '';
+        items.forEach(item => {
+            const code = item.code || '';
+            const nameText = item.name || '';
+            const descHtml = item.description || '';
+            const costText = item.cost != null ? String(item.cost) : '';
 
-            const tdName = document.createElement('td');
-            tdName.textContent = item.name || '';
-            tdName.title = 'Klik voor voorbeeld';
-            tdName.style.cursor = 'pointer';
+            // Build li element
+            if (listEl) {
+                // compute categories for this item (support many input shapes) and sort them
+                let cats = [];
+                if (Array.isArray(item.categories)) cats = item.categories.map(String);
+                else if (item && item.categories && typeof item.categories === 'string') cats = item.categories.split(',').map(s => s.trim()).filter(Boolean);
+                else if (Array.isArray(item.category)) cats = item.category.map(String);
+                else if (item && item.category && typeof item.category === 'string') cats = item.category.split(',').map(s => s.trim()).filter(Boolean);
+                if (cats.length) cats.sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
 
-            const tdCode = document.createElement('td');
-            const codeEl = document.createElement('code');
-            codeEl.textContent = item.code || '';
-            tdCode.appendChild(codeEl);
+                // compute type(s) for this item (new optional field 'type' or 'types')
+                let types = [];
+                if (Array.isArray(item.types)) types = item.types.map(String);
+                else if (item && item.types && typeof item.types === 'string') types = item.types.split(',').map(s => s.trim()).filter(Boolean);
+                else if (Array.isArray(item.type)) types = item.type.map(String);
+                else if (item && item.type && typeof item.type === 'string') types = item.type.split(',').map(s => s.trim()).filter(Boolean);
+                if (types.length) types.sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
 
-            const tdDesc = document.createElement('td');
-            tdDesc.innerHTML = item.description || '';
+                const li = document.createElement('li');
+                li.className = 'item-listing__item';
+                li.dataset.code = code; li.dataset.cost = costText; li.dataset.name = nameText;
+                if (cats.length) li.dataset.categories = cats.join('|');
+                if (types.length) li.dataset.types = types.join('|');
 
-            const tdCost = document.createElement('td');
-            tdCost.textContent = item.cost != null ? String(item.cost) : '';
+                const main = document.createElement('div'); main.className = 'item-listing__main';
+                const left = document.createElement('div'); left.className = 'item-listing__left';
+                const name = document.createElement('div'); name.className = 'item-name'; name.textContent = nameText; name.title = 'Klik voor voorbeeld'; name.style.cursor = 'pointer';
 
-            const tdActions = document.createElement('td');
-            const copyBtn = document.createElement('button');
-            copyBtn.textContent = 'Kopieer';
-            copyBtn.className = 'copy-code';
-            copyBtn.type = 'button';
-            copyBtn.addEventListener('click', () => copyToClipboard(item.code));
-            tdActions.appendChild(copyBtn);
+                // info row: cost and categories
+                const info = document.createElement('div'); info.className = 'item-langs';
+                // Inline code element for mobile: shown between name and info on small screens
+                const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = code;
+                // Mobile copy row: a mobile-only row containing label, code and a copy button
+                const mobileCodeRow = document.createElement('div'); mobileCodeRow.className = 'mobile-code-row';
+                const mobileCodeLeft = document.createElement('div'); mobileCodeLeft.className = 'mobile-code-left';
+                const mobileLabel = document.createElement('span'); mobileLabel.className = 'mobile-code-label'; mobileLabel.textContent = 'Redeemcode:';
+                mobileCodeLeft.appendChild(mobileLabel);
+                mobileCodeLeft.appendChild(codeInline);
+                const mobileCopyBtn = document.createElement('button'); mobileCopyBtn.type = 'button'; mobileCopyBtn.className = 'mobile-copy-code'; mobileCopyBtn.textContent = 'Kopieer';
+                mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(code, ev.currentTarget));
+                mobileCodeRow.appendChild(mobileCodeLeft);
+                mobileCodeRow.appendChild(mobileCopyBtn);
+                const costPart = costText ? (costText + ' Noob-Points') : '';
+                const typePart = types.length ? types.join(', ') : '';
+                const catPart = cats.length ? cats.join(', ') : '';
+                const infoParts = [];
+                if (costPart) infoParts.push(costPart);
+                if (typePart) infoParts.push(typePart);
+                if (catPart) infoParts.push(catPart);
+                info.textContent = infoParts.join(' • ');
 
-            tr.appendChild(tdName);
-            tr.appendChild(tdCode);
-            tr.appendChild(tdDesc);
-            tr.appendChild(tdCost);
-            tr.appendChild(tdActions);
+                const desc = document.createElement('div'); desc.className = 'item-desc'; desc.innerHTML = descHtml;
+                left.appendChild(name);
+                // insert mobile code row (hidden on desktop via CSS)
+                left.appendChild(mobileCodeRow);
+                if (info.textContent) left.appendChild(info);
+                left.appendChild(desc);
 
-            tbody.appendChild(tr);
+                const meta = document.createElement('div'); meta.className = 'item-meta';
+                const codeEl = document.createElement('div'); codeEl.className = 'item-code'; codeEl.textContent = code;
+                const actions = document.createElement('div'); actions.className = 'item-actions';
+                const copyBtn = document.createElement('button'); copyBtn.textContent = 'Kopieer'; copyBtn.className = 'copy-code'; copyBtn.type = 'button'; copyBtn.addEventListener('click', (ev) => copyToClipboard(code, ev.currentTarget));
+                actions.appendChild(copyBtn);
+                // note: cost is shown in the info row; do not duplicate it in meta
+                meta.appendChild(codeEl); meta.appendChild(actions);
+
+                main.appendChild(left); main.appendChild(meta); li.appendChild(main);
+                listEl.appendChild(li);
+            }
+
+            // Legacy table rendering (kept for compatibility)
+            if (tbody) {
+                const tr = document.createElement('tr');
+                tr.dataset.code = code; tr.dataset.cost = costText; tr.dataset.name = nameText;
+                const tdName = document.createElement('td'); tdName.textContent = nameText; tdName.title = 'Klik voor voorbeeld'; tdName.style.cursor = 'pointer';
+                const tdCode = document.createElement('td'); const codeTag = document.createElement('code'); codeTag.textContent = code; tdCode.appendChild(codeTag);
+                const tdDesc = document.createElement('td'); tdDesc.innerHTML = descHtml;
+                const tdCost = document.createElement('td'); tdCost.textContent = costText;
+                const tdActions = document.createElement('td'); const copyBtn2 = document.createElement('button'); copyBtn2.textContent = 'Kopieer'; copyBtn2.className = 'copy-code'; copyBtn2.type = 'button'; copyBtn2.addEventListener('click', (ev) => copyToClipboard(code, ev.currentTarget)); tdActions.appendChild(copyBtn2);
+                tr.appendChild(tdName); tr.appendChild(tdCode); tr.appendChild(tdDesc); tr.appendChild(tdCost); tr.appendChild(tdActions);
+                tbody.appendChild(tr);
+            }
         });
         updateCounter();
-        // attach preview handlers to the newly rendered rows
         attachPreviewHandlers();
     }
 
@@ -246,6 +305,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Attach preview handlers to first-column names and mark those with previews
     function attachPreviewHandlers(){
+        // handle list items first
+        const listRows = document.querySelectorAll('#redeemList li');
+        listRows.forEach(r => {
+            const first = r.querySelector('.item-name');
+            if (!first) return;
+            const code = r.dataset.code || '';
+            const display = first.innerText.trim();
+            first.title = 'Klik voor voorbeeld';
+            first.style.cursor = 'pointer';
+            const newFirst = first.cloneNode(true);
+            first.parentNode.replaceChild(newFirst, first);
+            newFirst.addEventListener('click', () => showPreview('alerts', code, display));
+            previewExists('alerts', code || display, (exists) => { if (exists) newFirst.classList.add('has-preview'); });
+        });
+
+        // legacy table rows
         const rows = document.querySelectorAll('#redeemTable tr');
         rows.forEach(r => {
             const first = r.querySelector('td:first-child');
@@ -254,19 +329,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const display = first.innerText.trim();
             first.title = 'Klik voor voorbeeld';
             first.style.cursor = 'pointer';
-            // remove prior listeners by cloning
             const newFirst = first.cloneNode(true);
             first.parentNode.replaceChild(newFirst, first);
             newFirst.addEventListener('click', () => showPreview('alerts', code, display));
-            // mark if preview exists (image/audio/video or iframe mapping)
-            previewExists('alerts', code || display, (exists) => {
-                if (exists) newFirst.classList.add('has-preview');
-            });
+            previewExists('alerts', code || display, (exists) => { if (exists) newFirst.classList.add('has-preview'); });
         });
 
-        // Intercept anchors inside the table that point to alert videos so they
+        // Intercept anchors inside the list/table that point to alert videos so they
         // don't trigger navigation or downloads; open preview overlay instead.
-        const anchors = document.querySelectorAll('#redeemTable a[href]');
+        const anchors = document.querySelectorAll('#redeemList a[href], #redeemTable a[href]');
         anchors.forEach(a => {
             try {
                 const href = a.getAttribute('href') || '';
@@ -293,8 +364,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return inputs.filter(i => i.checked).map(i => i.value);
     }
 
+    function getSelectedTypes() {
+        const selected = [];
+        const checkboxes = document.querySelectorAll('#typeFilters input[type="checkbox"]:checked');
+        // Voeg .trim() en .toLowerCase() toe om spaties en hoofdletters te elimineren
+        checkboxes.forEach(cb => selected.push(cb.value.trim().toLowerCase()));
+        return selected;
+    }
+
     // Determine whether an item matches the selected categories and search text
-    function itemMatchesFilters(item, searchLower, selectedCats) {
+    function itemMatchesFilters(item, searchLower, selectedCats, selectedTypes, minCost, maxCost) {
         if (!item) return false;
         const name = (item.name || '').toLowerCase();
         const desc = (item.description || '').toLowerCase();
@@ -308,62 +387,228 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (Array.isArray(item.category)) cats = item.category.map(String);
         else if (item && item.category && typeof item.category === 'string') cats = item.category.split(',').map(s => s.trim()).filter(Boolean);
 
-        if (!selectedCats || selectedCats.length === 0) return textMatch;
+        if (!selectedCats || selectedCats.length === 0) {
+            // still must respect text match
+            if (!textMatch) return false;
+        } else {
+            if (cats.length === 0) return false; // if categories selected but item has none, hide
+            const intersects = selectedCats.some(sc => cats.includes(sc));
+            if (!intersects) return false;
+        }
 
-        if (cats.length === 0) return false; // if categories selected but item has none, hide
+        // type filtering: if selectedTypes set, ensure item has at least one of them
+        if (selectedTypes && selectedTypes.length > 0) {
+            // build types array (support item.types or item.type)
+            let tarr = [];
+            if (Array.isArray(item.types)) tarr = item.types.map(String);
+            else if (item && item.types && typeof item.types === 'string') tarr = item.types.split(',').map(s => s.trim()).filter(Boolean);
+            else if (Array.isArray(item.type)) tarr = item.type.map(String);
+            else if (item && item.type && typeof item.type === 'string') tarr = item.type.split(',').map(s => s.trim()).filter(Boolean);
+            // normalize item types for comparison (trim + lowercase)
+            tarr = tarr.map(t => (t || '').toString().trim().toLowerCase()).filter(Boolean);
+            if (tarr.length === 0) return false;
+            const intersectsTypes = selectedTypes.some(st => tarr.includes(st));
+            if (!intersectsTypes) return false;
+        }
 
-        const intersects = selectedCats.some(sc => cats.includes(sc));
-        return textMatch && intersects;
+        // cost filtering: if minCost/maxCost are numbers, ensure item.cost is within range
+        if (typeof minCost === 'number' && typeof maxCost === 'number') {
+            const costVal = (item.cost == null) ? 0 : Number(item.cost);
+            if (isNaN(costVal)) return false;
+            if (costVal < minCost || costVal > maxCost) return false;
+        }
+
+        return true;
     }
 
     // Rebuild the visible table from the dataSource and current filters
+    function getSelectedCostRange() {
+        // Determine a sensible global min/max from the data source (works even when
+        // the visual range inputs are not present). Treat empty text inputs as
+        // "no override" and fall back to the global bounds.
+        let globalMin = Infinity, globalMax = -Infinity;
+        if (Array.isArray(dataSource)) {
+            dataSource.forEach(item => {
+                if (!item) return;
+                const c = (item.cost == null) ? 0 : Number(item.cost);
+                if (!isFinite(c)) return;
+                if (c < globalMin) globalMin = c;
+                if (c > globalMax) globalMax = c;
+            });
+        }
+        if (!isFinite(globalMin)) globalMin = 0;
+        if (!isFinite(globalMax)) globalMax = 0;
+
+        // Read text inputs; treat empty string / missing value as "use global"
+        const rawMin = (minCostInput && typeof minCostInput.value === 'string') ? minCostInput.value.trim() : '';
+        const rawMax = (maxCostInput && typeof maxCostInput.value === 'string') ? maxCostInput.value.trim() : '';
+        let mn = rawMin === '' ? globalMin : Number(rawMin);
+        let mx = rawMax === '' ? globalMax : Number(rawMax);
+        if (!isFinite(mn)) mn = globalMin;
+        if (!isFinite(mx)) mx = globalMax;
+
+        // clamp to global bounds
+        if (mn < globalMin) mn = globalMin;
+        if (mx > globalMax) mx = globalMax;
+        if (mn > mx) mn = mx;
+        return [mn, mx];
+    }
+
     function refreshTable() {
         const searchLower = (searchInput?.value || '').toLowerCase().trim();
         const selectedCats = getSelectedCategories();
-        const filtered = dataSource.filter(item => itemMatchesFilters(item, searchLower, selectedCats));
+        const selectedTypes = getSelectedTypes();
+        const [minCost, maxCost] = getSelectedCostRange();
+        try { console.debug('refreshTable', { searchLower, selectedCats, selectedTypes, minCost, maxCost }); } catch (e) {}
+        const filtered = dataSource.filter(item => itemMatchesFilters(item, searchLower, selectedCats, selectedTypes, minCost, maxCost));
+        try { console.debug('filtered count', filtered.length); } catch (e) {}
         renderNoobPointsTable(filtered);
     }
 
-    function copyToClipboard(text) {
+    function showCopyToast(message) {
+        // remove existing toast if present
+        const existing = document.getElementById('copyToast');
+        if (existing) existing.remove();
+        const t = document.createElement('div');
+        t.id = 'copyToast';
+        t.textContent = message;
+        t.style.position = 'fixed';
+        t.style.left = '50%';
+        t.style.bottom = '12px';
+        t.style.transform = 'translateX(-50%)';
+        t.style.background = 'rgba(0,0,0,0.85)';
+        t.style.color = '#fff';
+        t.style.padding = '8px 12px';
+        t.style.borderRadius = '6px';
+        t.style.zIndex = 3000;
+        t.style.fontSize = '0.95rem';
+        document.body.appendChild(t);
+        setTimeout(() => { t.style.transition = 'opacity 0.25s'; t.style.opacity = '0'; }, 1200);
+        setTimeout(() => { t.remove(); }, 1500);
+    }
+
+    function copyToClipboard(text, sourceBtn) {
         if (!text) return;
-        navigator.clipboard?.writeText(text).then(() => {
-            // flash a small visual feedback
-            console.log('Copied', text);
-        }).catch(err => console.warn('clipboard failed', err));
+        // prefer modern Clipboard API, fallback to execCommand
+        const doFallback = (txt) => {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = txt;
+                // prevent scrolling to bottom
+                ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                const ok = document.execCommand('copy');
+                ta.remove();
+                return ok;
+            } catch (e) { return false; }
+        };
+
+        const isMobile = window.matchMedia && window.matchMedia('(max-width: 899px)').matches;
+
+        const afterCopySuccess = () => {
+            if (isMobile) {
+                // on mobile do not change button text — show small toast at bottom
+                showCopyToast(`${text} gekopieerd`);
+            } else if (sourceBtn) {
+                // change button text briefly on desktop
+                const orig = sourceBtn.textContent;
+                sourceBtn.textContent = 'Gekopieerd ✓';
+                sourceBtn.disabled = true;
+                setTimeout(() => { sourceBtn.textContent = orig; sourceBtn.disabled = false; }, 1200);
+            } else {
+                // fallback console log
+                console.log('Copied', text);
+            }
+        };
+
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+            navigator.clipboard.writeText(text).then(() => {
+                afterCopySuccess();
+            }).catch(err => {
+                // fallback method
+                const ok = doFallback(text);
+                if (ok) afterCopySuccess();
+                else console.warn('clipboard failed', err);
+            });
+        } else {
+            const ok = doFallback(text);
+            if (ok) afterCopySuccess();
+            else console.warn('clipboard not supported');
+        }
     }
 
     function updateCounter() {
         if (!counter) return;
-        const total = tbody.querySelectorAll('tr').length;
+        const total = (listEl ? listEl.querySelectorAll('li').length : 0) || (tbody ? tbody.querySelectorAll('tr').length : 0);
         counter.textContent = total;
     }
 
     function searchTable() {
         const q = (searchInput?.value || '').toLowerCase().trim();
-        if (!q) {
-            // show all
-            renderNoobPointsTable(dataSource);
-            return;
-        }
-        const filtered = dataSource.filter(item => {
-            return [item.name, item.code, item.description].join(' ').toLowerCase().includes(q);
-        });
+        if (!q) { renderNoobPointsTable(dataSource); return; }
+        const filtered = dataSource.filter(item => [item.name, item.code, item.description].join(' ').toLowerCase().includes(q));
         renderNoobPointsTable(filtered);
     }
 
     function sortTable(columnIndex, numeric = false) {
+        // Try list view first
+        const list = listEl;
+        if (list) {
+            const items = Array.from(list.querySelectorAll('li'));
+            if (items.length === 0) return;
+            // Support sorting by different columns. For list view we prefer dataset values for
+            // cost/type/categories when available to avoid relying on inner DOM structure.
+            if (columnIndex === 3) {
+                // cost - numeric
+                items.sort((a, b) => ((Number(a.dataset.cost) || 0) - (Number(b.dataset.cost) || 0)));
+            } else if (columnIndex === 4) {
+                // type - string compare using dataset.types (may be pipe-separated)
+                items.sort((a, b) => {
+                    const at = (a.dataset.types || '').toLowerCase();
+                    const bt = (b.dataset.types || '').toLowerCase();
+                    return at.localeCompare(bt, 'nl', { sensitivity: 'base' });
+                });
+            } else if (columnIndex === 5) {
+                // categories - string compare using dataset.categories
+                items.sort((a, b) => {
+                    const ac = (a.dataset.categories || '').toLowerCase();
+                    const bc = (b.dataset.categories || '').toLowerCase();
+                    return ac.localeCompare(bc, 'nl', { sensitivity: 'base' });
+                });
+            } else {
+                const selMap = { 0: '.item-name', 1: '.item-code', 2: '.item-desc' };
+                const sel = selMap[columnIndex] || '.item-name';
+                const isNumeric = numeric || items.every(li => {
+                    const el = li.querySelector(sel); return el && !isNaN(el.innerText.trim());
+                });
+                items.sort((a, b) => {
+                    const aEl = a.querySelector(sel); const bEl = b.querySelector(sel);
+                    const aText = aEl ? aEl.textContent.trim() : '';
+                    const bText = bEl ? bEl.textContent.trim() : '';
+                    if (isNumeric) return (Number(aText) || 0) - (Number(bText) || 0);
+                    return aText.localeCompare(bText, undefined, { numeric: true });
+                });
+            }
+            // respect dataset on list for order tracking
+            const order = list.dataset.sortOrder === 'asc' ? -1 : 1;
+            list.dataset.sortOrder = list.dataset.sortOrder === 'asc' ? 'desc' : 'asc';
+            if (order === -1) items.reverse();
+            items.forEach(i => list.appendChild(i));
+            return;
+        }
+
+        // Fallback to legacy tbody sort
+        if (!tbody) return;
         const rows = Array.from(tbody.querySelectorAll('tr'));
         if (rows.length === 0) return;
         const multiplier = tbody.dataset.sortOrder === 'asc' ? -1 : 1;
         tbody.dataset.sortOrder = tbody.dataset.sortOrder === 'asc' ? 'desc' : 'asc';
-
         rows.sort((a, b) => {
             const aText = a.children[columnIndex].textContent.trim();
             const bText = b.children[columnIndex].textContent.trim();
-            if (numeric) {
-                return multiplier * ((Number(aText) || 0) - (Number(bText) || 0));
-            }
-            return multiplier * aText.localeCompare(bText, undefined, {numeric: true});
+            if (numeric) return multiplier * ((Number(aText) || 0) - (Number(bText) || 0));
+            return multiplier * aText.localeCompare(bText, undefined, { numeric: true });
         });
         rows.forEach(r => tbody.appendChild(r));
     }
@@ -434,9 +679,151 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Build type filters from dataSource (new 'type' or 'types' field)
+    function buildTypeFilters() {
+        const container = document.getElementById('typeFilters');
+        if (!container) return;
+        if (!Array.isArray(dataSource)) return;
+
+        const types = new Set();
+        dataSource.forEach(item => {
+            if (!item) return;
+            if (Array.isArray(item.types)) {
+                item.types.forEach(t => { if (t) types.add(t.toString()); });
+            } else if (item.types && typeof item.types === 'string') {
+                item.types.split(',').forEach(t => { const s = t.trim(); if (s) types.add(s); });
+            } else if (Array.isArray(item.type)) {
+                item.type.forEach(t => { if (t) types.add(t.toString()); });
+            } else if (item.type && typeof item.type === 'string') {
+                item.type.split(',').forEach(t => { const s = t.trim(); if (s) types.add(s); });
+            }
+        });
+
+        const arr = Array.from(types).sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+        container.innerHTML = '';
+        if (arr.length === 0) { container.innerHTML = '<small>Geen types gevonden.</small>'; return; }
+
+        arr.forEach(t => {
+            const id = 'noobtype-' + t.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            const wrapper = document.createElement('div');
+            wrapper.style.display = 'flex'; wrapper.style.gap = '6px'; wrapper.style.alignItems = 'center'; wrapper.style.marginBottom = '4px';
+            const input = document.createElement('input'); input.type = 'checkbox'; input.id = id; input.value = t;
+            // log changes to help debug filtering issues
+            input.addEventListener('change', (ev) => {
+                try { console.debug('type checkbox changed', { value: input.value, checked: input.checked }); } catch (e) {}
+                refreshTable();
+            });
+            const label = document.createElement('label'); label.htmlFor = id; label.style.fontWeight = 'normal'; label.textContent = t;
+            wrapper.appendChild(input); wrapper.appendChild(label); container.appendChild(wrapper);
+        });
+    }
+
+    // Initialize cost filter inputs and (optional) sliders based on dataSource values
+    function initializeCostFilter() {
+        if (!Array.isArray(dataSource)) return;
+        // determine global min/max from the data set
+        let min = Infinity, max = -Infinity;
+        dataSource.forEach(item => {
+            if (!item) return;
+            const c = (item.cost == null) ? 0 : Number(item.cost);
+            if (!isFinite(c)) return;
+            if (c < min) min = c;
+            if (c > max) max = c;
+        });
+        if (!isFinite(min)) min = 0;
+        if (!isFinite(max)) max = 0;
+
+        // Require number inputs at minimum
+        if (!minCostInput || !maxCostInput) return;
+
+        // Set placeholders to show global bounds but keep values empty by default
+        minCostInput.placeholder = String(min);
+        maxCostInput.placeholder = String(max);
+        // Clear current values so placeholders are visible and filters are inactive on load
+        minCostInput.value = '';
+        maxCostInput.value = '';
+        // Also set min/max attributes on the number inputs for nicer UX
+        try { minCostInput.min = String(min); minCostInput.max = String(max); } catch (e) {}
+        try { maxCostInput.min = String(min); maxCostInput.max = String(max); } catch (e) {}
+
+        // When the user types, update filtering in real time. We do not force clamping
+        // while typing; clamping can occur on blur if desired.
+        minCostInput.addEventListener('input', () => { refreshTable(); });
+        maxCostInput.addEventListener('input', () => { refreshTable(); });
+
+        // If the optional range slider inputs exist, wire them up as well (preserve
+        // previous behavior). They remain optional and the number inputs work even
+        // when they are absent.
+        if (costRangeMin && costRangeMax) {
+            const step = 10;
+            costRangeMin.min = String(min);
+            costRangeMin.max = String(max);
+            costRangeMin.step = String(step);
+            costRangeMax.min = String(min);
+            costRangeMax.max = String(max);
+            costRangeMax.step = String(step);
+
+            // initialize slider positions to global bounds
+            costRangeMin.value = String(min);
+            costRangeMax.value = String(max);
+
+            function syncFromRange() {
+                let a = Number(costRangeMin.value);
+                let b = Number(costRangeMax.value);
+                if (isNaN(a)) a = min; if (isNaN(b)) b = max;
+                if (a > b) {
+                    if (this === costRangeMin) { a = b; costRangeMin.value = String(a); }
+                    else { b = a; costRangeMax.value = String(b); }
+                }
+                minCostInput.value = String(a);
+                maxCostInput.value = String(b);
+                refreshTable();
+            }
+
+            function syncFromInputs() {
+                // when number inputs change, sync them back to the sliders
+                let a = Number(minCostInput.value);
+                let b = Number(maxCostInput.value);
+                if (!isFinite(a)) a = min; if (!isFinite(b)) b = max;
+                if (a < Number(costRangeMin.min)) a = Number(costRangeMin.min);
+                if (b > Number(costRangeMax.max)) b = Number(costRangeMax.max);
+                if (a > b) a = b;
+                costRangeMin.value = String(a);
+                costRangeMax.value = String(b);
+                minCostInput.value = String(a);
+                maxCostInput.value = String(b);
+                refreshTable();
+            }
+
+            costRangeMin.addEventListener('input', syncFromRange);
+            costRangeMax.addEventListener('input', syncFromRange);
+            costRangeMin.addEventListener('pointerdown', function(ev){
+                // original behavior: only allow drag when pressing near the thumb
+                const rect = costRangeMin.getBoundingClientRect();
+                const pct = (Number(costRangeMin.value) - Number(costRangeMin.min)) / (Number(costRangeMin.max) - Number(costRangeMin.min) || 1);
+                const thumbX = rect.left + Math.max(0, Math.min(1, pct)) * rect.width;
+                if (Math.abs(ev.clientX - thumbX) > 14) { ev.preventDefault(); ev.stopImmediatePropagation(); }
+            });
+            costRangeMax.addEventListener('pointerdown', function(ev){
+                const rect = costRangeMax.getBoundingClientRect();
+                const pct = (Number(costRangeMax.value) - Number(costRangeMax.min)) / (Number(costRangeMax.max) - Number(costRangeMax.min) || 1);
+                const thumbX = rect.left + Math.max(0, Math.min(1, pct)) * rect.width;
+                if (Math.abs(ev.clientX - thumbX) > 14) { ev.preventDefault(); ev.stopImmediatePropagation(); }
+            });
+
+            minCostInput.addEventListener('change', syncFromInputs);
+            maxCostInput.addEventListener('change', syncFromInputs);
+        }
+    }
+
     // initial setup: build filters and render
     buildCategoryFilters();
+    buildTypeFilters();
+    // initialize the cost filter controls (sets min/max and wires events)
+    initializeCostFilter();
     renderNoobPointsTable(dataSource);
+    // Ensure list/table is sorted alphabetically by name on initial load
+    try { sortTable(0); } catch (e) { /* ignore if sortTable unavailable */ }
     // expose total redeems count for the index page (stored as a simple value)
     try { localStorage.setItem('redeemsCount', String(dataSource.length)); } catch (e) { /* noop */ }
 
@@ -458,6 +845,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // expose globally for the inline onchange / button handlers in the HTML
     window.applySort = applySortInternal;
+    // expose sortTable so inline header buttons (onclick="sortTable(...)") work
+    window.sortTable = sortTable;
 
     // apply initial sort according to the selector value
     applySortInternal();

@@ -209,6 +209,6 @@ const alertsTable = [
 	{ name: "Windows 95 melding", description: "Een pop-up melding in Windows 95", code: "<windows95>" },
 	{ name: "Alert voor woutdisconnect", description: "Beschrijving voor woutdisconnect", code: "<woutdisconnect>" },
 	{ name: "Zelda CDI in het Nederlands", description: "Ooh jongen, ik verveel me te pletter. (de intro van Link: The Face of Evil in het Nederlands) <a href=\"https://www.youtube.com/watch?v=M2tskI83V6g\">Bron</a>", code: "<zeldanl>" },
-	{ name: "Zin in maandag", description: "Voor als je uitkijkt naar maandag, de start van een nieuwe werkweek. <a href=\"https://www.youtube.com/watch?v=X728AwdIQT4\">Bron</a>", code: "<zininmaandag>" }
+	{ name: "Zin in maandag", description: "Voor als je uitkijkt naar maandag, de start van een nieuwe werkweek. <a href=\"https://www.youtube.com/watch?v=X728AwdIQT4\">Bron</a>", code: "<zininmaandag>" }];
 
-];
+// Note: the page expects a global `alertsTable` variable. Keep the name global to match existing script usage.

@@ -1,7 +1,9 @@
         // Functie om effectnaam te kopiëren naar klembord
         function copyToClipboard(button) {
-            const row = button.closest('tr');
-            const effectName = row.cells[2].innerText.trim();
+            const li = button.closest('li');
+            const codeEl = li ? li.querySelector('.item-code') : null;
+            const effectName = codeEl ? codeEl.innerText.trim() : '';
+            if (!effectName) return;
             navigator.clipboard.writeText(effectName).then(() => {
                 alert(`Effectnaam '${effectName}' gekopieerd naar het klembord!`);
             }).catch(err => {
@@ -12,24 +14,35 @@
         let sortDirection = [true, true, true]; // Eén richting per kolom
 
 function sortTable(n) {
-    const table = document.querySelector("table");
-    const rows = Array.from(table.rows).slice(1);
+    const list = document.getElementById('alertList');
+    if (!list) return;
+    const items = Array.from(list.children);
+    if (!items.length) return;
 
-    const isNumeric = rows.every(row => !isNaN(row.cells[n].innerText.trim()));
-    const sortedRows = rows.sort((rowA, rowB) => {
-        const textA = rowA.cells[n].innerText.trim();
-        const textB = rowB.cells[n].innerText.trim();
-        if (isNumeric) {
-            return parseFloat(textA) - parseFloat(textB);
-        }
-        return textA.localeCompare(textB);
+    // map column indices to selectors inside the item
+    const colMap = {
+        0: '.item-name',
+        1: '.item-desc',
+        2: '.item-code'
+    };
+    const sel = colMap[n] || '.item-name';
+
+    const isNumeric = items.every(li => {
+        const el = li.querySelector(sel);
+        return el && !isNaN(el.innerText.trim());
     });
 
-    if (!sortDirection[n]) {
-        sortedRows.reverse();
-    }
+    items.sort((a, b) => {
+        const aEl = a.querySelector(sel);
+        const bEl = b.querySelector(sel);
+        const textA = aEl ? aEl.innerText.trim() : '';
+        const textB = bEl ? bEl.innerText.trim() : '';
+        if (isNumeric) return (parseFloat(textA) || 0) - (parseFloat(textB) || 0);
+        return textA.localeCompare(textB, 'nl', { sensitivity: 'base' });
+    });
 
-    sortedRows.forEach(row => table.appendChild(row));
+    if (!sortDirection[n]) items.reverse();
+    items.forEach(it => list.appendChild(it));
     sortDirection[n] = !sortDirection[n];
 }
 
@@ -37,69 +50,77 @@ function sortTable(n) {
         // Functie om de tabel te filteren en het aantal zichtbare rijen bij te werken
         function searchTable() {
             const input = document.getElementById("searchInput");
-            const filter = input.value.toLowerCase();
-            const table = document.querySelector("table");
-            const rows = table.getElementsByTagName("tr");
+            const filter = (input ? input.value : '').toLowerCase();
+            const items = document.querySelectorAll('#alertList li');
             let visibleCount = 0;
-
-            for (let i = 1; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName("td");
-                let matchFound = false;
-
-                for (let j = 0; j < cells.length; j++) {
-                    const cellText = cells[j].textContent || cells[j].innerText;
-                    if (cellText.toLowerCase().indexOf(filter) > -1) {
-                        matchFound = true;
-                        break;
-                    }
-                }
-
-                rows[i].style.display = matchFound ? "" : "none";
-                if (matchFound) {
-                    visibleCount++;
-                }
-            }
-
-            // Werk het dynamische getal bij
+            items.forEach(li => {
+                const text = li.innerText || '';
+                const matchFound = !filter || text.toLowerCase().indexOf(filter) > -1;
+                li.style.display = matchFound ? '' : 'none';
+                if (matchFound) visibleCount++;
+            });
             document.getElementById("rowCount").textContent = visibleCount;
         }
 
         // Functie om het aantal zichtbare rijen te berekenen bij pagina-initialisatie
         function updateRowCount() {
-            const table = document.querySelector("table");
-            const rows = Array.from(table.getElementsByTagName("tr")).slice(1);
-            const visibleCount = rows.filter(row => row.style.display !== "none").length;
-            document.getElementById("rowCount").textContent = visibleCount;
+            const items = Array.from(document.querySelectorAll('#alertList li'));
+            const visibleCount = items.filter(it => it.style.display !== 'none').length;
+            document.getElementById('rowCount').textContent = visibleCount;
         }
 
         // Render the alerts table from the `alertsTable` data source.
         function renderAlertsTable() {
-            const tbody = document.getElementById('alertTable');
-            if (!tbody) return;
-            // clear existing content
-            tbody.innerHTML = '';
+            const list = document.getElementById('alertList');
+            if (!list) return;
+            list.innerHTML = '';
             if (typeof alertsTable === 'undefined' || !Array.isArray(alertsTable)) return;
 
             alertsTable.forEach(item => {
-                const tr = document.createElement('tr');
-                const tdName = document.createElement('td');
-                tdName.textContent = item.name || '';
-                tdName.title = 'Klik voor voorbeeld';
-                const tdDesc = document.createElement('td');
-                tdDesc.innerHTML = item.description || '';
-                const tdCode = document.createElement('td');
-                tdCode.textContent = item.code || '';
-                const tdAct = document.createElement('td');
+                const li = document.createElement('li');
+                li.className = 'item-listing__item';
+
+                const main = document.createElement('div');
+                main.className = 'item-listing__main';
+
+                const left = document.createElement('div');
+                left.className = 'item-listing__left';
+                const name = document.createElement('div');
+                name.className = 'item-name';
+                name.textContent = item.name || '';
+                name.title = 'Klik voor voorbeeld';
+                const desc = document.createElement('div');
+                desc.className = 'item-desc';
+                desc.innerHTML = item.description || '';
+                left.appendChild(name);
+                left.appendChild(desc);
+
+                const meta = document.createElement('div');
+                meta.className = 'item-meta';
+                const code = document.createElement('div');
+                code.className = 'item-code';
+                code.textContent = item.code || '';
+                const actions = document.createElement('div');
+                actions.className = 'item-actions';
                 const btn = document.createElement('button');
                 btn.className = 'copy-btn';
                 btn.textContent = 'Kopieer';
                 btn.addEventListener('click', function() { copyToClipboard(this); });
-                tdAct.appendChild(btn);
-                tr.appendChild(tdName);
-                tr.appendChild(tdDesc);
-                tr.appendChild(tdCode);
-                tr.appendChild(tdAct);
-                tbody.appendChild(tr);
+                actions.appendChild(btn);
+
+                meta.appendChild(code);
+                meta.appendChild(actions);
+
+                main.appendChild(left);
+                main.appendChild(meta);
+                li.appendChild(main);
+
+                // attach dataset attributes for filters/preview
+                li.dataset.name = (item.name || '').toString();
+                li.dataset.desc = (item.description || '').toString();
+                li.dataset.code = (item.code || '').toString();
+
+                list.appendChild(li);
             });
         }
         // Hook voor de sort select in de sidebar
@@ -113,8 +134,8 @@ function sortTable(n) {
             sortDirection[col] = (dir === 'asc');
             sortTable(col);
         }
-        const alertCount = document.querySelectorAll('#alertTable tr').length;
-        localStorage.setItem('alertCount', alertCount);
+    const alertCount = document.querySelectorAll('#alertList li').length;
+    localStorage.setItem('alertCount', alertCount);
 
         /* Preview modal for alerts from /alerts/ */
         function normalizeNameForFile(text) {
@@ -273,9 +294,9 @@ function sortTable(n) {
 
         // Attach preview handlers to first-column names and mark those with previews
         function attachPreviewHandlers(){
-            const rows = document.querySelectorAll('#alertTable tr');
+            const rows = document.querySelectorAll('#alertList li');
             rows.forEach(r => {
-                const first = r.querySelector('td:first-child');
+                const first = r.querySelector('.item-name');
                 if (!first) return;
                 const display = first.innerText.trim();
                 first.title = 'Klik voor voorbeeld';
@@ -287,7 +308,7 @@ function sortTable(n) {
 
             // Intercept any anchor that points to a local alerts media file or folder
             // so the media isn't loaded until the preview overlay is requested.
-            const anchors = document.querySelectorAll('#alertTable a[href]');
+            const anchors = document.querySelectorAll('#alertList a[href]');
             anchors.forEach(a => {
                 try {
                     const href = a.getAttribute('href') || '';

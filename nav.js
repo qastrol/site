@@ -33,8 +33,28 @@ document.addEventListener("DOMContentLoaded", function () {
     // Voeg de navigatie HTML toe aan de container
     navContainer.innerHTML = navHTML;
 
-    // Voer de logica uit voor de dark mode en het hamburger-menu
+    // After injecting the header into the page, adjust page spacing so the header
+    // doesn't overlap content (especially on mobile). Then initialize behavior.
+    function adjustContentForHeader() {
+        const header = document.querySelector('.site-header');
+        const content = document.querySelector('.content');
+        const navMenu = document.getElementById('nav-menu');
+        if (header && content) {
+            // set top padding equal to header height so content is never hidden
+            const h = header.offsetHeight;
+            content.style.paddingTop = (h + 8) + 'px';
+            // if the nav menu is absolutely positioned on mobile, place it below header
+            if (navMenu) {
+                navMenu.style.top = h + 'px';
+            }
+        }
+    }
+
+    // Run initial scripts and wire events
     executeNavScripts();
+    // Adjust on load and on resize in case header height changes (responsive)
+    adjustContentForHeader();
+    window.addEventListener('resize', adjustContentForHeader);
 
     function executeNavScripts() {
         const modeToggle = document.getElementById("mode-toggle");
@@ -69,14 +89,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const hamburger = document.getElementById("hamburger");
         const navMenu = document.getElementById("nav-menu");
 
-        hamburger.addEventListener("click", () => {
-            navMenu.classList.toggle("show"); // Voeg de 'show' klasse toe of verwijder deze
+        // Toggle menu and ensure aria-expanded is updated for accessibility
+        hamburger.addEventListener("click", (ev) => {
+            const isOpen = navMenu.classList.toggle("show"); // add/remove 'show'
+            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            // position the menu under the header (recompute in case of dynamic header)
+            const header = document.querySelector('.site-header');
+            if (header && navMenu) navMenu.style.top = header.offsetHeight + 'px';
+            ev.stopPropagation();
         });
 
         // Sluit het menu wanneer ergens anders op de pagina wordt geklikt
-        document.addEventListener("click", (event) => {
+        document.addEventListener('click', (event) => {
             if (!hamburger.contains(event.target) && !navMenu.contains(event.target)) {
-                navMenu.classList.remove("show");
+                navMenu.classList.remove('show');
+                hamburger.setAttribute('aria-expanded', 'false');
             }
         });
     }

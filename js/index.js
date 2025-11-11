@@ -58,13 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 let rowCount = 0;
 
                 if (key === 'alerts') {
-                    rowCount = doc.querySelectorAll('#alertTable tr').length;
+                    rowCount = doc.querySelectorAll('#alertList li').length || doc.querySelectorAll('#alertTable tr').length;
                 } else if (key === 'soundEffects') {
-                    rowCount = doc.querySelectorAll('#soundEffectsTable tr').length;
+                    rowCount = doc.querySelectorAll('#soundEffectsList li').length || doc.querySelectorAll('#soundEffectsTable tr').length;
                 } else if (key === 'redeems') {
-                    rowCount = doc.querySelectorAll('#redeemTable tr').length;
+                    rowCount = doc.querySelectorAll('#redeemList li').length || doc.querySelectorAll('#redeemTable tr').length;
                 } else if (key === 'tts') {
-                    rowCount = doc.querySelectorAll('#ttsTable tr').length;
+                    rowCount = doc.querySelectorAll('#ttsList li').length || doc.querySelectorAll('#ttsTable tr').length;
                 }
 
                 el.textContent = String(rowCount);
