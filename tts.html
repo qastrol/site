@@ -54,10 +54,17 @@
                     </div>
                 </details>
 
+                <details class="filter-option" open>
+                    <summary>AI</summary>
+                    <div class="filter-group">
+                        <div id="typeFilters"></div>
+                    </div>
+                </details>
+
                 <details class="filter-option">
                     <summary>Type stem</summary>
                     <div class="filter-group">
-                        <div id="typeFilters"></div>
+                        <div id="genderFilters"></div>
                     </div>
                 </details>
 
@@ -67,7 +74,8 @@
                         <div id="languageFilters"></div>
                     </div>
                 </details>
-            </aside>
+                <p style="margin-top:12px">Aantal stemmen: <span id="rowCount">0</span></p>
+                </aside>
 
             <main class="main-area">
                 <div class="controls-row" style="margin-bottom:12px; display:flex; align-items:center; gap:8px;">
@@ -77,10 +85,12 @@
                         <option value="0:desc">Naam (Z → A)</option>
                         <option value="1:asc">TTS (A → Z)</option>
                         <option value="1:desc">TTS (Z → A)</option>
-                        <option value="2:asc">Taal (A → Z)</option>
-                        <option value="2:desc">Taal (Z → A)</option>
-                        <option value="3:asc">Beschrijving (A → Z)</option>
-                        <option value="3:desc">Beschrijving (Z → A)</option>
+                        <option value="2:asc">Type stem (A → Z)</option>
+                        <option value="2:desc">Type stem (Z → A)</option>
+                        <option value="3:asc">Taal (A → Z)</option>
+                        <option value="3:desc">Taal (Z → A)</option>
+                        <option value="4:asc">Beschrijving (A → Z)</option>
+                        <option value="4:desc">Beschrijving (Z → A)</option>
                     </select>
                     <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
                 </div>
@@ -90,9 +100,11 @@
                         <span class="header-sub">/</span>
                         <button class="header-btn" onclick="sortTable(1)">TTS-dienst</button>
                         <span class="header-sub">/</span>
-                        <button class="header-btn" onclick="sortTable(2)">Talen</button>
+                        <button class="header-btn" onclick="sortTable(2)">Type stem</button>
                         <span class="header-sub">/</span>
-                        <button class="header-btn" onclick="sortTable(3)">Beschrijving</button>
+                        <button class="header-btn" onclick="sortTable(3)">Talen</button>
+                        <span class="header-sub">/</span>
+                        <button class="header-btn" onclick="sortTable(4)">Beschrijving</button>
                     </div>
                     <div class="header-meta">
                         <div style="width:12px"></div>

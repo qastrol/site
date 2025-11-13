@@ -253,7 +253,45 @@ document.addEventListener('DOMContentLoaded', () => {
             body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
         })();
     }
+    
+    // Compute per-filter counts for redeems (categories & types).
+    function computeFilterCountsNoob() {
+        if (!Array.isArray(dataSource)) return;
+        const searchLower = (searchInput?.value || '').toLowerCase().trim();
+        const [minCost, maxCost] = getSelectedCostRange();
 
+        // categories
+        const catContainer = document.getElementById('categoryFilters');
+        if (catContainer) {
+            const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]'));
+            boxes.forEach(cb => {
+                const selCats = [cb.value];
+                const selTypes = getSelectedTypes();
+                const count = dataSource.reduce((acc, item) => itemMatchesFilters(item, searchLower, selCats, selTypes, minCost, maxCost) ? acc + 1 : acc, 0);
+                const parent = cb.parentElement || cb.closest('div');
+                if (parent) {
+                    const span = parent.querySelector('.filter-count');
+                    if (span) span.textContent = ' (' + count + ')';
+                }
+            });
+        }
+
+        // types
+        const typeContainer = document.getElementById('typeFilters');
+        if (typeContainer) {
+            const boxes = Array.from(typeContainer.querySelectorAll('input[type="checkbox"]'));
+            boxes.forEach(cb => {
+                const selCats = getSelectedCategories();
+                const selTypes = [cb.value.trim().toLowerCase()];
+                const count = dataSource.reduce((acc, item) => itemMatchesFilters(item, searchLower, selCats, selTypes, minCost, maxCost) ? acc + 1 : acc, 0);
+                const parent = cb.parentElement || cb.closest('div');
+                if (parent) {
+                    const span = parent.querySelector('.filter-count');
+                    if (span) span.textContent = ' (' + count + ')';
+                }
+            });
+        }
+    }
     // Helper to check if a preview video exists (only .webm/.mp4 for redeems)
     // Prefer the generated mapping to avoid network probes. Calls cb(true/false).
     function previewExists(folder, codeOrName, cb) {
@@ -667,14 +705,20 @@ document.addEventListener('DOMContentLoaded', () => {
             input.type = 'checkbox';
             input.id = id;
             input.value = cat;
-            input.addEventListener('change', () => refreshTable());
+            input.addEventListener('change', () => { refreshTable(); computeFilterCountsNoob(); });
             const label = document.createElement('label');
             label.htmlFor = id;
             label.style.fontWeight = 'normal';
             label.style.display = 'inline-block';
             label.textContent = cat;
+            const countSpan = document.createElement('span');
+            countSpan.className = 'filter-count';
+            countSpan.style.marginLeft = '6px';
+            countSpan.style.color = '#666';
+            countSpan.textContent = '';
             wrapper.appendChild(input);
             wrapper.appendChild(label);
+            wrapper.appendChild(countSpan);
             container.appendChild(wrapper);
         });
     }
@@ -709,12 +753,18 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.style.display = 'flex'; wrapper.style.gap = '6px'; wrapper.style.alignItems = 'center'; wrapper.style.marginBottom = '4px';
             const input = document.createElement('input'); input.type = 'checkbox'; input.id = id; input.value = t;
             // log changes to help debug filtering issues
-            input.addEventListener('change', (ev) => {
-                try { console.debug('type checkbox changed', { value: input.value, checked: input.checked }); } catch (e) {}
-                refreshTable();
-            });
+                input.addEventListener('change', (ev) => {
+                    try { console.debug('type checkbox changed', { value: input.value, checked: input.checked }); } catch (e) {}
+                    refreshTable();
+                    computeFilterCountsNoob();
+                });
             const label = document.createElement('label'); label.htmlFor = id; label.style.fontWeight = 'normal'; label.textContent = t;
-            wrapper.appendChild(input); wrapper.appendChild(label); container.appendChild(wrapper);
+            const countSpan = document.createElement('span');
+            countSpan.className = 'filter-count';
+            countSpan.style.marginLeft = '6px';
+            countSpan.style.color = '#666';
+            countSpan.textContent = '';
+            wrapper.appendChild(input); wrapper.appendChild(label); wrapper.appendChild(countSpan); container.appendChild(wrapper);
         });
     }
 
@@ -822,6 +872,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // initialize the cost filter controls (sets min/max and wires events)
     initializeCostFilter();
     renderNoobPointsTable(dataSource);
+    // initial counts for filters
+    computeFilterCountsNoob();
     // Ensure list/table is sorted alphabetically by name on initial load
     try { sortTable(0); } catch (e) { /* ignore if sortTable unavailable */ }
     // expose total redeems count for the index page (stored as a simple value)

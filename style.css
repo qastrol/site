@@ -348,6 +348,10 @@ button:hover {
 .sidebar {
     width: 260px;
     min-width: 200px;
+    /* Fix sidebar as a stable column in the two-column layout so it doesn't
+       grow or shrink unexpectedly when long labels or counts are added. */
+    flex: 0 0 260px; /* do not allow flex to grow/shrink */
+    max-width: 320px;
     background: rgba(0,0,0,0.03);
     padding: 16px;
     border-radius: 8px;
@@ -372,6 +376,30 @@ button:hover {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+}
+
+/* Ensure filter rows don't force the sidebar to grow. Labels and counts
+   will truncate with ellipsis when too long. Inputs remain full-width. */
+.sidebar .filter-group label {
+    display: inline-block;
+    max-width: calc(100% - 56px); /* leave room for checkbox + count */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.sidebar .filter-group .filter-count {
+    color: #666;
+    margin-left: 6px;
+    flex: 0 0 auto;
+}
+
+/* Make sure flexible wrappers inside the sidebar can shrink when needed */
+.sidebar .filter-group > div,
+.sidebar .filter-group > label,
+.sidebar .filter-group > .wrapper {
+    min-width: 0;
 }
 
 /* Reduce default width slightly for long inputs so they don't push layout on very small screens */

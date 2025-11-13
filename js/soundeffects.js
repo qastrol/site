@@ -61,7 +61,7 @@
         }
 
 
-        function searchTable() { refreshTable(); }
+    function searchTable() { refreshTable(); computeFilterCountsSound(); }
 
         // Returns true if the given item matches the search text and category selections
         function itemMatchesFilters(item, searchLower, selectedCats) {
@@ -140,6 +140,8 @@
             localStorage.setItem('soundEffectCount', soundeffectsTable.length);
             updateCounter();
             attachPreviewHandlers();
+            // update counts after we rebuilt the visible list
+            computeFilterCountsSound();
         }
 
         // Return array of selected category strings (exact match). If none, returns []
@@ -193,17 +195,47 @@
                 input.type = 'checkbox';
                 input.id = id;
                 input.value = cat;
-                input.addEventListener('change', () => searchTable());
+                input.addEventListener('change', () => { searchTable(); computeFilterCountsSound(); });
                 const label = document.createElement('label');
                 label.htmlFor = id;
             label.style.fontWeight = 'normal';
             label.style.display = 'inline-block';
                 label.textContent = cat;
+                const countSpan = document.createElement('span');
+                countSpan.className = 'filter-count';
+                countSpan.style.marginLeft = '6px';
+                countSpan.style.color = '#666';
+                countSpan.textContent = '';
                 wrapper.appendChild(input);
                 wrapper.appendChild(label);
+                wrapper.appendChild(countSpan);
                 container.appendChild(wrapper);
             });
         }
+
+// Compute per-category counts for sound effects filters and update UI.
+function computeFilterCountsSound() {
+    if (typeof soundeffectsTable === 'undefined' || !Array.isArray(soundeffectsTable)) return;
+    const input = document.getElementById('searchInput');
+    const searchLower = input ? (input.value || '').toLowerCase() : '';
+    const container = document.getElementById('categoryFilters');
+    if (!container) return;
+    const boxes = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+    boxes.forEach(cb => {
+        const cat = cb.value;
+        // Count items that would match if this category were selected (replace facet selection)
+        const count = soundeffectsTable.reduce((acc, item) => {
+            if (!item) return acc;
+            if (itemMatchesFilters(item, searchLower, [cat])) return acc + 1;
+            return acc;
+        }, 0);
+        const parent = cb.parentElement || cb.closest('div');
+        if (parent) {
+            const span = parent.querySelector('.filter-count');
+            if (span) span.textContent = ' (' + count + ')';
+        }
+    });
+}
 
 
 function renderSoundEffectsTable() {
@@ -246,6 +278,8 @@ function renderSoundEffectsTable() {
 document.addEventListener("DOMContentLoaded", function() {
     renderSoundEffectsTable();
     buildCategoryFilters();
+        // initialize per-filter counts
+        computeFilterCountsSound();
     const sel = document.getElementById('sortSelect');
     if (sel) {
         const [colStr, dir] = sel.value.split(':');

@@ -50,9 +50,10 @@ function renderTtsTable() {
             return mapped.join(', ');
         };
     const humanLangs = langLabel(langsArr);
-    // Build combined info: category • languages • AI-stem (omit empty parts)
+    // Build combined info: category • type • languages • AI-stem (omit empty parts)
     const infoParts = [];
     if (item.category) infoParts.push(item.category);
+    if (item.type) infoParts.push(item.type);
     if (humanLangs) infoParts.push(humanLangs);
     if (item.isAI) infoParts.push('AI-stem');
     info.textContent = infoParts.join(' • ');
@@ -82,6 +83,7 @@ function renderTtsTable() {
 
     li.dataset.name = (item.name || '').toString();
     li.dataset.category = (item.category || '').toString();
+    li.dataset.gender = (item.type || '').toString();
     li.dataset.isai = item.isAI ? '1' : '0';
     li.dataset.languages = (Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : [])).join(',');
 
@@ -91,7 +93,7 @@ function renderTtsTable() {
 
 
 
-        let sortDirection = [true, true, true, true]; // array om de sorteer volgorde bij te houden (incl. languages)
+    let sortDirection = [true, true, true, true, true]; // array om de sorteer volgorde bij te houden (incl. type & languages)
 
         // Functie om de tabel te sorteren (operates on the list view)
         function sortTable(n) {
@@ -100,8 +102,8 @@ function renderTtsTable() {
             const items = Array.from(list.children);
             if (items.length === 0) return;
 
-            // new column order: 0=name, 1=category (dataset), 2=languages, 3=description
-            const colMap = { 0: '.item-name', 1: null, 2: '.item-langs', 3: '.item-desc' };
+            // new column order: 0=name, 1=category (dataset), 2=type (dataset.gender), 3=languages, 4=description
+            const colMap = { 0: '.item-name', 1: null, 2: null, 3: '.item-langs', 4: '.item-desc' };
             const sel = colMap[n];
 
             const isNumeric = items.every(li => {
@@ -110,7 +112,9 @@ function renderTtsTable() {
                     const el = li.querySelector(sel);
                     txt = el ? el.innerText.trim() : '';
                 } else {
-                    txt = li.dataset.category || '';
+                    if (n === 1) txt = li.dataset.category || '';
+                    else if (n === 2) txt = li.dataset.gender || '';
+                    else txt = '';
                 }
                 return txt !== '' && !isNaN(txt);
             });
@@ -124,8 +128,13 @@ function renderTtsTable() {
                     aText = aEl ? aEl.innerText.trim() : '';
                     bText = bEl ? bEl.innerText.trim() : '';
                 } else {
-                    aText = a.dataset.category || '';
-                    bText = b.dataset.category || '';
+                    if (n === 1) {
+                        aText = a.dataset.category || '';
+                        bText = b.dataset.category || '';
+                    } else if (n === 2) {
+                        aText = a.dataset.gender || '';
+                        bText = b.dataset.gender || '';
+                    }
                 }
                 if (isNumeric) return (parseFloat(aText) || 0) - (parseFloat(bText) || 0);
                 return aText.localeCompare(bText, 'nl', { sensitivity: 'base' });
@@ -158,6 +167,9 @@ function renderTtsTable() {
     const normalChecked = normalCheckbox ? normalCheckbox.checked : false;
     const checkedLangInputs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked'));
         const checkedLangs = checkedLangInputs.map(cb => cb.value);
+    // Gender filters (Mannelijk / Vrouwelijk)
+    const checkedGenderInputs = Array.from(document.querySelectorAll('#genderFilters input[data-type="gender"]:checked'));
+    const checkedGenders = checkedGenderInputs.map(cb => cb.value);
 
         // Loop door alle tbody rijen
             rows.forEach(row => {
@@ -185,13 +197,98 @@ function renderTtsTable() {
                     else langMatch = checkedLangs.some(l => rowLangs.indexOf(l) !== -1);
                 }
 
-                const matchFound = textMatch && categoryMatch && aiMatch && langMatch;
+                // Gender filter (Type stem: Mannelijk / Vrouwelijk)
+                let genderMatch = true;
+                if (checkedGenders.length > 0) {
+                    const rowGender = (row.dataset.gender || '').trim();
+                    genderMatch = checkedGenders.indexOf(rowGender) !== -1;
+                }
+
+                const matchFound = textMatch && categoryMatch && aiMatch && langMatch && genderMatch;
                 row.style.display = matchFound ? '' : 'none';
             });
 
         // Werk de zichtbare rijcounter bij
         updateRowCount();
+        // Werk de facet-aantallen bij
+        computeFilterCounts();
     }
+
+// Bereken en werk per-filter aantallen bij op basis van de huidige selectie.
+function computeFilterCounts() {
+    const data = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable : [];
+    // huidige geselecteerde waarden per groep
+    const checkedCats = Array.from(document.querySelectorAll('#categoryFilters input[data-type="category"]:checked')).map(c=>c.value);
+    const checkedLangs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked')).map(c=>c.value);
+    const checkedGenders = Array.from(document.querySelectorAll('#genderFilters input[data-type="gender"]:checked')).map(c=>c.value);
+    const aiCheckbox = document.querySelector('#filterAI');
+    const normalCheckbox = document.querySelector('#filterNormal');
+    const aiChecked = aiCheckbox ? aiCheckbox.checked : false;
+    const normalChecked = normalCheckbox ? normalCheckbox.checked : false;
+
+    // Loop over alle checkboxen in het filterpaneel
+    const allCbs = Array.from(document.querySelectorAll('#filterPanel input[type="checkbox"]'));
+    allCbs.forEach(cb => {
+        const type = cb.getAttribute('data-type');
+        const value = cb.value;
+
+        // Start met kopieën van de huidige selectie
+        let selCats = checkedCats.slice();
+        let selLangs = checkedLangs.slice();
+        let selGenders = checkedGenders.slice();
+        let selAi = aiChecked;
+        let selNormal = normalChecked;
+
+        // Negeer bestaande selectie binnen dezelfde facet (we tonen counts alsof die facet leeg is)
+        if (type === 'category') selCats = [];
+        if (type === 'lang') selLangs = [];
+        if (type === 'gender') selGenders = [];
+        if (type === 'type') { selAi = false; selNormal = false; }
+
+        // Pas de kandidaatwaarde toe voor deze checkbox
+        if (type === 'category') selCats = [value];
+        else if (type === 'lang') selLangs = [value];
+        else if (type === 'gender') selGenders = [value];
+        else if (type === 'type') {
+            if (value === 'ai') { selAi = true; selNormal = false; }
+            else if (value === 'normal') { selAi = false; selNormal = true; }
+        }
+
+        // Tel matching items
+        const count = data.reduce((acc, item) => {
+            // category
+            if (selCats.length > 0) {
+                if (!item.category || selCats.indexOf(item.category) === -1) return acc;
+            }
+            // type (ai vs normal)
+            if (selAi || selNormal) {
+                if (selAi && !selNormal) { if (!item.isAI) return acc; }
+                else if (!selAi && selNormal) { if (item.isAI) return acc; }
+            }
+            // languages
+            if (selLangs.length > 0) {
+                const rowLangs = (Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : [])).map(s=>s.trim()).filter(Boolean);
+                if (rowLangs.indexOf('*') === -1) {
+                    const ok = selLangs.some(l => rowLangs.indexOf(l) !== -1);
+                    if (!ok) return acc;
+                }
+            }
+            // gender
+            if (selGenders.length > 0) {
+                const rowGender = (item.type || '').toString().trim();
+                if (selGenders.indexOf(rowGender) === -1) return acc;
+            }
+            return acc + 1;
+        }, 0);
+
+        // Werk de bijbehorende count-span bij
+        const parent = cb.parentElement || cb.closest('label');
+        if (parent) {
+            const span = parent.querySelector('.filter-count');
+            if (span) span.textContent = ' (' + count + ')';
+        }
+    });
+}
         
 
         // (init later after building filters)
@@ -200,8 +297,9 @@ function renderTtsTable() {
             // Populate three separate containers so each <details> can toggle independently
             const catContainer = document.getElementById('categoryFilters');
             const typeContainer = document.getElementById('typeFilters');
+            const genderContainer = document.getElementById('genderFilters');
             const langContainer = document.getElementById('languageFilters');
-            if (!catContainer || !typeContainer || !langContainer) return;
+            if (!catContainer || !typeContainer || !genderContainer || !langContainer) return;
 
             // Build filters from the data array (ttsTable) rather than DOM rows
             const data = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable : [];
@@ -214,6 +312,7 @@ function renderTtsTable() {
 
             catContainer.innerHTML = '';
             typeContainer.innerHTML = '';
+            genderContainer.innerHTML = '';
             langContainer.innerHTML = '';
 
             // Category checkboxes (in category container)
@@ -230,12 +329,18 @@ function renderTtsTable() {
                 cb.value = cat;
                 cb.id = id;
                 cb.checked = false;
-                cb.addEventListener('change', () => searchTable());
+                cb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
                 wrapper.appendChild(cb);
-                const span = document.createElement('span');
-                span.style.fontWeight = 'normal';
-                span.textContent = ' ' + cat;
-                wrapper.appendChild(span);
+                const labelSpan = document.createElement('span');
+                labelSpan.style.fontWeight = 'normal';
+                labelSpan.textContent = ' ' + cat;
+                wrapper.appendChild(labelSpan);
+                const countSpan = document.createElement('span');
+                countSpan.className = 'filter-count';
+                countSpan.style.marginLeft = '6px';
+                countSpan.style.color = '#666';
+                countSpan.textContent = '';
+                wrapper.appendChild(countSpan);
                 catContainer.appendChild(wrapper);
             });
 
@@ -251,12 +356,18 @@ function renderTtsTable() {
             aiCb.id = 'filterAI';
             aiCb.setAttribute('data-type', 'type');
             aiCb.value = 'ai';
-            aiCb.addEventListener('change', () => searchTable());
+            aiCb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
             aiWrapper.appendChild(aiCb);
             const aiSpan = document.createElement('span');
             aiSpan.style.fontWeight = 'normal';
             aiSpan.textContent = ' AI-stemmen';
             aiWrapper.appendChild(aiSpan);
+            const aiCount = document.createElement('span');
+            aiCount.className = 'filter-count';
+            aiCount.style.marginLeft = '6px';
+            aiCount.style.color = '#666';
+            aiCount.textContent = '';
+            aiWrapper.appendChild(aiCount);
             typeContainer.appendChild(aiWrapper);
 
             const normalWrapper = document.createElement('label');
@@ -267,13 +378,67 @@ function renderTtsTable() {
             normalCb.id = 'filterNormal';
             normalCb.setAttribute('data-type', 'type');
             normalCb.value = 'normal';
-            normalCb.addEventListener('change', () => searchTable());
+            normalCb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
             normalWrapper.appendChild(normalCb);
             const normalSpan = document.createElement('span');
             normalSpan.style.fontWeight = 'normal';
-            normalSpan.textContent = ' Gewone TTS-stemmen';
+            normalSpan.textContent = ' Gewone TTS';
             normalWrapper.appendChild(normalSpan);
+            const normalCount = document.createElement('span');
+            normalCount.className = 'filter-count';
+            normalCount.style.marginLeft = '6px';
+            normalCount.style.color = '#666';
+            normalCount.textContent = '';
+            normalWrapper.appendChild(normalCount);
             typeContainer.appendChild(normalWrapper);
+
+            // Gender filters: Mannelijk / Vrouwelijk (in separate gender container)
+            const gTitle = document.createElement('div');
+            genderContainer.appendChild(gTitle);
+
+            const maleWrapper = document.createElement('label');
+            maleWrapper.style.display = 'block';
+            maleWrapper.style.marginBottom = '6px';
+            const maleCb = document.createElement('input');
+            maleCb.type = 'checkbox';
+            maleCb.id = 'filterMale';
+            maleCb.setAttribute('data-type', 'gender');
+            maleCb.value = 'Mannelijk';
+            maleCb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
+            maleWrapper.appendChild(maleCb);
+            const maleSpan = document.createElement('span');
+            maleSpan.style.fontWeight = 'normal';
+            maleSpan.textContent = ' Mannelijk';
+            maleWrapper.appendChild(maleSpan);
+            const maleCount = document.createElement('span');
+            maleCount.className = 'filter-count';
+            maleCount.style.marginLeft = '6px';
+            maleCount.style.color = '#666';
+            maleCount.textContent = '';
+            maleWrapper.appendChild(maleCount);
+            genderContainer.appendChild(maleWrapper);
+
+            const femaleWrapper = document.createElement('label');
+            femaleWrapper.style.display = 'block';
+            femaleWrapper.style.marginBottom = '6px';
+            const femaleCb = document.createElement('input');
+            femaleCb.type = 'checkbox';
+            femaleCb.id = 'filterFemale';
+            femaleCb.setAttribute('data-type', 'gender');
+            femaleCb.value = 'Vrouwelijk';
+            femaleCb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
+            femaleWrapper.appendChild(femaleCb);
+            const femaleSpan = document.createElement('span');
+            femaleSpan.style.fontWeight = 'normal';
+            femaleSpan.textContent = ' Vrouwelijk';
+            femaleWrapper.appendChild(femaleSpan);
+            const femaleCount = document.createElement('span');
+            femaleCount.className = 'filter-count';
+            femaleCount.style.marginLeft = '6px';
+            femaleCount.style.color = '#666';
+            femaleCount.textContent = '';
+            femaleWrapper.appendChild(femaleCount);
+            genderContainer.appendChild(femaleWrapper);
 
             // Language filters (in language container)
             const langTitle = document.createElement('div');
@@ -296,12 +461,18 @@ function renderTtsTable() {
                 cb.type = 'checkbox';
                 cb.setAttribute('data-type', 'lang');
                 cb.value = l;
-                cb.addEventListener('change', () => searchTable());
+                cb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
                 lw.appendChild(cb);
                 const langSpan = document.createElement('span');
                 langSpan.style.fontWeight = 'normal';
                 langSpan.textContent = ' ' + langLabel(l);
                 lw.appendChild(langSpan);
+                const langCount = document.createElement('span');
+                langCount.className = 'filter-count';
+                langCount.style.marginLeft = '6px';
+                langCount.style.color = '#666';
+                langCount.textContent = '';
+                lw.appendChild(langCount);
                 langContainer.appendChild(lw);
             });
         }
@@ -313,6 +484,8 @@ function renderTtsTable() {
     sortDirection[0] = true; // zet expliciet op ascending
     sortTable(0);
     updateRowCount();
+    // initialiseer facet-aantallen
+    computeFilterCounts();
         // Hook voor sort-select in sidebar
         function applySort() {
             const sel = document.getElementById('sortSelect');
