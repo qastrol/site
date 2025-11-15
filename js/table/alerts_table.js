@@ -1,8 +1,8 @@
 ﻿// Alerts table data. Each entry: { name, description, code }
 const alertsTable = [
-	{ name: "Noob-Power!", description: "Noob-Power! Dit is de standaard alert, als er geen alert in het donatiebericht staat", code: "<noobpower>" },
-	{ name: "Voeg een URL toe", description: "Voeg een URL toe in je donatiebericht. Werkt in principe met elke link (als het laad), maar werkt het beste met Twitch of YouTube-links (YouTube-links met timestamps starten vanaf de ingestelde tijd). De afspeelduur is afhankelijk van het donatiebedrag (3 seconden + 1 seconde voor elke euro)", code: "<url>" },
-	{ name: "€2,-", description: "Papa, mag ik alsjeblieft 2 euro voor de arme man die op straat staat te schreeuwen. <a href=\"https://www.youtube.com/watch?v=Fy-SqB2FiSQ\">Bron</a>", code: "<2euro>" },
+	{ name: "Noob-Power!", description: "Noob-Power! Dit is de standaard alert, als er geen alert in het donatiebericht staat", code: "<noobpower>", year: 2024 },
+	{ name: "Voeg een URL toe", description: "Voeg een URL toe in je donatiebericht. Werkt in principe met elke link (als het laad), maar werkt het beste met Twitch of YouTube-links (YouTube-links met timestamps starten vanaf de ingestelde tijd). De afspeelduur is afhankelijk van het donatiebedrag (3 seconden + 1 seconde voor elke euro)", code: "<url>", year: 2024 },
+	{ name: "€2,-", description: "Papa, mag ik alsjeblieft 2 euro voor de arme man die op straat staat te schreeuwen. <a href=\"https://www.youtube.com/watch?v=Fy-SqB2FiSQ\">Bron</a>", code: "<2euro>", year: 2024 },
 	{ name: "Zelda CDI: Boring", description: "Gee, it sure is boring around here (van de intro van Link: The Faces of Evil voor de Philips CDI)", code: "<boring>" },
 	{ name: "BREIN intro", description: "De inhoud van deze drager is beschermd door wetten van Intellectuele Eigendom waaronder de Auteurswet, de Wet op de Naburige Rechten, de Databankwet en de Beneluxmerkenwet.", code: "<brein>" },
 	{ name: "Buurman & Buurman", description: "Speel de intro van Buurman & Buurman. Ajeto!", code: "<buurman>" },
