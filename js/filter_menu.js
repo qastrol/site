@@ -65,16 +65,26 @@ document.addEventListener('DOMContentLoaded', function () {
         header.appendChild(title);
         header.appendChild(closeBtn);
         panelWrap.appendChild(header);
-
         // This container will receive the moved aside
         const contentHolder = document.createElement('div');
         contentHolder.className = 'overlay-content';
         panelWrap.appendChild(contentHolder);
 
+        // Footer with an explicit 'Apply Filters' button for mobile
+        const footer = document.createElement('div');
+        footer.className = 'overlay-footer';
+        const applyBtn = document.createElement('button');
+        applyBtn.className = 'overlay-apply';
+        applyBtn.type = 'button';
+        applyBtn.textContent = 'Filters toepassen';
+        footer.appendChild(applyBtn);
+        panelWrap.appendChild(footer);
+
         overlay.appendChild(panelWrap);
         document.body.appendChild(overlay);
 
         closeBtn.addEventListener('click', () => closeOverlay());
+        applyBtn.addEventListener('click', () => closeOverlay());
         overlay.addEventListener('click', (ev) => {
             if (ev.target === overlay) closeOverlay();
         });
@@ -109,6 +119,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const { panel, parent, nextSibling } = movedPanelState;
         if (nextSibling) parent.insertBefore(panel, nextSibling);
         else parent.appendChild(panel);
+        // After moving the panel back, ensure its collapsed state matches the
+        // current viewport. On mobile the panel should be collapsed/hidden.
+        try {
+            const toggle = document.querySelector('.filter-toggle');
+            if (window.innerWidth <= MOBILE_BREAKPOINT) {
+                panel.classList.add('collapsed');
+                if (toggle) toggle.setAttribute('aria-expanded', 'false');
+            } else {
+                panel.classList.remove('collapsed');
+                if (toggle) toggle.setAttribute('aria-expanded', 'true');
+            }
+        } catch (e) {
+            // defensive: do nothing if we can't access window or elements
+        }
+
         overlay.classList.remove('open');
         movedPanelState = null;
     }

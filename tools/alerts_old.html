@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts | Qastrol</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images\facicon.png">
+    <meta property="og:title" content="Alerts | Qastrol">
+    <meta property="og:description" content="Een speciale website voor de Play it Forward livestream van Qastrol. Voeg alerts, TTS stemmen en sound effects toe aan je donaties!">
+    <meta property="og:url" content="https://qastrol.github.io/site/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+    <script src="nav.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+
+
+    <!-- Navigatiebalk wordt hier geladen -->
+    <div id="navbar">Navigatiebalk wordt geladen...</div>
+    <div class="content">
+        <br><br><br>
+    <h1>Alerts</h1>
+    <p>Hieronder staan alle speciale alerts die je kan toevoegen aan je Play It Forward-donatie.
+        <br><br> 
+        De meeste alerts zijn video's, maar er zijn ook interactieve alerts. Klik op de knop "Kopieer" om de alertcode te kopiëren naar je klembord.
+        <br><br> 
+        Let op: <br>
+        - Je kan maar één alert per donatie toevoegen. Als je meerdere alerts wilt gebruiken, moet je meerdere donaties doen. <br>
+        - Van sommige alerts hangt de duur van de alert af van het bedrag dat je doneert, maar alle alerts werken vanaf ieder bedrag<br>
+        - Je kan ook <a href ="tts.html">TTS stemmen</a> en <a href="soundeffects.html">sound effects</a> toevoegen aan je donatie. Deze kunnen gecombineerd worden met alerts.
+    </p>
+    
+        <!-- Zoekveld -->
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Zoek op alertnaam of beschrijving..." style="padding: 8px; width: 100%; max-width: 400px; margin: 10px 0;">
+
+    <p>Aantal alerts: <span id="rowCount">0</span></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="sortable" onclick="sortTable(0)">Alertnaam</th>
+                <th class="sortable" onclick="sortTable(1)">Beschrijving</th>
+                <th class="sortable" onclick="sortTable(2)">Alertcode</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="alertTable">
+            <tr>
+                <td>Noob-Power!</td>
+                <td>Noob-Power! Dit is de standaard alert, als er geen alert in het donatiebericht staat</td>
+                <td>&lt;noobpower&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Voeg een URL toe</td>
+                <td>Voeg een URL toe in je donatiebericht. Werkt in principe met elke link (als het laad), maar werkt het beste met Twitch of YouTube-links (YouTube-links met timestamps starten vanaf de ingestelde tijd). De afspeelduur is afhankelijk van het donatiebedrag (3 seconden + 1 seconde voor elke euro)</td>
+                <td>&lt;url&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>€2,-</td>
+                <td>Papa, mag ik alsjeblieft 2 euro voor de arme man die op straat staat te schreeuwen. <a href="https://www.youtube.com/watch?v=Fy-SqB2FiSQ">Bron</a></td>
+                <td>&lt;2euro&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Zelda CDI: Boring</td>
+                <td>Gee, it sure is boring around here (van de intro van Link: The Faces of Evil voor de Philips CDI)</td>
+                <td>&lt;boring&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>BREIN intro</td>
+                <td>De inhoud van deze drager is beschermd door wetten van Intellectuele Eigendom waaronder de Auteurswet, de Wet op de Naburige Rechten, de Databankwet en de Beneluxmerkenwet.</td>
+                <td>&lt;brein&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Buurman & Buurman</td>
+                <td>Speel de intro van Buurman & Buurman. Ajeto!</td>
+                <td>&lt;buurman&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Look at all this damage!</td>
+                <td><a href="https://www.youtube.com/watch?v=4B-JdfG6efI">And we're going to repair it using flex shot</a></td>
+                <td>&lt;damage&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Edd, Ed n Eddy: Deurbel</td>
+                <td>Iemand belt aan bij de deurbel van Edd...</td>
+                <td>&lt;edd&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Hier, een euro!</td>
+                <td><a href="https://www.youtube.com/watch?v=HiLKVdNJt_o">AAAAAAAAAAAAAA!</a></td>
+                <td>&lt;euro&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Het is feest!</td>
+                <td><a href="https://www.youtube.com/watch?v=pchWYdcN6zA">Joepie!</a></td>
+                <td>&lt;feest&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Speel een geluidseffect!</td>
+                <td>Speel een willekeurig geluidseffect af van 138 mogelijkheden. Kan van alles zijn</td>
+                <td>&lt;geluidseffect&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>GIGACHAD</td>
+                <td><a href="https://www.youtube.com/watch?v=FuJwXZpqzB8">GIGACHAD</a></td>
+                <td>&lt;gigachad&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Habbo Hotel-melding</td>
+                <td>Je donatiemelding als een Habbo-chatbericht. Wil iemand meubi?</td>
+                <td>&lt;habbo&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Hardheid</td>
+                <td>Meet je hardheid, van 0% tot 100%!</td>
+                <td>&lt;hardheid&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Will Smith: That's Hot</td>
+                <td>That's hot. Will Smith komt langs</td>
+                <td>&lt;hot&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Hotel Mario: dinner</td>
+                <td>Deel 1 van de Hotel Mario intro. Nice of the Princess to invite us over for dinner ey Luigi</td>
+                <td>&lt;hotelmario&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Hugo Duro</td>
+                <td>Hugo Duro, de Spaanse voetballer die ook wel bekend staat als Harde Hugo. <a href="https://nl.wikipedia.org/wiki/Hugo_Duro">Hugo Duro op Wikipedia</a></td>
+                <td>&lt;hugoduro&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Hotel Mario: Instructions</td>
+                <td>Deel 3 van de Hotel Mario intro. If you need instructions on how to get through the hotel, check out the enclosed instruction book</td>
+                <td>&lt;instructions&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Zelda CDI: I won!</td>
+                <td>Een cutscene van Link: The Faces of Evil waarin Link heeft gewonnen. <a href="https://www.youtube.com/watch?v=kahoWJOsjoc">Bron</a></td>
+                <td>&lt;iwon&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Like & Subscribe</td>
+                <td>Een YouTuber-outro. Vergeet niet te liken en te subscriben en te commenten</td>
+                <td>&lt;likesubscribe&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Speel een potje Lingo</td>
+                <td>Speel een potje Lingo met Lucille en JP! Gebruik !lingo in de chat om een woord te raden. Iedereen kan meedoen met Lingo! Let op: moeilijke woorden kunnen voorkomen.</td>
+                <td>&lt;lingo&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Ed, Edd n Eddy: Many Doors</td>
+                <td>Many Doors (van Ed, Edd n Eddy). <a href="https://www.youtube.com/watch?v=Rq338WwBUpw">Bron</a></td>
+                <td>&lt;manydoors&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Windows Media Player</td>
+                <td>Start Windows Media Player op. De video die afgespeeld wordt is één van 82 mogelijke video's. De subalert op twitch.tv/qastrol</td>
+                <td>&lt;mediaplayer&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Minecraft: graven</td>
+                <td>Steve van Minecraft komt het scherm in graven</td>
+                <td>&lt;minecraft&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Reitse: Mosterd</td>
+                <td><a href="https://www.youtube.com/watch?v=V2IOzbM5n-Y">Mosterd</a></td>
+                <td>&lt;mosterd&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Michael Rosen: Noice</td>
+                <td><a href="https://www.youtube.com/watch?v=lg5WKsVnEA4">Noice!</a></td>
+                <td>&lt;noice&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Hotel Mario: Pesky Plumbers</td>
+                <td>Deel 2 van de intro van Hotel Mario. Dear Pesky Plumbers, the koopalings and I have taken over the Mushroom Kingdom</td>
+                <td>&lt;peskyplumbers&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Vang een Pokémon</td>
+                <td>Vang één Pokémon uit de eerste vijf generaties van Pokémon! (649 mogelijkheden)</td>
+                <td>&lt;pokemon&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Waarom dit paneel er niet professioneel uitziet?</td>
+                <td>Omdat net als met mijn wachtscherm en pauze schermpjes en offline scherm ik het leuk vind zelf te tekenen omdat het juist grappig is als het zo lelijk is.</td>
+                <td>&lt;professioneel&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Qastrol moment</td>
+                <td>Voor als Qastrol een ziek gaming moment heeft</td>
+                <td>&lt;qastrol&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Qastrol's microfoon</td>
+                <td>Zet Qastrol's microfoon aan als die uit staat, of uit als die aan staat</td>
+                <td>&lt;qastrolmic&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Lekker Ite Mei Reitse</td>
+                <td>Reitse Spanninga, de Fryske sjef. <a href="https://www.youtube.com/watch?v=5JUc8oMhm_k">Bron</a></td>
+                <td>&lt;reitse&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>The Rock</td>
+                <td>Hij is The Rock en hij is sus. <a href="https://www.youtube.com/watch?v=SnM_JxgBsFk">Bron</a></td>
+                <td>&lt;rock&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Zelda CDI Shopkeeper: Ropes, Bombs</td>
+                <td>De shopkeeper van Link: The Faces of Evil. Ropes, Bombs, you want it? It's your's my friend as long as you have enough rubies. <a href="https://www.youtube.com/watch?v=J8XxuW-Orww">Bron</a></td>
+                <td>&lt;ropesbombs&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Samson is a DJ</td>
+                <td>Samson is een DJ (1 seconde per euro). <a href="https://www.youtube.com/watch?v=gqW9J64kRXY">Bron</a></td>
+                <td>&lt;samsondj&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Smurf 6</td>
+                <td>Het is smurf 6 (1 seconde per euro). <a href="https://www.youtube.com/watch?v=HfUYMG4yWpk">Bron</a></td>
+                <td>&lt;smurf6&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Zelda CDI Shopkeeper: Sorry Link</td>
+                <td>De shopkeeper van Link: The Faces of Evil. Come back when you're a little richer! <a href="https://www.youtube.com/watch?v=J8XxuW-Orww">Bron</a></td>
+                <td>&lt;sorrylink&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Spongebob: Sports Channel</td>
+                <td>Spongebob kijkt TV. <a href="https://www.youtube.com/watch?v=hPpTGwzeKVc">Bron</a></td>
+                <td>&lt;sportschannel&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>taxonweb.be</td>
+                <td>Vlaamse belastingaangifte. <a href="https://www.youtube.com/watch?v=KM7rDjaDcwg">Trouwens, waarom doe je het niet direct? Anders vergeet je het nog.</a></td>
+                <td>&lt;taxonweb&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>The Room: I did not hit her!</td>
+                <td>Tommy Wiseau begroet Mark. <a href="https://www.youtube.com/watch?v=6xdKTeqQcpo">Bron</a></td>
+                <td>&lt;theroom&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Geef iemand een timeout</td>
+                <td>Wil je iemand uit de chat timeouten? Dat kan met een donatie! Mention een Twitch gebruiker in de donatie met @ (bijv. "@Qastrol"), je aantal euro's is de duur van de timeout die deze persoon krijgt</td>
+                <td>&lt;timeout&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Tongo</td>
+                <td>De legendarische Tongo. <a href="https://www.youtube.com/watch?v=z-R5qrznusY">Bron</a></td>
+                <td>&lt;tongo&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Pokémon Trainer battle</td>
+                <td>Een trainer gevecht in Pokémon!</td>
+                <td>&lt;trainer&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>TROS</td>
+                <td><a href="https://www.youtube.com/watch?v=b8dXD8GOOm4">De grootste familie van Nederland. </a></td>
+                <td>&lt;tros&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Ultrahardheid</td>
+                <td>Meet je ultrahardheid van 0% tot 10000%!</td>
+                <td>&lt;ultrahardheid&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Verder nergens om</td>
+                <td>Maar we minen diamonds! (WOE!)</td>
+                <td>&lt;verdernergensom&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Maak jezelf VIP</td>
+                <td>Maak jezelf VIP! Het aantal euro's dat je doneert is het aantal seconden dat je jezelf VIP maakt! Deze alert werkt alleen als je je eigen Twitch-naam gebruikt als donatienaam</td>
+                <td>&lt;vip&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Windows XP-melding</td>
+                <td>Een Windows XP popup melding</td>
+                <td>&lt;windowsxp&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Eddy Wally: Wow</td>
+                <td>Eddy Wally zegt "wow"</td>
+                <td>&lt;wow&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Zelda CDI: Tapijt</td>
+                <td>Onderdeel van de intro van Link: The Faces of Evil voor de Philips CDI. Link vliegt op een tapijt</td>
+                <td>&lt;zeldatapijt&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>De Slimste Mens: 3-6-9</td>
+                <td>De eerste ronde van De Slimste Mens!</td>
+                <td>&lt;369&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Altijd blijven vissen!
+                <td>Wat er ook gebeurt, altijd blijven vissen! De nieuwste zomerhit van DJ Qastrol. (1 seconde per euro)</td>
+                <td>&lt;altijdblijvenvissen&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>De dag die je niet vergeten mag</td>
+                <td>Vergeet deze dag niet!</td>
+                <td>&lt;dedag&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Desert Bus</td>
+                <td>De beruchte videogame Desert Bus, waarin je 8 uur lang één recht stuk vooruit rijd, verschijnt op beeld. <a href="https://en.wikipedia.org/wiki/Penn_%26_Teller%27s_Smoke_and_Mirrors#Desert_Bus">Desert Bus op Wikipedia</a></td>
+                <td>&lt;desertbus&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Oh Yeah Donkey Kong</td>
+                <td>Donkey Kong wordt geplet door een Game Boy D: <a href="https://www.youtube.com/watch?v=ckLV8Lo89tY">Bron</a></td>
+                <td>&lt;ohyeahmrkrabs&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>EK Voetbal 2024</td>
+                <td>Throwback naar het EK van 2024 in Duitsland. Dit programma wordt mede mogelijk gemaakt door...</td>
+                <td>&lt;ek&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Vertel een mop</td>
+                <td>Laat een mop vertellen op de stream! Gegarandeerd hillarisch 😂</td>
+                <td>&lt;mop&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Onthul je horoscoop</td>
+                <td>Laat je horoscoop vertellen op stream! Deze horoscoop is 100% betrouwbaar</td>
+                <td>&lt;horoscoop&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Harde Partijen</td>
+                <td>Dit programma wordt mede mogelijk gemaakt door harde partijen</td>
+                <td>&lt;hardepartijen&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Another Brick in the Wall</td>
+                <td>Glefly Brauly zingt Another Brick in the Wall (Part 2) van Pink Floyd! (1 seconde per euro) <a href="https://www.youtube.com/watch?v=moShzA7xGTQ">Bron</a></td>
+                <td>&lt;brickinthewall&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>HHGregg</td>
+                <td>Christmas in July. <a href="https://www.youtube.com/watch?v=QJzt8L_i7_U">Bron</a></td>
+                <td>&lt;hhgregg&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>200 Vissen: intro</td>
+                <td>Weet u het nog toen Qastrol 200 vissen vangde? De intro voor de 200 Vissen stream op twitch.tv/qastrol</td>
+                <td>&lt;visintro&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Kapitein Koek</td>
+                <td>De iconische Kapitein Koek reclame. MMMMMMMMMMMMMMM Lekker (de entrance van KanarieArie). <a href="https://www.youtube.com/watch?v=zvq6Mg8XN8A">Bron</a></td>
+                <td>&lt;kapiteinkoek&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Karpers, goudvissen</td>
+                <td>Wat als karpers en goudvissen een YouTube kanaal hadden, en dit ze een intro video hadden?</td>
+                <td>&lt;karper&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Kaulo Boszhard</td>
+                <td>Kaulo Boszhard (Amsterdam, 26 juni 1969) is een Nederlands televisiepresentator, acteur, zanger, tekstschrijver en imitator. </td>
+                <td>&lt;kauloboszhard&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>KRO-NCRV</td>
+                <td>Maak morgen mee, KRO-NCRV. <a href="https://www.youtube.com/watch?v=Roqx-JA_i1Q">Bron</a></td>
+                <td>&lt;kroncrv&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Kat</td>
+                <td>Een kat komt over het beeld (lief) (de entrance animatie van Lieveheersbabe)</td>
+                <td>&lt;kat&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Mark Rutte</td>
+                <td>Mark Rutte breekt in de WWE Lijsttrekkersdebat?! Live uitgezonden op twitch.tv/qastrol en Nederland 1</td>
+                <td>&lt;markrutte&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Mario Kart is Kaulo Hard</td>
+                <td>Mario Kart is Kaulo Hard</td>
+                <td>&lt;mariokartkaulohard&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Mario Kart, maar wat doet de rest dan?</td>
+                <td>🤨🤨</td>
+                <td>&lt;watdoetderest&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Vsauce</td>
+                <td>Hey Vsauce, Michael here</td>
+                <td>&lt;vsauce&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Jean Mineur Mediavision</td>
+                <td>POV je kijkt reclame in de bioscoop</td>
+                <td>&lt;bioscoop&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>Narwal van der Zee!</td>
+                <td>Hij zwemt door de zee (de entrance video van NarwalvanderZee)</td>
+                <td>&lt;narwal&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>€3,- in het Duits</td>
+                <td>Hast du bitte 3 euro! <a href="https://www.youtube.com/watch?v=Is2jTgxNctI">Bron</a></td>
+                <td>&lt;3euro&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+            <tr>
+                <td>WWE intro</td>
+                <td>Now! Then! Forever! <a href="https://www.youtube.com/watch?v=551L0-4QMV0">Bron</a></td>
+                <td>&lt;wwe&gt;</td>
+                <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+            </tr>
+                <tr>
+                    <td>Mario Kart: Attention all Mario Kart gamers!</td>
+                    <td>Attention all Mario Kart gamers! Funky Kong needs your help! <a href="https://www.youtube.com/watch?v=qGz3KFdmaD0">Bron</a></td>
+                    <td>&lt;attentiongamers&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Mario Kart: Blooper</td>
+                    <td>Een Blooper van Mario Kart spuit inkt over het scherm...</td>
+                    <td>&lt;blooper&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Lego Island: Brick by Brick</td>
+                    <td>Brick by Brick van Lego Island wordt afgespeeld 😳</td>
+                    <td>&lt;brickbybrick&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Mario Kart: Communication Error</td>
+                    <td>POV: je raakt gedisconnected in Mario Kart</td>
+                    <td>&lt;communicationerror&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Dit is DVD reclame</td>
+                    <td>Dit is de geweldige DVD-technologie! <a href="https://www.youtube.com/watch?v=ZtlBCrP9ySo">Bron</a></td>
+                    <td>&lt;dvd&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Fryslân</td>
+                    <td>Fryslân Boppe (de entrance animatie van DeJelman)</td>
+                    <td>&lt;fryslan&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>You got Noob-Power!</td>
+                    <td>Je krijgt Noob-Power in F-Zero X</td>
+                    <td>&lt;fzeronoob&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>GIGAVIS</td>
+                    <td>Het is de GIGACHAD van de vissen :O</td>
+                    <td>&lt;gigavis&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Harde Koeksoep</td>
+                    <td>Een HARD die uit een koeksoep komt (de entrance animatie van Harde_Hugo)</td>
+                    <td>&lt;hardekoeksoep&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Kruip in de huid van...</td>
+                    <td>Kruip in de huid van een bekend iemand...</td>
+                    <td>&lt;kruipindehuid&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Nederland Kiest</td>
+                    <td>De intro van Nederland Kiest: Het WWE Lijsttrekkersdebat</td>
+                    <td>&lt;nederlandkiest&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>De Noobbewaarder</td>
+                    <td>Ik kan het weten, ik ben er zelf eens door gered</td>
+                    <td>&lt;noobbewaarder&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>NPO 1: even geduld</td>
+                    <td>Even geduld...</td>
+                    <td>&lt;npo1&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Pokémon Sun and Moon dans</td>
+                    <td>Een trainer in Pokémon Sun en Moon die een Z-move dans doet (de entrance animatie van Weslyv8)</td>
+                    <td>&lt;pokemondans&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Rainbow Road lied</td>
+                    <td>It's called a road, it's called a Rainbow Road. It's a road that you go</td>
+                    <td>&lt;rainbowroad&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Reinhard Mey: Gute Nacht, Freunde</td>
+                    <td>Reinhard Mey wenst iedereen een goedenavond (1 euro per seconde). <a href="https://www.youtube.com/watch?v=6YnQc-AdNCI">Bron</a></td>
+                    <td>&lt;reinhard&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Robbie Rotten</td>
+                    <td>Don't let your kids watch this! <a href="https://www.youtube.com/watch?v=MgffSUwTeKw">Bron</a></td>
+                    <td>&lt;robbierotten&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>SIE!</td>
+                    <td>JAAAA 😁😁🗣️NU heb ik hem echt goed 🗣️🗣️SIEEEEEE 🗣️🗣️ huh😮‍💨 Waaaaauuuuw😲 die was echt ziek man😌</td>
+                    <td>&lt;sie&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>NOS Radio Tourflits</td>
+                    <td>NOS Radio Tourflits, Tourflits, Tourflits. <a href="https://www.youtube.com/watch?v=Q2KX-SlzGv4">Bron</a></td>
+                    <td>&lt;tourflits&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Turf</td>
+                    <td>Vissers uit Visblad TV lachen om turf 😂 <a href="https://www.youtube.com/watch?v=0pRjz8opWew">Bron</a></td>
+                    <td>&lt;turf&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>De Nieuwe Uri Geller</td>
+                    <td><a href="https://www.youtube.com/watch?v=EjgLCJGFBfk">Waarschuwing. De meeste optredens in deze show zijn levensgevaarlijk. Alleen goed getrainde, professionele mentalisten kunnen deze uitvoeren. Doe dit thuis nooit na!</a></td>
+                    <td>&lt;urigeller&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Donkey Kong: Very Hard</td>
+                    <td>Donkey Kong is HARD! <a href="https://www.youtube.com/watch?v=rWZ9xwK5gsk">Bron</a></td>
+                    <td>&lt;veryhard&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Vis Moment</td>
+                    <td>VIS MOMENT</td>
+                    <td>&lt;vismoment&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>200 Vissen: Professioneel</td>
+                    <td>Waarom deze vis er niet professioneel uitziet? (uit de 200 vissen stream)</td>
+                    <td>&lt;visprofessioneel&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>Walter White speelt Mario Kart</td>
+                    <td> <a href="https://www.youtube.com/watch?v=1XSysnj2Bk0">Bron</a></td>
+                    <td>&lt;walterwhite&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>We vissen vissen</td>
+                    <td>Verder nergens om, maar we vissen vissen</td>
+                    <td>&lt;wevissenvissen&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+                <tr>
+                    <td>LordWout RuneScape Schaap</td>
+                    <td>Een schaap in RuneScape (de entrance animatie van Lord Wout)</td>
+                    <td>&lt;woutschaap&gt;</td>
+                    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+                </tr>
+<tr>
+    <td>European Broadcasting Union</td>
+    <td>De EBU, bekend van het songfestival</td>
+    <td>&lt;ebu&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Biem</td>
+    <td>Star Fox 64, maar dan biem</td>
+    <td>&lt;biem&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Halo 3 x Zelda CDI</td>
+    <td>Gee, it sure is boring around here</td>
+    <td>&lt;haloboring&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>3D Hard</td>
+    <td>HARD in 3D!</td>
+    <td>&lt;hard3d&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>3D Hard met koeksoep</td>
+    <td>HARD in 3D! (met een koeksoep)</td>
+    <td>&lt;hard3dkoeksoep&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Hardslide</td>
+    <td>Hard over je beeldscherm</td>
+    <td>&lt;hardslide&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Kikkertj</td>
+    <td>De Mother 3 autokikker rijd over het beeldscherm</td>
+    <td>&lt;kikkertje&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Minecraft with Gadget</td>
+    <td>Ik ben hier met mijn goede vriend Inspector Gadget</td>
+    <td>&lt;minecraftwithgadget&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Mark Rutte WWE hype</td>
+    <td>Live reactie op Mark Rutte die in het WWE Lijsttrekkersdebat breekt</td>
+    <td>&lt;ruttehype&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Qastrol op de WC</td>
+    <td>Hij zit te poepen</td>
+    <td>&lt;wc&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>De Westereen</td>
+    <td>Wolkom yn 'e Westereen</td>
+    <td>&lt;westereen&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Zorgwekkend</td>
+    <td>Een zorgwekkende video van iemand die <a href="https://www.youtube.com/watch?v=g3jCAyPai2Y">Baka Mitai van Yakuza</a> zingt</td>
+    <td>&lt;zorgwekkend&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Donkey Kong: Uh Oh Sticky</td>
+    <td>Je plakt vast in de honing</td>
+    <td>&lt;uhohsticky&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>200 vissen gevangen!</td>
+    <td>Gefeliciteerd Qastrol, je hebt het gedaan! 200 vissen, zie ze daar nou staan</td>
+    <td>&lt;200vissen&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Buurman & Buurman Kart</td>
+    <td>De nieuwste racing game voor Nintendo Switch</td>
+    <td>&lt;buurmankart&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>DJ Yolotanker</td>
+    <td>Het is de Samson en Gert mix van DJ Yolotanker (2 seconden per euro). <a href="https://www.youtube.com/watch?v=LKlRQGrUAo0">Bron</a></td>
+    <td>&lt;djyolotanker&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Hey</td>
+    <td>Vsauce Michael, maar hij zegt alleen nog "Hey" in elke Vsauce aflevering</td>
+    <td>&lt;hey&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Mythbusters intro</td>
+    <td>💩 <a href="https://www.youtube.com/watch?v=2stoFFvfEyg">Bron</a></td>
+    <td>&lt;mythbusters&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>YouTube 2007 tutorial</td>
+    <td>Hallo!!!! Vergeet niet om de video 5 sterren te geven!!!!</td>
+    <td>&lt;tutorial&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>150 goals gescoord</td>
+    <td>Gefeliciteerd Qastrol, je hebt het gedaan! 150 doelpunten zie de ballen daar staan!</td>
+    <td>&lt;150goals&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>7 GRAND FEEST</td>
+    <td>GRAND FEEST?! FLEENTSTONES? GRAND FEEST? <a href="https://www.youtube.com/watch?v=nF-xdiL7Nr0">Bron</a></td>
+    <td>&lt;7grandfeest&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Black Mesa Announcement System</td>
+    <td>Vervangt de TTS met de Black Mesa Announcement System van Half Life 1. Bekijk de volgende link voor alle ondersteunde woorden en zet deze in het donatiebericht (dit zijn de enige woorden die met deze alert werken): <a href="https://tz-dev.github.io/hl_text2speech/index.html">https://tz-dev.github.io/hl_text2speech/index.html</a>. Let op: bij deze alert werken de reguliere TTS stemmen of sound effects <strong>niet</strong></td>
+    <td>&lt;bmas&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Google Gemini AI</td>
+    <td>De ChatGPT-concurrent van Google. Je donatiebericht is je bericht of vraag naar Gemini.</td>
+    <td>&lt;gemini&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<!-- <tr>
+    <td>VTube: Gollum</td>
+    <td>Qastrol heeft nu een Vtube-camera van Gollum van The Lord of The Rings</td>
+    <td>&lt;vtubegollum&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VTube: Hond</td>
+    <td>Qastrol heeft nu een Vtube-camera van een hond</td>
+    <td>&lt;vtubehond&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VTube: Jerma985</td>
+    <td>Qastrol heeft nu een Vtube-camera van Jerma985</td>
+    <td>&lt;vtubejerma&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VTube: Kat</td>
+    <td>Qastrol heeft nu een VTube-camera van een kat</td>
+    <td>&lt;vtubekat&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VTube: Rotom</td>
+    <td>Qastrol heeft nu een VTube-camera van Rotom van Pokémon</td>
+    <td>&lt;vtuberotom&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Vtube: Soyjack</td>
+    <td>Qastrol heeft nu een VTube-camera van Soyjack, de meme van de wijzende persoon</td>
+    <td>&lt;vtubesoyjack&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VTube: Uitzetten</td>
+    <td>Als de VTube camera aanstaat, kan je deze zo weer uit zetten</td>
+    <td>&lt;vtubeuit&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VTube: Vis</td>
+    <td>Qastrol wordt de eerste vis Vtuber</td>
+    <td>&lt;vtubevis&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VTube: Yee</td>
+    <td>Qastrol heeft nu een VTube-camera van een dino</td>
+    <td>&lt;vtubeyee&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr> -->
+<tr>
+    <td>Louis van Gaal</td>
+    <td>Een beruchte Engelse uitspraak van Louis van Gaal wordt afgespeeld. Dit kunnen 22 uitspraken zijn</td>
+    <td>&lt;vangaal&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Het is (vissen)feest</td>
+    <td>Het is feest van Mona, maar dan met een vis!</td>
+    <td>&lt;visfeest&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>VIS GET!</td>
+    <td>Je hebt een vis gevangen (van de 200 vissen livestream)</td>
+    <td>&lt;visgevangen&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Kruip in de vissenhuid van</td>
+    <td>Wordt een vis! (van de 200 vissen livestream)</td>
+    <td>&lt;vissenhuid&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Voetbal Moment</td>
+    <td>Een soort YouTuber-intro maar dan voor voetbal</td>
+    <td>&lt;voetbalmoment&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Verder nergens om maar we scoren goals</td>
+    <td>WOE</td>
+    <td>&lt;wescorengoals&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Clear Chat</td>
+    <td>Wil je de chat leeg maken? Dat kan met deze alert!</td>
+    <td>&lt;clearchat&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Followmode</td>
+    <td>Ben je klaar met non-followers die chatten? Met deze alert kan je followmode tijdelijk aanzetten. Je donatiebedrag is het aantal seconden dat followmode actief is</td>
+    <td>&lt;followmode&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Gamerwolde</td>
+    <td>Hier wonen alleen gamers. <a href="https://maps.app.goo.gl/qXf4gykkbomkTbASA">Gamerwolde op Google Maps</a></td>
+    <td>&lt;gamerwolde&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Keep it hardcore</td>
+    <td>De titelsong van Wrestling Empire van MDickie. Come on do it! Come on do it! <a href="https://www.youtube.com/watch?v=U4eCMaf_UpI">Bron</a></td>
+    <td>&lt;hardcore&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>I am Steve</td>
+    <td>Hij is Steve (van A Minecraft Movie). <a href="https://www.youtube.com/watch?v=ykEjEcjPXEE">Bron</a></td>
+    <td>&lt;iamsteve&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Windows 95 melding</td>
+    <td>Een pop-up melding in Windows 95</td>
+    <td>&lt;windows95&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>BBC Sound Effects Archive</td>
+    <td>Speel een willekeurig geluidseffect afkomstig uit het <a href="https://sound-effects.bbcrewind.co.uk/" target="_blank">BBC Sound Effects Archive</a>, een archief met tienduizenden geluidseffecten uit de hoorspelen van de BBC. Kan van alles zijn</td>
+    <td>&lt;bbcsound&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Karbonkel</td>
+    <td>Karbonkel laat Mik schrikken 😱 (van Ik Mik Loreland)</td>
+    <td>&lt;karbonkel&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Labor Day song</td>
+    <td>Het traditionele labor day lied. <a href="https://youtu.be/HmeKhjkTOn8?feature=shared&t=1098">Bron</a></td>
+    <td>&lt;laborday&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Niks</td>
+    <td>Geen alert, alleen de TTS van je bericht</td>
+    <td>&lt;niks&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>¡Qué pasa, NENG!</td>
+    <td>Een vervloekte Spaanse videogame. <a href="https://www.youtube.com/watch?v=sIdKvagWf9I">Bron</a></td>
+    <td>&lt;quepasaneng&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Stuur een GIPHY-gifje</td>
+    <td>Stuur een gifje van GIPHY. De tekst die je tussen aanhalingstekens doet, is je zoekopdracht naar een gifje (bijv. "Christmas" zoekt de eerste .gif op met Christmas). Let op: een gifje kan mogelijk niet beschikbaar zijn</td>
+    <td>&lt;gif&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Halo Theme</td>
+    <td>Speel de Halo-themesong af onder je TTS-bericht</td>
+    <td>&lt;halotheme&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Knolpower!</td>
+    <td>Het is tijd voor wat knolpower!</td>
+    <td>&lt;knolpower&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>NPO1 Tune</td>
+    <td>Speel de NPO1 tune onder je TTS-bericht af</td>
+    <td>&lt;npo1tune&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>NPO2 Tune</td>
+    <td>Speel de NPO2 tune onder je TTS-bericht af</td>
+    <td>&lt;npo2tune&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Samson & Gert intro</td>
+    <td>Speel het Samson & Gert intronummer onder je TTS-bericht af</td>
+    <td>&lt;samsonengert&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Stel je vraag aan AI Qastrol</td>
+    <td>AI Qastrol beantwoord al je vragen. Let op: dit vervangt de text to speech</td>
+    <td>&lt;aiqastrol&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Bobba-filter</td>
+    <td>Gaat Qastrol een heftig woord zeggen? Met deze alert zet je tijdelijk hun microfoon uit, en vervang je wat ze zouden zeggen met "Bobba"!</td>
+    <td>&lt;bobba&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Omegahardheid</td>
+    <td>Meet je omegahardheid! Nog HARDer dan ultrahardheid, met hardheid tot 1000000% hardheid!</td>
+    <td>&lt;omegahardheid&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Quantumhardheid</td>
+    <td>De allerhardste hardheid ooit, met gevaarlijk hoge waardes tot wel 100000000% hardheid!</td>
+    <td>&lt;quantumhardheid&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Harry Piekema was het!</td>
+    <td>sus</td>
+    <td>&lt;harrypiekema&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Schnappi Scary Skeleton</td>
+    <td>Ich bin Schnappi das Krokodil <a href="https://www.youtube.com/watch?v=P3ynj6w2tII">Bron</a></td>
+    <td>&lt;skeleton&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>De vlag gaat eruit</td>
+    <td>yaaaaaaaay</td>
+    <td>&lt;vlag&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Zelda CDI in het Nederlands</td>
+    <td>Ooh jongen, ik verveel me te pletter. (de intro van Link: The Face of Evil in het Nederlands) <a href="https://www.youtube.com/watch?v=M2tskI83V6g">Bron</a></td>
+    <td>&lt;zeldanl&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Zin in maandag</td>
+    <td>Voor als je uitkijkt naar maandag, de start van een nieuwe werkweek. <a href="https://www.youtube.com/watch?v=X728AwdIQT4">Bron</a></td>
+    <td>&lt;zininmaandag&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<!-- <tr>
+    <td>VTube: Pichu</td>
+    <td>Qastrol krijgt een VTube-camera van Pichu van de Pokémon-serie</td>
+    <td>&lt;vtubepichu&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr> -->
+<tr>
+    <td>Kattenfoto van Qastrol's kat</td>
+    <td>Krijg een foto te zien van Qastrol's kat. Er zijn 100 mogelijkheden</td>
+    <td>&lt;kattenfoto&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Among Us Ejected</td>
+    <td>Eject iets of iemand met je donatie. Voeg het gene dat je wil ejecten in je donatiebericht met "" (bijvoorbeeld "koek en brokken" eject koek en brokken)</td>
+    <td>&lt;amongus&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Wild Pokémon battle</td>
+    <td>Een Pokémon gevecht in het wild!</td>
+    <td>&lt;wildpokemon&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Gerard Joling - Mexico</td>
+    <td>Ik ben naar Mexico gekomen! De afspeelduur is afhankelijk van je donatiebedrag (1 euro = 1 seconde)</td>
+    <td>&lt;mexico&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Poker</td>
+    <td>Speel een soort van poker. Je pakt vijf willekeurige kaarten, die vervolgens een score krijgen. <a href = "https://balatrogame.fandom.com/wiki/Poker_Hands">De scoreberekening is hetzelfde als in Balatro: (chips + handwaarde) * mult</a></td>
+    <td>&lt;poker&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Hot Potato</td>
+    <td>Start één potje Hot Potato in de chat. De "Hot Potato" wordt gepasst naar een willekeurig iemand in de chat, en die heeft 15 seconden om de hot potato te passen aan iemand anders met !pass. Als dit 30 keer lukt, is het spel voorbij en moet Qastrol één euro doneren. <a href="https://tawmae.github.io/hot_potato.html">Kijk hier voor meer informatie over Hot Potato</a></td>
+    <td>&lt;hotpotato&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>How</td>
+    <td> <a href="https://www.youtube.com/watch?v=6M-NkQAo-3E">van de "What" meme</a></td>
+    <td>&lt;how&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Kruidvat schepsnoep</td>
+    <td>Welke kruidvat schepsnoep ben jij? Kom er achter met deze alert. 34 mogelijkheden</td>
+    <td>&lt;kruidvat&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>QAS GAS IS Z</td>
+    <td>Wanneer je meedoet aan een <a href = "https://twitch.tv/muntjesman">Muntjesman Nintendo 64 Toernooi</a>, maar ineens vergeet hoe je gas geeft in de game <a href = "https://en.wikipedia.org/wiki/Extreme-G">Extreme-G</a></td>
+    <td>&lt;qasgasisz&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Play it Forward: Gameboy intro</td>
+    <td>Wanneer je je Gameboy opstart (Play it Forward-stijl)</a></td>
+    <td>&lt;gameboy&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Kingler zegt "koekie"</td>
+    <td><a href="https://www.youtube.com/watch?v=J1Y2CJMWxwA">Kingler van Pokémon Puzzle League</a> zegt "koekie"</td>
+    <td>&lt;koekie&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Unregistered Hypercam 2</td>
+    <td>Wanneer je een YouTube Tutorial kijkt in 2005 met Unregistered Hypercam 2 en <a href="https://www.youtube.com/watch?v=0Xa3lfd0ukk">Dreamscape van 009 Sound System</a></td> 
+    <td>&lt;hypercam&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Peggle: Extreme Fever</td>
+    <td><a href="https://www.youtube.com/watch?v=wXB_5A8UbWI">Je voltooit een Peggle level en Ode to Joy begint te spelen</a></td>
+    <td>&lt;peggle&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Don eren</td>
+    <td>!don eer, ik eer Don</td>
+    <td>&lt;doneren&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Zelda CDI: This is illegal you know</td>
+    <td><a href="https://www.youtube.com/watch?v=kr_Xw3sTgRk">Eén van de meest illegale cutscenes in de CDI Zelda spellen</a></td>
+    <td>&lt;illegal&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Zelda CDI: Somebody that Morshu used to know</td>
+    <td><a href="https://www.youtube.com/watch?v=MNyxXxyavVw">Morshu zingt "Somebody I used to know"</a></td>
+    <td>&lt;somebody&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Zelda CDI: You Reposted In The Wrong Shop</td>
+    <td><a href="https://www.youtube.com/watch?v=m20cGdohWic">You reposted in the wrong neighbourhood</a></td>
+    <td>&lt;reposted&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+<tr>
+    <td>Play it Forward Nederland 1</td>
+    <td>Een Play it Forward-logo in de stijl van het jaren '90 Nederland 1 logo, met een sound effect</a></td>
+    <td>&lt;playitforward&gt;</td>
+    <td><button class="copy-btn" onclick="copyToClipboard(this)">Kopieer</button></td>
+</tr>
+        </tbody>
+    </table>
+    <br><br>
+    </div>
+    </body>
+
+    <script>
+        // Functie om effectnaam te kopiëren naar klembord
+        function copyToClipboard(button) {
+            const row = button.closest('tr');
+            const effectName = row.cells[2].innerText.trim();
+            navigator.clipboard.writeText(effectName).then(() => {
+                alert(`Effectnaam '${effectName}' gekopieerd naar het klembord!`);
+            }).catch(err => {
+                console.error('Kopiëren mislukt', err);
+            });
+        }
+
+        let sortDirection = [true, true, true]; // Eén richting per kolom
+
+function sortTable(n) {
+    const table = document.querySelector("table");
+    const rows = Array.from(table.rows).slice(1);
+
+    const isNumeric = rows.every(row => !isNaN(row.cells[n].innerText.trim()));
+    const sortedRows = rows.sort((rowA, rowB) => {
+        const textA = rowA.cells[n].innerText.trim();
+        const textB = rowB.cells[n].innerText.trim();
+        if (isNumeric) {
+            return parseFloat(textA) - parseFloat(textB);
+        }
+        return textA.localeCompare(textB);
+    });
+
+    if (!sortDirection[n]) {
+        sortedRows.reverse();
+    }
+
+    sortedRows.forEach(row => table.appendChild(row));
+    sortDirection[n] = !sortDirection[n];
+}
+
+
+        // Functie om de tabel te filteren en het aantal zichtbare rijen bij te werken
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const table = document.querySelector("table");
+            const rows = table.getElementsByTagName("tr");
+            let visibleCount = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName("td");
+                let matchFound = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent || cells[j].innerText;
+                    if (cellText.toLowerCase().indexOf(filter) > -1) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = matchFound ? "" : "none";
+                if (matchFound) {
+                    visibleCount++;
+                }
+            }
+
+            // Werk het dynamische getal bij
+            document.getElementById("rowCount").textContent = visibleCount;
+        }
+
+        // Functie om het aantal zichtbare rijen te berekenen bij pagina-initialisatie
+        function updateRowCount() {
+            const table = document.querySelector("table");
+            const rows = Array.from(table.getElementsByTagName("tr")).slice(1);
+            const visibleCount = rows.filter(row => row.style.display !== "none").length;
+            document.getElementById("rowCount").textContent = visibleCount;
+        }
+
+        // Standaard sorteren en initialiseren van rijen bij het laden van de pagina
+        document.addEventListener("DOMContentLoaded", function() {
+            sortTable(0);
+            updateRowCount();
+        });
+        const alertCount = document.querySelectorAll('#alertTable tr').length;
+        localStorage.setItem('alertCount', alertCount);
+    </script>
+
+</body>
+</html>

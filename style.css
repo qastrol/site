@@ -11,6 +11,13 @@
     --button-background-color: #008CBA;
     --button-text-color: #ffffff;
     --button-hover-background-color: #005f73;
+    /* additional UI tokens */
+    --muted-text-color: rgba(0,0,0,0.7);
+    --sidebar-background: rgba(0,0,0,0.03);
+    --filter-background: rgba(255,255,255,0.6);
+    --card-background: var(--table-background-color);
+    --input-background: #ffffff;
+    --input-text-color: #000000;
 }
 
 /* Use border-box everywhere to avoid unexpected width calculations that cause overflow */
@@ -31,6 +38,13 @@
     --button-background-color: #555555;
     --button-text-color: #ffffff;
     --button-hover-background-color: #777777;
+    /* dark-mode specific UI tokens */
+    --muted-text-color: rgba(255,255,255,0.72);
+    --sidebar-background: #1b1b1b;
+    --filter-background: rgba(255,255,255,0.03);
+    --card-background: #222222;
+    --input-background: #2a2a2a;
+    --input-text-color: #eaeaea;
 }
 
 /* Algemene styling voor body en tekst */
@@ -326,6 +340,32 @@ button:hover {
     box-sizing: border-box;
 }
 
+/* Overlay footer / apply button styling */
+#mobileFilterOverlay .overlay-footer {
+    border-top: 1px solid var(--table-border-color);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(to top, rgba(0,0,0,0.02), transparent);
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+}
+
+#mobileFilterOverlay .overlay-apply {
+    width: 100%;
+    max-width: 560px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    background: var(--button-background-color);
+    color: var(--button-text-color);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#mobileFilterOverlay .overlay-apply:active { transform: translateY(1px); }
+
 #mobileFilterOverlay .overlay-header {
     display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px;
 }
@@ -352,7 +392,7 @@ button:hover {
        grow or shrink unexpectedly when long labels or counts are added. */
     flex: 0 0 260px; /* do not allow flex to grow/shrink */
     max-width: 320px;
-    background: rgba(0,0,0,0.03);
+    background: var(--sidebar-background);
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.04);
@@ -371,11 +411,23 @@ button:hover {
    and ensuring form controls respect the container width. */
 .sidebar { overflow-x: hidden; }
 .sidebar .filter-group input[type="text"],
-.sidebar .filter-group select,
-.sidebar .filter-group input[type="search"] {
+.sidebar .filter-group input[type="search"],
+.sidebar .filter-group select {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    background: var(--input-background);
+    color: var(--input-text-color);
+    border: 1px solid var(--table-border-color);
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+/* Placeholder color adapts to theme via --muted-text-color */
+.sidebar .filter-group input::placeholder,
+.sidebar .filter-group input[type="search"]::placeholder {
+    color: var(--muted-text-color);
+    opacity: 0.85;
 }
 
 /* Ensure filter rows don't force the sidebar to grow. Labels and counts
@@ -390,7 +442,7 @@ button:hover {
 }
 
 .sidebar .filter-group .filter-count {
-    color: #666;
+    color: var(--muted-text-color);
     margin-left: 6px;
     flex: 0 0 auto;
 }
@@ -436,7 +488,7 @@ button:hover {
     overflow: auto;
     padding: 6px;
     border-radius: 6px;
-    background: rgba(255,255,255,0.6);
+    background: var(--filter-background);
 }
 
 /* Responsive: op small screens stapelen we de sidebar boven de inhoud */
@@ -650,19 +702,14 @@ details.filter-option:not([open]) > summary::after {
     font-size: 1.00rem; /* slightly smaller for a subtler look */
     margin-bottom: 6px;
 }
-.item-desc { color: rgba(0,0,0,0.7); font-size: 0.95rem; }
+.item-desc { color: var(--muted-text-color); font-size: 0.95rem; }
 
 /* Subtle languages / AI info segment placed between name and description */
 .item-langs {
     font-size: 0.86rem;
-    color: rgba(0,0,0,0.55);
+    color: var(--muted-text-color);
     margin-bottom: 6px;
     font-style: normal;
-}
-
-/* Dark theme override for subtle info text */
-[data-theme="dark"] .item-langs {
-    color: rgba(255,255,255,0.6);
 }
 .item-meta {
     display: flex;
@@ -757,5 +804,19 @@ details.filter-option:not([open]) > summary::after {
 
     /* Ensure main container keeps items stacked correctly */
     .soundeffects-page .item-listing__main { align-items: flex-start; }
+}
+
+/* Mobile: small horizontal padding so text isn't flush to the screen edge */
+@media (max-width: 480px) {
+    .content {
+        padding-left: calc(12px + env(safe-area-inset-left, 0px));
+        padding-right: calc(12px + env(safe-area-inset-right, 0px));
+    }
+
+    /* Ensure item cards retain some inner horizontal padding on very small screens */
+    .item-listing__item {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
 }
 

@@ -85,6 +85,7 @@ function renderTtsTable() {
     li.dataset.category = (item.category || '').toString();
     li.dataset.gender = (item.type || '').toString();
     li.dataset.isai = item.isAI ? '1' : '0';
+    li.dataset.supportsaudiotags = item.supportsAudioTags ? '1' : '0';
     li.dataset.languages = (Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : [])).join(',');
 
         list.appendChild(li);
@@ -165,6 +166,10 @@ function renderTtsTable() {
     const normalCheckbox = document.querySelector('#filterNormal');
     const aiChecked = aiCheckbox ? aiCheckbox.checked : false;
     const normalChecked = normalCheckbox ? normalCheckbox.checked : false;
+    const supportsCb = document.querySelector('#filterSupports');
+    const notSupportsCb = document.querySelector('#filterNotSupports');
+    const supportsChecked = supportsCb ? supportsCb.checked : false;
+    const notSupportsChecked = notSupportsCb ? notSupportsCb.checked : false;
     const checkedLangInputs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked'));
         const checkedLangs = checkedLangInputs.map(cb => cb.value);
     // Gender filters (Mannelijk / Vrouwelijk)
@@ -189,6 +194,14 @@ function renderTtsTable() {
                     else aiMatch = true;
                 }
 
+                // supportsAudioTags filter
+                let supportsMatch = true;
+                if (supportsChecked || notSupportsChecked) {
+                    if (supportsChecked && !notSupportsChecked) supportsMatch = row.dataset.supportsaudiotags === '1';
+                    else if (!supportsChecked && notSupportsChecked) supportsMatch = row.dataset.supportsaudiotags === '0';
+                    else supportsMatch = true;
+                }
+
                 // Languages filter
                 let langMatch = true;
                 if (checkedLangs.length > 0) {
@@ -204,7 +217,7 @@ function renderTtsTable() {
                     genderMatch = checkedGenders.indexOf(rowGender) !== -1;
                 }
 
-                const matchFound = textMatch && categoryMatch && aiMatch && langMatch && genderMatch;
+                const matchFound = textMatch && categoryMatch && aiMatch && langMatch && genderMatch && supportsMatch;
                 row.style.display = matchFound ? '' : 'none';
             });
 
@@ -225,6 +238,10 @@ function computeFilterCounts() {
     const normalCheckbox = document.querySelector('#filterNormal');
     const aiChecked = aiCheckbox ? aiCheckbox.checked : false;
     const normalChecked = normalCheckbox ? normalCheckbox.checked : false;
+    const supportsCheckbox = document.querySelector('#filterSupports');
+    const notSupportsCheckbox = document.querySelector('#filterNotSupports');
+    const supportsChecked = supportsCheckbox ? supportsCheckbox.checked : false;
+    const notSupportsChecked = notSupportsCheckbox ? notSupportsCheckbox.checked : false;
 
     // Loop over alle checkboxen in het filterpaneel
     const allCbs = Array.from(document.querySelectorAll('#filterPanel input[type="checkbox"]'));
@@ -238,12 +255,15 @@ function computeFilterCounts() {
         let selGenders = checkedGenders.slice();
         let selAi = aiChecked;
         let selNormal = normalChecked;
+        let selSupportsTrue = supportsChecked;
+        let selSupportsFalse = notSupportsChecked;
 
         // Negeer bestaande selectie binnen dezelfde facet (we tonen counts alsof die facet leeg is)
         if (type === 'category') selCats = [];
         if (type === 'lang') selLangs = [];
         if (type === 'gender') selGenders = [];
         if (type === 'type') { selAi = false; selNormal = false; }
+        if (type === 'audio') { selSupportsTrue = false; selSupportsFalse = false; }
 
         // Pas de kandidaatwaarde toe voor deze checkbox
         if (type === 'category') selCats = [value];
@@ -252,6 +272,10 @@ function computeFilterCounts() {
         else if (type === 'type') {
             if (value === 'ai') { selAi = true; selNormal = false; }
             else if (value === 'normal') { selAi = false; selNormal = true; }
+        }
+        else if (type === 'audio') {
+            if (value === 'supports') { selSupportsTrue = true; selSupportsFalse = false; }
+            else if (value === 'notsupports') { selSupportsTrue = false; selSupportsFalse = true; }
         }
 
         // Tel matching items
@@ -264,6 +288,11 @@ function computeFilterCounts() {
             if (selAi || selNormal) {
                 if (selAi && !selNormal) { if (!item.isAI) return acc; }
                 else if (!selAi && selNormal) { if (item.isAI) return acc; }
+            }
+            // supportsAudioTags filter
+            if (typeof selSupportsTrue !== 'undefined' && (selSupportsTrue || selSupportsFalse)) {
+                if (selSupportsTrue && !selSupportsFalse) { if (!item.supportsAudioTags) return acc; }
+                else if (!selSupportsTrue && selSupportsFalse) { if (item.supportsAudioTags) return acc; }
             }
             // languages
             if (selLangs.length > 0) {
@@ -391,6 +420,55 @@ function computeFilterCounts() {
             normalCount.textContent = '';
             normalWrapper.appendChild(normalCount);
             typeContainer.appendChild(normalWrapper);
+
+            // Audio tags filters: supports / does not support (in audio container)
+            const audioContainer = document.getElementById('audioTagFilters');
+            if (audioContainer) {
+                audioContainer.innerHTML = '';
+                const supWrapper = document.createElement('label');
+                supWrapper.style.display = 'block';
+                supWrapper.style.marginBottom = '6px';
+                const supCb = document.createElement('input');
+                supCb.type = 'checkbox';
+                supCb.id = 'filterSupports';
+                supCb.setAttribute('data-type', 'audio');
+                supCb.value = 'supports';
+                supCb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
+                supWrapper.appendChild(supCb);
+                const supSpan = document.createElement('span');
+                supSpan.style.fontWeight = 'normal';
+                supSpan.textContent = 'Ja';
+                supWrapper.appendChild(supSpan);
+                const supCount = document.createElement('span');
+                supCount.className = 'filter-count';
+                supCount.style.marginLeft = '6px';
+                supCount.style.color = '#666';
+                supCount.textContent = '';
+                supWrapper.appendChild(supCount);
+                audioContainer.appendChild(supWrapper);
+
+                const notSupWrapper = document.createElement('label');
+                notSupWrapper.style.display = 'block';
+                notSupWrapper.style.marginBottom = '6px';
+                const notSupCb = document.createElement('input');
+                notSupCb.type = 'checkbox';
+                notSupCb.id = 'filterNotSupports';
+                notSupCb.setAttribute('data-type', 'audio');
+                notSupCb.value = 'notsupports';
+                notSupCb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
+                notSupWrapper.appendChild(notSupCb);
+                const notSupSpan = document.createElement('span');
+                notSupSpan.style.fontWeight = 'normal';
+                notSupSpan.textContent = 'Nee';
+                notSupWrapper.appendChild(notSupSpan);
+                const notSupCount = document.createElement('span');
+                notSupCount.className = 'filter-count';
+                notSupCount.style.marginLeft = '6px';
+                notSupCount.style.color = '#666';
+                notSupCount.textContent = '';
+                notSupWrapper.appendChild(notSupCount);
+                audioContainer.appendChild(notSupWrapper);
+            }
 
             // Gender filters: Mannelijk / Vrouwelijk (in separate gender container)
             const gTitle = document.createElement('div');
