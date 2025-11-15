@@ -100,10 +100,19 @@ body {
         max-height: 100vh; /* let it expand as needed */
     }
 
-    /* Make each menu item a full-width, touch-friendly button like fleurvanryn */
+    /* Make each menu item a full-width, touch-friendly button and ensure
+       consistent visual width on mobile. Use flex layout so icons and text
+       align predictably and every item fills the container. */
+    nav ul li,
+    .site-nav ul li { width: 100%; }
+
     nav ul li a,
-    nav ul li button {
-        display: block;
+    nav ul li button,
+    .site-nav ul li a,
+    .site-nav ul li button {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* keep text at the left, icons can use margin-left:auto */
         width: 100%;
         padding: 14px 20px;
         font-size: 1.05rem;
@@ -112,6 +121,7 @@ body {
         background: transparent;
         border: none;
         outline: none;
+        box-sizing: border-box;
     }
 
     /* separator between items */
@@ -286,7 +296,15 @@ button:hover {
     .site-nav ul.show { display: flex; max-height: 100vh; overflow: auto; }
     .site-nav li { padding: 0; }
     .site-nav ul li a,
-    .site-nav ul li button { padding: 14px 20px; font-size: 1.05rem; }
+    .site-nav ul li button {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 1.05rem;
+        box-sizing: border-box;
+    }
     .hamburger { display: block; }
 }
 

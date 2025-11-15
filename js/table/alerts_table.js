@@ -78,7 +78,7 @@ const alertsTable = [
 	{ name: "WWE intro", description: "Now! Then! Forever! <a href=\"https://www.youtube.com/watch?v=551L0-4QMV0\">Bron</a>", code: "<wwe>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Mario Kart: Attention all Mario Kart gamers!", description: "Attention all Mario Kart gamers! Funky Kong needs your help! <a href=\"https://www.youtube.com/watch?v=qGz3KFdmaD0\">Bron</a>", code: "<attentiongamers>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Mario Kart: Blooper", description: "Een Blooper van Mario Kart spuit inkt over het scherm...", code: "<blooper>", category: ["Gaming"], type: "Video-alert", year: 2024},
-	{ name: "Lego Island: Brick by Brick", description: "Brick by Brick van Lego Island wordt afgespeeld 😳", code: "<brickbybrick>", category: "", type: "Interactieve alert", year: 2024},
+	{ name: "Lego Island: Brick by Brick", description: "Brick by Brick van Lego Island wordt afgespeeld 😳", code: "<brickbybrick>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Mario Kart: Communication Error", description: "POV: je raakt gedisconnected in Mario Kart", code: "<communicationerror>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Dit is DVD reclame", description: "Dit is de geweldige DVD-technologie! <a href=\"https://www.youtube.com/watch?v=ZtlBCrP9ySo\">Bron</a>", code: "<dvd>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Fryslân", description: "Fryslân Boppe (de entrance animatie van DeJelman)", code: "<fryslan>", category: "", type: "Video-alert", year: 2024},
