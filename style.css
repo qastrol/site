@@ -11,6 +11,9 @@
     --button-background-color: #008CBA;
     --button-text-color: #ffffff;
     --button-hover-background-color: #005f73;
+    /* Tekst-specifieke linkkleuren (voor .tekst container) */
+    --tekst-link-color: #0a58ca; /* standaard blauwe linkkleur */
+    --tekst-link-hover: #084298;
     /* additional UI tokens */
     --muted-text-color: rgba(0,0,0,0.7);
     --sidebar-background: rgba(0,0,0,0.03);
@@ -45,22 +48,23 @@
     --card-background: #222222;
     --input-background: #2a2a2a;
     --input-text-color: #eaeaea;
+    /* Donker thema linkkleuren voor .tekst */
+    --tekst-link-color: #8fbfff; /* lichtblauw voor contrast op donker */
+    --tekst-link-hover: #6fa7ff;
 }
 
 /* Algemene styling voor body en tekst */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    max-width: 1800px;
-    width: 100%;
-    box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: var(--background-color);
+  color: var(--text-color);
 }
 
 .content {
     padding: 0 5%;
 }
+
 
 /* Media query voor grotere schermen (vanaf 1024px en breder) */
 @media (min-width: 1024px) {
@@ -395,6 +399,128 @@ button:hover {
 /* Ensure page content starts below fixed header */
 .content { padding-top: 72px; }
 
+/* Scoped 'tekst' class: maak tekststijl gelijk aan portfolio intro */
+.tekst,
+section.tekst,
+main.tekst {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1em;
+    text-align: left;
+    line-height: 1.6;
+    font-size: 1.1em;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+}
+
+.tekst p {
+    margin-bottom: 1.2em;
+    color: var(--text-color);
+    text-align: justify;
+}
+
+.tekst p a {
+    font-weight: normal;
+    color: var(--tekst-link-color);
+    text-decoration: underline;
+}
+.tekst p a:hover {
+    color: var(--tekst-link-hover);
+}
+
+.tekst h1 {
+    text-align: center;
+    margin-top: 1em;
+    font-size: 2em;
+    font-weight: bold;
+}
+.tekst h2 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    color: #222;
+    text-align: center;
+}
+
+.tekst table {
+    width: 100%;
+    max-width: 600px;
+    margin: 1em auto;
+    box-sizing: border-box;
+}
+
+@media (max-width: 599px) {
+    .tekst,
+    section.tekst,
+    main.tekst {
+        padding: 0 1em;
+    }
+}
+
+
+.tekst,
+section.tekst,
+main.tekst {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1em;
+    text-align: left;
+    line-height: 1.6;
+    font-size: 1.1em;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+}
+
+/* Paragraaf- en linkregels binnen .tekst */
+.tekst p {
+    margin-bottom: 1.2em;
+    color: var(--text-color);
+    text-align: justify;
+}
+
+.tekst p a {
+    font-weight: normal;
+    color: var(--tekst-link-color);
+    text-decoration: underline;
+}
+.tekst p a:hover {
+    color: var(--tekst-link-hover);
+}
+
+/* Koppen binnen .tekst */
+.tekst h1 {
+    text-align: center;
+    margin-top: 1em;
+    font-size: 2em;
+    font-weight: bold;
+}
+.tekst h2 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    color: #222;
+    text-align: center;
+}
+
+/* Tabellen binnen .tekst: beperk maximale breedte en centreer ze zodat
+   tabellen visueel binnen dezelfde tekstkolom vallen als normale tekst. */
+.tekst table {
+    width: 100%; /* laat cellen vullen binnen de tekst-kolom */
+    max-width: 900px; /* constrain binnen de tekst container */
+    margin: 1em auto;
+    box-sizing: border-box;
+}
+
+/* Kleine schermen: bevestig dezelfde padding als portfolio */
+@media (max-width: 599px) {
+    .tekst,
+    section.tekst,
+    main.tekst {
+        padding: 0 1em;
+    }
+}
+
+
 /* Nieuwe two-column layout voor filter sidebar + hoofdinformatie */
 .panel-grid {
     display: flex;
@@ -607,6 +733,7 @@ button:hover {
     cursor: pointer;
     font-weight: 600;
 }
+
 
 details.filter-option {
     margin-bottom: 10px;
