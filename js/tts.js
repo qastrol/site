@@ -56,6 +56,7 @@ function renderTtsTable() {
     if (item.type) infoParts.push(item.type);
     if (humanLangs) infoParts.push(humanLangs);
     if (item.isAI) infoParts.push('AI-stem');
+    if (item.supportsAudioTags) infoParts.push('Ondersteunt audio tags');
     info.textContent = infoParts.join(' • ');
         left.appendChild(info);
 

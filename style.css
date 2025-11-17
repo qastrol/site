@@ -585,6 +585,15 @@ main.tekst {
     vertical-align: middle;
 }
 
+/* For the TTS languages filter we want the full label visible (e.g. "Engels & Nederlands").
+   Allow wrapping and disable truncation specifically for the language filters container. */
+.filter-panel #languageFilters label {
+    max-width: none;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal; /* allow wrapping so longer names aren't cut off */
+}
+
 .sidebar .filter-group .filter-count {
     color: var(--muted-text-color);
     margin-left: 6px;

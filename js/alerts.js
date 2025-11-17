@@ -377,72 +377,75 @@
             return overlay;
         }
 
-        function showPreview(folder, displayName) {
-            const name = normalizeNameForFile(displayName);
+        // showPreview supports two call styles for backward compatibility:
+        //  - showPreview(folder, displayName)
+        //  - showPreview(folder, code, displayName)
+        // When a code is provided (e.g. '<cj>') we prefer it for lookup (after
+        // normalizing) so angle-brackets do not prevent matching a preview file.
+        function showPreview(folder, codeOrDisplay, displayName) {
+            let code = undefined;
+            let display = undefined;
+            if (typeof displayName === 'undefined') {
+                display = codeOrDisplay;
+            } else {
+                code = codeOrDisplay;
+                display = displayName;
+            }
+
             const overlay = createPreviewOverlay();
             const titleEl = overlay.querySelector('#preview-title');
             const body = overlay.querySelector('#preview-body');
             const copyBtn = overlay.querySelector('.preview-copy');
-            titleEl.textContent = displayName;
+            titleEl.textContent = display || '';
             copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(displayName).then(() => {
+                navigator.clipboard.writeText(display || '').then(() => {
                     copyBtn.textContent = 'Gekopieerd ✓';
                     setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
                 });
             });
-            // If a pre-generated mapping (alertsLinks) exists, use it to pick the
-            // exact file path to show. This avoids probing by constructing many
-            // elements and ensures no media is loaded until the user opens the preview.
-            try {
-                const mappingFiles = (typeof window.getAlertsFiles === 'function') ? window.getAlertsFiles(name) : (window.alertsLinks && window.alertsLinks[name]) || [];
-                if (mappingFiles && mappingFiles.length > 0) {
-                    // Prefer video files for alerts previews (.mp4, .webm), but
-                    // also accept audio files (.mp3, .ogg) if present in the mapping.
-                    const videoExts = ['.webm', '.mp4'];
-                    const audioExts = ['.mp3', '.ogg'];
-                    let chosen = null;
-                    let chosenType = null;
-                    for (const f of mappingFiles) {
-                        const ext = (f.split('.').pop() || '').toLowerCase();
-                        const dotExt = '.' + ext;
-                        if (videoExts.includes(dotExt)) { chosen = f; chosenType = 'video'; break; }
-                        if (audioExts.includes(dotExt) && !chosen) { chosen = f; chosenType = 'audio'; }
-                    }
 
-                    if (chosen) {
-                        body.innerHTML = '';
-                        if (chosenType === 'video') {
-                            const v = document.createElement('video');
-                            v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-                            // set src only now to avoid preloading
-                            v.src = chosen;
-                            body.appendChild(v);
-                        } else {
-                            const a = document.createElement('audio');
-                            a.controls = true; a.preload = 'metadata';
-                            a.src = chosen;
-                            body.appendChild(a);
+            // Try mapping lookup with the normalized code first (if available),
+            // then fall back to the normalized display name. Do not perform any
+            // network probing here — only use the generated mapping.
+            try {
+                const tryNames = [];
+                if (code) tryNames.push(normalizeNameForFile(code));
+                if (display) tryNames.push(normalizeNameForFile(display));
+
+                for (const name of tryNames) {
+                    const mappingFiles = (typeof window.getAlertsFiles === 'function') ? window.getAlertsFiles(name) : (window.alertsLinks && window.alertsLinks[name]) || [];
+                    if (mappingFiles && mappingFiles.length > 0) {
+                        const videoExts = ['.webm', '.mp4'];
+                        const audioExts = ['.mp3', '.ogg'];
+                        let chosen = null; let chosenType = null;
+                        for (const f of mappingFiles) {
+                            const ext = (f.split('.').pop() || '').toLowerCase();
+                            const dotExt = '.' + ext;
+                            if (videoExts.includes(dotExt)) { chosen = f; chosenType = 'video'; break; }
+                            if (audioExts.includes(dotExt) && !chosen) { chosen = f; chosenType = 'audio'; }
                         }
-                        return;
+                        if (chosen) {
+                            body.innerHTML = '';
+                            if (chosenType === 'video') {
+                                const v = document.createElement('video');
+                                v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
+                                v.src = chosen;
+                                body.appendChild(v);
+                            } else {
+                                const a = document.createElement('audio');
+                                a.controls = true; a.preload = 'metadata';
+                                a.src = chosen;
+                                body.appendChild(a);
+                            }
+                            return;
+                        }
                     }
                 }
             } catch (e) {
-                // fallback to probing behavior below
+                // ignore and fall through to no-preview message
             }
 
-            // fallback: probe common extensions (this will create elements and may
-            // trigger small network checks, used only when mapping is not available)
-            const base = `${folder}/${name}`;
-
-            function tryVideo(exts, i) {
-                if (i >= exts.length) { body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>'; return; }
-                const v = document.createElement('video');
-                v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-                v.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(v); };
-                v.onerror = () => tryVideo(exts, i+1);
-                v.src = base + exts[i];
-            }
-
+            body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
         }
 
         // Helper to check if a preview file exists (image -> audio -> video)
@@ -470,41 +473,41 @@
             return false;
         }
 
-        function previewExists(folder, displayName, cb) {
-            const name = normalizeNameForFile(displayName);
-            const base = `${folder}/${name}`;
-
-            // If a generated mapping is available, consult it first to avoid any network checks.
-            try {
-                // Prefer the generated mapping and accept video (.mp4/.webm)
-                // and audio (.mp3/.ogg) as valid preview files.
-                const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
-                if (typeof window.getAlertsFiles === 'function') {
-                    const files = window.getAlertsFiles(name) || [];
-                    if (files.some(matchesMedia)) { cb(true); return; }
-                } else if (typeof window.alertsLinks !== 'undefined') {
-                    const files = window.alertsLinks[name] || [];
-                    if (files.some(matchesMedia)) { cb(true); return; }
-                }
-            } catch (e) {
-                // ignore and fall back to HTTP probing
+        // previewExists supports two call styles:
+        //  - previewExists(folder, displayName, cb)
+        //  - previewExists(folder, code, displayName, cb)
+        function previewExists(folder, codeOrDisplay, displayName, cb) {
+            let code = undefined;
+            let display = undefined;
+            // Normalize arguments: allow (folder, display, cb)
+            if (typeof cb === 'undefined' && typeof displayName === 'function') {
+                cb = displayName;
+                display = codeOrDisplay;
+            } else {
+                code = codeOrDisplay;
+                display = displayName;
             }
 
-            // sequence: video-only (HTTP-based probing) — only check .webm/.mp4
-            (async () => {
-                // Check video first, then audio. We only probe a small set of
-                // extensions to avoid extra network work.
-                const videoExts = ['.webm', '.mp4'];
-                for (const e of videoExts) {
-                    if (await _checkUrlExists(base + e)) { cb(true); return; }
+            const tryNames = [];
+            if (code) tryNames.push(normalizeNameForFile(code));
+            if (display) tryNames.push(normalizeNameForFile(display));
+
+            try {
+                const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
+                for (const name of tryNames) {
+                    if (typeof window.getAlertsFiles === 'function') {
+                        const files = window.getAlertsFiles(name) || [];
+                        if (files.some(matchesMedia)) { cb(true); return; }
+                    } else if (typeof window.alertsLinks !== 'undefined') {
+                        const files = window.alertsLinks[name] || [];
+                        if (files.some(matchesMedia)) { cb(true); return; }
+                    }
                 }
-                const audioExts = ['.mp3', '.ogg'];
-                for (const e of audioExts) {
-                    if (await _checkUrlExists(base + e)) { cb(true); return; }
-                }
-                // no local video found: no preview available
-                cb(false);
-            })();
+            } catch (e) {
+                // ignore
+            }
+
+            cb(false);
         }
 
         // Attach preview handlers to first-column names and mark those with previews
@@ -514,9 +517,10 @@
                 const first = r.querySelector('.item-name');
                 if (!first) return;
                 const display = first.innerText.trim();
+                const code = (r.dataset.code || '').toString();
                 first.title = 'Klik voor voorbeeld';
-                first.addEventListener('click', () => showPreview('alerts', display));
-                previewExists('alerts', display, (exists) => {
+                first.addEventListener('click', () => showPreview('alerts', code || display, display));
+                previewExists('alerts', code || display, display, (exists) => {
                     if (exists) first.classList.add('has-preview');
                 });
             });

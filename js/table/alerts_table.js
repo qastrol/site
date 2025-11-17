@@ -159,9 +159,9 @@ const alertsTable = [
 	{ name: "Halo: Hard stuff", description: "De aankondiger van Halo heeft het over hard stuff", code: "<hardstuff>", category: ["AI", "Gaming"], type: "Audio-alert", year: 2024},
 	{ name: "Harry Piekema was het!", description: "sus", code: "<harrypiekema>", category: ["Meme"], type: "Video-alert", year: 2024},
 	{ name: "Discord: Hugo disconnected", description: "Harde Hugo wordt gedisconnect uit de Discord call", code: "<hugodisconnect>", category: ["Internet"], type: "Interactieve alert", year: 2024},
-	{ name: "Hugo je bent stoer", description: "Met elke kill stijgt de hardheid omhoog. Twitch chat roept 'Hugo je bent stoer'", code: "<hugojebentstoer>", category: ["AI", "Harde Hugo"], type: "Interactieve alert", year: 2024},
+	{ name: "Hugo je bent stoer", description: "Met elke kill stijgt de hardheid omhoog. Twitch chat roept 'Hugo je bent stoer'", code: "<hugojebentstoer>", category: ["AI", "Harde Hugo"], type: "Video-alert", year: 2024},
 	{ name: "Harde Hugo: WWE karakter", description: "Harde Hugo is een worstelaar in WWE", code: "<hugowwe>", category: ["Sport", "Harde Hugo"], type: "Video-alert", year: 2024},
-	{ name: "I am Steve", description: "Hij is Steve (van A Minecraft Movie). <a href=\"https://www.youtube.com/watch?v=ykEjEcjPXEE\">Bron</a>", code: "<iamsteve>", category: ["Gaming", "Film"], type: "Video-alert", year: 2024},
+	{ name: "I am Steve", description: "Hij is Steve (van A Minecraft Movie). <a href=\"https://www.youtube.com/watch?v=ykEjEcjPXEE\">Bron</a>", code: "<steve>", category: ["Gaming", "Film"], type: "Video-alert", year: 2024},
 	{ name: "Karbonkel", description: "Karbonkel laat Mik schrikken 😱 (van Ik Mik Loreland)", code: "<karbonkel>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Kruip in de huid van... KerstKnallers!", description: "Welke KerstKnallers streamer ben jij?", code: "<kersthuid>", category: ["KerstKnallers"], type: "Video-alert", year: 2024},
 	{ name: "KerstKnallers: donatie", description: "Een gewone KerstKnallers donatie", code: "<kerstknallers>", category: ["KerstKnallers"], type: "Video-alert", year: 2024},
@@ -262,11 +262,13 @@ const alertsTable = [
 	{ name: "Warner Bros intro", description: "Afkomstig uit de Minecraft Movie", code: "<warnerbros>", category: ["Film"], type: "Video-alert", year: 2024},
 	{ name: "Welkom dat je kijkt", description: "Welkom welkom welkom dat je kijkt", code: "<welkomdatjekijkt>", category: ["Internet"], type: "Video-alert", year: ""},
 	{ name: "Verder nergens om, maar we minen diamonds", description: "WOE!", code: "<weminendiamonds>", category: ["Gaming"], type: "Video-alert", year: 2024},
-	{ name: "Pokémon Sun/Moon dans", description: "Een trainer in Pokémon Sun en Moon doet een Z-move dans", code: "<weslyv8>", category: ["Gaming"], type: "Video-alert", year: 2024},
+	{ name: "Pokémon Sun/Moon dans", description: "Een trainer in Pokémon Sun en Moon doet een Z-move dans", code: "<wes>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Lord Wout moment", description: "Voor de gaming momenten van Lord Wout", code: "<lordwout>", category: ["Gaming", "Lord Wout"], type: "Video-alert", year: 2024},
 	{ name: "Happy Easter Xbox", description: "Beschrijving voor xbox", code: "<xbox>", category: ["Gaming", "Internet"], type: "Video-alert", year: ""},
 	{ name: "YouTube 2007 Tutorial", description: "Welkom bij mijn tutorial!", code: "<youtube>", category: ["Internet"], type: "Video-alert", year: 2024},
-	{ name: "De provincie Zwolle", description: "De 🗺️ provincie 🏘️ Zwolle 🇳🇱 staat 🧍 nummer 🔢 één 🥇 met 🤝 technologie ⚙️ van 🧪 teleportatie 🧙‍♂️ Zo 😱 hun 👥 zijn 🫶 wel 👍 gek 🤪 man 👨 Ja 🙂 ik 🙋 wist 🧠 dat 🧐 niet ❌ man 👨 nee 🙅 dat 🗣️ we 👯‍♂️ zo 🫣 dichtbij 🤏 zijn 😮 dat 🗣️ provincie 🏘️ Zwolle 🇳🇱 zo 💫 toereikend 👐 is ✅ en ☝️ dat 🗣️ ze 👩‍🔬 zo 💫 ver 📏 al ⏩ geavanceerd 📈 zijn 🤖 met ⚙️ de 🧭 technologie ⚙️ broer 👨 is 💪 andere 🔀 level 🎚️ ja ✅ is 💪 andere 🔀 level 🎚️", code: "<zwolle>", category: ["Internet"], type: "", year: ""},
-	{ name: "Mario Odyssey: Moon Get!", description: "Donatietekst zoals wanneer je in Mario Odyssey een maan krijgt", code: "<odyssey>", category: ["Gaming"], type: "Video-alert", year: ""}
-
-];
+	{ name: "De provincie Zwolle", description: "De 🗺️ provincie 🏘️ Zwolle 🇳🇱 staat 🧍 nummer 🔢 één 🥇 met 🤝 technologie ⚙️ van 🧪 teleportatie 🧙‍♂️ Zo 😱 hun 👥 zijn 🫶 wel 👍 gek 🤪 man 👨 ", code: "<zwolle>", category: ["Internet"], type: ["Video-alert"], year: ""},,
+	{ name: "Trackmania: Author", description: "Unbelievable!!!!! You just beat Nadeo's High Score", code: "<author>" },
+	{ name: "Alert voor odyssey", description: "Beschrijving voor odyssey", code: "<odyssey>" },
+	{ name: "Vis een vis!", description: "Met je donatie een vis vangen! Dit werkt via <a href=\"https://store.steampowered.com/app/2767520/LurkBait_Twitch_Fishing/\">LurkBait Twitch Fishing</a>", code: "<vis>", type: "Interactieve alert", category: ["Dieren", "Sport"], year: 2025 },,
+	{ name: "Genereer AI muziek", description: "Genereer een AI nummer van 15 seconden via de AI van ElevenLabs. Alles wat tussen aanhalingstekens wordt geplaatst in je donatiebericht, wordt gebruikt als prompt. Voorbeeld: 'A christmas song' genereert een kerstnummer. Kijk bij <a href=\"https://elevenlabs.io/docs/capabilities/music/\">de documentatie voor meer informatie.</a>.", code: "<muziek>", type: "Interactieve alert", category: ["AI", "Muziek"], year: 2025 },,
+	{ name: "Trackmania toeter", description: "Speel één van de 18 Trackmania toetergeluiden af. Deze worden gebruikt in Trackmania Nations en Trackmania 2!", code: "<toeter>" }];
