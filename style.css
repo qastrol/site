@@ -25,6 +25,7 @@
     --card-alerts: #d64545; /* red */
     --card-tts: #5a9bd8; /* blue */
     --card-sfx: #7cc36a; /* green */
+    --card-donate: #9b59b6; /* purple */
 }
 
 /* Use border-box everywhere to avoid unexpected width calculations that cause overflow */
@@ -479,6 +480,7 @@ main.tekst {
 .quick-card.alerts { background: var(--card-alerts); }
 .quick-card.tts { background: var(--card-tts); }
 .quick-card.sfx { background: var(--card-sfx); }
+.quick-card.donate { background: var(--card-donate); }
 
 @media (max-width: 420px) {
     .quick-card { width: 78px; height: 78px; }
