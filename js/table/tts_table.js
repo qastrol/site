@@ -45,7 +45,6 @@ const ttsTable = [
     { name: "gordon:", description: "Gordon Heuckeroth", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "bartsimpson:", description: "Bart Simpson van The Simpsons", category: "TTSMonster", type: "Mannelijk", isAI: true, languages: ["en"] },
     { name: "bassie:", description: "Bassie van Bassie en Adriaan", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
-    { name: "asmr:", description: "Een Nederlandse ASMR-stem, maar deze werkt ook in het Engels", category: "ElevenLabs", type: "Vrouwelijk", isAI: true, languages: ["*"] },
     { name: "halo:", description: "Killtacular! De Halo-aankondiger (werkt beter in het Engels, maar werkt ook soort van in het Nederlands)", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "piepstem:", description: "Harry Piekema was het! De zelfde stem als 'henk:', maar dan een hogere stemtoon. Bekend van Among Us", category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] },
     { name: "joling:", description: "Gerard Joling als TTS-stem!", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
@@ -86,5 +85,7 @@ const ttsTable = [
     { name: "ella:", description: "Google TTS (Nederlands)", category: "Google", type: "Vrouwelijk", isAI: false, languages: ["nl"] },
     { name: "joep:", description: "Google TTS (Nederlands)", category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] },
     { name: "fleur:", description: "Google TTS (Nederlands)", category: "Google", type: "Vrouwelijk", isAI: false, languages: ["nl"] },
-    { name: "teun:", description: "Google TTS (Nederlands)", category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] }
+    { name: "teun:", description: "Google TTS (Nederlands)", category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] },
+    { name: "dilan:", description: "Dilan Yeşilgöz, partijleider van de VVD", category: "ElevenLabs", type: "Vrouwelijk", isAI: true, languages: ["*"] },
+    { name: "jetten:", description: "Rob Jetten, partijleider van D66", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] }
 ];

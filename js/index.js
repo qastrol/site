@@ -23,6 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 1) try centralized arrays
         try {
+            if (key === 'alerts' && typeof alertsTable !== 'undefined' && Array.isArray(alertsTable)) {
+                el.textContent = String(alertsTable.length);
+                return;
+            }
             if (key === 'tts' && typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) {
                 el.textContent = String(ttsTable.length);
                 return;

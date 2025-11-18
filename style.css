@@ -21,6 +21,10 @@
     --card-background: var(--table-background-color);
     --input-background: #ffffff;
     --input-text-color: #000000;
+    /* Quick-link card colors */
+    --card-alerts: #d64545; /* red */
+    --card-tts: #5a9bd8; /* blue */
+    --card-sfx: #7cc36a; /* green */
 }
 
 /* Use border-box everywhere to avoid unexpected width calculations that cause overflow */
@@ -440,6 +444,45 @@ main.tekst {
     margin-bottom: 0.5em;
     color: #222;
     text-align: center;
+}
+
+/* Quick-link cards used on kerstknallers.html */
+.quick-cards {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    margin: 14px 0 20px 0;
+    flex-wrap: wrap;
+}
+.quick-card {
+    width: 96px;
+    height: 96px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+.quick-card .emoji {
+    font-size: 34px;
+    line-height: 1;
+}
+.quick-card .label {
+    font-size: 0.85rem;
+    margin-top: 8px;
+    text-align: center;
+}
+.quick-card.alerts { background: var(--card-alerts); }
+.quick-card.tts { background: var(--card-tts); }
+.quick-card.sfx { background: var(--card-sfx); }
+
+@media (max-width: 420px) {
+    .quick-card { width: 78px; height: 78px; }
+    .quick-card .emoji { font-size: 28px; }
 }
 
 .tekst table {
@@ -973,4 +1016,31 @@ details.filter-option:not([open]) > summary::after {
         padding-right: 12px;
     }
 }
+
+/* Active filter chips (rendered above tables) */
+.active-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.active-filter-chip{
+    background: linear-gradient(180deg, #e6f4ff 0%, #d8eaff 100%); /* lichtblauw gradient */
+    border: 1px solid rgba(40, 100, 200, 0.18);
+    padding:6px 10px;
+    border-radius:999px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.95rem;
+    color: #063a6b; /* donkerblauwe tekst voor contrast */
+}
+.active-filter-chip .active-filter-remove{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 6px;
+    color: #063a6b;
+    font-weight:700;
+    border-radius:50%;
+}
+.active-filter-chip .active-filter-remove:hover{
+    background: rgba(6,58,107,0.08);
+}
+.active-filter-chip:focus-within{ outline: 2px solid rgba(6,58,107,0.12); }
 

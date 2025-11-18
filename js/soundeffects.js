@@ -142,6 +142,18 @@
             attachPreviewHandlers();
             // update counts after we rebuilt the visible list
             computeFilterCountsSound();
+            // render active filters UI
+            try {
+                const active = [];
+                const input = document.getElementById('searchInput');
+                if (input && input.value && input.value.trim() !== '') active.push({ type: 'search', label: 'Zoek: "' + input.value.trim() + '"', value: input.value.trim() });
+                const catContainer = document.getElementById('categoryFilters');
+                if (catContainer) {
+                    const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                    boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'category', label: lab, value: cb.value }); });
+                }
+                if (window.activeFilters && typeof window.activeFilters.render === 'function') window.activeFilters.render(document.getElementById('activeFiltersContainer'), active);
+            } catch (e) { console.error('active filters render failed (sfx)', e); }
         }
 
         // Return array of selected category strings (exact match). If none, returns []
@@ -289,6 +301,23 @@ document.addEventListener("DOMContentLoaded", function() {
     sortTable(0);
     updateCounter();
     attachPreviewHandlers();
+    // listen for chip removal events
+    window.addEventListener('activeFilter:remove', (ev) => {
+        try {
+            const { type, value } = ev.detail || {};
+            if (!type) return;
+            if (type === 'search') {
+                const s = document.getElementById('searchInput'); if (s) s.value = '';
+            } else if (type === 'category') {
+                const container = document.getElementById('categoryFilters'); if (container) {
+                    const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                    if (input) input.checked = false;
+                }
+            }
+            // refresh UI
+            refreshTable();
+        } catch (e) { console.error('failed to handle activeFilter:remove (sfx)', e); }
+    });
 });
 
 // Hook voor de sort selector in de sidebar

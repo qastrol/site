@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | Qastrol, Wout en Hugo bij KerstKnallers</title>
+    <title>Home | Qastrol</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="images\facicon.png">
-    <meta property="og:title" content="Qastrol bij Play it Forward">
-    <meta property="og:description" content="Een speciale website voor de KerstKnallers livestream van Qastrol. Voeg alerts, TTS stemmen en sound effects toe aan je donaties!">
+    <meta property="og:title" content="Qastrol">
+    <meta property="og:description" content="Een speciale website voor de Redeems, TTS stemmen en geluidseffecten van de livestream van Qastrol.">
     <meta property="og:url" content="https://qastrol.github.io/site/index.html">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="nl_NL">
@@ -21,40 +21,53 @@
     <div id="navbar">Navigatie wordt geladen...</div>
 
     <!-- Welkomstbericht en inhoud voor de homepage -->
-    <div class="content">
+    <div class="content tekst">
         <h1>Welkom!</h1>
         <p>Dit is een speciale website voor de KerstKnallers livestream van Qastrol, LordWout en Harde Hugo, woensdag 10 december 2025 van 18:00 tot 19:00.</p>
+        <!-- Quick-link cards placed before the 'Hoe werkt het?' section -->
+        <div class="quick-cards" aria-hidden="false">
+            <a class="quick-card alerts" href="alerts.html" title="Alerts">
+                <div class="emoji">🎄</div>
+                <div class="label"><strong>Alerts</strong></div>
+            </a>
+            <a class="quick-card tts" href="tts.html" title="TTS stemmen">
+                <div class="emoji">🗣️</div>
+                <div class="label"><strong>TTS</strong></div>
+            </a>
+            <a class="quick-card sfx" href="soundeffects.html" title="Sound effects">
+                <div class="emoji">🔊</div>
+                <div class="label"><strong>Sound effects</strong></div>
+            </a>
+        </div>
+
         <p><strong>Hoe werkt het?</strong></p>
 
         <ul>
-            <li>Aan elke donatie tijdens deze livestream kan je één alert toevoegen.</li>
+            <li>Aan elke KerstKnallers donatie tijdens deze stream kan je één alert toevoegen.</li>
                 <ul>
-                <li>Let op: je kan maar één alert per donatie toevoegen!</li>
+                <li>Let op: je kan maar één alert per donatie toevoegen.</li>
                 <li><a href="alerts.html">Bekijk alle <span id="alertsCount"></span> alerts</a></li>
                 </ul>
-            <li>Ook kan je je eigen Text To Speech-stemmen uitkiezen (dit kunnen meerdere stemmen per bericht zijn).
+            <li>Je kan ook één of meerdere TTS stemmen toevoegen aan je donatie, die (een deel) van het bericht voorlezen.
             <ul>
-                <li> Deze kunnen gecombineerd worden met alerts en sound effects.</li>
-                <li> Sommige TTS-stemmen zijn alleen in het Engels beschikbaar.</li>
-                <li> Een aantal ElevenLabs-stemmen ondersteunen ook Audio tags, <a href="https://elevenlabs.io/docs/best-practices/prompting/eleven-v3#audio-tags">waarmee je de intonatie of emotie kunt aanpassen van de uitspraak, of AI-geluiden kan toevoegen.</a></li>
-                <li> <a href="tts.html">Bekijk alle <span id="ttsCount"></span> TTS-stemmen</a></li>
+                <li>Deze kunnen gecombineerd worden met alerts en geluidseffecten.</li>
+                <li>Sommige stemmen zijn alleen in het Engels of Nederlands beschikbaar.</li>
+                <li><a href="tts.html">Bekijk alle <span id="ttsCount"></span> TTS stemmen</a></li>
                 </ul>
-            <li>Je kan ook sound effects toevoegen aan je bericht.
+            <li>Je kan ook sound effects toevoegen aan je donatie.
             <ul>
                 <li>Deze kunnen gecombineerd worden met alerts en TTS stemmen.</li>
-                <li> <a href="soundeffects.html">Bekijk alle <span id="soundEffectsCount"></span> sound effects</a></li>
-            </ul>
-            <li>Voeg de gewenste alerts, TTS stemmen en sound effects toe aan het vak "Je persoonlijke bericht" bij de donatiepagina.</li>
-            <ul>
-                <li>Alles werkt vanaf ieder donatiebedrag.</li>
-                <li><a href="https://www.npo3fm.nl/kominactie/acties/kerstknallers-2025" target="_blank">Doneer hier!</a></li>
+                <li><a href="soundeffects.html">Bekijk alle <span id="soundEffectsCount"></span> sound effects</a></li>
+                </ul>
+            <li>Voeg de gewenste alert, TTS stem(men) en sound effect(s) toe aan je donatie.</li>
             </ul>
 
-        </ul>
+
 
         <p><strong>Voorbeeld:</strong></p>
-        <p>Als je de Noob-Power alert wilt gebruiken, samen met de "frank" en "vanrossem" TTS stemmen en het "fart" sound effect, dan kan je dit in je donatiebericht zetten:</p>
+        <p>Als je de "frank" en "vanrossem" TTS stemmen en het "fart" sound effect, dan kan je dit in het bericht van je kanaalpunt redeem zetten:</p>
         <p><code> &lt;noobpower&gt; frank: dit is een test vanrossem: hallo (fart)</code></p>
+
 
     </div>
 
@@ -62,38 +75,12 @@
 
     <!-- Verwijzing naar nav.js, laad het script aan het einde van de body -->
     <script src="nav.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const counts = {
-                alerts: 'alerts.html',
-                soundEffects: 'soundeffects.html',
-                tts: 'tts.html'
-            };
-    
-            Object.entries(counts).forEach(([key, url]) => {
-                fetch(url)
-                    .then(response => response.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        let rowCount;
-    
-                        if (key === 'alerts') {
-                            rowCount = doc.querySelectorAll('#alertList li').length || doc.querySelectorAll('#alertTable tr').length;
-                        } else if (key === 'soundEffects') {
-                            rowCount = doc.querySelectorAll('#soundEffectsList li').length || doc.querySelectorAll('#soundEffectsTable tr').length;
-                        } else if (key === 'tts') {
-                            rowCount = doc.querySelectorAll('#ttsList li').length || doc.querySelectorAll('#ttsTable tr').length;
-                        }
-    
-                        document.getElementById(`${key}Count`).textContent = rowCount;
-                    })
-                    .catch(() => {
-                        document.getElementById(`${key}Count`).textContent = '';
-                    });
-            });
-        });
-    </script>
+    <!-- Include centralized data tables so index can read counts directly -->
+    <script src="js/table/alerts_table.js"></script>
+    <script src="js/table/tts_table.js"></script>
+    <script src="js/table/soundeffects_table.js"></script>
+    <script src="js/table/noobpoints_table.js"></script>
+    <script src="js/index.js"></script>
     
 </body>
 </html>

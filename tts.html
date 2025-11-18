@@ -24,7 +24,7 @@
     <h1>Text To Speech-stemmen</h1>
     <p>Hieronder staan de beschikbare TTS-stemmen. Kopieer de stemnaam naar het tekstvak van de kanaalpunten-redeem om deze te gebruiken in de stream. 
         
-    <p>Er zijn verschillende TTS-stemmen beschikbaar, zoals de gewone stemmen van Google en  Microsoft, maar ook AI-stemmen. Je kan meerdere stemmen tegelijk gebruiken in je donatiebericht.</p>
+    <p>Er zijn verschillende TTS-stemmen beschikbaar, zoals de gewone stemmen van Google en  Microsoft, maar ook AI-stemmen van ElevenLabs en TTSMonster. Je kan meerdere stemmen tegelijk gebruiken in je donatiebericht.</p>
         
         <p>De AI-stemmen van ElevenLabs werken zowel in het Engels als Nederlands. Bij de stemmen van Microsoft en Google verschilt dit per stem. De AI stemmen van TTSMonster werken alleen in het Engels.</p>
         
@@ -100,6 +100,7 @@
                     </select>
                     <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
                 </div>
+                <div id="activeFiltersContainer" class="active-filters" style="display:none;margin-bottom:8px"></div>
                 <div class="item-listing__header" role="toolbar" aria-label="Sorteer kolommen">
                     <div class="header-left">
                         <button class="header-btn" onclick="sortTable(0)">Stemnaam</button>
@@ -126,6 +127,7 @@
     <script src="js/filter_menu.js"></script>
     <script src="js/script.js"></script>
     <script src="js/table/tts_table.js"></script>
+    <script src="js/table/active_filters.js"></script>
     <script src="js/tts.js"></script>
 
 </body>

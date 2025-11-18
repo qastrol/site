@@ -156,6 +156,45 @@
             const rc = document.getElementById('rowCount'); if (rc) rc.textContent = visibleCount;
             // update counts on the filter checkboxes
             computeFilterCountsAlerts();
+
+            // build and render active filters UI (search, categories, types, years)
+            try {
+                const active = [];
+                if (input && input.value && input.value.trim() !== '') {
+                    active.push({ type: 'search', label: 'Zoek: "' + input.value.trim() + '"', value: input.value.trim() });
+                }
+                // categories: find checked inputs and their labels
+                const catContainer = document.getElementById('categoryFilters');
+                if (catContainer) {
+                    const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                    boxes.forEach(cb => {
+                        let lab = cb.nextElementSibling && cb.nextElementSibling.tagName === 'LABEL' ? cb.nextElementSibling.textContent : cb.value;
+                        active.push({ type: 'category', label: lab, value: cb.value });
+                    });
+                }
+                // types
+                const typeContainer = document.getElementById('typeFilters');
+                if (typeContainer) {
+                    const boxes = Array.from(typeContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                    boxes.forEach(cb => {
+                        let lab = cb.nextElementSibling && cb.nextElementSibling.tagName === 'LABEL' ? cb.nextElementSibling.textContent : cb.value;
+                        active.push({ type: 'type', label: lab, value: cb.value });
+                    });
+                }
+                // years
+                const yearContainer = document.getElementById('yearFilters');
+                if (yearContainer) {
+                    const boxes = Array.from(yearContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                    boxes.forEach(cb => {
+                        let lab = cb.nextElementSibling && cb.nextElementSibling.tagName === 'LABEL' ? cb.nextElementSibling.textContent : cb.value;
+                        active.push({ type: 'year', label: lab, value: cb.value });
+                    });
+                }
+                if (window.activeFilters && typeof window.activeFilters.render === 'function') {
+                    const cont = document.getElementById('activeFiltersContainer');
+                    window.activeFilters.render(cont, active);
+                }
+            } catch (e) { console.error('active filters render failed', e); }
         }
 
         // Compute counts for categories/types (mirror noobpoints behavior)
@@ -579,6 +618,36 @@
             }
             sortTable(0);
             updateRowCount();
+            // Listen for active filter removal events from the chips
+            window.addEventListener('activeFilter:remove', (ev) => {
+                try {
+                    const { type, value } = ev.detail || {};
+                    if (!type) return;
+                    if (type === 'search') {
+                        const s = document.getElementById('searchInput'); if (s) s.value = '';
+                    } else if (type === 'category') {
+                        const container = document.getElementById('categoryFilters');
+                        if (container) {
+                            const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                            if (input) input.checked = false;
+                        }
+                    } else if (type === 'type') {
+                        const container = document.getElementById('typeFilters');
+                        if (container) {
+                            const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => (i.value || '').trim().toLowerCase() === (value || '').trim().toLowerCase());
+                            if (input) input.checked = false;
+                        }
+                    } else if (type === 'year') {
+                        const container = document.getElementById('yearFilters');
+                        if (container) {
+                            const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                            if (input) input.checked = false;
+                        }
+                    }
+                    // refresh filters after change
+                    refreshFilters();
+                } catch (e) { console.error('failed to handle activeFilter:remove', e); }
+            });
             // expose functions for inline handlers
             window.applySort = applySort;
             window.sortTable = sortTable;

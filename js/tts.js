@@ -226,6 +226,43 @@ function renderTtsTable() {
         updateRowCount();
         // Werk de facet-aantallen bij
         computeFilterCounts();
+        // render active filters (search, categories, types, languages, gender, audio tags)
+        try {
+            const active = [];
+            const input = document.getElementById('searchInput');
+            if (input && input.value && input.value.trim() !== '') active.push({ type: 'search', label: 'Zoek: "' + input.value.trim() + '"', value: input.value.trim() });
+            // categories
+            const catContainer = document.getElementById('categoryFilters');
+            if (catContainer) {
+                const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'category', label: lab, value: cb.value }); });
+            }
+            // type (AI/normal)
+            const typeContainer = document.getElementById('typeFilters');
+            if (typeContainer) {
+                const boxes = Array.from(typeContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'type', label: lab, value: cb.value }); });
+            }
+            // languages
+            const langContainer = document.getElementById('languageFilters');
+            if (langContainer) {
+                const boxes = Array.from(langContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'lang', label: lab, value: cb.value }); });
+            }
+            // gender
+            const genderContainer = document.getElementById('genderFilters');
+            if (genderContainer) {
+                const boxes = Array.from(genderContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'gender', label: lab, value: cb.value }); });
+            }
+            // audio tag support
+            const audioContainer = document.getElementById('audioTagFilters');
+            if (audioContainer) {
+                const boxes = Array.from(audioContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'audio', label: lab, value: cb.value }); });
+            }
+            if (window.activeFilters && typeof window.activeFilters.render === 'function') window.activeFilters.render(document.getElementById('activeFiltersContainer'), active);
+        } catch (e) { console.error('active filters render failed (tts)', e); }
     }
 
 // Bereken en werk per-filter aantallen bij op basis van de huidige selectie.
@@ -690,3 +727,41 @@ function computeFilterCounts() {
 
         // Run preview attachment after render
         attachPreviewHandlers();
+
+// Handle chip removal events
+window.addEventListener('activeFilter:remove', (ev) => {
+    try {
+        const { type, value } = ev.detail || {};
+        if (!type) return;
+        if (type === 'search') {
+            const s = document.getElementById('searchInput'); if (s) s.value = '';
+        } else if (type === 'category') {
+            const container = document.getElementById('categoryFilters'); if (container) {
+                const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                if (input) input.checked = false;
+            }
+        } else if (type === 'type') {
+            const container = document.getElementById('typeFilters'); if (container) {
+                const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                if (input) input.checked = false;
+            }
+        } else if (type === 'lang') {
+            const container = document.getElementById('languageFilters'); if (container) {
+                const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                if (input) input.checked = false;
+            }
+        } else if (type === 'gender') {
+            const container = document.getElementById('genderFilters'); if (container) {
+                const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                if (input) input.checked = false;
+            }
+        } else if (type === 'audio') {
+            const container = document.getElementById('audioTagFilters'); if (container) {
+                const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                if (input) input.checked = false;
+            }
+        }
+        // re-run search to refresh UI
+        searchTable();
+    } catch (e) { console.error('failed to handle activeFilter:remove (tts)', e); }
+});

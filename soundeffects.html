@@ -28,7 +28,7 @@
     Je kan ook klikken op de soundeffectnaam voor een voorbeeld van het geluid.
     <p>Klik op de knop om de soundeffectnaam naar het klembord te kopiëren en in je bericht te gebruiken.</p>
 
-    <h3>AI Sound Effects</h3>
+    <h4>AI Sound Effects</h4>
     Als je sound effect niet in onderstaande lijst staat, wordt je sound effect automatisch gegenereerd door AI.
     Alles wat tussen haakjes staat, wordt gebruikt als de prompt voor het AI-geluid.
     <p>Voorbeeld: (meowing cat) zal een AI-geluid genereren van een miauwende kat.</p>
@@ -76,6 +76,7 @@
                 <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
             </div>
 
+                <div id="activeFiltersContainer" class="active-filters" style="display:none;margin-bottom:8px"></div>
                 <div class="item-listing__header" role="toolbar" aria-label="Sorteer kolommen">
                 <div class="header-left">
                     <button class="header-btn" onclick="sortTable(0)">Naam</button>
@@ -97,6 +98,7 @@
     <script src="js/filter_menu.js"></script>
     <script src="js/table/soundeffects_table.js"></script>
     <script src="js/table/soundeffectslinks.js"></script>
+    <script src="js/table/active_filters.js"></script>
     <script src="js/soundeffects.js"></script>
 
 </body>

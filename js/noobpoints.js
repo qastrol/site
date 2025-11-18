@@ -115,6 +115,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         updateCounter();
         attachPreviewHandlers();
+        // render active filters UI
+        try {
+            const active = [];
+            const s = document.getElementById('searchInput');
+            if (s && s.value && s.value.trim() !== '') active.push({ type: 'search', label: 'Zoek: "' + s.value.trim() + '"', value: s.value.trim() });
+            const cats = getSelectedCategories();
+            if (cats && cats.length) {
+                const catContainer = document.getElementById('categoryFilters');
+                cats.forEach(v => {
+                    const labEl = catContainer ? Array.from(catContainer.querySelectorAll('input')).find(i=>i.value===v) : null;
+                    const lab = labEl && labEl.nextElementSibling ? labEl.nextElementSibling.textContent : v;
+                    active.push({ type: 'category', label: lab, value: v });
+                });
+            }
+            const types = getSelectedTypes();
+            if (types && types.length) {
+                const typeContainer = document.getElementById('typeFilters');
+                types.forEach(v => {
+                    const labEl = typeContainer ? Array.from(typeContainer.querySelectorAll('input')).find(i=> (i.value||'').trim().toLowerCase() === (v||'').trim().toLowerCase()) : null;
+                    const lab = labEl && labEl.nextElementSibling ? labEl.nextElementSibling.textContent : v;
+                    active.push({ type: 'type', label: lab, value: v });
+                });
+            }
+            // cost range
+            const min = (minCostInput && minCostInput.value) ? minCostInput.value.trim() : '';
+            const max = (maxCostInput && maxCostInput.value) ? maxCostInput.value.trim() : '';
+            if (min || max) {
+                const label = 'Kosten: ' + (min || '-') + ' → ' + (max || '-');
+                active.push({ type: 'cost', label: label, value: JSON.stringify({min, max}) });
+            }
+            if (window.activeFilters && typeof window.activeFilters.render === 'function') window.activeFilters.render(document.getElementById('activeFiltersContainer'), active);
+        } catch (e) { console.error('active filters render failed (noobpoints)', e); }
     }
 
     // --- Preview helpers (image/audio/video in /alerts/ or iframe fallback) ---
@@ -901,5 +933,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.sortTable = sortTable;
 
     // apply initial sort according to the selector value
+    // listen for chip removal events
+    window.addEventListener('activeFilter:remove', (ev) => {
+        try {
+            const { type, value } = ev.detail || {};
+            if (!type) return;
+            if (type === 'search') { if (searchInput) searchInput.value = ''; }
+            else if (type === 'category') { const c = document.getElementById('categoryFilters'); if (c) { const input = Array.from(c.querySelectorAll('input')).find(i=>i.value===value); if (input) input.checked = false; } }
+            else if (type === 'type') { const t = document.getElementById('typeFilters'); if (t) { const input = Array.from(t.querySelectorAll('input')).find(i=> (i.value||'').trim().toLowerCase() === (value||'').trim().toLowerCase()); if (input) input.checked = false; } }
+            else if (type === 'cost') { try { const obj = JSON.parse(value); if (minCostInput) minCostInput.value = ''; if (maxCostInput) maxCostInput.value = ''; } catch(e) { if (minCostInput) minCostInput.value = ''; if (maxCostInput) maxCostInput.value = ''; } }
+            refreshTable();
+        } catch (e) { console.error('failed to handle activeFilter:remove (noobpoints)', e); }
+    });
     applySortInternal();
 });
