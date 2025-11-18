@@ -109,7 +109,6 @@ const alertsTable = [
 	{ name: "Hardslide", description: "Hard over je beeldscherm", code: "<hardslide>", category: ["Twitch", "Harde Hugo"], type: "Video-alert", year: 2024},
 	{ name: "Kikkertj", description: "De Mother 3 autokikker rijd over het beeldscherm", code: "<kikkertje>", category: ["Dieren"], type: "Video-alert", year: 2024},
 	{ name: "Minecraft with Gadget", description: "Ik ben hier met mijn goede vriend Inspector Gadget", code: "<minecraftwithgadget>", category: ["Gaming", "Internet", "Meme"], type: "Video-alert", year: 2024},
-	{ name: "Mark Rutte WWE hype", description: "Live reactie op Mark Rutte die in het WWE Lijsttrekkersdebat breekt", code: "<ruttehype>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Qastrol op de WC", description: "Hij zit te poepen", code: "<wc>", category: ["Qastrol"], type: "Video-alert", year: 2024},
 	{ name: "De Westereen", description: "Wolkom yn 'e Westereen", code: "<westereen>", category: ["Internet", "Fryslân"], type: "Video-alert", year: 2024},
 	{ name: "Zorgwekkend", description: "Een zorgwekkende video van iemand die <a href=\"https://www.youtube.com/watch?v=g3jCAyPai2Y\">Baka Mitai van Yakuza</a> zingt", code: "<zorgwekkend>", category: ["Muziek", "Gaming"], type: "Video-alert", year: 2024},

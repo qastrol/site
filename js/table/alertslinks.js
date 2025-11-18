@@ -366,6 +366,87 @@ const alertsLinks = {
   ],
   "manydoors": [
     "alerts/manydoors.mp4"
+  ],
+  "author": [
+    "alerts/author.mp4"
+  ],
+  "bos": [
+    "alerts/bos.webm"
+  ],
+  "euro": [
+    "alerts/euro.mp4"
+  ],
+  "fryslan": [
+    "alerts/fryslan.mp4"
+  ],
+  "geenklier": [
+    "alerts/geenklier.mp4"
+  ],
+  "hardehugo": [
+    "alerts/hardehugo.mp4"
+  ],
+  "hardkoeksoep": [
+    "alerts/hardkoeksoep.webm"
+  ],
+  "hondbed": [
+    "alerts/hondbed.mp4"
+  ],
+  "hondwijs": [
+    "alerts/hondwijs.mp4"
+  ],
+  "kapiteinkoek": [
+    "alerts/kapiteinkoek.mp4"
+  ],
+  "karper": [
+    "alerts/karper.webm"
+  ],
+  "kat": [
+    "alerts/kat.webm"
+  ],
+  "laborday": [
+    "alerts/laborday.mp4"
+  ],
+  "lordwout": [
+    "alerts/lordwout.mp4"
+  ],
+  "narwal": [
+    "alerts/narwal.webm"
+  ],
+  "peggle3": [
+    "alerts/peggle3.mp4"
+  ],
+  "qastrol": [
+    "alerts/qastrol.webm"
+  ],
+  "reposted": [
+    "alerts/reposted.mp4"
+  ],
+  "shrekhorror": [
+    "alerts/shrekhorror.webm"
+  ],
+  "tremblingfingers": [
+    "alerts/tremblingfingers.webm"
+  ],
+  "urigeller": [
+    "alerts/urigeller.mp4"
+  ],
+  "walta": [
+    "alerts/walta.mp4"
+  ],
+  "wes": [
+    "alerts/wes.webm"
+  ],
+  "woutschaap": [
+    "alerts/woutschaap.mp4"
+  ],
+  "wow": [
+    "alerts/wow.webm"
+  ],
+  "zwolle": [
+    "alerts/zwolle.webm"
   ]
+
+
+
 };
 window.alertsLinks = alertsLinks;
