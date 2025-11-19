@@ -477,6 +477,11 @@ main.tekst {
     margin-top: 8px;
     text-align: center;
 }
+.quick-card .code {
+    font-size: 0.7rem;
+    text-align: center;
+}
+
 .quick-card.alerts { background: var(--card-alerts); }
 .quick-card.tts { background: var(--card-tts); }
 .quick-card.sfx { background: var(--card-sfx); }
