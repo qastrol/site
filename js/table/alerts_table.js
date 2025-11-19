@@ -275,12 +275,8 @@ const alertsTable = [
 	{ name: "Stel je vraag aan een AI karakter", description: "Stel je vraag aan een AI karakter! Plaats een TTS stem uit <a href=\"tts.html\">de TTS pagina</a> in jou donatiebericht, samen met een vraag of bericht aan die persoon. Het AI karakter zal dan antwoorden op je vraag. Voorbeeld: 'vanrossem: Wat vindt je van koeksoep?' zal de vraag aan Maarten van Rossem stellen. Deze alert vervangt de reguliere TTS.", code: "<ai>", category: ["AI"], type: "Interactieve alert", year: 2025},
 	{ name: "Ter Land, Ter Zee en In De Lucht", description: "Speel de tune van Ter Land, Ter Zee en In De Lucht onder je donatie, inclusief de iconische 'replay' graphic.", code: "<terland>", category: ["TV"], type: "Muziek-alert", year: 2025},
 	{ name: "Laat Qastrol vallen", description: "Als je deze alert gebruikt, valt Qastrol in de game", code: "<vallen>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},
-	{ name: "Genereer een video met AI", description: "Genereer een filmpje met AI! Je prompt voor de AI staat tussen aanhalingstekens, bijvoorbeeld 'A cat meowing'. De video is maximaal 4 seconden.", code: "<video>" },
-	{ name: "Alert voor bijnaweekend", description: "Beschrijving voor bijnaweekend", code: "<bijnaweekend>" },
-	{ name: "Alert voor eddywally", description: "Beschrijving voor eddywally", code: "<eddywally>" },
-	{ name: "Alert voor hiereeneuro", description: "Beschrijving voor hiereeneuro", code: "<hiereeneuro>" },
-	{ name: "Alert voor iamsteve", description: "Beschrijving voor iamsteve", code: "<iamsteve>" },
-	{ name: "Alert voor manbijthond", description: "Beschrijving voor manbijthond", code: "<manbijthond>" },
-	{ name: "Alert voor qastrolmoment", description: "Beschrijving voor qastrolmoment", code: "<qastrolmoment>" },
-	{ name: "Alert voor shrekhorror", description: "Beschrijving voor shrekhorror", code: "<shrekhorror>" },
-	{ name: "Alert voor piebe", description: "Beschrijving voor piebe", code: "<piebe>" }];
+	{ name: "Genereer een video met AI", description: "Genereer een filmpje met AI! Je prompt voor de AI staat tussen aanhalingstekens, bijvoorbeeld 'A cat meowing'. De video is maximaal 4 seconden.", code: "<video>", category: ["AI"], type: "Interactieve alert", year: 2025},
+	{ name: "Man Bijt Hond: Bijna weekend", description: "Het is alweer bijna weekend", code: "<bijnaweekend>", category: ["TV"], type: "Video-alert", year: 2025},
+	{ name: "Piebe Guido's eetliedje", description: "Laat één van de 71 eetliedjes van <a href=\"https://www.tiktok.com/@dutchsuomifan1992\">Piebe-Guido van den Berg</a> afspelen. Bekend van 'Portie Kibbeling'", code: "<piebe>", category: ["Muziek", "Internet"], type: "Video-alert", year: 2025},
+	{ name: "Man Bijt Hond: Bijna maandag", description: "Het is alweer bijna maandag", code: "<bijnamaandag>", category: ["TV"], type: "Video-alert", year: 2025},
+];
