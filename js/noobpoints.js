@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const name = document.createElement('div'); name.className = 'item-name'; name.textContent = nameText; name.title = 'Klik voor voorbeeld'; name.style.cursor = 'pointer';
 
                 // info row: cost and categories
-                const info = document.createElement('div'); info.className = 'item-langs';
                 // Inline code element for mobile: shown between name and info on small screens
                 const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = code;
                 // Mobile copy row: a mobile-only row containing label, code and a copy button
@@ -75,11 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 const costPart = costText ? (costText + ' Noob-Points') : '';
                 const typePart = types.length ? types.join(', ') : '';
                 const catPart = cats.length ? cats.join(', ') : '';
+                const info = document.createElement('div'); info.className = 'item-langs';
                 const infoParts = [];
-                if (costPart) infoParts.push(costPart);
-                if (typePart) infoParts.push(typePart);
-                if (catPart) infoParts.push(catPart);
-                info.textContent = infoParts.join(' • ');
+                if (costPart) infoParts.push({ text: costPart, facet: 'cost' });
+                if (typePart) infoParts.push({ text: typePart, facet: 'type' });
+                if (catPart) infoParts.push({ text: catPart, facet: 'category' });
+
+                info.innerHTML = '';
+                infoParts.forEach((p, idx) => {
+                    const span = document.createElement('span');
+                    span.className = 'info-part';
+                    span.textContent = p.text;
+                    span.style.cursor = 'pointer';
+                    span.dataset.facet = p.facet;
+                    span.addEventListener('click', () => applyFilterFromInfoNoob(p.facet, p.text));
+                    info.appendChild(span);
+                    if (idx < infoParts.length - 1) info.appendChild(document.createTextNode(' • '));
+                });
 
                 const desc = document.createElement('div'); desc.className = 'item-desc'; desc.innerHTML = descHtml;
                 left.appendChild(name);
@@ -371,6 +382,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const mapped = iframes && (iframes[name] || iframes[codeOrName]);
             cb(Boolean(mapped));
         })();
+    }
+
+    // Apply a filter when an info-part is clicked (noobpoints page)
+    function applyFilterFromInfoNoob(facet, text) {
+        if (!text) return;
+        const matchInContainer = (id) => {
+            const container = document.getElementById(id);
+            if (!container) return false;
+            const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+            for (const input of inputs) {
+                const lab = input.nextElementSibling ? input.nextElementSibling.textContent.trim() : '';
+                const val = (input.value || '').toString().trim();
+                if (val.toLowerCase() === text.toLowerCase() || lab.toLowerCase() === text.toLowerCase()) {
+                    if (!input.checked) { input.checked = true; input.dispatchEvent(new Event('change')); }
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        if (facet === 'cost') {
+            // extract number and set as minCostInput
+            const m = text.match(/(\d+)/);
+            if (m) {
+                const v = m[1];
+                const mi = document.getElementById('minCostInput');
+                if (mi) { mi.value = v; }
+                refreshTable();
+                computeFilterCountsNoob();
+            }
+            return;
+        }
+
+        if (facet === 'type') { if (matchInContainer('typeFilters')) { refreshTable(); computeFilterCountsNoob(); return; } }
+        if (facet === 'category') { if (matchInContainer('categoryFilters')) { refreshTable(); computeFilterCountsNoob(); return; } }
+
+        // fallback: try both
+        if (matchInContainer('categoryFilters') || matchInContainer('typeFilters')) { refreshTable(); computeFilterCountsNoob(); return; }
     }
 
     // Attach preview handlers to first-column names and mark those with previews

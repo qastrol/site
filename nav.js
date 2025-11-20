@@ -1,17 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
     const navContainer = document.getElementById("navbar");
 
-        // Navigatie HTML direct insluiten (brand links, navigatie rechts)
-        const navHTML = `
+    // Quick switch for navigation variants.
+    // Change `NAV_VARIANT` to 'kerst' to enable the KerstKnallers variant.
+    // One quick edit: set NAV_VARIANT = 'kerst' (default is 'default').
+    const NAV_VARIANT = 'default'; // 'default' | 'kerst'
+
+    const homeHref = NAV_VARIANT === 'kerst' ? 'kerstknallers.html' : 'index.html';
+    const secondLinkHref = NAV_VARIANT === 'kerst' ? 'alerts.html' : 'noobpoints.html';
+    const secondLinkLabel = NAV_VARIANT === 'kerst' ? 'Alerts' : 'Noob-Points!';
+
+    // Navigatie HTML direct insluiten (brand links, navigatie rechts)
+    const navHTML = `
             <header class="site-header">
                 <div class="nav-container">
                     <div class="site-branding">
-                        <a href="index.html" class="site-title">Qastrol</a>
+                        <a href="${homeHref}" class="site-title">Qastrol</a>
                     </div>
                     <nav class="site-nav" aria-label="Hoofd navigatie">
                         <ul id="nav-menu">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="noobpoints.html">Noob-Points!</a></li>
+                            <li><a href="${homeHref}">Home</a></li>
+                            <li><a href="${secondLinkHref}">${secondLinkLabel}</a></li>
                             <li><a href="tts.html">TTS-stemmen</a></li>
                             <li><a href="soundeffects.html">Sound Effects</a></li>
                             <li>

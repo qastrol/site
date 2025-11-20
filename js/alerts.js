@@ -348,11 +348,23 @@
                 // year: show bucket label per project rules — '2024 of eerder' when exactly 2024, otherwise '2025'
                 const yearBucket = (String(item.year || '').trim() === '2024') ? '2024 of eerder' : '2025';
                 const infoParts = [];
-                if (typePart) infoParts.push(typePart);
-                if (catPart) infoParts.push(catPart);
+                if (typePart) infoParts.push({ text: typePart, facet: 'type' });
+                if (catPart) infoParts.push({ text: catPart, facet: 'category' });
                 // always show the year bucket (per requirement: missing/empty -> 2025)
-                infoParts.push(yearBucket);
-                info.textContent = infoParts.join(' • ');
+                infoParts.push({ text: yearBucket, facet: 'year' });
+
+                // render clickable parts separated by a bullet
+                info.innerHTML = '';
+                infoParts.forEach((p, idx) => {
+                    const span = document.createElement('span');
+                    span.className = 'info-part';
+                    span.textContent = p.text;
+                    span.style.cursor = 'pointer';
+                    span.dataset.facet = p.facet;
+                    span.addEventListener('click', () => applyFilterFromInfoAlerts(p.facet, p.text));
+                    info.appendChild(span);
+                    if (idx < infoParts.length - 1) info.appendChild(document.createTextNode(' • '));
+                });
 
                 left.appendChild(name);
                 if (info.textContent) left.appendChild(info);
@@ -588,6 +600,41 @@
                     // ignore
                 }
             });
+        }
+
+        // Apply a filter when an info-part is clicked (alerts page)
+        function applyFilterFromInfoAlerts(facet, text) {
+            if (!text) return;
+            const matchInContainer = (id) => {
+                const container = document.getElementById(id);
+                if (!container) return false;
+                const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+                for (const input of inputs) {
+                    const lab = input.nextElementSibling ? input.nextElementSibling.textContent.trim() : '';
+                    const val = (input.value || '').toString().trim();
+                    if (val.toLowerCase() === text.toLowerCase() || lab.toLowerCase() === text.toLowerCase()) {
+                        if (!input.checked) { input.checked = true; input.dispatchEvent(new Event('change')); }
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            const preferred = {
+                'category': 'categoryFilters',
+                'type': 'typeFilters',
+                'year': 'yearFilters'
+            };
+
+            if (facet && preferred[facet]) {
+                if (matchInContainer(preferred[facet])) { try { refreshFilters(); } catch(e){}; return; }
+            }
+
+            // fallback: try all known containers
+            const all = ['categoryFilters','typeFilters','yearFilters'];
+            for (const id of all) {
+                if (matchInContainer(id)) { try { refreshFilters(); } catch(e){}; return; }
+            }
         }
 
         function updateRowCount() {

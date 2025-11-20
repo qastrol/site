@@ -52,12 +52,24 @@ function renderTtsTable() {
     const humanLangs = langLabel(langsArr);
     // Build combined info: category • type • languages • AI-stem (omit empty parts)
     const infoParts = [];
-    if (item.category) infoParts.push(item.category);
-    if (item.type) infoParts.push(item.type);
-    if (humanLangs) infoParts.push(humanLangs);
-    if (item.isAI) infoParts.push('AI-stem');
-    if (item.supportsAudioTags) infoParts.push('Ondersteunt audio tags');
-    info.textContent = infoParts.join(' • ');
+    if (item.category) infoParts.push({ text: item.category, facet: 'category' });
+    if (item.type) infoParts.push({ text: item.type, facet: 'gender' });
+    if (humanLangs) infoParts.push({ text: humanLangs, facet: 'lang' });
+    if (item.isAI) infoParts.push({ text: 'AI-stem', facet: 'type' });
+    if (item.supportsAudioTags) infoParts.push({ text: 'Ondersteunt audio tags', facet: 'audio' });
+
+    // Render clickable spans separated by bullets
+    info.innerHTML = '';
+    infoParts.forEach((p, idx) => {
+        const span = document.createElement('span');
+        span.className = 'info-part';
+        span.textContent = p.text;
+        span.style.cursor = 'pointer';
+        span.dataset.facet = p.facet;
+        span.addEventListener('click', () => applyFilterFromInfoTts(p.facet, p.text));
+        info.appendChild(span);
+        if (idx < infoParts.length - 1) info.appendChild(document.createTextNode(' • '));
+    });
         left.appendChild(info);
 
         const desc = document.createElement('div');
@@ -723,6 +735,58 @@ function computeFilterCounts() {
                 first.addEventListener('click', () => showPreview('tts', display));
                 previewExists('tts', display, (exists) => { if (exists) first.classList.add('has-preview'); });
             });
+        }
+
+        // Apply a filter when an info-part is clicked (tts page)
+        function applyFilterFromInfoTts(facet, text) {
+            if (!text) return;
+            const matchInContainer = (id, matchFn) => {
+                const container = document.getElementById(id);
+                if (!container) return false;
+                const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+                for (const input of inputs) {
+                    const lab = input.nextElementSibling ? input.nextElementSibling.textContent.trim() : '';
+                    const val = (input.value || '').toString().trim();
+                    if ((val && val.toLowerCase() === text.toLowerCase()) || (lab && lab.toLowerCase() === text.toLowerCase()) || (matchFn && matchFn(input, lab, val))) {
+                        if (!input.checked) { input.checked = true; input.dispatchEvent(new Event('change')); }
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            // special mapping for languages and some labels
+            if (facet === 'lang') {
+                const normalized = text.toLowerCase();
+                if (normalized.includes('engels') && normalized.includes('nederlands')) {
+                    // prefer '*' if present, otherwise check both en/nl
+                    if (matchInContainer('languageFilters', (input, lab, val) => val === '*')) { searchTable(); computeFilterCounts(); return; }
+                    if (matchInContainer('languageFilters', (input, lab, val) => val === 'en')) { searchTable(); computeFilterCounts(); }
+                    if (matchInContainer('languageFilters', (input, lab, val) => val === 'nl')) { searchTable(); computeFilterCounts(); }
+                    return;
+                }
+                if (normalized.includes('engels')) { if (matchInContainer('languageFilters')) { searchTable(); computeFilterCounts(); return; } }
+                if (normalized.includes('nederlands')) { if (matchInContainer('languageFilters')) { searchTable(); computeFilterCounts(); return; } }
+            }
+
+            if (facet === 'type') {
+                // AI label -> filterAI
+                if (text.toLowerCase().indexOf('ai') !== -1) {
+                    const inp = document.getElementById('filterAI'); if (inp) { if (!inp.checked) { inp.checked = true; inp.dispatchEvent(new Event('change')); } searchTable(); computeFilterCounts(); return; }
+                }
+            }
+
+            if (facet === 'audio') {
+                // 'Ondersteunt audio tags' -> filterSupports
+                const inp = document.getElementById('filterSupports'); if (inp) { if (!inp.checked) { inp.checked = true; inp.dispatchEvent(new Event('change')); } searchTable(); computeFilterCounts(); return; }
+            }
+
+            // generic category/gender match
+            if (facet === 'category') { if (matchInContainer('categoryFilters')) { searchTable(); computeFilterCounts(); return; } }
+            if (facet === 'gender') { if (matchInContainer('genderFilters')) { searchTable(); computeFilterCounts(); return; } }
+
+            // fallback: try type and category containers
+            if (matchInContainer('typeFilters') || matchInContainer('categoryFilters')) { searchTable(); computeFilterCounts(); return; }
         }
 
         // Run preview attachment after render

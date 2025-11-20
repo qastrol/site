@@ -1,6 +1,4 @@
-﻿
-// Alerts table data. Each entry: { name, description, code }
-const alertsTable = [
+﻿const alertsTable = [
 	{ name: "Noob-Power!", description: "Noob-Power! Dit is de standaard alert, als er geen alert in het donatiebericht staat", code: "<noobpower>", year: 2024, category: ["Qastrol"], type: "Audio-alert"},
 	{ name: "Voeg een URL toe", description: "Voeg een URL toe in je donatiebericht. Werkt in principe met elke link (als het laad), maar werkt het beste met Twitch of YouTube-links (YouTube-links met timestamps starten vanaf de ingestelde tijd). De afspeelduur is afhankelijk van het donatiebedrag (3 seconden + 1 seconde voor elke euro)", code: "<url>", year: 2024, category: ["Twitch"], type: "Interactieve alert"},
 	{ name: "€2,-", description: "Papa, mag ik alsjeblieft 2 euro voor de arme man die op straat staat te schreeuwen. <a href=\"https://www.youtube.com/watch?v=Fy-SqB2FiSQ\">Bron</a>", code: "<2euro>", year: 2024, category: ["TV"], type: "Video-alert"},
@@ -261,11 +259,11 @@ const alertsTable = [
 	{ name: "Lord Wout moment", description: "Voor de gaming momenten van Lord Wout", code: "<lordwout>", category: ["Gaming", "Lord Wout"], type: "Video-alert", year: 2024},
 	{ name: "Happy Easter Xbox", description: "Beschrijving voor xbox", code: "<xbox>", category: ["Gaming", "Internet"], type: "Video-alert", year: ""},
 	{ name: "YouTube 2007 Tutorial", description: "Welkom bij mijn tutorial!", code: "<youtube>", category: ["Internet"], type: "Video-alert", year: 2024},
-	{ name: "De provincie Zwolle", description: "De 🗺️ provincie 🏘️ Zwolle 🇳🇱 staat 🧍 nummer 🔢 één 🥇 met 🤝 technologie ⚙️ van 🧪 teleportatie 🧙‍♂️ Zo 😱 hun 👥 zijn 🫶 wel 👍 gek 🤪 man 👨 ", code: "<zwolle>", category: ["Internet"], type: ["Video-alert"], year: ""},,
+	{ name: "De provincie Zwolle", description: "De 🗺️ provincie 🏘️ Zwolle 🇳🇱 staat 🧍 nummer 🔢 één 🥇 met 🤝 technologie ⚙️ van 🧪 teleportatie 🧙‍♂️ Zo 😱 hun 👥 zijn 🫶 wel 👍 gek 🤪 man 👨 ", code: "<zwolle>", category: ["Internet"], type: ["Video-alert"], year: ""},
 	{ name: "Trackmania: Author", description: "Unbelievable!!!!! You just beat Nadeo's High Score", code: "<author>" },
 	{ name: "Super Mario Odyssey: Moon Get!", description: "Een donatie alsof je een maan krijgt in Super Mario Odyssey", code: "<odyssey>" },
-	{ name: "Vis een vis!", description: "Met je donatie een vis vangen! Dit werkt via <a href=\"https://store.steampowered.com/app/2767520/LurkBait_Twitch_Fishing/\">LurkBait Twitch Fishing</a>", code: "<vis>", type: "Interactieve alert", category: ["Dieren", "Sport"], year: 2025 },,
-	{ name: "Genereer AI muziek", description: "Genereer een AI nummer van 15 seconden via de AI van ElevenLabs. Alles wat tussen aanhalingstekens wordt geplaatst in je donatiebericht, wordt gebruikt als prompt. Voorbeeld: 'A christmas song' genereert een kerstnummer. Kijk bij <a href=\"https://elevenlabs.io/docs/capabilities/music/\">de documentatie voor meer informatie.</a>.", code: "<muziek>", type: "Interactieve alert", category: ["AI", "Muziek"], year: 2025 },,
+	{ name: "Vis een vis!", description: "Met je donatie een vis vangen! Dit werkt via <a href=\"https://store.steampowered.com/app/2767520/LurkBait_Twitch_Fishing/\">LurkBait Twitch Fishing</a>", code: "<vis>", type: "Interactieve alert", category: ["Dieren", "Sport"], year: 2025 },
+	{ name: "Genereer AI muziek", description: "Genereer een AI nummer van 15 seconden via de AI van ElevenLabs. Alles wat tussen aanhalingstekens wordt geplaatst in je donatiebericht, wordt gebruikt als prompt. Voorbeeld: 'A christmas song' genereert een kerstnummer. Kijk bij <a href=\"https://elevenlabs.io/docs/capabilities/music/\">de documentatie voor meer informatie.</a>.", code: "<muziek>", type: "Interactieve alert", category: ["AI", "Muziek"], year: 2025 },
 	{ name: "Trackmania toeter", description: "Speel één van de 18 Trackmania toetergeluiden af. Deze toeters zijn afkomstig uit Trackmania Nations en Trackmania 2!", code: "<toeter>" },
 	{ name: "Adult Swim bump", description: "Streamer is aan het laden..", code: "<adultswim>", category: ["TV"], type: "Video-alert", year: 2025},
 	{ name: "Lego Island: oops", description: "You have to put the cd in your computer", code: "<cd>", category: ["Gaming", "Meme"], type: "Video-alert", year: 2025},
@@ -281,7 +279,7 @@ const alertsTable = [
 	{ name: "Human Fall Flat: Laat Qastrol naar links lopen", description: "NAAR LINKS! Laat Qastrol in de game naar links lopen (13 seconden)", code: "<links>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "Human Fall Flat: Laat Qastrol naar rechts lopen", description: "NAAR RECHTS! Laat Qastrol in de game naar rechts lopen (13 seconden)", code: "<rechts>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "Human Fall Flat: Laat Qastrol springen", description: "Laat Qastrol vijf keer springen", code: "<spring>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},
-	{ name: "Human Fall Flat: Laat Qastrol naar voren lopen", description: "Laat Qastrol naar voren lopen (11 seconden)", code: "<voor>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},,
+	{ name: "Human Fall Flat: Laat Qastrol naar voren lopen", description: "Laat Qastrol naar voren lopen (11 seconden)", code: "<voor>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "DJ Kibbeling", description: "Jalalalala, DJ Kibbeling", code: "<djkibbeling>", category: ["Muziek", "KerstKnallers"], type: "Video-alert", year: 2025},
 	{ name: "SpongeBob intro kapitein", description: "Kunnen we kinderen? Aye aye kapitein!", code: "<kunnen>", category: ["TV", "Intro"], type: "Video-alert", year: 2025},
 	{ name: "Onze Poes en Buurmans Kater - Evening Stars", description: "Kattenliedje. Ze zijn toch niet te houden laat die beesten maar miauwen! In de tuin, bij ons in de tuin!", code: "<indetuin>", category: ["Muziek", "Dieren"], type: "Video-alert", year: 2025},

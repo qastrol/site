@@ -120,7 +120,20 @@
 
                 // info row: categories (comma separated)
                 const info = document.createElement('div'); info.className = 'item-langs';
-                info.textContent = cats.length ? cats.join(', ') : '';
+                // render categories as clickable parts
+                info.innerHTML = '';
+                if (cats.length) {
+                    cats.forEach((c, idx) => {
+                        const span = document.createElement('span');
+                        span.className = 'info-part';
+                        span.textContent = c;
+                        span.style.cursor = 'pointer';
+                        span.dataset.facet = 'category';
+                        span.addEventListener('click', () => applyFilterFromInfoSfx('category', c));
+                        info.appendChild(span);
+                        if (idx < cats.length - 1) info.appendChild(document.createTextNode(', '));
+                    });
+                }
 
                 const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
                 left.appendChild(name);
@@ -162,6 +175,24 @@
             if (!container) return [];
             const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
             return inputs.filter(i => i.checked).map(i => i.value);
+        }
+
+        // Apply a filter when an info-part is clicked (soundeffects page)
+        function applyFilterFromInfoSfx(facet, text) {
+            if (!text) return;
+            const container = document.getElementById('categoryFilters');
+            if (!container) return;
+            const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+            for (const input of inputs) {
+                const lab = input.nextElementSibling ? input.nextElementSibling.textContent.trim() : '';
+                const val = (input.value || '').toString().trim();
+                if (val.toLowerCase() === text.toLowerCase() || lab.toLowerCase() === text.toLowerCase()) {
+                    if (!input.checked) { input.checked = true; input.dispatchEvent(new Event('change')); }
+                    refreshTable();
+                    computeFilterCountsSound();
+                    return;
+                }
+            }
         }
 
         // Build category checkboxes from the data in soundeffectsTable. Sorted alphabetically.
@@ -273,7 +304,20 @@ function renderSoundEffectsTable() {
         const main = document.createElement('div'); main.className = 'item-listing__main';
         const left = document.createElement('div'); left.className = 'item-listing__left';
         const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || ''; name.title = 'Klik voor voorbeeld';
-    const info = document.createElement('div'); info.className = 'item-langs'; info.textContent = cats.length ? cats.join(', ') : '';
+    const info = document.createElement('div'); info.className = 'item-langs';
+    info.innerHTML = '';
+    if (cats.length) {
+        cats.forEach((c, idx) => {
+            const span = document.createElement('span');
+            span.className = 'info-part';
+            span.textContent = c;
+            span.style.cursor = 'pointer';
+            span.dataset.facet = 'category';
+            span.addEventListener('click', () => applyFilterFromInfoSfx('category', c));
+            info.appendChild(span);
+            if (idx < cats.length - 1) info.appendChild(document.createTextNode(', '));
+        });
+    }
         const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
         left.appendChild(name); if (info.textContent) left.appendChild(info); left.appendChild(desc);
         const meta = document.createElement('div'); meta.className = 'item-meta';
