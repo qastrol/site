@@ -283,5 +283,7 @@ const alertsTable = [
 	{ name: "Human Fall Flat: Laat Qastrol springen", description: "Laat Qastrol vijf keer springen", code: "<spring>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "Human Fall Flat: Laat Qastrol naar voren lopen", description: "Laat Qastrol naar voren lopen (11 seconden)", code: "<voor>", category: ["Qastrol", "Gaming"], type: "Interactieve alert", year: 2025},,
 	{ name: "DJ Kibbeling", description: "Jalalalala, DJ Kibbeling", code: "<djkibbeling>", category: ["Muziek", "KerstKnallers"], type: "Video-alert", year: 2025},
-	{ name: "SpongeBob intro kapitein", description: "Kunnen we kinderen?", code: "<kunnen>", category: ["TV", "Intro"], type: "Video-alert", year: 2025}
+	{ name: "SpongeBob intro kapitein", description: "Kunnen we kinderen? Aye aye kapitein!", code: "<kunnen>", category: ["TV", "Intro"], type: "Video-alert", year: 2025},
+	{ name: "Onze Poes en Buurmans Kater - Evening Stars", description: "Kattenliedje. Ze zijn toch niet te houden laat die beesten maar miauwen! In de tuin, bij ons in de tuin!", code: "<indetuin>", category: ["Muziek", "Dieren"], type: "Video-alert", year: 2025},
+	{ name: "En ik zie weer alles dubbo dubbo dubbo", description: "'Jantje Vilt en De Mixers - En ik zie weer alles dubbel' speelt af, terwijl je ook alles in de stream dubbo ziet", code: "<dubbo>" }
 ];

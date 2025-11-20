@@ -97,6 +97,9 @@ const alertsLinks = {
   "doneer": [
     "alerts/doneer.mp4"
   ],
+  "dubbo": [
+    "alerts/dubbo.mp3"
+  ],
   "dvd": [
     "alerts/dvd.mp4"
   ],
