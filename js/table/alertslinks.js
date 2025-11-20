@@ -33,6 +33,12 @@ const alertsLinks = {
   "biem": [
     "alerts/biem.mp4"
   ],
+  "bijnamaandag": [
+    "alerts/bijnamaandag.mp4"
+  ],
+  "bijnaweekend": [
+    "alerts/bijnaweekend.mp4"
+  ],
   "boek": [
     "alerts/boek.mp4"
   ],
@@ -81,6 +87,9 @@ const alertsLinks = {
   ],
   "dislike": [
     "alerts/dislike.mp4"
+  ],
+  "djkibbeling": [
+    "alerts/djkibbeling.mp4"
   ],
   "dominoday": [
     "alerts/dominoday.mp4"
@@ -337,6 +346,9 @@ const alertsLinks = {
   "rutte": [
     "alerts/rutte.mp4"
   ],
+  "shrek": [
+    "alerts/shrek.webm"
+  ],
   "sie": [
     "alerts/sie.mp4"
   ],
@@ -459,9 +471,6 @@ const alertsLinks = {
   ],
   "zwolle": [
     "alerts/zwolle.webm"
-  ],
-  "shrek": [
-    "alerts/shrek.webm"
-  ],
+  ]
 };
 window.alertsLinks = alertsLinks;
