@@ -287,5 +287,6 @@
 	{ name: "I thought this was the bathroom", description: "Oh god", code: "<bathroom>", category: ["Meme", "TV"], type: "Video-alert", year: 2025},
 	{ name: "KerstKnallers Gamefreak intro", description: "In de stijl van Pokémon FireRed/LeafGreen", code: "<gamefreak>", category: ["KerstKnallers", "Gaming", "Intro"], type: "Video-alert", year: 2025},
 	{ name: "Siren Head", description: "Siren Head over je beeldscherm", code: "<sirenhead>", category: ["Meme"], type: "Video-alert", year: 2025},
-	{ name: "Toetjes, Koekjes, Pannenkoekenmeel", description: "Van de stream van IntensBroodje van KerstKnallers 2024", code: "<toetjes>", category: ["KerstKnallers", "Muziek"], type: "Muziek-alert", year: 2025}
+	{ name: "Toetjes, Koekjes, Pannenkoekenmeel", description: "Van de stream van IntensBroodje van KerstKnallers 2024", code: "<toetjes>", category: ["KerstKnallers", "Muziek"], type: "Muziek-alert", year: 2025},
+	{ name: "Zelda: New Location discovered", description: "Een donatie in de stijl van de melding die je krijgt bij het ontdekken van een nieuwe locatie in Zelda Breath of the Wild / Tears of the Kingdom", code: "<zelda>", category: ["Gaming"], type: "Audio-alert", year: 2025}
 ];
