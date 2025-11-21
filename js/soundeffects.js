@@ -200,7 +200,7 @@
 
                 const meta = document.createElement('div'); meta.className = 'item-meta';
                 const actions = document.createElement('div'); actions.className = 'item-actions';
-                const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function() { copyToClipboard(this); });
+                const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer geluidsnaam'; btn.addEventListener('click', function() { copyToClipboard(this); });
                 actions.appendChild(btn);
                 meta.appendChild(actions);
 
@@ -622,7 +622,7 @@ function applySort() {
                         <strong id="preview-title"></strong>
                         <div class="header-actions">
                             <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆ <span class="btn-label">Favoriet</span></button>
-                            <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label">Deel</span></button>
+                            <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label"></span></button>
                         </div>
                     </div>
                     <button class="preview-close" aria-label="Sluiten">✕</button>
@@ -635,8 +635,11 @@ function applySort() {
                 </div>
             </div>`;
         document.body.appendChild(overlay);
-        overlay.querySelector('.preview-close').addEventListener('click', () => overlay.remove());
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        // append small inline popup for user feedback
+        const popup = document.createElement('div'); popup.className = 'preview-popup'; popup.style.display = 'none'; document.body.appendChild(popup);
+        overlay._previewPopup = popup;
+        overlay.querySelector('.preview-close').addEventListener('click', () => { popup.remove(); overlay.remove(); });
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) { popup.remove(); overlay.remove(); } });
         return overlay;
     }
 
@@ -650,11 +653,12 @@ function applySort() {
         copyBtn.addEventListener('click', () => {
             navigator.clipboard.writeText(displayName).then(() => {
                 copyBtn.textContent = 'Gekopieerd ✓';
-                setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
+                setTimeout(() => copyBtn.textContent = 'Kopieer geluidsnaam', 1200);
             });
         });
 
         const base = `${folder}/${name}`;
+        const popup = overlay._previewPopup;
 
         // If we have an explicit mapping, use it directly to avoid probing
         try {
@@ -672,8 +676,10 @@ function applySort() {
                     const shareBtn = overlay.querySelector('.preview-share');
                     const page = 'soundeffects';
                     const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
-                    if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
-                    if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+                    // small toast helper
+                    const showPopup = (msg) => { try { if (!popup) return; popup.textContent = msg; popup.style.display = 'block'; popup.style.opacity = '1'; setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200); setTimeout(() => { try { popup.style.display = 'none'; } catch(e){} }, 1450); } catch(e){} };
+                    if (favBtn) { favBtn.addEventListener('click', () => { try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) {} }); updateFavUi(); }
+                    if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); }); } catch (e) {} }); }
                 } catch (e) {}
                 return;
             }
@@ -702,8 +708,10 @@ function applySort() {
             const shareBtn = overlay.querySelector('.preview-share');
             const page = 'soundeffects';
             const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
-            if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
-            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+            // small toast helper (re-uses popup attached to overlay)
+            const showPopup = (msg) => { try { if (!popup) return; popup.textContent = msg; popup.style.display = 'block'; popup.style.opacity = '1'; setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200); setTimeout(() => { try { popup.style.display = 'none'; } catch(e){} }, 1450); } catch(e){} };
+            if (favBtn) { favBtn.addEventListener('click', () => { try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) {} }); updateFavUi(); }
+            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); }); } catch (e) {} }); }
         } catch (e) {}
     }
 

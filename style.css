@@ -772,6 +772,23 @@ main.tekst {
 .preview-copy { background: var(--button-background-color); color: var(--button-text-color); border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
 .preview-notfound { color: #888; padding: 24px 0; }
 
+/* Inline toast used by preview overlays to show "Link gekopieerd" / favorite feedback */
+.preview-popup {
+    position: fixed;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    z-index: 2100;
+    font-size: 0.95rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
 /* New muted button style for preview secondary actions */
 .preview-controls-top { display:flex; justify-content:center; margin-bottom:8px; }
 .preview-controls-row { display:flex; gap:8px; justify-content:center; }

@@ -49,6 +49,19 @@
             </details>
 
             <details class="filter-option" open>
+                <summary>Favorieten</summary>
+                <div class="filter-group">
+                    <div id="favoritesFilter" style="margin:6px 0">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <input type="checkbox" id="filterFavorites" />
+                            <label for="filterFavorites" style="font-weight:normal;"> Favorieten</label>
+                            <span class="filter-count" style="margin-left:6px;color:#666"></span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="filter-option" open>
                 <summary>Lengte</summary>
                 <div class="filter-group">
                     <div style="display:flex; gap:8px; align-items:center; margin:6px 0">
@@ -58,19 +71,6 @@
                     <div style="display:flex; gap:8px; align-items:center; margin:6px 0">
                         <label for="maxLength" style="font-size:0.9rem; width:40px;">Tot</label>
                         <input id="maxLength" type="number" step="0.1" min="0" placeholder="" oninput="searchTable()" style="width:70px; padding:6px;"> seconden
-                    </div>
-                </div>
-            </details>
-
-            <details class="filter-option" open>
-                <summary>Favorieten</summary>
-                <div class="filter-group">
-                    <div id="favoritesFilter" style="margin:6px 0">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <input type="checkbox" id="filterFavorites" />
-                            <label for="filterFavorites" style="font-weight:normal;"> Favorieten</label>
-                            <span class="filter-count" style="margin-left:6px;color:#666"></span>
-                        </div>
                     </div>
                 </div>
             </details>
@@ -132,6 +132,7 @@
     <script src="js/table/active_filters.js"></script>
     <script src="js/favorites.js"></script>
     <script src="js/soundeffects.js"></script>
+    <script src="js/restore_filters.js"></script>
 
 </body>
 </html>

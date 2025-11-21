@@ -1,18 +1,60 @@
         // Functie om effectnaam te kopiëren naar klembord
         function copyToClipboard(button) {
-            const li = button.closest('li');
+            const li = button.closest && button.closest('li');
             const codeEl = li ? li.querySelector('.item-code') : null;
             const effectName = codeEl ? codeEl.innerText.trim() : '';
             if (!effectName) return;
-            navigator.clipboard.writeText(effectName).then(() => {
-                // desktop visual feedback: briefly change button text
+
+            const doFallback = (txt) => {
                 try {
-                    const orig = button.textContent;
-                    button.textContent = 'Gekopieerd ✓';
-                    button.disabled = true;
-                    setTimeout(() => { button.textContent = orig; button.disabled = false; }, 1200);
-                } catch (e) {}
-            }).catch(err => { console.error('Kopiëren mislukt', err); });
+                    const ta = document.createElement('textarea');
+                    ta.value = txt;
+                    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    const ok = document.execCommand('copy');
+                    ta.remove();
+                    return ok;
+                } catch (e) { return false; }
+            };
+
+            const onSuccess = () => {
+                try { showCopyToast(effectName + ' gekopieerd!'); } catch(e) {}
+            };
+
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+                navigator.clipboard.writeText(effectName).then(() => { onSuccess(); }).catch(err => {
+                    const ok = doFallback(effectName);
+                    if (ok) onSuccess(); else console.error('Kopiëren mislukt', err);
+                });
+            } else {
+                const ok = doFallback(effectName);
+                if (ok) onSuccess(); else console.warn('clipboard niet ondersteund');
+            }
+        }
+
+        function showCopyToast(msg) {
+            try {
+                // remove existing toast if present
+                const prev = document.getElementById('alertsCopyToast'); if (prev) prev.remove();
+                const t = document.createElement('div');
+                t.id = 'alertsCopyToast';
+                t.textContent = msg;
+                t.style.position = 'fixed';
+                t.style.left = '50%';
+                t.style.bottom = '16px';
+                t.style.transform = 'translateX(-50%)';
+                t.style.background = 'rgba(0,0,0,0.85)';
+                t.style.color = '#fff';
+                t.style.padding = '8px 12px';
+                t.style.borderRadius = '6px';
+                t.style.zIndex = 4000;
+                t.style.fontSize = '0.95rem';
+                t.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+                document.body.appendChild(t);
+                setTimeout(() => { try { t.style.transition = 'opacity 0.25s'; t.style.opacity = '0'; } catch(e){} }, 1200);
+                setTimeout(() => { try { t.remove(); } catch(e){} }, 1500);
+            } catch (e) { /* ignore */ }
         }
 
         // Sorting state per column (will be expanded dynamically)
@@ -383,15 +425,26 @@
                 });
 
                 left.appendChild(name);
+                // mobile inline code row (similar to noobpoints mobile UI)
+                const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = item.code || '';
+                const mobileCodeRow = document.createElement('div'); mobileCodeRow.className = 'mobile-code-row';
+                const mobileCodeLeft = document.createElement('div'); mobileCodeLeft.className = 'mobile-code-left';
+                const mobileLabel = document.createElement('span'); mobileLabel.className = 'mobile-code-label'; mobileLabel.textContent = 'Alertcode:';
+                mobileCodeLeft.appendChild(mobileLabel);
+                mobileCodeLeft.appendChild(codeInline);
+                const mobileCopyBtn = document.createElement('button'); mobileCopyBtn.type = 'button'; mobileCopyBtn.className = 'mobile-copy-code'; mobileCopyBtn.textContent = 'Kopieer';
+                mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+                mobileCodeRow.appendChild(mobileCodeLeft);
+                mobileCodeRow.appendChild(mobileCopyBtn);
+                // insert mobile row
+                left.appendChild(mobileCodeRow);
                 if (info.textContent) left.appendChild(info);
                 left.appendChild(desc);
 
                 const meta = document.createElement('div'); meta.className = 'item-meta';
                 const code = document.createElement('div'); code.className = 'item-code'; code.textContent = item.code || '';
-                const actions = document.createElement('div'); actions.className = 'item-actions';
-                const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function() { copyToClipboard(this); });
-                actions.appendChild(btn);
-                meta.appendChild(code); meta.appendChild(actions);
+                // keep code element for copy helper; remove large desktop copy button (mobile small copy remains)
+                meta.appendChild(code);
 
                 main.appendChild(left); main.appendChild(meta); li.appendChild(main);
 
@@ -451,7 +504,7 @@
                             <strong id="preview-title"></strong>
                             <div class="header-actions">
                                 <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆<span class="btn-label">Favoriet</span></button>
-                                <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 Delen<span class="btn-label"></span></button>
+                                <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗<span class="btn-label"></span></button>
                             </div>
                         </div>
                         <button class="preview-close" aria-label="Sluiten">✕</button>
@@ -459,13 +512,20 @@
                     <div class="preview-body" id="preview-body"></div>
                     <div class="preview-controls">
                         <div class="preview-controls-top">
-                            <button class="preview-copy">Kopieer</button>
+                            <button class="preview-copy">Kopieer alertcode</button>
                         </div>
                     </div>
                 </div>`;
             document.body.appendChild(overlay);
-            overlay.querySelector('.preview-close').addEventListener('click', () => overlay.remove());
-            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+            // small inline popup inside overlay for feedback (link copied / favorited)
+            const popup = document.createElement('div');
+            popup.className = 'preview-popup';
+            popup.style.display = 'none';
+            document.body.appendChild(popup);
+            // expose popup on overlay so showPreview can access it
+            overlay._previewPopup = popup;
+            overlay.querySelector('.preview-close').addEventListener('click', () => { popup.remove(); overlay.remove(); });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) { popup.remove(); overlay.remove(); } });
             return overlay;
         }
 
@@ -492,7 +552,7 @@
             copyBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(display || '').then(() => {
                     copyBtn.textContent = 'Gekopieerd ✓';
-                    setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
+                    setTimeout(() => copyBtn.textContent = 'Kopieer alertcode', 1200);
                 });
             });
 
@@ -508,9 +568,22 @@
                     favBtn.textContent = isFav ? '★' : '☆';
                     favBtn.title = isFav ? 'Verwijder favoriet' : 'Markeer als favoriet';
                 };
+                const popup = overlay._previewPopup;
+                // helper to show a small inline toast (re-uses popup appended to body)
+                const showPopup = (msg) => {
+                    try {
+                        if (!popup) return;
+                        popup.textContent = msg;
+                        popup.style.display = 'block';
+                        popup.style.opacity = '1';
+                        setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200);
+                        setTimeout(() => { try { popup.style.display = 'none'; } catch(e){} }, 1450);
+                    } catch (e) { /* ignore */ }
+                };
+
                 if (favBtn) {
                     favBtn.addEventListener('click', () => {
-                        try { const added = window.favorites.toggle(page, key); updateFavUi(); } catch (e) { console.error(e); }
+                        try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) { console.error(e); }
                     });
                     updateFavUi();
                 }
@@ -518,10 +591,7 @@
                     shareBtn.addEventListener('click', () => {
                         try {
                             const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`);
-                            navigator.clipboard.writeText(url).then(() => {
-                                shareBtn.textContent = '✓';
-                                setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200);
-                            });
+                            navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); });
                         } catch (e) { console.error('share failed', e); }
                     });
                 }

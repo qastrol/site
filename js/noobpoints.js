@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong id="preview-title"></strong>
                         <div class="header-actions">
                             <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆ <span class="btn-label">Favoriet</span></button>
-                            <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label">Deel</span></button>
+                            <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label"></span></button>
                         </div>
                     </div>
                     <button class="preview-close" aria-label="Sluiten">✕</button>
@@ -213,13 +213,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="preview-body" id="preview-body"></div>
                 <div class="preview-controls">
                     <div class="preview-controls-top">
-                        <button class="preview-copy">Kopieer</button>
+                        <button class="preview-copy">Kopieer redeemcode</button>
                     </div>
                 </div>
             </div>`;
         document.body.appendChild(overlay);
-        overlay.querySelector('.preview-close').addEventListener('click', () => overlay.remove());
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        const popup = document.createElement('div'); popup.className = 'preview-popup'; popup.style.display = 'none'; document.body.appendChild(popup);
+        overlay.querySelector('.preview-close').addEventListener('click', () => { try { popup.remove(); } catch(e){}; overlay.remove(); });
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) { try { popup.remove(); } catch(e){}; overlay.remove(); } });
         return overlay;
     }
 
@@ -233,19 +234,20 @@ document.addEventListener('DOMContentLoaded', () => {
         copyBtn.addEventListener('click', () => {
             navigator.clipboard.writeText(code || displayName || '').then(() => {
                 copyBtn.textContent = 'Gekopieerd ✓';
-                setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
+                setTimeout(() => copyBtn.textContent = 'Kopieer redeemcode', 1200);
             });
         });
 
-        // favorite & share
+            // favorite & share
         try {
             const key = normalizeNameForFile(code || displayName || '');
             const favBtn = overlay.querySelector('.preview-fav');
             const shareBtn = overlay.querySelector('.preview-share');
             const page = 'noobpoints';
             const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
-            if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
-            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+            const showPopup = (msg) => { try { if (!popup) return; popup.textContent = msg; popup.style.display = 'block'; popup.style.opacity = '1'; setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200); setTimeout(() => { try { popup.style.display = 'none'; } catch(e){} }, 1450); } catch(e){} };
+            if (favBtn) { favBtn.addEventListener('click', () => { try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) {} }); updateFavUi(); }
+            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); }); } catch (e) {} }); }
         } catch (e) {}
 
         // Prefer generated mapping (alertsLinks) which lists files present in /alerts/
@@ -1024,6 +1026,57 @@ document.addEventListener('DOMContentLoaded', () => {
         tbodyEl.dataset.sortOrder = (dir === 'asc') ? 'desc' : 'asc';
         sortTable(col, numeric);
     }
+
+    // Scroll & highlight handler for shared focus links (noobpoints)
+    function scrollAndHighlightByKey(key) {
+        try {
+            // prefer list items
+            const listRows = Array.from(document.querySelectorAll('#redeemList li'));
+            for (const r of listRows) {
+                const name = (r.dataset.name || (r.querySelector('.item-name-text') && r.querySelector('.item-name-text').textContent) || '').toString();
+                const code = (r.dataset.code || '').toString();
+                if (normalizeNameForFile(code || name) === key) {
+                    r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    const old = r.style.transition;
+                    r.style.transition = 'background-color 0.3s ease';
+                    const prev = r.style.backgroundColor;
+                    r.style.backgroundColor = '#fff79a';
+                    setTimeout(() => { r.style.backgroundColor = prev || ''; r.style.transition = old || ''; }, 2500);
+                    return true;
+                }
+            }
+
+            // fallback to legacy table rows
+            const trs = Array.from(document.querySelectorAll('#redeemTable tr'));
+            for (const tr of trs) {
+                const name = (tr.dataset.name || '').toString();
+                const code = (tr.dataset.code || '').toString();
+                if (normalizeNameForFile(code || name) === key) {
+                    tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    const old = tr.style.transition;
+                    tr.style.transition = 'background-color 0.3s ease';
+                    const prev = tr.style.backgroundColor;
+                    tr.style.backgroundColor = '#fff79a';
+                    setTimeout(() => { tr.style.backgroundColor = prev || ''; tr.style.transition = old || ''; }, 2500);
+                    return true;
+                }
+            }
+        } catch (e) { console.error('scrollAndHighlightByKey (noobpoints) failed', e); }
+        return false;
+    }
+
+    // Handle focus param/hash on initial load: ?focus=noobpoints:<key> or #noobpoints:<key>
+    (function handleFocusFromUrl() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const focus = params.get('focus') || location.hash.replace(/^#/, '') || '';
+            if (!focus) return;
+            const [page, key] = focus.split(':');
+            if (page === 'noobpoints' && key) {
+                setTimeout(() => { try { scrollAndHighlightByKey(key); } catch (e) {} }, 300);
+            }
+        } catch (e) { /* ignore */ }
+    })();
 
     // expose globally for the inline onchange / button handlers in the HTML
     window.applySort = applySortInternal;

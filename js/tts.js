@@ -711,7 +711,7 @@ function updateFavIndicators() {
                                 <strong id="preview-title"></strong>
                                 <div class="header-actions">
                                     <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆ <span class="btn-label">Favoriet</span></button>
-                                    <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label">Deel</span></button>
+                                    <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label"></span></button>
                                 </div>
                             </div>
                             <button class="preview-close" aria-label="Sluiten">✕</button>
@@ -719,7 +719,7 @@ function updateFavIndicators() {
                         <div class="preview-body" id="preview-body"></div>
                         <div class="preview-controls">
                             <div class="preview-controls-top">
-                                <button class="preview-copy">Kopieer</button>
+                                <button class="preview-copy">Kopieer stemnaam</button>
                             </div>
                         </div>
                     </div>`;
@@ -739,7 +739,7 @@ function updateFavIndicators() {
             copyBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(displayName).then(() => {
                     copyBtn.textContent = 'Gekopieerd ✓';
-                    setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
+                    setTimeout(() => copyBtn.textContent = 'Kopieer stemnaam', 1200);
                 });
             });
 
@@ -750,8 +750,13 @@ function updateFavIndicators() {
                 const shareBtn = overlay.querySelector('.preview-share');
                 const page = 'tts';
                 const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
-                if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
-                if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+                // provide a small inline popup for share/fav feedback
+                const popup = document.createElement('div'); popup.className = 'preview-popup'; popup.style.display = 'none'; document.body.appendChild(popup);
+                // ensure popup removed when overlay closes
+                try { const closeBtn = overlay.querySelector('.preview-close'); if (closeBtn) closeBtn.addEventListener('click', () => { try { popup.remove(); } catch(e){} }); overlay.addEventListener('click', (e) => { if (e.target === overlay) { try { popup.remove(); } catch(e){} } }); } catch(e) {}
+                const showPopup = (msg) => { try { if (!popup) return; popup.textContent = msg; popup.style.display = 'block'; popup.style.opacity = '1'; setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200); setTimeout(() => { try { popup.style.display = 'none'; } catch(e){} }, 1450); } catch(e){} };
+                if (favBtn) { favBtn.addEventListener('click', () => { try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) {} }); updateFavUi(); }
+                if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); }); } catch (e) {} }); }
             } catch (e) {}
 
             // Try image -> audio -> video
@@ -878,7 +883,41 @@ function updateFavIndicators() {
 
         // Run preview attachment after render
         attachPreviewHandlers();
-            try { updateFavIndicators(); } catch (e) {}
+        try { updateFavIndicators(); } catch (e) {}
+
+        // Scroll to and briefly highlight a TTS item when the page is opened
+        // via a shared link like `?focus=tts:<key>` or `#tts:<key>`.
+        function scrollAndHighlightByKey(key) {
+            try {
+                const rows = Array.from(document.querySelectorAll('#ttsList li'));
+                for (const r of rows) {
+                    const name = (r.dataset.name || (r.querySelector('.item-name-text') && r.querySelector('.item-name-text').textContent) || '').toString();
+                    if (normalizeNameForFile(name) === key) {
+                        r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        const old = r.style.transition;
+                        r.style.transition = 'background-color 0.3s ease';
+                        const prevBg = r.style.backgroundColor;
+                        r.style.backgroundColor = '#fff79a';
+                        setTimeout(() => { r.style.backgroundColor = prevBg || ''; r.style.transition = old || ''; }, 2500);
+                        return true;
+                    }
+                }
+            } catch (e) { console.error('scrollAndHighlightByKey (tts) failed', e); }
+            return false;
+        }
+
+        // Check URL params/hash for focus directive and activate it if present
+        (function handleFocusFromUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const focus = params.get('focus') || location.hash.replace(/^#/, '') || '';
+                if (!focus) return;
+                const [page, key] = focus.split(':');
+                if (page === 'tts' && key) {
+                    setTimeout(() => { try { scrollAndHighlightByKey(key); } catch (e) {} }, 300);
+                }
+            } catch (e) { /* ignore */ }
+        })();
 
 // Handle chip removal events
 window.addEventListener('activeFilter:remove', (ev) => {
