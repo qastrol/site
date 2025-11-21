@@ -32,6 +32,19 @@
             const chip = createChip(f.label, f.type, f.value);
             container.appendChild(chip);
         });
+        // add a clear-all button to the right of the chips
+        const clearBtn = document.createElement('button');
+        clearBtn.type = 'button';
+        clearBtn.id = 'clear-filters-btn';
+        clearBtn.className = 'clear-filters-btn';
+        clearBtn.textContent = 'Filters wissen';
+        clearBtn.title = 'Wis alle actieve filters';
+        clearBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const ev = new CustomEvent('activeFilter:clear', {});
+            window.dispatchEvent(ev);
+        });
+        container.appendChild(clearBtn);
     }
 
     window.activeFilters = {

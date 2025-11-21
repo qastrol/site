@@ -829,3 +829,21 @@ window.addEventListener('activeFilter:remove', (ev) => {
         searchTable();
     } catch (e) { console.error('failed to handle activeFilter:remove (tts)', e); }
 });
+
+// Clear all filters when requested by the active-filters UI
+window.addEventListener('activeFilter:clear', () => {
+    try {
+        const s = document.getElementById('searchInput'); if (s) s.value = '';
+        // category, type, gender, language, audio, ai/normal
+        ['categoryFilters','typeFilters','genderFilters','languageFilters','audioTagFilters'].forEach(id => {
+            const c = document.getElementById(id);
+            if (!c) return;
+            const inputs = Array.from(c.querySelectorAll('input[type="checkbox"]'));
+            inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
+        });
+        ['filterAI','filterNormal','filterSupports','filterNotSupports','filterMale','filterFemale','filterSupports','filterNotSupports'].forEach(id => {
+            const el = document.getElementById(id); if (el && (el.type === 'checkbox')) { el.checked = false; el.dispatchEvent(new Event('change')); }
+        });
+        searchTable(); computeFilterCounts();
+    } catch (e) { console.error('failed to clear filters (tts)', e); }
+});

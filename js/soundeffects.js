@@ -19,7 +19,7 @@
         }
 
 
-        let sortDirection = [true, true, true]; // array om de sorteer volgorde bij te houden
+        let sortDirection = [true, true, true, true]; // array om de sorteer volgorde bij te houden (extra voor lengte)
 
         // Functie om de tabel te sorteren (operates on list)
         function sortTable(n) {
@@ -34,6 +34,13 @@
                     const ac = (a.dataset.categories || '').toLowerCase();
                     const bc = (b.dataset.categories || '').toLowerCase();
                     return ac.localeCompare(bc, 'nl', { sensitivity: 'base' });
+                });
+            } else if (n === 3) {
+                // sort by numeric length (ms)
+                items.sort((a, b) => {
+                    const al = parseInt(a.dataset.length || '0', 10) || 0;
+                    const bl = parseInt(b.dataset.length || '0', 10) || 0;
+                    return al - bl;
                 });
             } else {
                 const colMap = { 0: '.item-name', 2: '.item-desc' };
@@ -84,7 +91,25 @@
 
             // check if any selected cat is present in cats
             const intersects = selectedCats.some(sc => cats.includes(sc));
-            return textMatch && intersects;
+            if (!textMatch || !intersects) return false;
+
+            // length filter (min/max in seconds)
+            try {
+                const minInput = document.getElementById('minLength');
+                const maxInput = document.getElementById('maxLength');
+                const minVal = minInput && minInput.value !== '' ? parseFloat(minInput.value) : null;
+                const maxVal = maxInput && maxInput.value !== '' ? parseFloat(maxInput.value) : null;
+                if ((minVal !== null && !isNaN(minVal)) || (maxVal !== null && !isNaN(maxVal))) {
+                    const lenMs = parseInt(item.length || 0, 10) || 0;
+                    const lenS = lenMs / 1000;
+                    if (minVal !== null && !isNaN(minVal) && lenS < minVal) return false;
+                    if (maxVal !== null && !isNaN(maxVal) && lenS > maxVal) return false;
+                }
+            } catch (e) {
+                // ignore
+            }
+
+            return true;
         }
 
         function refreshTable() {
@@ -113,15 +138,33 @@
                     li.dataset.categories = cats.join('|');
                 }
 
+                // length dataset (ms) if present
+                const lenMs = (item && (typeof item.length !== 'undefined')) ? (parseInt(item.length, 10) || 0) : 0;
+                if (lenMs > 0) li.dataset.length = String(lenMs);
+
                 const main = document.createElement('div'); main.className = 'item-listing__main';
                 const left = document.createElement('div'); left.className = 'item-listing__left';
                 const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || '';
                 name.title = 'Klik voor voorbeeld';
 
-                // info row: categories (comma separated)
+                // info row: length (seconds) and categories (comma separated)
                 const info = document.createElement('div'); info.className = 'item-langs';
                 // render categories as clickable parts
                 info.innerHTML = '';
+                // show length first if we have it
+                if (li.dataset.length) {
+                    const ms = parseInt(li.dataset.length || '0', 10) || 0;
+                    if (ms > 0) {
+                        const sec = (ms / 1000);
+                        // one decimal, Dutch comma, full word 'seconden'
+                        const secStr = sec.toFixed(1).replace('.', ',') + ' seconden';
+                        const spanLen = document.createElement('span');
+                        spanLen.className = 'info-length';
+                        spanLen.textContent = secStr;
+                        info.appendChild(spanLen);
+                        if (cats.length) info.appendChild(document.createTextNode(' \u00A0•\u00A0 '));
+                    }
+                }
                 if (cats.length) {
                     cats.forEach((c, idx) => {
                         const span = document.createElement('span');
@@ -280,6 +323,36 @@ function computeFilterCountsSound() {
     });
 }
 
+// Compute min/max lengths (seconds) from soundeffectsTable and set placeholders
+function setLengthPlaceholders() {
+    try {
+        if (typeof soundeffectsTable === 'undefined' || !Array.isArray(soundeffectsTable)) return;
+        const lengths = soundeffectsTable.map(it => {
+            if (!it) return 0;
+            const v = parseInt(it.length || 0, 10) || 0;
+            return v > 0 ? v : 0;
+        }).filter(v => v > 0);
+        if (!lengths.length) return;
+        const minMs = Math.min(...lengths);
+        const maxMs = Math.max(...lengths);
+        const minS = (minMs / 1000).toFixed(1);
+        const maxS = (maxMs / 1000).toFixed(1);
+        const minEl = document.getElementById('minLength');
+        const maxEl = document.getElementById('maxLength');
+        if (minEl) {
+            // placeholder uses dot as decimal separator for input
+            minEl.placeholder = minS;
+            minEl.title = `Kortste: ${minS}s`;
+        }
+        if (maxEl) {
+            maxEl.placeholder = maxS;
+            maxEl.title = `Langste: ${maxS}s`;
+        }
+    } catch (e) {
+        console.error('setLengthPlaceholders failed', e);
+    }
+}
+
 
 function renderSoundEffectsTable() {
     const list = document.getElementById('soundEffectsList');
@@ -301,11 +374,29 @@ function renderSoundEffectsTable() {
             li.dataset.categories = cats.join('|');
         }
 
+        // length dataset (ms) if present
+        const lenMs = (item && (typeof item.length !== 'undefined')) ? (parseInt(item.length, 10) || 0) : 0;
+        if (lenMs > 0) li.dataset.length = String(lenMs);
+
         const main = document.createElement('div'); main.className = 'item-listing__main';
         const left = document.createElement('div'); left.className = 'item-listing__left';
         const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || ''; name.title = 'Klik voor voorbeeld';
     const info = document.createElement('div'); info.className = 'item-langs';
     info.innerHTML = '';
+    // show length first if we have it
+    if (li.dataset.length) {
+        const ms = parseInt(li.dataset.length || '0', 10) || 0;
+        if (ms > 0) {
+            const sec = (ms / 1000);
+            const secStr = sec.toFixed(1).replace('.', ',') + ' seconden';
+            const spanLen = document.createElement('span');
+            spanLen.className = 'info-length';
+            spanLen.textContent = secStr;
+            info.appendChild(spanLen);
+            if (cats.length) info.appendChild(document.createTextNode(' \u00A0•\u00A0 '));
+        }
+    }
+
     if (cats.length) {
         cats.forEach((c, idx) => {
             const span = document.createElement('span');
@@ -336,6 +427,8 @@ document.addEventListener("DOMContentLoaded", function() {
     buildCategoryFilters();
         // initialize per-filter counts
         computeFilterCountsSound();
+    // set min/max placeholders based on data
+    setLengthPlaceholders();
     const sel = document.getElementById('sortSelect');
     if (sel) {
         const [colStr, dir] = sel.value.split(':');
@@ -361,6 +454,21 @@ document.addEventListener("DOMContentLoaded", function() {
             // refresh UI
             refreshTable();
         } catch (e) { console.error('failed to handle activeFilter:remove (sfx)', e); }
+    });
+
+    // Clear all filters when requested by the active-filters UI
+    window.addEventListener('activeFilter:clear', () => {
+        try {
+            const s = document.getElementById('searchInput'); if (s) s.value = '';
+            const minL = document.getElementById('minLength'); if (minL) minL.value = '';
+            const maxL = document.getElementById('maxLength'); if (maxL) maxL.value = '';
+            const container = document.getElementById('categoryFilters');
+            if (container) {
+                const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+                inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
+            }
+            refreshTable(); computeFilterCountsSound();
+        } catch (e) { console.error('failed to clear filters (sfx)', e); }
     });
 });
 

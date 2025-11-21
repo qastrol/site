@@ -57,6 +57,20 @@
                 </div>
             </details>
 
+            <details class="filter-option">
+                <summary>Lengte</summary>
+                <div class="filter-group">
+                    <div style="display:flex; gap:8px; align-items:center; margin:6px 0">
+                        <label for="minLength" style="font-size:0.9rem; width:40px;">Van</label>
+                        <input id="minLength" type="number" step="0.1" min="0" placeholder="0" oninput="searchTable()" style="width:70px; padding:6px;"> seconden
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center; margin:6px 0">
+                        <label for="maxLength" style="font-size:0.9rem; width:40px;">Tot</label>
+                        <input id="maxLength" type="number" step="0.1" min="0" placeholder="" oninput="searchTable()" style="width:70px; padding:6px;"> seconden
+                    </div>
+                </div>
+            </details>
+
             <!-- Sorteer selector moved to above the table -->
 
             <p style="margin-top:12px">Aantal sound effects: <span id="counter">0</span></p>
@@ -72,6 +86,8 @@
                         <option value="1:desc">Categorieën (Z → A)</option>
                         <option value="2:asc">Beschrijving (A → Z)</option>
                         <option value="2:desc">Beschrijving (Z → A)</option>
+                    <option value="3:asc">Lengte (kort → lang)</option>
+                    <option value="3:desc">Lengte (lang → kort)</option>
                 </select>
                 <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
             </div>

@@ -695,6 +695,19 @@
                     refreshFilters();
                 } catch (e) { console.error('failed to handle activeFilter:remove', e); }
             });
+            // Clear all filters when requested by the active-filters UI
+            window.addEventListener('activeFilter:clear', () => {
+                try {
+                    const s = document.getElementById('searchInput'); if (s) s.value = '';
+                    ['categoryFilters','typeFilters','yearFilters'].forEach(id => {
+                        const c = document.getElementById(id);
+                        if (!c) return;
+                        const inputs = Array.from(c.querySelectorAll('input[type="checkbox"]'));
+                        inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
+                    });
+                    refreshFilters();
+                } catch (e) { console.error('failed to clear filters (alerts)', e); }
+            });
             // expose functions for inline handlers
             window.applySort = applySort;
             window.sortTable = sortTable;

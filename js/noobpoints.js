@@ -994,5 +994,22 @@ document.addEventListener('DOMContentLoaded', () => {
             refreshTable();
         } catch (e) { console.error('failed to handle activeFilter:remove (noobpoints)', e); }
     });
+
+    // Clear all filters when requested by the active-filters UI
+    window.addEventListener('activeFilter:clear', () => {
+        try {
+            if (searchInput) searchInput.value = '';
+            if (minCostInput) minCostInput.value = '';
+            if (maxCostInput) maxCostInput.value = '';
+            ['categoryFilters','typeFilters'].forEach(id => {
+                const c = document.getElementById(id);
+                if (!c) return;
+                const inputs = Array.from(c.querySelectorAll('input[type="checkbox"]'));
+                inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
+            });
+            refreshTable();
+            computeFilterCountsNoob();
+        } catch (e) { console.error('failed to clear filters (noobpoints)', e); }
+    });
     applySortInternal();
 });
