@@ -30,8 +30,15 @@ function renderTtsTable() {
         left.className = 'item-listing__left';
         const name = document.createElement('div');
         name.className = 'item-name';
-        name.textContent = item.name || '';
         name.style.cursor = 'pointer';
+        const nameText = document.createElement('span'); nameText.className = 'item-name-text'; nameText.textContent = item.name || ''; name.appendChild(nameText);
+        const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
+        try {
+            const key = normalizeNameForFile(item.name || '');
+            const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('tts', key);
+            starEl.textContent = isFav ? '★' : '';
+        } catch (e) { starEl.textContent = ''; }
+        name.appendChild(starEl);
         left.appendChild(name);
 
         // small info segment: languages and optional AI label
@@ -234,6 +241,19 @@ function renderTtsTable() {
                 row.style.display = matchFound ? '' : 'none';
             });
 
+        // apply favorites filter if active
+        try {
+            const favCb = document.getElementById('filterFavorites');
+            if (favCb && favCb.checked) {
+                const allRows = Array.from(document.querySelectorAll('#ttsList li'));
+                allRows.forEach(r => {
+                    const name = (r.dataset.name || '').toString();
+                    const key = normalizeNameForFile(name);
+                    if (!window.favorites || !window.favorites.isFav('tts', key)) r.style.display = 'none';
+                });
+            }
+        } catch (e) {}
+
         // Werk de zichtbare rijcounter bij
         updateRowCount();
         // Werk de facet-aantallen bij
@@ -393,6 +413,8 @@ function computeFilterCounts() {
             typeContainer.innerHTML = '';
             genderContainer.innerHTML = '';
             langContainer.innerHTML = '';
+
+            // favorites checkbox is static in HTML (rendered in the page); do not inject here
 
             // Category checkboxes (in category container)
             const catTitle = document.createElement('div');
@@ -608,6 +630,36 @@ function computeFilterCounts() {
     // Render table and initialize UI (render must run before attaching handlers)
     renderTtsTable();
     buildCategoryFilters();
+        // wire the global favorites checkbox (always present in HTML) to filtering
+        try {
+            const favEl = document.getElementById('filterFavorites');
+            if (favEl) favEl.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
+        } catch (e) {}
+
+        // show/hide the favorites filter depending on whether any favorites exist
+        function updateFavoritesFilterVisibility() {
+            try {
+                const favWrap = document.getElementById('favoritesFilter');
+                if (!favWrap) return;
+                const details = favWrap.closest && favWrap.closest('details.filter-option');
+                const countSpan = favWrap.querySelector && favWrap.querySelector('.filter-count');
+                const favCount = window.favorites ? window.favorites.count('tts') : 0;
+                const has = favCount > 0;
+                if (details) details.style.display = has ? '' : 'none';
+                if (countSpan) countSpan.textContent = has ? ' (' + favCount + ')' : '';
+                const cb = document.getElementById('filterFavorites'); if (!has && cb) cb.checked = false;
+            } catch (e) { /* ignore */ }
+        }
+        try { updateFavoritesFilterVisibility(); } catch (e) {}
+        window.addEventListener('favorites:changed', (ev) => {
+            try {
+                const p = ev && ev.detail && ev.detail.page;
+                if (!p || p === 'tts') {
+                    updateFavoritesFilterVisibility();
+                    try { updateFavIndicators(); } catch (e) {}
+                }
+            } catch (e) {}
+        });
     // Initialiseer sortering: zorg dat kolom 0 (Stemnaam) oplopend wordt gesorteerd
     sortDirection[0] = true; // zet expliciet op ascending
     sortTable(0);
@@ -633,20 +685,44 @@ function computeFilterCounts() {
             return (text || '').toString().replace(/[^a-z0-9]/gi, '').toLowerCase();
         }
 
+// Update favorite star indicators for TTS list items
+function updateFavIndicators() {
+    try {
+        const nodes = Array.from(document.querySelectorAll('.fav-indicator'));
+        nodes.forEach(n => {
+            try {
+                const li = n.closest && n.closest('li');
+                const nameSrc = (li && (li.dataset.name || (li.querySelector('.item-name-text') && li.querySelector('.item-name-text').textContent))) || '';
+                const key = normalizeNameForFile(nameSrc || '');
+                const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('tts', key);
+                n.textContent = isFav ? '★' : '';
+            } catch (e) { /* ignore per-node errors */ }
+        });
+    } catch (e) { /* ignore */ }
+}
+
         function createPreviewOverlay() {
             const overlay = document.createElement('div');
             overlay.className = 'preview-overlay';
-            overlay.innerHTML = `
-                <div class="preview-modal" role="dialog" aria-modal="true">
-                    <div class="preview-header">
-                        <strong id="preview-title"></strong>
-                        <button class="preview-close" aria-label="Sluiten">✕</button>
-                    </div>
-                    <div class="preview-body" id="preview-body"></div>
-                    <div class="preview-controls">
-                        <button class="preview-copy">Kopieer naam</button>
-                    </div>
-                </div>`;
+                overlay.innerHTML = `
+                    <div class="preview-modal" role="dialog" aria-modal="true">
+                        <div class="preview-header">
+                            <div class="preview-header-left">
+                                <strong id="preview-title"></strong>
+                                <div class="header-actions">
+                                    <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆ <span class="btn-label">Favoriet</span></button>
+                                    <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label">Deel</span></button>
+                                </div>
+                            </div>
+                            <button class="preview-close" aria-label="Sluiten">✕</button>
+                        </div>
+                        <div class="preview-body" id="preview-body"></div>
+                        <div class="preview-controls">
+                            <div class="preview-controls-top">
+                                <button class="preview-copy">Kopieer</button>
+                            </div>
+                        </div>
+                    </div>`;
             document.body.appendChild(overlay);
             overlay.querySelector('.preview-close').addEventListener('click', () => overlay.remove());
             overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
@@ -666,6 +742,17 @@ function computeFilterCounts() {
                     setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
                 });
             });
+
+            // favorite & share buttons
+            try {
+                const key = normalizeNameForFile(displayName || '');
+                const favBtn = overlay.querySelector('.preview-fav');
+                const shareBtn = overlay.querySelector('.preview-share');
+                const page = 'tts';
+                const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
+                if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
+                if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+            } catch (e) {}
 
             // Try image -> audio -> video
             const base = `${folder}/${name}`;
@@ -791,6 +878,7 @@ function computeFilterCounts() {
 
         // Run preview attachment after render
         attachPreviewHandlers();
+            try { updateFavIndicators(); } catch (e) {}
 
 // Handle chip removal events
 window.addEventListener('activeFilter:remove', (ev) => {
@@ -844,6 +932,8 @@ window.addEventListener('activeFilter:clear', () => {
         ['filterAI','filterNormal','filterSupports','filterNotSupports','filterMale','filterFemale','filterSupports','filterNotSupports'].forEach(id => {
             const el = document.getElementById(id); if (el && (el.type === 'checkbox')) { el.checked = false; el.dispatchEvent(new Event('change')); }
         });
+        // also clear the favorites checkbox
+        try { const fav = document.getElementById('filterFavorites'); if (fav) { fav.checked = false; } } catch (e) {}
         searchTable(); computeFilterCounts();
     } catch (e) { console.error('failed to clear filters (tts)', e); }
 });

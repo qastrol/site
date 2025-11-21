@@ -49,15 +49,6 @@
             </details>
 
             <details class="filter-option" open>
-                <summary>Categorieën</summary>
-                <div class="filter-group">
-                    <div id="categoryFilters" style="margin:6px 0">
-                        <!-- Category checkboxes are injected here by js/soundeffects.js -->
-                    </div>
-                </div>
-            </details>
-
-            <details class="filter-option">
                 <summary>Lengte</summary>
                 <div class="filter-group">
                     <div style="display:flex; gap:8px; align-items:center; margin:6px 0">
@@ -70,6 +61,30 @@
                     </div>
                 </div>
             </details>
+
+            <details class="filter-option" open>
+                <summary>Favorieten</summary>
+                <div class="filter-group">
+                    <div id="favoritesFilter" style="margin:6px 0">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <input type="checkbox" id="filterFavorites" />
+                            <label for="filterFavorites" style="font-weight:normal;"> Favorieten</label>
+                            <span class="filter-count" style="margin-left:6px;color:#666"></span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="filter-option">
+                <summary>Categorieën</summary>
+                <div class="filter-group">
+                    <div id="categoryFilters" style="margin:6px 0">
+                        <!-- Category checkboxes are injected here by js/soundeffects.js -->
+                    </div>
+                </div>
+            </details>
+
+
 
             <!-- Sorteer selector moved to above the table -->
 
@@ -115,6 +130,7 @@
     <script src="js/table/soundeffects_table.js"></script>
     <script src="js/table/soundeffectslinks.js"></script>
     <script src="js/table/active_filters.js"></script>
+    <script src="js/favorites.js"></script>
     <script src="js/soundeffects.js"></script>
 
 </body>

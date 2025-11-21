@@ -171,6 +171,9 @@ const soundeffectsLinks = {
   "illuminati": [
     "soundeffects/illuminati.mp3"
   ],
+  "iluminati": [
+    "soundeffects/iluminati.mp3"
+  ],
   "internet": [
     "soundeffects/internet.mp3"
   ],

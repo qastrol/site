@@ -149,7 +149,15 @@
                     types: (li.dataset.types || '').split('|').filter(Boolean),
                     year: li.dataset.year || ''
                 };
-                const show = itemMatchesFilters(item, q, selCats, selTypes, selYears);
+                let show = itemMatchesFilters(item, q, selCats, selTypes, selYears);
+                // favorites filter
+                try {
+                    const favCb = document.getElementById('filterFavorites');
+                    if (favCb && favCb.checked) {
+                        const key = normalizeNameForFile(item.code || item.name || '');
+                        if (!(window.favorites && window.favorites.isFav('alerts', key))) show = false;
+                    }
+                } catch (e) {}
                 li.style.display = show ? '' : 'none';
                 if (show) visibleCount++;
             });
@@ -323,7 +331,15 @@
                 const li = document.createElement('li'); li.className = 'item-listing__item';
                 const main = document.createElement('div'); main.className = 'item-listing__main';
                 const left = document.createElement('div'); left.className = 'item-listing__left';
-                const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || ''; name.title = 'Klik voor voorbeeld';
+                const name = document.createElement('div'); name.className = 'item-name'; name.title = 'Klik voor voorbeeld';
+                const nameText = document.createElement('span'); nameText.className = 'item-name-text'; nameText.textContent = item.name || ''; name.appendChild(nameText);
+                const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
+                try {
+                    const key = normalizeNameForFile(item.code || item.name || '');
+                    const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('alerts', key);
+                    starEl.textContent = isFav ? '★' : '';
+                } catch (e) { starEl.textContent = ''; }
+                name.appendChild(starEl);
                 const desc = document.createElement('div'); desc.className = 'item-desc'; desc.innerHTML = item.description || '';
 
                 // compute categories and types (set dataset values for filtering/sorting)
@@ -408,18 +424,43 @@
             return (text || '').toString().replace(/[^a-z0-9]/gi, '').toLowerCase();
         }
 
+        // Update favorite star indicators for alerts list items
+        function updateFavIndicators() {
+            try {
+                const nodes = Array.from(document.querySelectorAll('.fav-indicator'));
+                nodes.forEach(n => {
+                    try {
+                        const li = n.closest && n.closest('li');
+                        const nameSrc = (li && (li.dataset.name || (li.querySelector('.item-name-text') && li.querySelector('.item-name-text').textContent))) || '';
+                        const code = (li && li.dataset.code) || '';
+                        const key = normalizeNameForFile(code || nameSrc || '');
+                        const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('alerts', key);
+                        n.textContent = isFav ? '★' : '';
+                    } catch (e) { /* ignore per-node errors */ }
+                });
+            } catch (e) { /* ignore */ }
+        }
+
         function createPreviewOverlay() {
             const overlay = document.createElement('div');
             overlay.className = 'preview-overlay';
-            overlay.innerHTML = `
+                overlay.innerHTML = `
                 <div class="preview-modal" role="dialog" aria-modal="true">
                     <div class="preview-header">
-                        <strong id="preview-title"></strong>
+                        <div class="preview-header-left">
+                            <strong id="preview-title"></strong>
+                            <div class="header-actions">
+                                <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆<span class="btn-label">Favoriet</span></button>
+                                <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 Delen<span class="btn-label"></span></button>
+                            </div>
+                        </div>
                         <button class="preview-close" aria-label="Sluiten">✕</button>
                     </div>
                     <div class="preview-body" id="preview-body"></div>
                     <div class="preview-controls">
-                        <button class="preview-copy">Kopieer naam</button>
+                        <div class="preview-controls-top">
+                            <button class="preview-copy">Kopieer</button>
+                        </div>
                     </div>
                 </div>`;
             document.body.appendChild(overlay);
@@ -454,6 +495,37 @@
                     setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
                 });
             });
+
+            // favorite and share buttons
+            try {
+                const favBtn = overlay.querySelector('.preview-fav');
+                const shareBtn = overlay.querySelector('.preview-share');
+                const key = normalizeNameForFile(code || display || '');
+                const page = 'alerts';
+                const updateFavUi = () => {
+                    if (!favBtn) return;
+                    const isFav = window.favorites && window.favorites.isFav(page, key);
+                    favBtn.textContent = isFav ? '★' : '☆';
+                    favBtn.title = isFav ? 'Verwijder favoriet' : 'Markeer als favoriet';
+                };
+                if (favBtn) {
+                    favBtn.addEventListener('click', () => {
+                        try { const added = window.favorites.toggle(page, key); updateFavUi(); } catch (e) { console.error(e); }
+                    });
+                    updateFavUi();
+                }
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', () => {
+                        try {
+                            const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`);
+                            navigator.clipboard.writeText(url).then(() => {
+                                shareBtn.textContent = '✓';
+                                setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200);
+                            });
+                        } catch (e) { console.error('share failed', e); }
+                    });
+                }
+            } catch (e) { /* ignore */ }
 
             // Try mapping lookup with the normalized code first (if available),
             // then fall back to the normalized display name. Do not perform any
@@ -498,6 +570,40 @@
 
             body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
         }
+
+        function scrollAndHighlightByKey(key) {
+            try {
+                const rows = Array.from(document.querySelectorAll('#alertList li'));
+                for (const r of rows) {
+                    const code = (r.dataset.code || '').toString();
+                    const name = (r.dataset.name || '').toString();
+                    if (normalizeNameForFile(code || name) === key) {
+                        r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        const orig = r.style.transition;
+                        r.style.transition = 'background-color 0.3s ease';
+                        const oldBg = r.style.backgroundColor;
+                        r.style.backgroundColor = '#fff79a';
+                        setTimeout(() => { r.style.backgroundColor = oldBg || ''; r.style.transition = orig; }, 2500);
+                        return true;
+                    }
+                }
+            } catch (e) { console.error('focus failed', e); }
+            return false;
+        }
+
+        // on load, check for focus param in URL
+        (function handleFocusFromUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const focus = params.get('focus') || location.hash.replace(/^#/, '') || '';
+                if (!focus) return;
+                const [page, key] = focus.split(':');
+                if (page === 'alerts' && key) {
+                    // wait a short while for rows to be rendered
+                    setTimeout(() => { scrollAndHighlightByKey(key); }, 300);
+                }
+            } catch (e) { /* ignore */ }
+        })();
 
         // Helper to check if a preview file exists (image -> audio -> video)
         // Use HTTP HEAD (or GET with Range) to avoid downloading the whole file.
@@ -649,6 +755,37 @@
             buildCategoryFilters();
             buildTypeFilters();
             buildYearFilters();
+                // wire the global favorites checkbox (always present in HTML) to filtering
+                try {
+                    const favEl = document.getElementById('filterFavorites');
+                    if (favEl) favEl.addEventListener('change', () => { refreshFilters(); computeFilterCountsAlerts(); });
+                } catch (e) {}
+
+                // show/hide the favorites filter depending on whether any favorites exist
+                function updateFavoritesFilterVisibility() {
+                    try {
+                        const favWrap = document.getElementById('favoritesFilter');
+                        if (!favWrap) return;
+                        const details = favWrap.closest && favWrap.closest('details.filter-option');
+                        const countSpan = favWrap.querySelector && favWrap.querySelector('.filter-count');
+                        const favCount = window.favorites ? window.favorites.count('alerts') : 0;
+                        const has = favCount > 0;
+                        if (details) details.style.display = has ? '' : 'none';
+                        if (countSpan) countSpan.textContent = has ? ' (' + favCount + ')' : '';
+                        // ensure checkbox unchecked when hiding
+                        const cb = document.getElementById('filterFavorites'); if (!has && cb) cb.checked = false;
+                    } catch (e) { /* ignore */ }
+                }
+                try { updateFavoritesFilterVisibility(); } catch (e) {}
+                window.addEventListener('favorites:changed', (ev) => {
+                    try {
+                        const p = ev && ev.detail && ev.detail.page;
+                        if (!p || p === 'alerts') {
+                            updateFavoritesFilterVisibility();
+                            try { updateFavIndicators(); } catch (e) {}
+                        }
+                    } catch (e) {}
+                });
             // wire search input to refresh filters
             const searchEl = document.getElementById('searchInput'); if (searchEl) searchEl.addEventListener('input', () => { refreshFilters(); });
             // compute initial counts and visibility
@@ -656,6 +793,7 @@
             computeFilterCountsAlerts();
             refreshFilters();
             attachPreviewHandlers();
+            try { updateFavIndicators(); } catch (e) {}
             // apply initial sort according to selector value
             const sel = document.getElementById('sortSelect');
             if (sel) {
@@ -705,6 +843,7 @@
                         const inputs = Array.from(c.querySelectorAll('input[type="checkbox"]'));
                         inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
                     });
+                    try { const fav = document.getElementById('filterFavorites'); if (fav) fav.checked = false; } catch (e) {}
                     refreshFilters();
                 } catch (e) { console.error('failed to clear filters (alerts)', e); }
             });

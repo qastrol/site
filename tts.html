@@ -47,6 +47,19 @@
                 <!-- sort selector moved to main area above the table -->
 
                 <details class="filter-option" open>
+                    <summary>Favorieten</summary>
+                    <div class="filter-group">
+                        <div id="favoritesFilter" style="margin:6px 0">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <input type="checkbox" id="filterFavorites" />
+                                <label for="filterFavorites" style="font-weight:normal;"> Favorieten</label>
+                                <span class="filter-count" style="margin-left:6px;color:#666"></span>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="filter-option" open>
                     <summary>Categorieën</summary>
                     <div class="filter-group">
                         <div id="categoryFilters"></div>
@@ -128,6 +141,7 @@
     <script src="js/script.js"></script>
     <script src="js/table/tts_table.js"></script>
     <script src="js/table/active_filters.js"></script>
+    <script src="js/favorites.js"></script>
     <script src="js/tts.js"></script>
 
 </body>

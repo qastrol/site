@@ -121,11 +121,19 @@
             const searchLower = input ? (input.value || '').toLowerCase() : '';
             const selectedCats = getSelectedCategories();
 
-            const filtered = soundeffectsTable.filter(item => itemMatchesFilters(item, searchLower, selectedCats));
+            let filtered = soundeffectsTable.filter(item => itemMatchesFilters(item, searchLower, selectedCats));
+            // favorites filter (only show favorites when checkbox checked)
+            try {
+                const favCb = document.getElementById('filterFavorites');
+                if (favCb && favCb.checked && window.favorites) {
+                    filtered = filtered.filter(it => window.favorites.isFav('soundeffects', normalizeNameForFile(it.name || '')));
+                }
+            } catch (e) {}
             list.innerHTML = '';
             filtered.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'item-listing__item';
+                if (item && item.name) li.dataset.name = item.name;
 
                 // categories
                 let cats = [];
@@ -144,8 +152,15 @@
 
                 const main = document.createElement('div'); main.className = 'item-listing__main';
                 const left = document.createElement('div'); left.className = 'item-listing__left';
-                const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || '';
-                name.title = 'Klik voor voorbeeld';
+                const name = document.createElement('div'); name.className = 'item-name'; name.title = 'Klik voor voorbeeld';
+                const nameText = document.createElement('span'); nameText.className = 'item-name-text'; nameText.textContent = item.name || ''; name.appendChild(nameText);
+                const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
+                try {
+                    const key = normalizeNameForFile(item.name || '');
+                    const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('soundeffects', key);
+                    starEl.textContent = isFav ? '★' : '';
+                } catch (e) { starEl.textContent = ''; }
+                name.appendChild(starEl);
 
                 // info row: length (seconds) and categories (comma separated)
                 const info = document.createElement('div'); info.className = 'item-langs';
@@ -353,6 +368,22 @@ function setLengthPlaceholders() {
     }
 }
 
+// Update all favorite stars for soundeffects list items
+function updateFavIndicators() {
+    try {
+        const nodes = Array.from(document.querySelectorAll('.fav-indicator'));
+        nodes.forEach(n => {
+            try {
+                const li = n.closest && n.closest('li');
+                const nameSrc = (li && (li.dataset.name || (li.querySelector('.item-name-text') && li.querySelector('.item-name-text').textContent))) || '';
+                const key = normalizeNameForFile(nameSrc || '');
+                const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('soundeffects', key);
+                n.textContent = isFav ? '★' : '';
+            } catch (e) { /* ignore per-node errors */ }
+        });
+    } catch (e) { /* ignore */ }
+}
+
 
 function renderSoundEffectsTable() {
     const list = document.getElementById('soundEffectsList');
@@ -380,7 +411,15 @@ function renderSoundEffectsTable() {
 
         const main = document.createElement('div'); main.className = 'item-listing__main';
         const left = document.createElement('div'); left.className = 'item-listing__left';
-        const name = document.createElement('div'); name.className = 'item-name'; name.textContent = item.name || ''; name.title = 'Klik voor voorbeeld';
+        const name = document.createElement('div'); name.className = 'item-name'; name.title = 'Klik voor voorbeeld';
+        const nameText = document.createElement('span'); nameText.className = 'item-name-text'; nameText.textContent = item.name || ''; name.appendChild(nameText);
+        const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
+        try {
+            const key = normalizeNameForFile(item.name || '');
+            const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('soundeffects', key);
+            starEl.textContent = isFav ? '★' : '';
+        } catch (e) { starEl.textContent = ''; }
+        name.appendChild(starEl);
     const info = document.createElement('div'); info.className = 'item-langs';
     info.innerHTML = '';
     // show length first if we have it
@@ -397,7 +436,7 @@ function renderSoundEffectsTable() {
         }
     }
 
-    if (cats.length) {
+                if (cats.length) {
         cats.forEach((c, idx) => {
             const span = document.createElement('span');
             span.className = 'info-part';
@@ -415,9 +454,16 @@ function renderSoundEffectsTable() {
         const actions = document.createElement('div'); actions.className = 'item-actions';
         const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function() { copyToClipboard(this); });
         actions.appendChild(btn); meta.appendChild(actions);
-        main.appendChild(left); main.appendChild(meta); li.appendChild(main);
-        list.appendChild(li);
+                main.appendChild(left); main.appendChild(meta); li.appendChild(main);
+                // expose name for focus/favorites/share functionality
+                    if (item && item.name) li.dataset.name = item.name;
+                list.appendChild(li);
     });
+                // update fav indicators after building the full static list
+                try { updateFavIndicators(); } catch (e) {}
+            // update favorite-star visuals after rebuilding the list
+            try { updateFavIndicators(); } catch (e) {}
+            
 
     localStorage.setItem('soundEffectCount', soundeffectsTable.length);
 }
@@ -425,6 +471,37 @@ function renderSoundEffectsTable() {
 document.addEventListener("DOMContentLoaded", function() {
     renderSoundEffectsTable();
     buildCategoryFilters();
+
+    // wire the global favorites checkbox (always present in HTML) to filtering
+    try {
+        const favEl = document.getElementById('filterFavorites');
+        if (favEl) favEl.addEventListener('change', () => { refreshTable(); computeFilterCountsSound(); });
+    } catch (e) {}
+
+    // show/hide the favorites filter depending on whether any favorites exist
+    function updateFavoritesFilterVisibility() {
+        try {
+            const favWrap = document.getElementById('favoritesFilter');
+            if (!favWrap) return;
+            const details = favWrap.closest && favWrap.closest('details.filter-option');
+            const countSpan = favWrap.querySelector && favWrap.querySelector('.filter-count');
+            const favCount = window.favorites ? window.favorites.count('soundeffects') : 0;
+            const has = favCount > 0;
+            if (details) details.style.display = has ? '' : 'none';
+            if (countSpan) countSpan.textContent = has ? ' (' + favCount + ')' : '';
+            const cb = document.getElementById('filterFavorites'); if (!has && cb) cb.checked = false;
+        } catch (e) { /* ignore */ }
+    }
+    try { updateFavoritesFilterVisibility(); } catch (e) {}
+    window.addEventListener('favorites:changed', (ev) => {
+        try {
+            const p = ev && ev.detail && ev.detail.page;
+            if (!p || p === 'soundeffects') {
+                updateFavoritesFilterVisibility();
+                try { updateFavIndicators(); } catch (e) {}
+            }
+        } catch (e) {}
+    });
         // initialize per-filter counts
         computeFilterCountsSound();
     // set min/max placeholders based on data
@@ -438,6 +515,32 @@ document.addEventListener("DOMContentLoaded", function() {
     sortTable(0);
     updateCounter();
     attachPreviewHandlers();
+    // handle focus param from shared links
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const focus = params.get('focus') || location.hash.replace(/^#/, '') || '';
+        if (focus) {
+            const [page, key] = focus.split(':');
+            if (page === 'soundeffects' && key) {
+                setTimeout(() => {
+                    try {
+                        const rows = Array.from(document.querySelectorAll('#soundEffectsList li'));
+                        for (const r of rows) {
+                            const name = (r.dataset.name || '').toString();
+                            if (normalizeNameForFile(name) === key) {
+                                r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                r.style.transition = 'background-color 0.3s ease';
+                                const old = r.style.backgroundColor;
+                                r.style.backgroundColor = '#fff79a';
+                                setTimeout(() => { r.style.backgroundColor = old || ''; }, 2500);
+                                break;
+                            }
+                        }
+                    } catch (e) {}
+                }, 300);
+            }
+        }
+    } catch (e) {}
     // listen for chip removal events
     window.addEventListener('activeFilter:remove', (ev) => {
         try {
@@ -463,6 +566,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const minL = document.getElementById('minLength'); if (minL) minL.value = '';
             const maxL = document.getElementById('maxLength'); if (maxL) maxL.value = '';
             const container = document.getElementById('categoryFilters');
+            const fav = document.getElementById('filterFavorites'); if (fav) { fav.checked = false; }
             if (container) {
                 const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
                 inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
@@ -514,12 +618,20 @@ function applySort() {
         overlay.innerHTML = `
             <div class="preview-modal" role="dialog" aria-modal="true">
                 <div class="preview-header">
-                    <strong id="preview-title"></strong>
+                    <div class="preview-header-left">
+                        <strong id="preview-title"></strong>
+                        <div class="header-actions">
+                            <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆ <span class="btn-label">Favoriet</span></button>
+                            <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label">Deel</span></button>
+                        </div>
+                    </div>
                     <button class="preview-close" aria-label="Sluiten">✕</button>
                 </div>
                 <div class="preview-body" id="preview-body"></div>
                 <div class="preview-controls">
-                    <button class="preview-copy">Kopieer naam</button>
+                    <div class="preview-controls-top">
+                        <button class="preview-copy">Kopieer</button>
+                    </div>
                 </div>
             </div>`;
         document.body.appendChild(overlay);
@@ -554,6 +666,15 @@ function applySort() {
                 a.controls = true; a.preload = 'metadata';
                 a.src = audioPath;
                 body.appendChild(a);
+                // favorite & share buttons
+                try {
+                    const favBtn = overlay.querySelector('.preview-fav');
+                    const shareBtn = overlay.querySelector('.preview-share');
+                    const page = 'soundeffects';
+                    const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
+                    if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
+                    if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+                } catch (e) {}
                 return;
             }
         } catch (e) {
@@ -573,6 +694,17 @@ function applySort() {
         }
 
         tryAudioExt();
+
+        // attach favorite/share handlers even in probing fallback
+        try {
+            const key = normalizeNameForFile(displayName);
+            const favBtn = overlay.querySelector('.preview-fav');
+            const shareBtn = overlay.querySelector('.preview-share');
+            const page = 'soundeffects';
+            const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
+            if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
+            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+        } catch (e) {}
     }
 
     // Helper to check if a preview file exists (only audio .mp3/.ogg)

@@ -283,5 +283,9 @@
 	{ name: "DJ Kibbeling", description: "Jalalalala, DJ Kibbeling", code: "<djkibbeling>", category: ["Muziek", "KerstKnallers"], type: "Video-alert", year: 2025},
 	{ name: "SpongeBob intro kapitein", description: "Kunnen we kinderen? Aye aye kapitein!", code: "<kunnen>", category: ["TV", "Intro"], type: "Video-alert", year: 2025},
 	{ name: "Onze Poes en Buurmans Kater - Evening Stars", description: "Kattenliedje. Ze zijn toch niet te houden laat die beesten maar miauwen! In de tuin, bij ons in de tuin!", code: "<indetuin>", category: ["Muziek", "Dieren"], type: "Video-alert", year: 2025},
-	{ name: "En ik zie weer alles dubbo dubbo dubbo", description: "'Jantje Vilt en De Mixers - En ik zie weer alles dubbel' speelt af, terwijl je ook alles in de stream dubbo ziet", code: "<dubbo>" }
+	{ name: "En ik zie weer alles dubbo dubbo dubbo", description: "'Jantje Vilt en De Mixers - En ik zie weer alles dubbel' speelt af, terwijl je ook alles in de stream dubbo ziet", code: "<dubbo>" },
+	{ name: "I thought this was the bathroom", description: "Oh god", code: "<bathroom>", category: ["Meme", "TV"], type: "Video-alert", year: 2025},
+	{ name: "KerstKnallers Gamefreak intro", description: "In de stijl van Pokémon FireRed/LeafGreen", code: "<gamefreak>", category: ["KerstKnallers", "Gaming", "Intro"], type: "Video-alert", year: 2025},
+	{ name: "Siren Head", description: "Siren Head over je beeldscherm", code: "<sirenhead>", category: ["Meme"], type: "Video-alert", year: 2025},
+	{ name: "Toetjes, Koekjes, Pannenkoekenmeel", description: "Van de stream van IntensBroodje van KerstKnallers 2024", code: "<toetjes>", category: ["KerstKnallers", "Muziek"], type: "Muziek-alert", year: 2025}
 ];

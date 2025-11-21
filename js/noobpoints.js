@@ -56,7 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const main = document.createElement('div'); main.className = 'item-listing__main';
                 const left = document.createElement('div'); left.className = 'item-listing__left';
-                const name = document.createElement('div'); name.className = 'item-name'; name.textContent = nameText; name.title = 'Klik voor voorbeeld'; name.style.cursor = 'pointer';
+                const name = document.createElement('div'); name.className = 'item-name'; name.title = 'Klik voor voorbeeld'; name.style.cursor = 'pointer';
+                const nameTextEl = document.createElement('span'); nameTextEl.className = 'item-name-text'; nameTextEl.textContent = nameText; name.appendChild(nameTextEl);
+                const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
+                try {
+                    const key = normalizeNameForFile(code || nameText || '');
+                    const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('noobpoints', key);
+                    starEl.textContent = isFav ? '★' : '';
+                } catch (e) { starEl.textContent = ''; }
+                name.appendChild(starEl);
 
                 // info row: cost and categories
                 // Inline code element for mobile: shown between name and info on small screens
@@ -115,7 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (tbody) {
                 const tr = document.createElement('tr');
                 tr.dataset.code = code; tr.dataset.cost = costText; tr.dataset.name = nameText;
-                const tdName = document.createElement('td'); tdName.textContent = nameText; tdName.title = 'Klik voor voorbeeld'; tdName.style.cursor = 'pointer';
+                const tdName = document.createElement('td'); tdName.title = 'Klik voor voorbeeld'; tdName.style.cursor = 'pointer';
+                const tdNameSpan = document.createElement('span'); tdNameSpan.className = 'item-name-text'; tdNameSpan.textContent = nameText;
+                const tdStar = document.createElement('span'); tdStar.className = 'fav-indicator';
+                try { const k = normalizeNameForFile(code || nameText || ''); tdStar.textContent = (window.favorites && window.favorites.isFav && window.favorites.isFav('noobpoints', k)) ? '★' : ''; } catch (e) { tdStar.textContent = ''; }
+                tdName.appendChild(tdNameSpan); tdName.appendChild(tdStar);
                 const tdCode = document.createElement('td'); const codeTag = document.createElement('code'); codeTag.textContent = code; tdCode.appendChild(codeTag);
                 const tdDesc = document.createElement('td'); tdDesc.innerHTML = descHtml;
                 const tdCost = document.createElement('td'); tdCost.textContent = costText;
@@ -126,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         updateCounter();
         attachPreviewHandlers();
+        try { updateFavIndicators(); } catch (e) {}
         // render active filters UI
         try {
             const active = [];
@@ -165,18 +178,43 @@ document.addEventListener('DOMContentLoaded', () => {
         return (text || '').toString().replace(/[^a-z0-9]/gi, '').toLowerCase();
     }
 
+    // Update favorite star indicators for noobpoints list/table
+    function updateFavIndicators() {
+        try {
+            const nodes = Array.from(document.querySelectorAll('.fav-indicator'));
+            nodes.forEach(n => {
+                try {
+                    const li = n.closest && n.closest('li');
+                    const nameSrc = (li && (li.dataset.name || (li.querySelector('.item-name-text') && li.querySelector('.item-name-text').textContent))) || '';
+                    const code = (li && li.dataset.code) || '';
+                    const key = normalizeNameForFile(code || nameSrc || '');
+                    const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('noobpoints', key);
+                    n.textContent = isFav ? '★' : '';
+                } catch (e) { /* ignore per-node errors */ }
+            });
+        } catch (e) { /* ignore */ }
+    }
+
     function createPreviewOverlay() {
         const overlay = document.createElement('div');
         overlay.className = 'preview-overlay';
         overlay.innerHTML = `
             <div class="preview-modal" role="dialog" aria-modal="true">
                 <div class="preview-header">
-                    <strong id="preview-title"></strong>
+                    <div class="preview-header-left">
+                        <strong id="preview-title"></strong>
+                        <div class="header-actions">
+                            <button class="preview-fav btn-muted" title="Favoriet" aria-label="Favoriet">☆ <span class="btn-label">Favoriet</span></button>
+                            <button class="preview-share btn-muted" title="Deel" aria-label="Deel">🔗 <span class="btn-label">Deel</span></button>
+                        </div>
+                    </div>
                     <button class="preview-close" aria-label="Sluiten">✕</button>
                 </div>
                 <div class="preview-body" id="preview-body"></div>
                 <div class="preview-controls">
-                    <button class="preview-copy">Kopieer naam</button>
+                    <div class="preview-controls-top">
+                        <button class="preview-copy">Kopieer</button>
+                    </div>
                 </div>
             </div>`;
         document.body.appendChild(overlay);
@@ -198,6 +236,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => copyBtn.textContent = 'Kopieer naam', 1200);
             });
         });
+
+        // favorite & share
+        try {
+            const key = normalizeNameForFile(code || displayName || '');
+            const favBtn = overlay.querySelector('.preview-fav');
+            const shareBtn = overlay.querySelector('.preview-share');
+            const page = 'noobpoints';
+            const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
+            if (favBtn) { favBtn.addEventListener('click', () => { try { window.favorites.toggle(page, key); updateFavUi(); } catch (e) {} }); updateFavUi(); }
+            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { shareBtn.textContent = '✓'; setTimeout(() => { shareBtn.textContent = '🔗'; }, 1200); }); } catch (e) {} }); }
+        } catch (e) {}
 
         // Prefer generated mapping (alertsLinks) which lists files present in /alerts/
         // This avoids creating elements which could trigger downloads at page load.
@@ -981,6 +1030,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // expose sortTable so inline header buttons (onclick="sortTable(...)") work
     window.sortTable = sortTable;
 
+    // wire the global favorites checkbox (always present in HTML) to filtering
+    try {
+        const favEl = document.getElementById('filterFavorites');
+        if (favEl) favEl.addEventListener('change', () => { refreshTable(); computeFilterCountsNoob(); });
+    } catch (e) {}
+
+    // show/hide the favorites filter depending on whether any favorites exist
+    function updateFavoritesFilterVisibility() {
+        try {
+            const favWrap = document.getElementById('favoritesFilter');
+            if (!favWrap) return;
+            const details = favWrap.closest && favWrap.closest('details.filter-option');
+            const countSpan = favWrap.querySelector && favWrap.querySelector('.filter-count');
+            const favCount = window.favorites ? window.favorites.count('noobpoints') : 0;
+            const has = favCount > 0;
+            if (details) details.style.display = has ? '' : 'none';
+            if (countSpan) countSpan.textContent = has ? ' (' + favCount + ')' : '';
+            const cb = document.getElementById('filterFavorites'); if (!has && cb) cb.checked = false;
+        } catch (e) { /* ignore */ }
+    }
+    try { updateFavoritesFilterVisibility(); } catch (e) {}
+    window.addEventListener('favorites:changed', (ev) => {
+        try {
+            const p = ev && ev.detail && ev.detail.page;
+            if (!p || p === 'noobpoints') {
+                updateFavoritesFilterVisibility();
+                try { updateFavIndicators(); } catch (e) {}
+            }
+        } catch (e) {}
+    });
+
     // apply initial sort according to the selector value
     // listen for chip removal events
     window.addEventListener('activeFilter:remove', (ev) => {
@@ -1007,6 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const inputs = Array.from(c.querySelectorAll('input[type="checkbox"]'));
                 inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
             });
+            try { const fav = document.getElementById('filterFavorites'); if (fav) fav.checked = false; } catch(e) {}
             refreshTable();
             computeFilterCountsNoob();
         } catch (e) { console.error('failed to clear filters (noobpoints)', e); }
