@@ -219,14 +219,29 @@ const soundeffectsLinks = {
   "ns": [
     "soundeffects/ns.mp3"
   ],
+  "oa": [
+    "soundeffects/oa.mp3"
+  ],
+  "odown": [
+    "soundeffects/odown.mp3"
+  ],
   "oef": [
     "soundeffects/oef.mp3"
   ],
   "ohmygod": [
     "soundeffects/ohmygod.mp3"
   ],
+  "oleft": [
+    "soundeffects/oleft.mp3"
+  ],
   "opjemuil": [
     "soundeffects/opjemuil.mp3"
+  ],
+  "oright": [
+    "soundeffects/oright.mp3"
+  ],
+  "oup": [
+    "soundeffects/oup.mp3"
   ],
   "pan": [
     "soundeffects/pan.mp3"

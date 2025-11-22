@@ -62,7 +62,7 @@ const soundeffectsTable = [
 	{name: "(wow)", description: "Het anime \"Wow\" geluid, veel gebruikt als meme", category: ["Meme", "Internet"], length: 4232},
 	{name: "(zombie)", description: "Minecraft zombie", category: ["Gaming"], length: 2194},
 	{name: "(ns)", description: "Het omroepgeluid op het NS-treinstation. Beste reizigers!", category: ["Dagelijkse leven"], length: 3265},
-	{name: "(boulevard)", description: "De tune van RTL Boulevard!", category: ["TV"], length: 8725},
+	{name: "(boulevard)", description: "De tune van RTL Boulevard!", category: ["TV"], length: 3120},
 	{name: "(hema)", description: "Het fluitdeuntje van de HEMA!", category: ["TV"], length: 5486},
 	{name: "(missed)", description: "Oh I missed! Wario heeft iets gemist in Mario Party 1", category: ["Meme", "Gaming"], length: 1704},
 	{name: "(ohmygod)", description: "Wario heeft het helemaal gehad in Mario Party 1 en gooit er een vloekterm uit", category: ["Meme", "Gaming"], length: 1968},
@@ -119,4 +119,9 @@ const soundeffectsTable = [
 	{name: "(kraak)", description: "Het geluid van een krakende deur", category: ["Dagelijkse leven"], length: 2456},
 	{name: "(true)", description: "Als je iets correct hebt", category: ["Meme"], length: 1149},
 	{name: "(evillaugh)", description: "Kwaadaardig lach geluidseffect", category: ["Meme"], length: 1646},
+	{name: "(oa)", description: "De 'A' noot van de Ocarina of Time", category: ["Gaming"], length: 742},
+	{name: "(oup)", description: "De 'C-Up' noot van de Ocarina of Time", category: ["Gaming"], length: 982},
+	{name: "(odown)", description: "De 'C-Down' noot van de Ocarina of Time", category: ["Gaming"], length: 877},
+	{name: "(oleft)", description: "De 'C-Left' noot van de Ocarina of Time", category: ["Gaming"], length: 989},
+	{name: "(oright)", description: "De 'C-Right' noot van de Ocarina of Time", category: ["Gaming"], length: 820}
 ];
