@@ -443,8 +443,16 @@
 
                 const meta = document.createElement('div'); meta.className = 'item-meta';
                 const code = document.createElement('div'); code.className = 'item-code'; code.textContent = item.code || '';
-                // keep code element for copy helper; remove large desktop copy button (mobile small copy remains)
+                // Add desktop copy button (will be hidden on mobile via CSS). Mobile copy remains in the mobile row.
+                const actions = document.createElement('div'); actions.className = 'item-actions';
+                const copyBtn = document.createElement('button');
+                copyBtn.type = 'button';
+                copyBtn.className = 'copy-code';
+                copyBtn.textContent = 'Kopieer';
+                copyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+                actions.appendChild(copyBtn);
                 meta.appendChild(code);
+                meta.appendChild(actions);
 
                 main.appendChild(left); main.appendChild(meta); li.appendChild(main);
 
