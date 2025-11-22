@@ -38,7 +38,7 @@ const ttsTable = [
     { name: "mielmonteur:", description: "Miel Monteur, bekend van de videogames", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
     { name: "franklammers:", description: "Frank Lammers van de Jumbo en Undercover", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "freriks:", description: "Philip Freriks van het NOS Journaal", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
-    { name: "lubach:", description: "Arjen Lubach van Zondag met Lubach, de Avondshow en nu LUBACH op RTL4", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
+    { name: "lubach:", description: "Arjen Lubach, bekend van Zondag met Lubach, de Avondshow en nu LUBACH op RTL4", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
     { name: "robtrip:", description: "Rob Trip van het NOS Journaal", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "hazel:", description: "De vrouwelijke Engelse stem van Microsoft", category: "Microsoft", type: "Vrouwelijk", isAI: false, languages: ["en"] },
     { name: "jansmit:", description: "Jan Smit, de volkszanger uit Volendam", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
