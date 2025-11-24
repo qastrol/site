@@ -12,7 +12,7 @@ const ttsTable = [
     { name: "SBS6 Zenderstem", code: "sbs6:", description: "De zenderstem van SBS6.", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "Geert Wilders", code: "wilders:", description: "Geert Wilders, partijleider van de PVV", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "Enzo Knol", code: "enzoknol:", description: "Enzo Knolpower!", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
-    { name: "ASMR-stem", code: "asmr2:", description: "Een Engelse ASMR stem die niet in het Nederlands werkt!", category: "TTSMonster", type: "Vrouwelijk", isAI: true, languages: ["en"] },
+    { name: "ASMR-stem", code: "asmr:", description: "Een Engelse ASMR stem die niet in het Nederlands werkt!", category: "TTSMonster", type: "Vrouwelijk", isAI: true, languages: ["en"] },
     { name: "Baldi", code: "baldi:", description: "Baldi van Baldi's Basics!", category: "TTSMonster", type: "Mannelijk", isAI: true, languages: ["en"] },
     { name: "Joe Biden", code: "biden:", description: "Joe Biden! Joe Biden!", category: "TTSMonster", type: "Mannelijk", isAI: true, languages: ["en"] },
     { name: "Eminem", code: "eminem:", description: "Het is Slim Shady die je bericht in het Engels rapt", category: "TTSMonster", type: "Mannelijk", isAI: true, languages: ["en"] },
