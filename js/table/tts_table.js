@@ -29,7 +29,7 @@ const ttsTable = [
     { name: "Watchmojo", code: "watchmojo:", description: "de aankondiger van Watch Mojo", category: "TTSMonster", type: "Mannelijk", isAI: true, languages: ["en"] },
     { name: "The Weeknd", code: "weeknd:", description: "The Weekend zingt je bericht", category: "TTSMonster", type: "Mannelijk", isAI: true, languages: ["en"] },
     { name: "Eva Jinek", code: "jinek:", description: "Eva Jinek maar dan als AI", category: "ElevenLabs", type: "Vrouwelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
-    { name: "Jeroen Kijk in de Vegte", code: "kidv:", description: "Jeroen Kijk in de Vegte, bekend als de voice-over van RTL Boulevard en B&B Vol Liefde", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
+    { name: "Jeroen Kijk in de Vegte", code: "kidv:", description: "Jeroen Kijk in de Vegte, bekend als radio-dj bij NPO Radio 2 en als de voice-over van RTL Boulevard en B&B Vol Liefde", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "Dick Schoof", code: "dickschoof:", description: "De demissionaire minister-president van Nederland", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
     { name: "Tell Sell stem", code: "tellsell:", description: "De Tell Sell stem", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "Martien Meiland", code: "meiland:", description: "Martien Meiland, bekend van Chateau Meiland", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
@@ -46,7 +46,7 @@ const ttsTable = [
     { name: "Bart Simpson", code: "bartsimpson:", description: "Bart Simpson van The Simpsons", category: "TTSMonster", type: "Mannelijk", isAI: true, languages: ["en"] },
     { name: "Bassie", code: "bassie:", description: "Bassie van Bassie en Adriaan", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
     { name: "Halo aankondiger", code: "halo:", description: "Killtacular! De Halo-aankondiger (werkt beter in het Engels, maar werkt ook soort van in het Nederlands)", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
-    { name: "Piepstem", code: "piepstem:", description: "Harry Piekema was het! De zelfde stem als 'henk:', maar dan een hogere stemtoon. Bekend van Among Us", category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] },
+    { name: "Piepstem", code: "piepstem:", description: "Harry Piekema was het! De zelfde stem als 'joep:', maar dan een hogere stemtoon. Bekend van Among Us", category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] },
     { name: "Gerard Joling", code: "joling:", description: "Gerard Joling als TTS-stem!", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
     { name: "Frans Bauer", code: "bauer:", description: "Frans Bauer als TTS-stem!", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
     { name: "Qastrol", code: "qastrol:", description: "Qastrol als AI-stem!", category: "ElevenLabs", type: "Mannelijk", isAI: true, supportsAudioTags: true, languages: ["*"] },
@@ -87,5 +87,6 @@ const ttsTable = [
     { name: "Google Fleur", code: "fleur:", description: "Google TTS (Nederlands)", category: "Google", type: "Vrouwelijk", isAI: false, languages: ["nl"] },
     { name: "Google Teun", code: "teun:", description: "Google TTS (Nederlands)", category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] },
     { name: "Dilan Yeşilgöz", code: "dilan:", description: "Dilan Yeşilgöz, partijleider van de VVD", category: "ElevenLabs", type: "Vrouwelijk", isAI: true, languages: ["*"] },
-    { name: "Rob Jetten", code: "jetten:", description: "Rob Jetten, partijleider van D66", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] }
+    { name: "Rob Jetten", code: "jetten:", description: "Rob Jetten, partijleider van D66", category: "ElevenLabs", type: "Mannelijk", isAI: true, languages: ["*"] },
+    { name: "Willekeurige stem", code: "random:", description: "Kies een willekeurige Google TTS stem (standaardkeuze als er geen tts stem in het donatiebericht staat)", category: "Google", isAI: false, languages: ["nl"] }
 ];
