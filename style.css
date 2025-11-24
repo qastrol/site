@@ -330,7 +330,21 @@ button:hover {
 }
 
 @media (max-width: 900px) {
-    .mobile-filter-open { display: block; width: 100%; margin-top: 8px; }
+    .mobile-filter-open { display: inline-block; width: auto; margin-top: 0; }
+}
+
+/* Controls-row: align counter next to sort select on desktop, stack on mobile */
+.controls-row { display: flex; align-items: center; gap: 8px; }
+.controls-row .row-count { font-size: 0.95rem; color: var(--muted-text-color); margin-left: 6px; }
+.controls-row .row-count span { font-weight: 700; color: var(--text-color); }
+
+@media (max-width: 900px) {
+    /* Keep select + Filters button on the same line, allow the counter to wrap
+       to a full-width row below. */
+    .controls-row { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .controls-row > select { flex: 0 0 auto; }
+    .controls-row .mobile-filter-open { order: 1; flex: 0 0 auto; }
+    .controls-row .row-count { order: 2; flex-basis: 100%; width: 100%; margin-left: 0; text-align: left; margin-top: 6px; }
 }
 
 /* On small screens hide the sidebar's internal 'Filters' toggle/title to avoid
@@ -487,9 +501,22 @@ main.tekst {
 .quick-card.sfx { background: var(--card-sfx); }
 .quick-card.donate { background: var(--card-donate); }
 
-@media (max-width: 420px) {
-    .quick-card { width: 78px; height: 78px; }
-    .quick-card .emoji { font-size: 28px; }
+/* Mobile: arrange quick-cards in a 2x2 grid and keep card size equal to desktop
+   Do not shrink cards on small viewports; center the grid within the content. */
+@media (max-width: 599px) {
+    .quick-cards {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        justify-content: center;
+        gap: 12px;
+        align-items: center;
+    }
+    .quick-card {
+        width: 96px; /* keep same as desktop */
+        height: 96px;
+    }
+    /* slightly scale emoji if absolutely necessary on extremely small screens */
+    .quick-card .emoji { font-size: 32px; }
 }
 
 .tekst table {
