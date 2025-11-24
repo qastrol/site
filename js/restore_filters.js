@@ -49,6 +49,11 @@
 
     function humanLabelFor(inputId, fallback) {
         if (!inputId) return fallback||'';
+        // Known human-readable overrides for common input IDs
+        const LABEL_OVERRIDES = {
+            'searchInput': 'Zoekopdracht'
+        };
+        if (LABEL_OVERRIDES[inputId]) return LABEL_OVERRIDES[inputId];
         const el = document.getElementById(inputId);
         if (el) {
             // try label with for
