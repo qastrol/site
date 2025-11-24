@@ -1,11 +1,15 @@
-        // Functie om effectnaam of stemnaam te kopiëren naar klembord
+        // Functie om effect 'code' te kopiëren naar klembord (migratie: code komt uit data)
         function copyToClipboard(button) {
             const li = button.closest('li');
-            const nameEl = li ? li.querySelector('.item-name') : null;
-            const soundEffectName = nameEl ? nameEl.innerText.trim() : '';
-            if (!soundEffectName) return;
-            navigator.clipboard.writeText(soundEffectName).then(() => {
-                alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
+            if (!li) return;
+            // prefer explicit data-code, fallback to inline element
+            const codeFromData = li.dataset.code || '';
+            const inlineEl = li.querySelector('.item-code-inline');
+            const codeInline = inlineEl ? inlineEl.innerText.trim() : '';
+            const code = codeFromData || codeInline || (li.dataset.name || '').replace(/[^a-z0-9]/gi, '');
+            if (!code) return;
+            navigator.clipboard.writeText(code).then(() => {
+                alert(`Code '${code}' gekopieerd naar het klembord!`);
             }).catch(err => {
                 console.error('Kopiëren mislukt', err);
             });
@@ -126,14 +130,20 @@
             try {
                 const favCb = document.getElementById('filterFavorites');
                 if (favCb && favCb.checked && window.favorites) {
-                    filtered = filtered.filter(it => window.favorites.isFav('soundeffects', normalizeNameForFile(it.name || '')));
+                    filtered = filtered.filter(it => {
+                        // prefer code for favorites key (support migrated data)
+                        const key = normalizeNameForFile((it && it.code) ? it.code : (it && it.name) ? it.name : '');
+                        return window.favorites.isFav('soundeffects', key);
+                    });
                 }
             } catch (e) {}
             list.innerHTML = '';
             filtered.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'item-listing__item';
+                // assume source data contains explicit `code` and `name`
                 if (item && item.name) li.dataset.name = item.name;
+                if (item && item.code) li.dataset.code = item.code;
 
                 // categories
                 let cats = [];
@@ -154,12 +164,12 @@
                 const left = document.createElement('div'); left.className = 'item-listing__left';
                 const name = document.createElement('div'); name.className = 'item-name'; name.title = 'Klik voor voorbeeld';
                 const nameText = document.createElement('span'); nameText.className = 'item-name-text'; nameText.textContent = item.name || ''; name.appendChild(nameText);
-                const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
-                try {
-                    const key = normalizeNameForFile(item.name || '');
-                    const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('soundeffects', key);
-                    starEl.textContent = isFav ? '★' : '';
-                } catch (e) { starEl.textContent = ''; }
+        			const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
+        			try {
+        			    const key = normalizeNameForFile(item.code || item.name || '');
+        			    const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('soundeffects', key);
+        			    starEl.textContent = isFav ? '★' : '';
+        			} catch (e) { starEl.textContent = ''; }
                 name.appendChild(starEl);
 
                 // info row: length (seconds) and categories (comma separated)
@@ -194,14 +204,31 @@
                 }
 
                 const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
+                // add inline code (visible on mobile)
+                const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = item.code || '';
                 left.appendChild(name);
+                // Mobile code row: label + inline code + small mobile copy button
+                const mobileCodeRow = document.createElement('div'); mobileCodeRow.className = 'mobile-code-row';
+                const mobileCodeLeft = document.createElement('div'); mobileCodeLeft.className = 'mobile-code-left';
+                const mobileLabel = document.createElement('span'); mobileLabel.className = 'mobile-code-label'; mobileLabel.textContent = 'Geluidsnaam:';
+                mobileCodeLeft.appendChild(mobileLabel);
+                mobileCodeLeft.appendChild(codeInline);
+                const mobileCopyBtn = document.createElement('button'); mobileCopyBtn.type = 'button'; mobileCopyBtn.className = 'mobile-copy-code'; mobileCopyBtn.textContent = 'Kopieer';
+                mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+                mobileCodeRow.appendChild(mobileCodeLeft);
+                mobileCodeRow.appendChild(mobileCopyBtn);
+                // insert mobile row (hidden on desktop via CSS)
+                left.appendChild(mobileCodeRow);
                 if (info.textContent) left.appendChild(info);
                 left.appendChild(desc);
 
                 const meta = document.createElement('div'); meta.className = 'item-meta';
+                // code block for desktop view
+                const codeEl = document.createElement('div'); codeEl.className = 'item-code'; codeEl.textContent = item.code || '';
                 const actions = document.createElement('div'); actions.className = 'item-actions';
-                const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer geluidsnaam'; btn.addEventListener('click', function() { copyToClipboard(this); });
+                const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer geluidsnaam'; btn.addEventListener('click', function() { copyToClipboard(this); });
                 actions.appendChild(btn);
+                meta.appendChild(codeEl);
                 meta.appendChild(actions);
 
                 main.appendChild(left); main.appendChild(meta); li.appendChild(main);
@@ -375,7 +402,7 @@ function updateFavIndicators() {
         nodes.forEach(n => {
             try {
                 const li = n.closest && n.closest('li');
-                const nameSrc = (li && (li.dataset.name || (li.querySelector('.item-name-text') && li.querySelector('.item-name-text').textContent))) || '';
+                const nameSrc = (li && (li.dataset.code || li.dataset.name || (li.querySelector('.item-name-text') && li.querySelector('.item-name-text').textContent))) || '';
                 const key = normalizeNameForFile(nameSrc || '');
                 const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('soundeffects', key);
                 n.textContent = isFav ? '★' : '';
@@ -415,7 +442,7 @@ function renderSoundEffectsTable() {
         const nameText = document.createElement('span'); nameText.className = 'item-name-text'; nameText.textContent = item.name || ''; name.appendChild(nameText);
         const starEl = document.createElement('span'); starEl.className = 'fav-indicator';
         try {
-            const key = normalizeNameForFile(item.name || '');
+            const key = normalizeNameForFile(item.code || item.name || '');
             const isFav = window.favorites && window.favorites.isFav && window.favorites.isFav('soundeffects', key);
             starEl.textContent = isFav ? '★' : '';
         } catch (e) { starEl.textContent = ''; }
@@ -449,15 +476,33 @@ function renderSoundEffectsTable() {
         });
     }
         const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
-        left.appendChild(name); if (info.textContent) left.appendChild(info); left.appendChild(desc);
-        const meta = document.createElement('div'); meta.className = 'item-meta';
-        const actions = document.createElement('div'); actions.className = 'item-actions';
-        const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function() { copyToClipboard(this); });
-        actions.appendChild(btn); meta.appendChild(actions);
-                main.appendChild(left); main.appendChild(meta); li.appendChild(main);
-                // expose name for focus/favorites/share functionality
-                    if (item && item.name) li.dataset.name = item.name;
-                list.appendChild(li);
+        		left.appendChild(name);
+                const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = item.code || '';
+                // Mobile code row for the static renderer
+                const mobileCodeRow2 = document.createElement('div'); mobileCodeRow2.className = 'mobile-code-row';
+                const mobileCodeLeft2 = document.createElement('div'); mobileCodeLeft2.className = 'mobile-code-left';
+                const mobileLabel2 = document.createElement('span'); mobileLabel2.className = 'mobile-code-label'; mobileLabel2.textContent = 'Geluidsnaam:';
+                mobileCodeLeft2.appendChild(mobileLabel2);
+                mobileCodeLeft2.appendChild(codeInline);
+                const mobileCopyBtn2 = document.createElement('button'); mobileCopyBtn2.type = 'button'; mobileCopyBtn2.className = 'mobile-copy-code'; mobileCopyBtn2.textContent = 'Kopieer';
+                mobileCopyBtn2.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+                mobileCodeRow2.appendChild(mobileCodeLeft2);
+                mobileCodeRow2.appendChild(mobileCopyBtn2);
+                left.appendChild(mobileCodeRow2);
+        		if (info.textContent) left.appendChild(info);
+        		left.appendChild(desc);
+        		const meta = document.createElement('div'); meta.className = 'item-meta';
+        		const codeEl = document.createElement('div'); codeEl.className = 'item-code'; codeEl.textContent = item.code || '';
+        		const actions = document.createElement('div'); actions.className = 'item-actions';
+        		const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function() { copyToClipboard(this); });
+        		actions.appendChild(btn);
+        		meta.appendChild(codeEl);
+        		meta.appendChild(actions);
+        		main.appendChild(left); main.appendChild(meta); li.appendChild(main);
+        		// expose name + code for focus/favorites/share functionality
+        		if (item && item.name) li.dataset.name = item.name;
+        		if (item && item.code) li.dataset.code = item.code;
+        		list.appendChild(li);
     });
                 // update fav indicators after building the full static list
                 try { updateFavIndicators(); } catch (e) {}
@@ -752,7 +797,9 @@ function applySort() {
         rows.forEach(r => {
             const first = r.querySelector('.item-name');
             if (!first) return;
-            const display = first.innerText.trim();
+            const li = first.closest && first.closest('li');
+            // prefer explicit code for preview keys; fallback to visible text
+            const display = (li && li.dataset.code) ? (li.dataset.code) : first.innerText.trim();
             first.title = 'Klik voor voorbeeld';
             // Use generated mapping if available to avoid probing/loading media files
             try {

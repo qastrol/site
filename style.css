@@ -1022,8 +1022,8 @@ details.filter-option:not([open]) > summary::after {
 @media (max-width: 899px) {
     .soundeffects-page .item-listing__item {
         position: relative;
-        /* make the card full-width but with very small internal padding so it looks compact */
-        padding: 6px 56px 6px 6px; /* top/right/bottom/left */
+        /* make the card full-width and use full available width for content */
+        padding: 8px 44px 8px 8px; /* top/right/bottom/left - right padding leaves space for absolute actions */
         min-height: 48px;
         box-sizing: border-box;
     }
@@ -1035,7 +1035,7 @@ details.filter-option:not([open]) > summary::after {
         right: 8px;
         z-index: 2;
     }
-    .soundeffects-page .item-actions .copy-btn {
+    .soundeffects-page .item-actions .copy-code {
         padding: 6px 8px;
         min-width: 44px;
         font-size: 0.9rem;
@@ -1044,15 +1044,50 @@ details.filter-option:not([open]) > summary::after {
     /* Make left column compact: limit its width to ~50% so content appears smaller visually
        while the card itself remains full-bleed. Keep text left-aligned and allow wrapping. */
     .soundeffects-page .item-listing__left {
-        max-width: 50%;
-        flex: 0 0 50%;
+        /* allow the left column to take the full available width so text and code are visible */
+        max-width: none;
+        flex: 1 1 auto;
         margin-right: 8px; /* small gap before absolute actions */
         text-align: left;
         overflow: visible;
+        min-width: 0; /* ensure flex children can shrink properly */
     }
 
     /* Ensure main container keeps items stacked correctly */
     .soundeffects-page .item-listing__main { align-items: flex-start; }
+}
+
+/* TTS-specific: similar mobile layout as soundeffects/alerts pages */
+@media (max-width: 899px) {
+    .tts-page .item-listing__item {
+        position: relative;
+        padding: 8px 44px 8px 8px; /* reserve space for actions at right */
+        min-height: 48px;
+        box-sizing: border-box;
+    }
+
+    .tts-page .item-actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 2;
+    }
+    .tts-page .item-actions .copy-code {
+        padding: 6px 8px;
+        min-width: 44px;
+        font-size: 0.9rem;
+    }
+
+    .tts-page .item-listing__left {
+        max-width: none;
+        flex: 1 1 auto;
+        margin-right: 8px;
+        text-align: left;
+        overflow: visible;
+        min-width: 0;
+    }
+
+    .tts-page .item-listing__main { align-items: flex-start; }
 }
 
 /* Mobile: small horizontal padding so text isn't flush to the screen edge */

@@ -1,17 +1,64 @@
-        // Functie om effectnaam of stemnaam te kopiëren naar klembord
+        
+        // Copy the item `code` (not the display name) to clipboard — mirrors alerts/noobpoints behavior
         function copyToClipboard(button) {
-            const li = button.closest('li');
-            const nameEl = li ? li.querySelector('.item-name') : null;
-            const soundEffectName = nameEl ? nameEl.innerText.trim() : '';
-            if (!soundEffectName) return;
-            navigator.clipboard.writeText(soundEffectName).then(() => {
-                alert(`Naam '${soundEffectName}' gekopieerd naar het klembord!`);
-            }).catch(err => {
-                console.error('Kopiëren mislukt', err);
-            });
+            const li = button.closest && button.closest('li');
+            const codeEl = li ? li.querySelector('.item-code') : null;
+            const codeText = codeEl ? codeEl.innerText.trim() : '';
+            if (!codeText) return;
+
+            const doFallback = (txt) => {
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = txt;
+                    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    const ok = document.execCommand('copy');
+                    ta.remove();
+                    return ok;
+                } catch (e) { return false; }
+            };
+
+            const onSuccess = () => {
+                try { showCopyToast && showCopyToast(codeText + ' gekopieerd!'); } catch(e) { alert(codeText + ' gekopieerd!'); }
+            };
+
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+                navigator.clipboard.writeText(codeText).then(() => { onSuccess(); }).catch(err => {
+                    const ok = doFallback(codeText);
+                    if (ok) onSuccess(); else console.error('Kopiëren mislukt', err);
+                });
+            } else {
+                const ok = doFallback(codeText);
+                if (ok) onSuccess(); else console.warn('clipboard niet ondersteund');
+            }
         }
 
-// Render the ttsTable array into the DOM table body
+        // small toast used to notify successful copy action (non-blocking)
+        function showCopyToast(msg) {
+            try {
+                const prev = document.getElementById('ttsCopyToast'); if (prev) prev.remove();
+                const t = document.createElement('div');
+                t.id = 'ttsCopyToast';
+                t.textContent = msg;
+                t.style.position = 'fixed';
+                t.style.left = '50%';
+                t.style.bottom = '16px';
+                t.style.transform = 'translateX(-50%)';
+                t.style.background = 'rgba(0,0,0,0.85)';
+                t.style.color = '#fff';
+                t.style.padding = '8px 12px';
+                t.style.borderRadius = '6px';
+                t.style.zIndex = 4000;
+                t.style.fontSize = '0.95rem';
+                t.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+                document.body.appendChild(t);
+                setTimeout(() => { try { t.style.transition = 'opacity 0.25s'; t.style.opacity = '0'; } catch(e){} }, 1200);
+                setTimeout(() => { try { t.remove(); } catch(e){} }, 1500);
+            } catch (e) { /* ignore */ }
+        }
+
+
 function renderTtsTable() {
     const list = document.getElementById('ttsList');
     if (!list) return;
@@ -41,7 +88,28 @@ function renderTtsTable() {
         name.appendChild(starEl);
         left.appendChild(name);
 
-        // small info segment: languages and optional AI label
+        // Mobile inline code row (visible on small screens)
+        const codeInline = document.createElement('div');
+        codeInline.className = 'item-code-inline';
+        codeInline.textContent = item.code || '';
+        const mobileCodeRow = document.createElement('div');
+        mobileCodeRow.className = 'mobile-code-row';
+        const mobileCodeLeft = document.createElement('div');
+        mobileCodeLeft.className = 'mobile-code-left';
+        const mobileLabel = document.createElement('span');
+        mobileLabel.className = 'mobile-code-label';
+        mobileLabel.textContent = 'Stemnaam:';
+        mobileCodeLeft.appendChild(mobileLabel);
+        mobileCodeLeft.appendChild(codeInline);
+        const mobileCopyBtn = document.createElement('button');
+        mobileCopyBtn.type = 'button';
+        mobileCopyBtn.className = 'mobile-copy-code';
+        mobileCopyBtn.textContent = 'Kopieer';
+        mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        mobileCodeRow.appendChild(mobileCodeLeft);
+        mobileCodeRow.appendChild(mobileCopyBtn);
+        left.appendChild(mobileCodeRow);
+
         const info = document.createElement('div');
         info.className = 'item-langs';
         const langsArr = Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : []);
@@ -57,7 +125,7 @@ function renderTtsTable() {
             return mapped.join(', ');
         };
     const humanLangs = langLabel(langsArr);
-    // Build combined info: category • type • languages • AI-stem (omit empty parts)
+    
     const infoParts = [];
     if (item.category) infoParts.push({ text: item.category, facet: 'category' });
     if (item.type) infoParts.push({ text: item.type, facet: 'gender' });
@@ -65,7 +133,7 @@ function renderTtsTable() {
     if (item.isAI) infoParts.push({ text: 'AI-stem', facet: 'type' });
     if (item.supportsAudioTags) infoParts.push({ text: 'Ondersteunt audio tags', facet: 'audio' });
 
-    // Render clickable spans separated by bullets
+    
     info.innerHTML = '';
     infoParts.forEach((p, idx) => {
         const span = document.createElement('span');
@@ -84,17 +152,23 @@ function renderTtsTable() {
         desc.textContent = item.description || '';
         left.appendChild(desc);
 
-    const meta = document.createElement('div');
+        const meta = document.createElement('div');
     meta.className = 'item-meta';
 
+        // Desktop meta: code + copy button (hidden on mobile by CSS)
         const actions = document.createElement('div');
         actions.className = 'item-actions';
-        const btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Kopieer';
-        btn.addEventListener('click', function(){ copyToClipboard(this); });
-        actions.appendChild(btn);
+        const code = document.createElement('div');
+        code.className = 'item-code';
+        code.textContent = item.code || '';
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'copy-code';
+        copyBtn.textContent = 'Kopieer';
+        copyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        actions.appendChild(copyBtn);
 
+        meta.appendChild(code);
         meta.appendChild(actions);
 
         main.appendChild(left);
@@ -107,6 +181,8 @@ function renderTtsTable() {
     li.dataset.isai = item.isAI ? '1' : '0';
     li.dataset.supportsaudiotags = item.supportsAudioTags ? '1' : '0';
     li.dataset.languages = (Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : [])).join(',');
+    // expose the code in the dataset for filtering/preview if needed
+    li.dataset.code = (item.code || '').toString();
 
         list.appendChild(li);
     });
@@ -114,16 +190,16 @@ function renderTtsTable() {
 
 
 
-    let sortDirection = [true, true, true, true, true]; // array om de sorteer volgorde bij te houden (incl. type & languages)
+    let sortDirection = [true, true, true, true, true]; 
 
-        // Functie om de tabel te sorteren (operates on the list view)
+        
         function sortTable(n) {
             const list = document.getElementById('ttsList');
             if (!list) return;
             const items = Array.from(list.children);
             if (items.length === 0) return;
 
-            // new column order: 0=name, 1=category (dataset), 2=type (dataset.gender), 3=languages, 4=description
+            
             const colMap = { 0: '.item-name', 1: null, 2: null, 3: '.item-langs', 4: '.item-desc' };
             const sel = colMap[n];
 
@@ -166,20 +242,20 @@ function renderTtsTable() {
             sortDirection[n] = !sortDirection[n];
         }
 
-        // Functie om de tabel te filteren op basis van de zoekopdracht
+        
         function updateRowCount() {
             const items = Array.from(document.querySelectorAll('#ttsList li'));
             const visibleRowCount = items.reduce((acc, r) => acc + (r.style.display !== 'none' ? 1 : 0), 0);
             document.getElementById("rowCount").textContent = visibleRowCount;
         }
 
-    // Functie om de tabel te filteren op basis van de zoekopdracht
+    
         function searchTable() {
             const input = document.getElementById("searchInput");
             const filter = (input ? input.value : '').toLowerCase();
             const rows = Array.from(document.querySelectorAll('#ttsList li'));
 
-        // Bepaal geselecteerde filters
+        
         const checkedCategoryInputs = Array.from(document.querySelectorAll('#categoryFilters input[data-type="category"]:checked'));
         const checkedCats = checkedCategoryInputs.map(cb => cb.value);
     const aiCheckbox = document.querySelector('#filterAI');
@@ -192,21 +268,21 @@ function renderTtsTable() {
     const notSupportsChecked = notSupportsCb ? notSupportsCb.checked : false;
     const checkedLangInputs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked'));
         const checkedLangs = checkedLangInputs.map(cb => cb.value);
-    // Gender filters (Mannelijk / Vrouwelijk)
+    
     const checkedGenderInputs = Array.from(document.querySelectorAll('#genderFilters input[data-type="gender"]:checked'));
     const checkedGenders = checkedGenderInputs.map(cb => cb.value);
 
-        // Loop door alle tbody rijen
+        
             rows.forEach(row => {
                 const text = row.innerText || '';
                 const textMatch = !filter || text.toLowerCase().indexOf(filter) > -1;
 
-                // Category match (on dataset)
+                
                 const categoryText = row.dataset.category || '';
                 let categoryMatch = true;
                 if (checkedCats.length > 0) categoryMatch = checkedCats.indexOf(categoryText) !== -1;
 
-                // Type filter (AI vs normal)
+                
                 let aiMatch = true;
                 if (aiChecked || normalChecked) {
                     if (aiChecked && !normalChecked) aiMatch = row.dataset.isai === '1';
@@ -214,7 +290,7 @@ function renderTtsTable() {
                     else aiMatch = true;
                 }
 
-                // supportsAudioTags filter
+                
                 let supportsMatch = true;
                 if (supportsChecked || notSupportsChecked) {
                     if (supportsChecked && !notSupportsChecked) supportsMatch = row.dataset.supportsaudiotags === '1';
@@ -222,7 +298,7 @@ function renderTtsTable() {
                     else supportsMatch = true;
                 }
 
-                // Languages filter
+                
                 let langMatch = true;
                 if (checkedLangs.length > 0) {
                     const rowLangs = (row.dataset.languages || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -230,7 +306,7 @@ function renderTtsTable() {
                     else langMatch = checkedLangs.some(l => rowLangs.indexOf(l) !== -1);
                 }
 
-                // Gender filter (Type stem: Mannelijk / Vrouwelijk)
+                
                 let genderMatch = true;
                 if (checkedGenders.length > 0) {
                     const rowGender = (row.dataset.gender || '').trim();
@@ -241,7 +317,7 @@ function renderTtsTable() {
                 row.style.display = matchFound ? '' : 'none';
             });
 
-        // apply favorites filter if active
+        
         try {
             const favCb = document.getElementById('filterFavorites');
             if (favCb && favCb.checked) {
@@ -254,40 +330,40 @@ function renderTtsTable() {
             }
         } catch (e) {}
 
-        // Werk de zichtbare rijcounter bij
+        
         updateRowCount();
-        // Werk de facet-aantallen bij
+        
         computeFilterCounts();
-        // render active filters (search, categories, types, languages, gender, audio tags)
+        
         try {
             const active = [];
             const input = document.getElementById('searchInput');
             if (input && input.value && input.value.trim() !== '') active.push({ type: 'search', label: 'Zoek: "' + input.value.trim() + '"', value: input.value.trim() });
-            // categories
+            
             const catContainer = document.getElementById('categoryFilters');
             if (catContainer) {
                 const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]:checked'));
                 boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'category', label: lab, value: cb.value }); });
             }
-            // type (AI/normal)
+            
             const typeContainer = document.getElementById('typeFilters');
             if (typeContainer) {
                 const boxes = Array.from(typeContainer.querySelectorAll('input[type="checkbox"]:checked'));
                 boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'type', label: lab, value: cb.value }); });
             }
-            // languages
+            
             const langContainer = document.getElementById('languageFilters');
             if (langContainer) {
                 const boxes = Array.from(langContainer.querySelectorAll('input[type="checkbox"]:checked'));
                 boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'lang', label: lab, value: cb.value }); });
             }
-            // gender
+            
             const genderContainer = document.getElementById('genderFilters');
             if (genderContainer) {
                 const boxes = Array.from(genderContainer.querySelectorAll('input[type="checkbox"]:checked'));
                 boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'gender', label: lab, value: cb.value }); });
             }
-            // audio tag support
+            
             const audioContainer = document.getElementById('audioTagFilters');
             if (audioContainer) {
                 const boxes = Array.from(audioContainer.querySelectorAll('input[type="checkbox"]:checked'));
@@ -297,10 +373,10 @@ function renderTtsTable() {
         } catch (e) { console.error('active filters render failed (tts)', e); }
     }
 
-// Bereken en werk per-filter aantallen bij op basis van de huidige selectie.
+
 function computeFilterCounts() {
     const data = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable : [];
-    // huidige geselecteerde waarden per groep
+    
     const checkedCats = Array.from(document.querySelectorAll('#categoryFilters input[data-type="category"]:checked')).map(c=>c.value);
     const checkedLangs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked')).map(c=>c.value);
     const checkedGenders = Array.from(document.querySelectorAll('#genderFilters input[data-type="gender"]:checked')).map(c=>c.value);
@@ -313,13 +389,13 @@ function computeFilterCounts() {
     const supportsChecked = supportsCheckbox ? supportsCheckbox.checked : false;
     const notSupportsChecked = notSupportsCheckbox ? notSupportsCheckbox.checked : false;
 
-    // Loop over alle checkboxen in het filterpaneel
+    
     const allCbs = Array.from(document.querySelectorAll('#filterPanel input[type="checkbox"]'));
     allCbs.forEach(cb => {
         const type = cb.getAttribute('data-type');
         const value = cb.value;
 
-        // Start met kopieën van de huidige selectie
+        
         let selCats = checkedCats.slice();
         let selLangs = checkedLangs.slice();
         let selGenders = checkedGenders.slice();
@@ -328,14 +404,14 @@ function computeFilterCounts() {
         let selSupportsTrue = supportsChecked;
         let selSupportsFalse = notSupportsChecked;
 
-        // Negeer bestaande selectie binnen dezelfde facet (we tonen counts alsof die facet leeg is)
+        
         if (type === 'category') selCats = [];
         if (type === 'lang') selLangs = [];
         if (type === 'gender') selGenders = [];
         if (type === 'type') { selAi = false; selNormal = false; }
         if (type === 'audio') { selSupportsTrue = false; selSupportsFalse = false; }
 
-        // Pas de kandidaatwaarde toe voor deze checkbox
+        
         if (type === 'category') selCats = [value];
         else if (type === 'lang') selLangs = [value];
         else if (type === 'gender') selGenders = [value];
@@ -348,23 +424,23 @@ function computeFilterCounts() {
             else if (value === 'notsupports') { selSupportsTrue = false; selSupportsFalse = true; }
         }
 
-        // Tel matching items
+        
         const count = data.reduce((acc, item) => {
-            // category
+            
             if (selCats.length > 0) {
                 if (!item.category || selCats.indexOf(item.category) === -1) return acc;
             }
-            // type (ai vs normal)
+            
             if (selAi || selNormal) {
                 if (selAi && !selNormal) { if (!item.isAI) return acc; }
                 else if (!selAi && selNormal) { if (item.isAI) return acc; }
             }
-            // supportsAudioTags filter
+            
             if (typeof selSupportsTrue !== 'undefined' && (selSupportsTrue || selSupportsFalse)) {
                 if (selSupportsTrue && !selSupportsFalse) { if (!item.supportsAudioTags) return acc; }
                 else if (!selSupportsTrue && selSupportsFalse) { if (item.supportsAudioTags) return acc; }
             }
-            // languages
+            
             if (selLangs.length > 0) {
                 const rowLangs = (Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : [])).map(s=>s.trim()).filter(Boolean);
                 if (rowLangs.indexOf('*') === -1) {
@@ -372,7 +448,7 @@ function computeFilterCounts() {
                     if (!ok) return acc;
                 }
             }
-            // gender
+            
             if (selGenders.length > 0) {
                 const rowGender = (item.type || '').toString().trim();
                 if (selGenders.indexOf(rowGender) === -1) return acc;
@@ -380,7 +456,7 @@ function computeFilterCounts() {
             return acc + 1;
         }, 0);
 
-        // Werk de bijbehorende count-span bij
+        
         const parent = cb.parentElement || cb.closest('label');
         if (parent) {
             const span = parent.querySelector('.filter-count');
@@ -390,17 +466,17 @@ function computeFilterCounts() {
 }
         
 
-        // (init later after building filters)
-        // Bouw dynamisch de categorie-checkboxes op basis van de tabelinhoud
+        
+        
         function buildCategoryFilters() {
-            // Populate three separate containers so each <details> can toggle independently
+            
             const catContainer = document.getElementById('categoryFilters');
             const typeContainer = document.getElementById('typeFilters');
             const genderContainer = document.getElementById('genderFilters');
             const langContainer = document.getElementById('languageFilters');
             if (!catContainer || !typeContainer || !genderContainer || !langContainer) return;
 
-            // Build filters from the data array (ttsTable) rather than DOM rows
+            
             const data = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable : [];
             const categories = new Set();
             const langs = new Set();
@@ -414,9 +490,9 @@ function computeFilterCounts() {
             genderContainer.innerHTML = '';
             langContainer.innerHTML = '';
 
-            // favorites checkbox is static in HTML (rendered in the page); do not inject here
+            
 
-            // Category checkboxes (in category container)
+            
             const catTitle = document.createElement('div');
             catContainer.appendChild(catTitle);
             categories.forEach(cat => {
@@ -445,7 +521,7 @@ function computeFilterCounts() {
                 catContainer.appendChild(wrapper);
             });
 
-            // Type filters: AI-stemmen / Gewone TTS-stemmen (in type container)
+            
             const typeTitle = document.createElement('div');
             typeContainer.appendChild(typeTitle);
 
@@ -493,7 +569,7 @@ function computeFilterCounts() {
             normalWrapper.appendChild(normalCount);
             typeContainer.appendChild(normalWrapper);
 
-            // Audio tags filters: supports / does not support (in audio container)
+            
             const audioContainer = document.getElementById('audioTagFilters');
             if (audioContainer) {
                 audioContainer.innerHTML = '';
@@ -542,7 +618,7 @@ function computeFilterCounts() {
                 audioContainer.appendChild(notSupWrapper);
             }
 
-            // Gender filters: Mannelijk / Vrouwelijk (in separate gender container)
+            
             const gTitle = document.createElement('div');
             genderContainer.appendChild(gTitle);
 
@@ -590,12 +666,12 @@ function computeFilterCounts() {
             femaleWrapper.appendChild(femaleCount);
             genderContainer.appendChild(femaleWrapper);
 
-            // Language filters (in language container)
+            
             const langTitle = document.createElement('div');
             langContainer.appendChild(langTitle);
-            // normalize ordering: put '*' first if present
+            
             const langList = Array.from(langs).sort((a,b)=>{ if (a==='*') return -1; if (b==='*') return 1; return a.localeCompare(b); });
-            // map codes to readable labels
+            
             const langLabel = (code) => {
                 if (code === '*') return 'Engels & Nederlands';
                 if (code === 'en') return 'Engels';
@@ -627,16 +703,16 @@ function computeFilterCounts() {
             });
         }
 
-    // Render table and initialize UI (render must run before attaching handlers)
+    
     renderTtsTable();
     buildCategoryFilters();
-        // wire the global favorites checkbox (always present in HTML) to filtering
+        
         try {
             const favEl = document.getElementById('filterFavorites');
             if (favEl) favEl.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
         } catch (e) {}
 
-        // show/hide the favorites filter depending on whether any favorites exist
+        
         function updateFavoritesFilterVisibility() {
             try {
                 const favWrap = document.getElementById('favoritesFilter');
@@ -660,20 +736,20 @@ function computeFilterCounts() {
                 }
             } catch (e) {}
         });
-    // Initialiseer sortering: zorg dat kolom 0 (Stemnaam) oplopend wordt gesorteerd
-    sortDirection[0] = true; // zet expliciet op ascending
+    
+    sortDirection[0] = true; 
     sortTable(0);
     updateRowCount();
-    // initialiseer facet-aantallen
+    
     computeFilterCounts();
-        // Hook voor sort-select in sidebar
+        
         function applySort() {
             const sel = document.getElementById('sortSelect');
             if (!sel) return;
             const [colStr, dir] = sel.value.split(':');
             const col = parseInt(colStr, 10);
-            // Stel de interne sortrichting in zodat één enkele aanroep van sortTable
-            // het gewenste resultaat geeft (asc of desc).
+            
+            
             sortDirection[col] = (dir === 'asc');
             sortTable(col);
         }
@@ -685,7 +761,7 @@ function computeFilterCounts() {
             return (text || '').toString().replace(/[^a-z0-9]/gi, '').toLowerCase();
         }
 
-// Update favorite star indicators for TTS list items
+
 function updateFavIndicators() {
     try {
         const nodes = Array.from(document.querySelectorAll('.fav-indicator'));
@@ -743,23 +819,23 @@ function updateFavIndicators() {
                 });
             });
 
-            // favorite & share buttons
+            
             try {
                 const key = normalizeNameForFile(displayName || '');
                 const favBtn = overlay.querySelector('.preview-fav');
                 const shareBtn = overlay.querySelector('.preview-share');
                 const page = 'tts';
                 const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
-                // provide a small inline popup for share/fav feedback
+                
                 const popup = document.createElement('div'); popup.className = 'preview-popup'; popup.style.display = 'none'; document.body.appendChild(popup);
-                // ensure popup removed when overlay closes
+                
                 try { const closeBtn = overlay.querySelector('.preview-close'); if (closeBtn) closeBtn.addEventListener('click', () => { try { popup.remove(); } catch(e){} }); overlay.addEventListener('click', (e) => { if (e.target === overlay) { try { popup.remove(); } catch(e){} } }); } catch(e) {}
                 const showPopup = (msg) => { try { if (!popup) return; popup.textContent = msg; popup.style.display = 'block'; popup.style.opacity = '1'; setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200); setTimeout(() => { try { popup.style.display = 'none'; } catch(e){} }, 1450); } catch(e){} };
                 if (favBtn) { favBtn.addEventListener('click', () => { try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) {} }); updateFavUi(); }
                 if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); }); } catch (e) {} }); }
             } catch (e) {}
 
-            // Try image -> audio -> video
+            
             const base = `${folder}/${name}`;
             let tried = false;
 
@@ -792,20 +868,20 @@ function updateFavIndicators() {
             tryImage(['.png','.jpg','.jpeg','.gif','.webp'], 0);
         }
 
-        // Helper to check if a preview file exists (image -> audio -> video)
+        
         function previewExists(folder, displayName, cb) {
             const name = normalizeNameForFile(displayName);
             const base = `${folder}/${name}`;
-            // try image
+            
             const img = new Image();
             let done = false;
             img.onload = () => { if (!done) { done = true; cb(true); } };
             img.onerror = () => {
-                // try audio
+                
                 const a = document.createElement('audio');
                 a.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
                 a.onerror = () => {
-                    // try video
+                    
                     const v = document.createElement('video');
                     v.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
                     v.onerror = () => { if (!done) { done = true; cb(false); } };
@@ -816,7 +892,7 @@ function updateFavIndicators() {
             img.src = base + '.png';
         }
 
-        // Attach preview handlers to first-column names, and mark those with previews
+        
         function attachPreviewHandlers(){
             const rows = document.querySelectorAll('#ttsList li');
             rows.forEach(r => {
@@ -829,7 +905,7 @@ function updateFavIndicators() {
             });
         }
 
-        // Apply a filter when an info-part is clicked (tts page)
+        
         function applyFilterFromInfoTts(facet, text) {
             if (!text) return;
             const matchInContainer = (id, matchFn) => {
@@ -847,11 +923,11 @@ function updateFavIndicators() {
                 return false;
             };
 
-            // special mapping for languages and some labels
+            
             if (facet === 'lang') {
                 const normalized = text.toLowerCase();
                 if (normalized.includes('engels') && normalized.includes('nederlands')) {
-                    // prefer '*' if present, otherwise check both en/nl
+                    
                     if (matchInContainer('languageFilters', (input, lab, val) => val === '*')) { searchTable(); computeFilterCounts(); return; }
                     if (matchInContainer('languageFilters', (input, lab, val) => val === 'en')) { searchTable(); computeFilterCounts(); }
                     if (matchInContainer('languageFilters', (input, lab, val) => val === 'nl')) { searchTable(); computeFilterCounts(); }
@@ -862,31 +938,31 @@ function updateFavIndicators() {
             }
 
             if (facet === 'type') {
-                // AI label -> filterAI
+                
                 if (text.toLowerCase().indexOf('ai') !== -1) {
                     const inp = document.getElementById('filterAI'); if (inp) { if (!inp.checked) { inp.checked = true; inp.dispatchEvent(new Event('change')); } searchTable(); computeFilterCounts(); return; }
                 }
             }
 
             if (facet === 'audio') {
-                // 'Ondersteunt audio tags' -> filterSupports
+                
                 const inp = document.getElementById('filterSupports'); if (inp) { if (!inp.checked) { inp.checked = true; inp.dispatchEvent(new Event('change')); } searchTable(); computeFilterCounts(); return; }
             }
 
-            // generic category/gender match
+            
             if (facet === 'category') { if (matchInContainer('categoryFilters')) { searchTable(); computeFilterCounts(); return; } }
             if (facet === 'gender') { if (matchInContainer('genderFilters')) { searchTable(); computeFilterCounts(); return; } }
 
-            // fallback: try type and category containers
+            
             if (matchInContainer('typeFilters') || matchInContainer('categoryFilters')) { searchTable(); computeFilterCounts(); return; }
         }
 
-        // Run preview attachment after render
+        
         attachPreviewHandlers();
         try { updateFavIndicators(); } catch (e) {}
 
-        // Scroll to and briefly highlight a TTS item when the page is opened
-        // via a shared link like `?focus=tts:<key>` or `#tts:<key>`.
+        
+        
         function scrollAndHighlightByKey(key) {
             try {
                 const rows = Array.from(document.querySelectorAll('#ttsList li'));
@@ -906,7 +982,7 @@ function updateFavIndicators() {
             return false;
         }
 
-        // Check URL params/hash for focus directive and activate it if present
+        
         (function handleFocusFromUrl() {
             try {
                 const params = new URLSearchParams(window.location.search);
@@ -919,7 +995,7 @@ function updateFavIndicators() {
             } catch (e) { /* ignore */ }
         })();
 
-// Handle chip removal events
+
 window.addEventListener('activeFilter:remove', (ev) => {
     try {
         const { type, value } = ev.detail || {};
@@ -952,16 +1028,16 @@ window.addEventListener('activeFilter:remove', (ev) => {
                 if (input) input.checked = false;
             }
         }
-        // re-run search to refresh UI
+        
         searchTable();
     } catch (e) { console.error('failed to handle activeFilter:remove (tts)', e); }
 });
 
-// Clear all filters when requested by the active-filters UI
+
 window.addEventListener('activeFilter:clear', () => {
     try {
         const s = document.getElementById('searchInput'); if (s) s.value = '';
-        // category, type, gender, language, audio, ai/normal
+        
         ['categoryFilters','typeFilters','genderFilters','languageFilters','audioTagFilters'].forEach(id => {
             const c = document.getElementById(id);
             if (!c) return;
@@ -971,7 +1047,7 @@ window.addEventListener('activeFilter:clear', () => {
         ['filterAI','filterNormal','filterSupports','filterNotSupports','filterMale','filterFemale','filterSupports','filterNotSupports'].forEach(id => {
             const el = document.getElementById(id); if (el && (el.type === 'checkbox')) { el.checked = false; el.dispatchEvent(new Event('change')); }
         });
-        // also clear the favorites checkbox
+        
         try { const fav = document.getElementById('filterFavorites'); if (fav) { fav.checked = false; } } catch (e) {}
         searchTable(); computeFilterCounts();
     } catch (e) { console.error('failed to clear filters (tts)', e); }
