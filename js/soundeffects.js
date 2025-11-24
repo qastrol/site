@@ -675,7 +675,7 @@ function applySort() {
                 <div class="preview-body" id="preview-body"></div>
                 <div class="preview-controls">
                     <div class="preview-controls-top">
-                        <button class="preview-copy">Kopieer</button>
+                        <button class="preview-copy">Kopieer geluidsnaam</button>
                     </div>
                 </div>
             </div>`;
