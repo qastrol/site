@@ -292,4 +292,6 @@
 	{ name: "Zelda: speel een nummer van de Ocarina of Time", description: "Speel één van de 19 nummers van de Ocarina of Time, afkomstig uit zowel Ocarina of Time en Majora's Mask", code: "<ocarina>", category: ["Gaming", "Muziek"], type: "Muziek-alert", year: 2025},,
 	{ name: "Speel de muziekquiz", description: "Raad de juiste songtitel aan de hand van de eerste 8 seconden van een Top 2000 nummer. Je kan ook de artiest raden voor een hint, maar het gaat om de songtitel", code: "<muziekquiz>", category: ["Muziek"], type: "Interactieve alert", year: 2025},
 	{ name: "Potje Peggle", description: "Schiet één bal in een potje Peggle* (eigenlijk een soort clone van Peggle). Je kan niet kiezen waar je je bal heenschiet, maar je krijgt wel een score", code: "<peggle>", category: ["Gaming"], type: "Interactieve alert", year: 2025},,
-	{ name: "Pokémon Puzzle League toernooi", description: "Qastrol krijgt een uitnodiging voor het <a href=\"https://twitch.tv/muntjesman\">Muntjesman</a> Pokémon Puzzle League toernooi", code: "<puzzleleague>" }];
+	{ name: "Pokémon Puzzle League toernooi", description: "Qastrol krijgt een uitnodiging voor het <a href=\"https://twitch.tv/muntjesman\">Muntjesman</a> Pokémon Puzzle League toernooi", code: "<puzzleleague>" },
+	{ name: "Alert voor GIGAWOUT", description: "Beschrijving voor GIGAWOUT", code: "<GIGAWOUT>" },
+	{ name: "Alert voor ringweg", description: "Beschrijving voor ringweg", code: "<ringweg>" }];
