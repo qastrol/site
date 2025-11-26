@@ -132,7 +132,6 @@
 	{ name: "Unregistered Hypercam 2", description: "Wanneer je een YouTube Tutorial kijkt in 2005 met Unregistered Hypercam 2 en <a href=\"https://www.youtube.com/watch?v=0Xa3lfd0ukk\">Dreamscape van 009 Sound System</a>", code: "<hypercam>", category: ["Internet"], type: "Video-alert", year: 2024},
 	{ name: "Zelda CDI: This is illegal you know", description: "<a href=\"https://www.youtube.com/watch?v=kr_Xw3sTgRk\">Eén van de meest illegale cutscenes in de CDI Zelda spellen</a>", code: "<illegal>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "Zelda CDI: You Reposted In The Wrong Shop", description: "<a href=\"https://www.youtube.com/watch?v=m20cGdohWic\">You reposted in the wrong neighbourhood</a>", code: "<reposted>", category: ["Gaming"], type: "Video-alert", year: 2025},
-	{ name: "Play it Forward Nederland 1", description: "Een Play it Forward-logo in de stijl van het jaren '90 Nederland 1 logo, met een sound effect", code: "<playitforward>", category: ["TV", "Intro", "Nederland"], type: "Video-alert", year: 2025},
 	{ name: "1, 2, Koeksoep", description: "Hugo is heel hard", code: "<12koeksoep>", category: ["Harde Hugo", "AI", "Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Nintendo Alarmo - HARDe wekker", description: "Zo wordt je HARD wakker", code: "<alarmo>", category: ["Gaming", "Harde Hugo"], type: "Video-alert", year: 2024},
 	{ name: "Banaantje", description: "Hugo zegt 'banaantje'", code: "<banaantje>", category: ["Harde Hugo"], type: "Video-alert", year: 2024},
@@ -293,5 +292,11 @@
 	{ name: "Speel de muziekquiz", description: "Raad de juiste songtitel aan de hand van de eerste 8 seconden van een Top 2000 nummer. Je kan ook de artiest raden voor een hint, maar het gaat om de songtitel", code: "<muziekquiz>", category: ["Muziek"], type: "Interactieve alert", year: 2025},
 	{ name: "Potje Peggle", description: "Schiet één bal in een potje Peggle* (eigenlijk een soort clone van Peggle). Je kan niet kiezen waar je je bal heenschiet, maar je krijgt wel een score", code: "<peggle>", category: ["Gaming"], type: "Interactieve alert", year: 2025},,
 	{ name: "Pokémon Puzzle League toernooi", description: "Qastrol krijgt een uitnodiging voor het <a href=\"https://twitch.tv/muntjesman\">Muntjesman</a> Pokémon Puzzle League toernooi", code: "<puzzleleague>" },
-	{ name: "Alert voor GIGAWOUT", description: "Beschrijving voor GIGAWOUT", code: "<GIGAWOUT>" },
-	{ name: "Alert voor ringweg", description: "Beschrijving voor ringweg", code: "<ringweg>" }];
+	{ name: "GIGAWOUT", description: "Een soort GigaChad, maar dan Lord Wout", code: "<gigawout>", category: ["Lord Wout", "Meme"], type: "Video-alert", year: 2025},
+	{ name: "Racen over de Groninger ringweg", description: "Racen met wilde muziek in Stad", code: "<ringweg>", category: ["Nederland", "Sport"], type: "Video-alert", year: 2025},
+	{ name: "Play it Forward: Nederland 1", description: "Een Play it Forward logo in de stijl van Nederland 1 in de jaren '90", code: "<pif>" },
+	{ name: "Postbus 51 KerstKnallers intro", description: "Een KerstKnallers intro in de stijl van Postbus 51", code: "<busintro>", category: ["KerstKnallers", "TV"], type: "Video-alert", year: 2025},
+	{ name: "Postbus 51 KerstKnallers outro", description: "Een KerstKnallers outro in de stijl van Postbus 51", code: "<busoutro>", category: ["KerstKnallers", "TV"], type: "Video-alert", year: 2025},,
+	{ name: "RTL4 KerstKnallers-bumper", description: "Een KerstKnallers bumper in de stijl van RTL4", code: "<rtl4>", category: ["KerstKnallers", "TV"], type: "Video-alert", year: 2025},
+	{ name: "Here comes Pac-Man", description: "Yoyoyoyoyoyoyo", code: "<pacman>", category: ["Gaming", "Meme"], type: "Video-alert", year: 2025},
+];
