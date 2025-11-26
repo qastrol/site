@@ -290,7 +290,7 @@
 	{ name: "Zelda: New Location discovered", description: "Een donatie in de stijl van de melding die je krijgt bij het ontdekken van een nieuwe locatie in Zelda Breath of the Wild / Tears of the Kingdom", code: "<zelda>", category: ["Gaming"], type: "Audio-alert", year: 2025},
 	{ name: "Zelda: speel een nummer van de Ocarina of Time", description: "Speel één van de 19 nummers van de Ocarina of Time, afkomstig uit zowel Ocarina of Time en Majora's Mask", code: "<ocarina>", category: ["Gaming", "Muziek"], type: "Muziek-alert", year: 2025},
 	{ name: "Speel de muziekquiz", description: "Raad de juiste songtitel aan de hand van de eerste 8 seconden van een Top 2000 nummer. Je kan ook de artiest raden voor een hint, maar het gaat om de songtitel", code: "<muziekquiz>", category: ["Muziek"], type: "Interactieve alert", year: 2025},
-	{ name: "Potje Peggle", description: "Schiet één bal in een potje Peggle* (eigenlijk een soort clone van Peggle). Je kan niet kiezen waar je je bal heenschiet, maar je krijgt wel een score", code: "<peggle>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
+	{ name: "Potje Peggle", description: "Schiet één bal in een potje Peggle* (eigenlijk een Peggle bootleg van Qastrol). Je kan niet kiezen waar je je bal heenschiet, maar je krijgt wel een score. Kan je alle 20 oranje pegs raken en een Extreme Fever krijgen?", code: "<peggle>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "Pokémon Puzzle League toernooi", description: "Qastrol krijgt een uitnodiging voor het <a href=\"https://twitch.tv/muntjesman\">Muntjesman</a> Pokémon Puzzle League toernooi", code: "<puzzleleague>" },
 	{ name: "GIGAWOUT", description: "Een soort GigaChad, maar dan Lord Wout", code: "<gigawout>", category: ["Lord Wout", "Meme"], type: "Video-alert", year: 2025},
 	{ name: "Racen over de Groninger ringweg", description: "Racen met wilde muziek in Stad", code: "<ringweg>", category: ["Nederland", "Sport"], type: "Video-alert", year: 2025},
@@ -298,5 +298,6 @@
 	{ name: "Postbus 51 KerstKnallers intro", description: "Een KerstKnallers intro in de stijl van Postbus 51", code: "<busintro>", category: ["KerstKnallers", "TV"], type: "Video-alert", year: 2025},
 	{ name: "Postbus 51 KerstKnallers outro", description: "Een KerstKnallers outro in de stijl van Postbus 51", code: "<busoutro>", category: ["KerstKnallers", "TV"], type: "Video-alert", year: 2025},
 	{ name: "RTL4 KerstKnallers-bumper", description: "Een KerstKnallers bumper in de stijl van RTL4", code: "<rtl4>", category: ["KerstKnallers", "TV"], type: "Video-alert", year: 2025},
-	{ name: "Here comes Pac-Man", description: "Yoyoyoyoyoyoyo", code: "<pacman>", category: ["Gaming", "Meme"], type: "Video-alert", year: 2025}
-];
+	{ name: "Here comes Pac-Man", description: "Yoyoyoyoyoyoyo", code: "<pacman>", category: ["Gaming", "Meme"], type: "Video-alert", year: 2025},
+	{ name: "Clown WC", description: "De angstaanjagende Clown WC, bekend van Johano1rct's Planet Coaster streams bij KerstKnallers", code: "<clownwc>", category: ["Gaming", "Twitch"], type: "Video-alert", year: 2025},
+	{ name: "Mes in het schilderij!", description: "Er wordt een mes in een schilderij gestoken, zoals bij de donatiereward bij de KerstKnallers schilderstreams van xDinomite", code: "<mes>", category: ["Twitch"], type: "Video-alert", year: 2025}];
