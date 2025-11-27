@@ -15,6 +15,9 @@ const alertsLinks = {
   "5euro": [
     "alerts/5euro.mp4"
   ],
+  "7grandfeest": [
+    "alerts/7grandfeest.webm"
+  ],
   "adoringfan": [
     "alerts/adoringfan.webm"
   ],
@@ -29,6 +32,12 @@ const alertsLinks = {
   ],
   "baksteene": [
     "alerts/baksteene.webm"
+  ],
+  "banaantje": [
+    "alerts/banaantje.mp4"
+  ],
+  "bathroom": [
+    "alerts/bathroom.webm"
   ],
   "biem": [
     "alerts/biem.mp4"
@@ -64,6 +73,12 @@ const alertsLinks = {
   "browser": [
     "alerts/browser.mp4"
   ],
+  "busintro": [
+    "alerts/busintro.mp4"
+  ],
+  "busoutro": [
+    "alerts/busoutro.mp4"
+  ],
   "buurman": [
     "alerts/buurman.webm"
   ],
@@ -78,6 +93,9 @@ const alertsLinks = {
   ],
   "cj": [
     "alerts/cj.webm"
+  ],
+  "clownwc": [
+    "alerts/clownwc.webm"
   ],
   "community": [
     "alerts/community.webm"
@@ -127,6 +145,9 @@ const alertsLinks = {
   "gameboy": [
     "alerts/gameboy.mp4"
   ],
+  "gamefreak": [
+    "alerts/gamefreak.mp4"
+  ],
   "gamerwolde": [
     "alerts/gamerwolde.webm"
   ],
@@ -141,6 +162,9 @@ const alertsLinks = {
   ],
   "gigavis": [
     "alerts/gigavis.webm"
+  ],
+  "gigawout": [
+    "alerts/gigawout.webm"
   ],
   "griddy": [
     "alerts/griddy.webm"
@@ -190,6 +214,9 @@ const alertsLinks = {
   "hugoduro": [
     "alerts/hugoduro.mp4"
   ],
+  "hugogenieter": [
+    "alerts/hugogenieter.mp4"
+  ],
   "humbertotantoe": [
     "alerts/humbertotantoe.webm"
   ],
@@ -201,6 +228,9 @@ const alertsLinks = {
   ],
   "illegal": [
     "alerts/illegal.webm"
+  ],
+  "indetuin": [
+    "alerts/indetuin.webm"
   ],
   "instructionbook": [
     "alerts/instructionbook.webm"
@@ -241,6 +271,9 @@ const alertsLinks = {
   "kroncrv": [
     "alerts/kroncrv.mp4"
   ],
+  "kunnen": [
+    "alerts/kunnen.webm"
+  ],
   "laborday": [
     "alerts/laborday.mp4"
   ],
@@ -264,6 +297,9 @@ const alertsLinks = {
   ],
   "mariokartworld": [
     "alerts/mariokartworld.mp4"
+  ],
+  "mes": [
+    "alerts/mes.webm"
   ],
   "mexico": [
     "alerts/mexico.mp4"
@@ -307,14 +343,23 @@ const alertsLinks = {
   "nos": [
     "alerts/nos.mp4"
   ],
+  "pacman": [
+    "alerts/pacman.mp4"
+  ],
   "pannenkoek": [
     "alerts/pannenkoek.mp4"
   ],
   "peggle3": [
     "alerts/peggle3.mp4"
   ],
+  "pif": [
+    "alerts/pif.webm"
+  ],
   "professioneel": [
     "alerts/professioneel.mp4"
+  ],
+  "puzzleleague": [
+    "alerts/puzzleleague.mp4"
   ],
   "qasgasisz": [
     "alerts/qasgasisz.mp4"
@@ -331,6 +376,9 @@ const alertsLinks = {
   "quepasaneng": [
     "alerts/quepasaneng.mp4"
   ],
+  "quepasanengmp4tmp": [
+    "alerts/quepasaneng.mp4.tmp.mp4"
+  ],
   "rainbowroad": [
     "alerts/rainbowroad.mp4"
   ],
@@ -346,6 +394,9 @@ const alertsLinks = {
   "rock": [
     "alerts/rock.webm"
   ],
+  "rtl4": [
+    "alerts/rtl4.mp4"
+  ],
   "rutte": [
     "alerts/rutte.mp4"
   ],
@@ -354,6 +405,9 @@ const alertsLinks = {
   ],
   "sie": [
     "alerts/sie.mp4"
+  ],
+  "sirenhead": [
+    "alerts/sirenhead.webm"
   ],
   "sjors": [
     "alerts/sjors.mp4"
@@ -391,6 +445,9 @@ const alertsLinks = {
   "theroom": [
     "alerts/theroom.webm"
   ],
+  "toetjes": [
+    "alerts/toetjes.webm"
+  ],
   "tongo": [
     "alerts/tongo.webm"
   ],
@@ -408,6 +465,9 @@ const alertsLinks = {
   ],
   "usedtoknow": [
     "alerts/usedtoknow.mp4"
+  ],
+  "visintro": [
+    "alerts/visintro.webm"
   ],
   "vismoment": [
     "alerts/vismoment.webm"
@@ -447,6 +507,9 @@ const alertsLinks = {
   ],
   "westereen": [
     "alerts/westereen.mp4"
+  ],
+  "woutgenieter": [
+    "alerts/woutgenieter.webm"
   ],
   "woutmoment": [
     "alerts/woutmoment.mp4"
