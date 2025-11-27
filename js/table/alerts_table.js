@@ -6,7 +6,6 @@
 	{ name: "BREIN intro", description: "De inhoud van deze drager is beschermd door wetten van Intellectuele Eigendom waaronder de Auteurswet, de Wet op de Naburige Rechten, de Databankwet en de Beneluxmerkenwet.", code: "<brein>", category: ["Film"], type: "Video-alert", year: 2024},
 	{ name: "Buurman & Buurman", description: "Speel de intro van Buurman & Buurman. Ajeto!", code: "<buurman>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Look at all this damage!", description: "<a href=\"https://www.youtube.com/watch?v=4B-JdfG6efI\">And we're going to repair it using flex shot</a>", code: "<damage>", category: ["Meme"], type: "Video-alert", year: 2024},
-	{ name: "Edd, Ed n Eddy: Deurbel", description: "Iemand belt aan bij de deurbel van Edd...", code: "<edd>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Hier, een euro!", description: "<a href=\"https://www.youtube.com/watch?v=HiLKVdNJt_o\">AAAAAAAAAAAAAA!</a>", code: "<euro>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Het is feest!", description: "<a href=\"https://www.youtube.com/watch?v=pchWYdcN6zA\">Joepie!</a>", code: "<feest>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Speel een geluidseffect!", description: "Speel een willekeurig geluidseffect af van 138 mogelijkheden. Kan van alles zijn", code: "<geluidseffect>", category: ["Internet", "TV", "Radio", "Film", "Gaming"], type: "Audio-alert", year: 2024},
@@ -142,7 +141,7 @@
 	{ name: "DGHHPS", description: "De DGHHPS stream is binnenkort te zien bij twitch.tv/harde_hugo!", code: "<dghhps>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "Followmode", description: "Ben je klaar met non-followers die chatten? Met deze alert kan je followmode tijdelijk aanzetten. Je donatiebedrag is het aantal seconden dat followmode actief is", code: "<followmode>", category: ["Twitch"], type: "Interactieve alert", year: 2024},
 	{ name: "Gamerwolde", description: "Hier wonen alleen gamers. <a href=\"https://maps.app.goo.gl/qXf4gykkbomkTbASA\">Gamerwolde op Google Maps</a>", code: "<gamerwolde>", category: ["Gaming"], type: "Video-alert", year: 2024},
-	{ name: "Harde Hugo genieter", description: "Gemiddelde Lekker spelen fan vs Gemiddelde Harde Hugo genieter", code: "<genieter>", category: ["Harde Hugo"], type: "Video-alert", year: 2024},
+	{ name: "Harde Hugo genieter", description: "Gemiddelde Lekker spelen fan vs Gemiddelde Harde Hugo genieter", code: "<hugogenieter>", category: ["Harde Hugo"], type: "Video-alert", year: 2024},
 	{ name: "Stuur een GIPHY-gifje", description: "Stuur een gifje van GIPHY. De tekst die je tussen aanhalingstekens doet, is je zoekopdracht naar een gifje (bijv. \"Christmas\" zoekt de eerste .gif op met Christmas). Let op: een gifje kan mogelijk niet beschikbaar zijn", code: "<gif>", category: ["Internet"], type: "Video-alert", year: 2024},
 	{ name: "Griddy bij KerstKnallers 2023", description: "De griddy van KerstKnallers 2023 (speelt 1 seconde af per gedoneerde euro)", code: "<griddy>", category: ["Muziek", "KerstKnallers"], type: "Video-alert", year: 2024},
 	{ name: "Halo Theme", description: "Speel de Halo-themesong af onder je TTS-bericht", code: "<halotheme>", category: ["Gaming"], type: "Video-alert", year: 2024},
@@ -165,7 +164,6 @@
 	{ name: "Geen alert", description: "Wil je helemaal geen alert? Kies dan de <niks> alert", code: "<niks>", category: [], year: 2024},
 	{ name: "NPO 1 Tune", description: "Speel de NPO 1 tune onder je donatiebericht", code: "<npo1tune>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "NPO 2 Tune", description: "Speel de NPO 2 tune onder je donatiebericht", code: "<npo2tune>", category: ["TV"], type: "Video-alert", year: 2024},
-	{ name: "Ollama AI", description: "Stel je vraag aan Ollama AI", code: "<ollama>", category: ["AI"], type: "Interactieve alert", year: 2024},
 	{ name: "Omegahardheid", description: "Meet je omegahardheid! Nog HARDer dan ultrahardheid, met hardheid tot 1000000% hardheid!", code: "<omegahardheid>", category: ["Harde Hugo"], type: "Interactieve alert", year: 2024},
 	{ name: "Quantumhardheid", description: "De allerhardste hardheid ooit, met gevaarlijk hoge waardes tot wel 100000000% hardheid!", code: "<quantumhardheid>", category: ["Harde Hugo"], type: "Interactieve alert", year: 2024},
 	{ name: "¡Qué pasa, NENG!", description: "Een vervloekte Spaanse videogame. <a href=\"https://www.youtube.com/watch?v=sIdKvagWf9I\">Bron</a>", code: "<quepasaneng>", category: ["Gaming", "TV"], type: "Video-alert", year: 2024},
@@ -300,4 +298,6 @@
 	{ name: "RTL4 KerstKnallers-bumper", description: "Een KerstKnallers bumper in de stijl van RTL4", code: "<rtl4>", category: ["KerstKnallers", "TV"], type: "Video-alert", year: 2025},
 	{ name: "Here comes Pac-Man", description: "Yoyoyoyoyoyoyo", code: "<pacman>", category: ["Gaming", "Meme"], type: "Video-alert", year: 2025},
 	{ name: "Clown WC", description: "De angstaanjagende Clown WC, bekend van Johano1rct's Planet Coaster streams bij KerstKnallers", code: "<clownwc>", category: ["Gaming", "Twitch"], type: "Video-alert", year: 2025},
-	{ name: "Mes in het schilderij!", description: "Er wordt een mes in een schilderij gestoken, zoals bij de donatiereward bij de KerstKnallers schilderstreams van xDinomite", code: "<mes>", category: ["Twitch"], type: "Video-alert", year: 2025}];
+	{ name: "Mes in het schilderij!", description: "Er wordt een mes in een schilderij gestoken, zoals bij de donatiereward bij de KerstKnallers schilderstreams van xDinomite", code: "<mes>", category: ["Twitch"], type: "Video-alert", year: 2025},
+	{ name: "Lord Wout genieter", description: "Gemiddelde Lekker spelen fan vs gemiddelde Lord Wout genieter", code: "<woutgenieter>", category: ["Lord Wout", "Meme"], type: "Video-alert", year: 2025}
+];
