@@ -376,9 +376,6 @@ const alertsLinks = {
   "quepasaneng": [
     "alerts/quepasaneng.mp4"
   ],
-  "quepasanengmp4tmp": [
-    "alerts/quepasaneng.mp4.tmp.mp4"
-  ],
   "rainbowroad": [
     "alerts/rainbowroad.mp4"
   ],
@@ -390,6 +387,9 @@ const alertsLinks = {
   ],
   "reposted": [
     "alerts/reposted.mp4"
+  ],
+  "ringweg": [
+    "alerts/ringweg.mp4"
   ],
   "rock": [
     "alerts/rock.webm"

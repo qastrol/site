@@ -121,7 +121,7 @@
 	{ name: "Kattenfoto van Qastrol's kat", description: "Krijg een foto te zien van Qastrol's kat. Er zijn 100 mogelijkheden", code: "<kattenfoto>", category: ["Qastrol", "Dieren"], type: "Video-alert", year: 2024},
 	{ name: "Among Us Ejected", description: "Eject iets of iemand met je donatie. Voeg het gene dat je wil ejecten in je donatiebericht met \"\" (bijvoorbeeld \"koek en brokken\" eject koek en brokken)", code: "<amongus>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Wild Pokémon battle", description: "Een Pokémon gevecht in het wild!", code: "<wildpokemon>", category: ["Gaming"], type: "Video-alert", year: 2024},
-	{ name: "Gerard Joling - Mexico", description: "Ik ben naar Mexico gekomen! De afspeelduur is afhankelijk van je donatiebedrag (1 euro = 1 seconde)", code: "<mexico>", category: ["Meme", "Muziek"], type: "Video-alert", year: 2024},
+	{ name: "Gerard Joling - Mexico", description: "Ik ben naar Mexico gekomen! Het land van al mijn dromen!", code: "<mexico>", category: ["Meme", "Muziek"], type: "Video-alert", year: 2024},
 	{ name: "Poker", description: "Speel een soort van poker. Je pakt vijf willekeurige kaarten, die vervolgens een score krijgen. <a href=\"https://balatrogame.fandom.com/wiki/Poker_Hands\">De scoreberekening is hetzelfde als in Balatro: (chips + handwaarde) * mult</a>", code: "<poker>", category: ["Twitch"], type: "Interactieve alert", year: 2024},
 	{ name: "Hot Potato", description: "Start één potje Hot Potato in de chat. De \"Hot Potato\" wordt gepasst naar een willekeurig iemand in de chat, en die heeft 15 seconden om de hot potato te passen aan iemand anders met !pass. Als dit 30 keer lukt, is het spel voorbij en moet Qastrol één euro doneren. <a href=\"https://tawmae.github.io/hot_potato.html\">Kijk hier voor meer informatie over Hot Potato</a>", code: "<hotpotato>", category: ["Twitch"], type: "Interactieve alert", year: 2024},
 	{ name: "How", description: " <a href=\"https://www.youtube.com/watch?v=6M-NkQAo-3E\">van de \"What\" meme</a>", code: "<how>", category: "", type: "Video-alert", year: 2024},
@@ -143,7 +143,7 @@
 	{ name: "Gamerwolde", description: "Hier wonen alleen gamers. <a href=\"https://maps.app.goo.gl/qXf4gykkbomkTbASA\">Gamerwolde op Google Maps</a>", code: "<gamerwolde>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Harde Hugo genieter", description: "Gemiddelde Lekker spelen fan vs Gemiddelde Harde Hugo genieter", code: "<hugogenieter>", category: ["Harde Hugo"], type: "Video-alert", year: 2024},
 	{ name: "Stuur een GIPHY-gifje", description: "Stuur een gifje van GIPHY. De tekst die je tussen aanhalingstekens doet, is je zoekopdracht naar een gifje (bijv. \"Christmas\" zoekt de eerste .gif op met Christmas). Let op: een gifje kan mogelijk niet beschikbaar zijn", code: "<gif>", category: ["Internet"], type: "Video-alert", year: 2024},
-	{ name: "Griddy bij KerstKnallers 2023", description: "De griddy van KerstKnallers 2023 (speelt 1 seconde af per gedoneerde euro)", code: "<griddy>", category: ["Muziek", "KerstKnallers"], type: "Video-alert", year: 2024},
+	{ name: "Griddy bij KerstKnallers 2023", description: "De griddy van KerstKnallers 2023", code: "<griddy>", category: ["Muziek", "KerstKnallers"], type: "Video-alert", year: 2024},
 	{ name: "Halo Theme", description: "Speel de Halo-themesong af onder je TTS-bericht", code: "<halotheme>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Keep it hardcore", description: "De titelsong van Wrestling Empire van MDickie. Come on do it! Come on do it! <a href=\"https://www.youtube.com/watch?v=U4eCMaf_UpI\">Bron</a>", code: "<hardcore>", category: ["Muziek", "Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Harde Hugo moment", description: "Voor de harde gaming momenten van Harde Hugo", code: "<hardehugo>", category: ["Harde Hugo", "Intro"], type: "Video-alert", year: 2024},
@@ -304,4 +304,5 @@
 	{ name: "VTube: Krab", description: "🦀 KRAB 🦀", code: "<vtubekrab>", category: ["VTube", "Dieren"], type: "Interactieve alert", year: 2025},
 	{ name: "Nederland 1 bumper", description: "De reclame start", code: "<nederland1>", category: ["TV"], type: "Video-alert", year: 2025},
 	{ name: "Skyrim intro", description: "Hey you. Finally awake?", code: "<skyrim>", category: ["Gaming", "Intro"], type: "Video-alert", year: 2025},
-	{ name: "Teletekst", description: "Teletekst nieuwsberichten 😴", code: "<teletekst>", category: ["TV"], type: "Video-alert", year: 2025}];
+	{ name: "Teletekst", description: "Teletekst nieuwsberichten 😴", code: "<teletekst>", category: ["TV"], type: "Video-alert", year: 2025}
+];
