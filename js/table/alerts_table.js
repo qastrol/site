@@ -305,4 +305,5 @@
 	{ name: "Nederland 1 bumper", description: "De reclame start", code: "<nederland1>", category: ["TV"], type: "Video-alert", year: 2025},
 	{ name: "Skyrim intro", description: "Hey you. Finally awake?", code: "<skyrim>", category: ["Gaming", "Intro"], type: "Video-alert", year: 2025},
 	{ name: "Teletekst", description: "Teletekst nieuwsberichten 😴", code: "<teletekst>", category: ["TV"], type: "Video-alert", year: 2025},
-	{ name: "Alert voor osrs", description: "Beschrijving voor osrs", code: "<osrs>" }];
+	{ name: "Old School RuneScape: Level up", description: "Een donatie in de stijl van Old School RuneScape, wanneer je bij een skill een level omhoog gaat", code: "<osrs>", category: ["Gaming"], type: "Audio-alert", year: 2025},
+];
