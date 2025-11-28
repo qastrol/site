@@ -300,4 +300,8 @@
 	{ name: "Clown WC", description: "De angstaanjagende Clown WC, bekend van Johano1rct's Planet Coaster streams bij KerstKnallers", code: "<clownwc>", category: ["Gaming", "Twitch"], type: "Video-alert", year: 2025},
 	{ name: "Mes in het schilderij!", description: "Er wordt een mes in een schilderij gestoken, zoals bij de donatiereward bij de KerstKnallers schilderstreams van xDinomite", code: "<mes>", category: ["Twitch"], type: "Video-alert", year: 2025},
 	{ name: "Lord Wout genieter", description: "Gemiddelde Lekker spelen fan vs gemiddelde Lord Wout genieter", code: "<woutgenieter>", category: ["Lord Wout", "Meme"], type: "Video-alert", year: 2025},
-	{ name: "Hallo lieve mensen", description: "Hallo lieve mensen, hallo met Wout", code: "<lievemensen>", category: ["Lord Wout", "Meme"], type: "Video-alert", year: 2025},];
+	{ name: "Hallo lieve mensen", description: "Hallo lieve mensen, hallo met Wout", code: "<lievemensen>", category: ["Lord Wout", "Meme"], type: "Video-alert", year: 2025},
+	{ name: "VTube: Krab", description: "🦀 KRAB 🦀", code: "<vtubekrab>", category: ["VTube", "Dieren"], type: "Interactieve alert", year: 2025},
+	{ name: "Nederland 1 bumper", description: "De reclame start", code: "<nederland1>", category: ["TV"], type: "Video-alert", year: 2025},
+	{ name: "Skyrim intro", description: "Hey you. Finally awake?", code: "<skyrim>", category: ["Gaming", "Intro"], type: "Video-alert", year: 2025},
+	{ name: "Teletekst", description: "Teletekst nieuwsberichten 😴", code: "<teletekst>", category: ["TV"], type: "Video-alert", year: 2025}];
