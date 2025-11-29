@@ -160,7 +160,7 @@
 	{ name: "Knolpower!", description: "Het is tijd voor wat knolpower!", code: "<knolpower>", category: ["Internet"], type: "Video-alert", year: 2024},
 	{ name: "Harde koprol", description: "Harde Hugo doet een koprol", code: "<koprol>", category: ["Harde Hugo"], type: "Video-alert", year: 2024},
 	{ name: "Labor Day song", description: "Het traditionele labor day lied. <a href=\"https://youtu.be/HmeKhjkTOn8?feature=shared&t=1098\">Bron</a>", code: "<laborday>", category: ["Muziek"], type: "Video-alert", year: 2024},
-	{ name: "Alert voor moviequiz", description: "Beschrijving voor moviequiz", code: "<moviequiz>", category: ["Film"], type: "Interactieve alert", year: 2024},
+	{ name: "Filmquiz", description: "Kan je de juiste film raden op basis van de aanwijzingen? ", code: "<moviequiz>", category: ["Film"], type: "Interactieve alert", year: 2024},
 	{ name: "Geen alert", description: "Wil je helemaal geen alert? Kies dan de <niks> alert", code: "<niks>", category: [], year: 2024},
 	{ name: "NPO 1 Tune", description: "Speel de NPO 1 tune onder je donatiebericht", code: "<npo1tune>", category: ["TV"], type: "Video-alert", year: 2024},
 	{ name: "NPO 2 Tune", description: "Speel de NPO 2 tune onder je donatiebericht", code: "<npo2tune>", category: ["TV"], type: "Video-alert", year: 2024},
