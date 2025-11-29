@@ -305,5 +305,9 @@
 	{ name: "Nederland 1 bumper", description: "De reclame start", code: "<nederland1>", category: ["TV"], type: "Video-alert", year: 2025},
 	{ name: "Skyrim intro", description: "Hey you. Finally awake?", code: "<skyrim>", category: ["Gaming", "Intro"], type: "Video-alert", year: 2025},
 	{ name: "Teletekst", description: "Teletekst nieuwsberichten 😴", code: "<teletekst>", category: ["TV"], type: "Video-alert", year: 2025},
-	{ name: "Old School RuneScape: Level up", description: "Een donatie in de stijl van Old School RuneScape, wanneer je bij een skill een level omhoog gaat", code: "<osrs>", category: ["Gaming"], type: "Audio-alert", year: 2025},
-];
+	{ name: "Old School RuneScape: Level up", description: "Een donatie in de stijl van Old School RuneScape, wanneer je bij een skill een level omhoog gaat", code: "<osrs>", category: ["Gaming"], type: "Audio-alert", year: 2025},,
+	{ name: "Curb Your Enthusiasm credits", description: "De meme van een rollende aftiteling met Curb Your Enthusiasm", code: "<curb>", category: ["Meme", "TV"], type: "Video-alert", year: 2025},
+	{ name: "Spoken van HARD", description: "Spoken van HARD", code: "<hardspoken>", category: ["Internet", "Nederland"], type: "Video-alert", year: 2025},
+	{ name: "Jerma's Thanksgiving wens", description: "Happy Thanksgiving van Jerma", code: "<jerma>", category: ["Twitch"], type: "Video-alert", year: 2025},
+	{ name: "Find Luigi", description: "De iconische minigame van New Super Mario Bros en Super Mario 64", code: "<luigi>", category: ["Gaming"], type: "Video-alert", year: 2025},
+	{ name: "Zo gaat het in Minecraft", description: "Een iconische Nederlandse Minecraft parodie. Besef.", code: "<zogaat>", category: ["Internet", "Gaming"], type: "Video-alert", year: 2025},];
