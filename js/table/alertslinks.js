@@ -27,6 +27,9 @@ const alertsLinks = {
   "adultswim": [
     "alerts/adultswim.webm"
   ],
+  "alarmo": [
+    "alerts/alarmo.mp4"
+  ],
   "attention": [
     "alerts/attention.webm"
   ],
@@ -50,6 +53,12 @@ const alertsLinks = {
   ],
   "bijnaweekend": [
     "alerts/bijnaweekend.mp4"
+  ],
+  "bioscoop": [
+    "alerts/bioscoop.mp4"
+  ],
+  "blooper": [
+    "alerts/blooper.webm"
   ],
   "boek": [
     "alerts/boek.mp4"
@@ -105,6 +114,12 @@ const alertsLinks = {
   ],
   "curb": [
     "alerts/curb.webm"
+  ],
+  "damage": [
+    "alerts/damage.mp4"
+  ],
+  "desertbus": [
+    "alerts/desertbus.webm"
   ],
   "dghhps": [
     "alerts/dghhps.mp4"
@@ -178,6 +193,12 @@ const alertsLinks = {
   "hard": [
     "alerts/hard.webm"
   ],
+  "hard3d": [
+    "alerts/hard3d.webm"
+  ],
+  "hard3dkoeksoep": [
+    "alerts/hard3dkoeksoep.webm"
+  ],
   "hardehugo": [
     "alerts/hardehugo.mp4"
   ],
@@ -201,6 +222,9 @@ const alertsLinks = {
   ],
   "hey": [
     "alerts/hey.mp4"
+  ],
+  "hhgregg": [
+    "alerts/hhgregg.webm"
   ],
   "hie": [
     "alerts/hie.mp4"
@@ -247,9 +271,6 @@ const alertsLinks = {
   "iwon": [
     "alerts/iwon.webm"
   ],
-  "jeanmineur": [
-    "alerts/jeanmineur.mp4"
-  ],
   "jerma": [
     "alerts/jerma.mp4"
   ],
@@ -280,6 +301,9 @@ const alertsLinks = {
   "koekie": [
     "alerts/koekie.mp4"
   ],
+  "koprol": [
+    "alerts/koprol.mp4"
+  ],
   "kroncrv": [
     "alerts/kroncrv.mp4"
   ],
@@ -294,6 +318,9 @@ const alertsLinks = {
   ],
   "lievemensen": [
     "alerts/lievemensen.webm"
+  ],
+  "likesubscribe": [
+    "alerts/likesubscribe.webm"
   ],
   "linkwritten": [
     "alerts/linkwritten.webm"
@@ -525,6 +552,9 @@ const alertsLinks = {
   ],
   "warnerbros": [
     "alerts/warnerbros.mp4"
+  ],
+  "watdoetderest": [
+    "alerts/watdoetderest.webm"
   ],
   "wc": [
     "alerts/wc.mp4"

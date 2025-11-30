@@ -1,4 +1,4 @@
-        // Functie om effectnaam te kopiëren naar klembord
+        
         function copyToClipboard(button) {
             const li = button.closest && button.closest('li');
             const codeEl = li ? li.querySelector('.item-code') : null;
@@ -35,7 +35,7 @@
 
         function showCopyToast(msg) {
             try {
-                // remove existing toast if present
+                
                 const prev = document.getElementById('alertsCopyToast'); if (prev) prev.remove();
                 const t = document.createElement('div');
                 t.id = 'alertsCopyToast';
@@ -57,7 +57,7 @@
             } catch (e) { /* ignore */ }
         }
 
-        // Sorting state per column (will be expanded dynamically)
+        
         let sortDirection = {};
 
         function sortTable(n, numeric = false) {
@@ -66,7 +66,7 @@
             const items = Array.from(list.querySelectorAll('li'));
             if (items.length === 0) return;
 
-            // column mapping: 0=name,1=desc,2=code,3=type,4=category,5=year
+            
             const colMap = { 0: '.item-name', 1: '.item-desc', 2: '.item-code' };
             const sel = colMap[n] || null;
 
@@ -107,7 +107,7 @@
         }
 
 
-        // --- Filtering support (categories, types, year) ---
+        
         function getSelectedCategories() {
             const container = document.getElementById('categoryFilters');
             if (!container) return [];
@@ -137,7 +137,7 @@
             const textMatch = (!searchLower) || name.indexOf(searchLower) !== -1 || desc.indexOf(searchLower) !== -1 || code.indexOf(searchLower) !== -1;
             if (!textMatch) return false;
 
-            // categories
+            
             let cats = [];
             if (Array.isArray(item.categories)) cats = item.categories.map(String);
             else if (item && item.categories && typeof item.categories === 'string') cats = item.categories.split(',').map(s => s.trim()).filter(Boolean);
@@ -150,7 +150,7 @@
                 if (!intersects) return false;
             }
 
-            // types
+            
             if (selectedTypes && selectedTypes.length > 0) {
                 let tarr = [];
                 if (Array.isArray(item.types)) tarr = item.types.map(String);
@@ -163,7 +163,7 @@
                 if (!intersectsTypes) return false;
             }
 
-            // year filtering: selectedYears is an array of chosen buckets; if empty -> no year filter
+            
             if (Array.isArray(yearSel) && yearSel.length > 0) {
                 const y = (item.year == null) ? '' : String(item.year).trim();
                 const bucket = (y === '2024') ? '2024_or_earlier' : '2025';
@@ -182,7 +182,7 @@
             const items = document.querySelectorAll('#alertList li');
             let visibleCount = 0;
             items.forEach(li => {
-                // reconstruct a minimal item from dataset for matching
+                
                 const item = {
                     name: li.dataset.name,
                     description: li.dataset.desc,
@@ -192,7 +192,7 @@
                     year: li.dataset.year || ''
                 };
                 let show = itemMatchesFilters(item, q, selCats, selTypes, selYears);
-                // favorites filter
+                
                 try {
                     const favCb = document.getElementById('filterFavorites');
                     if (favCb && favCb.checked) {
@@ -200,36 +200,35 @@
                         if (!(window.favorites && window.favorites.isFav('alerts', key))) show = false;
                     }
                 } catch (e) {}
-                    // preview/no-preview filter
-                    try {
-                        const pf = document.getElementById('filterHasPreview');
-                        const np = document.getElementById('filterNoPreview');
-                        const pfChecked = pf && pf.checked;
-                        const npChecked = np && np.checked;
-                        // If only 'Has preview' is checked -> show only items with preview
-                        if (pfChecked && !npChecked) {
-                            if (li.dataset.hasPreview !== '1') show = false;
-                        }
-                        // If only 'No preview' is checked -> show only items without preview
-                        else if (npChecked && !pfChecked) {
-                            if (li.dataset.hasPreview === '1') show = false;
-                        }
-                        // if neither or both are checked -> no preview-based filtering
-                    } catch (e) {}
+
+                try {
+                    const hasCb = document.getElementById('filterHasPreview');
+                    const noCb = document.getElementById('filterNoPreview');
+                    // If only one of the boxes is checked, filter accordingly. If both
+                    // are checked (or neither), do not restrict by preview availability.
+                    const hasOnly = hasCb && hasCb.checked && !(noCb && noCb.checked);
+                    const noOnly = noCb && noCb.checked && !(hasCb && hasCb.checked);
+                    if (hasOnly || noOnly) {
+                        const key = normalizeNameForFile(item.code || item.name || '');
+                        const hasPrev = previewAvailableSync(key);
+                        if (hasOnly && !hasPrev) show = false;
+                        if (noOnly && hasPrev) show = false;
+                    }
+                } catch (e) {}
                 li.style.display = show ? '' : 'none';
                 if (show) visibleCount++;
             });
             const rc = document.getElementById('rowCount'); if (rc) rc.textContent = visibleCount;
-            // update counts on the filter checkboxes
+            
             computeFilterCountsAlerts();
 
-            // build and render active filters UI (search, categories, types, years)
+            
             try {
                 const active = [];
                 if (input && input.value && input.value.trim() !== '') {
                     active.push({ type: 'search', label: 'Zoek: "' + input.value.trim() + '"', value: input.value.trim() });
                 }
-                // categories: find checked inputs and their labels
+                
                 const catContainer = document.getElementById('categoryFilters');
                 if (catContainer) {
                     const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]:checked'));
@@ -238,7 +237,7 @@
                         active.push({ type: 'category', label: lab, value: cb.value });
                     });
                 }
-                // types
+                
                 const typeContainer = document.getElementById('typeFilters');
                 if (typeContainer) {
                     const boxes = Array.from(typeContainer.querySelectorAll('input[type="checkbox"]:checked'));
@@ -247,7 +246,7 @@
                         active.push({ type: 'type', label: lab, value: cb.value });
                     });
                 }
-                // years
+                
                 const yearContainer = document.getElementById('yearFilters');
                 if (yearContainer) {
                     const boxes = Array.from(yearContainer.querySelectorAll('input[type="checkbox"]:checked'));
@@ -256,6 +255,13 @@
                         active.push({ type: 'year', label: lab, value: cb.value });
                     });
                 }
+                // Preview filters (has / no preview)
+                try {
+                    const hasCb = document.getElementById('filterHasPreview');
+                    const noCb = document.getElementById('filterNoPreview');
+                    if (hasCb && hasCb.checked) active.push({ type: 'preview', label: 'Heeft voorbeeld', value: 'has' });
+                    if (noCb && noCb.checked) active.push({ type: 'preview', label: 'Geen voorbeeld', value: 'no' });
+                } catch (e) {}
                 if (window.activeFilters && typeof window.activeFilters.render === 'function') {
                     const cont = document.getElementById('activeFiltersContainer');
                     window.activeFilters.render(cont, active);
@@ -263,7 +269,7 @@
             } catch (e) { console.error('active filters render failed', e); }
         }
 
-        // Compute counts for categories/types (mirror noobpoints behavior)
+        
         function computeFilterCountsAlerts() {
             if (typeof alertsTable === 'undefined' || !Array.isArray(alertsTable)) return;
             const searchLower = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
@@ -297,7 +303,7 @@
                 });
             }
 
-            // year counts
+            
             const yearContainer = document.getElementById('yearFilters');
             if (yearContainer) {
                 const boxes = Array.from(yearContainer.querySelectorAll('input[type="checkbox"]'));
@@ -311,58 +317,35 @@
                 });
             }
 
-            // preview counts: compute how many items have a preview available
+            // Preview counts: 'Heeft voorbeeld' and 'Geen voorbeeld'
             try {
-                const pf = document.getElementById('filterHasPreview');
-                if (pf) {
-                    const count = alertsTable.reduce((acc, item) => {
+                const hasCb = document.getElementById('filterHasPreview');
+                const noCb = document.getElementById('filterNoPreview');
+                if (hasCb || noCb) {
+                    const countHas = alertsTable.reduce((acc, item) => {
                         try {
-                            // only count items that also match current search/types/categories/years
                             if (!itemMatchesFilters(item, searchLower, selCats, selTypes, selYears)) return acc;
-                            const has = hasPreviewMappingForName(item.code || item.name || '');
-                            return has ? acc + 1 : acc;
+                            const key = normalizeNameForFile(item.code || item.name || '');
+                            return previewAvailableSync(key) ? acc + 1 : acc;
                         } catch (e) { return acc; }
                     }, 0);
-                    const parent = pf.parentElement || pf.closest('div');
-                    if (parent) { const span = parent.querySelector('.filter-count'); if (span) span.textContent = ' (' + count + ')'; }
-                }
-            } catch (e) { /* ignore preview count failures */ }
-
-            // no-preview counts: compute how many items explicitly have no preview mapping
-            try {
-                const np = document.getElementById('filterNoPreview');
-                if (np) {
                     const countNo = alertsTable.reduce((acc, item) => {
                         try {
                             if (!itemMatchesFilters(item, searchLower, selCats, selTypes, selYears)) return acc;
-                            const has = hasPreviewMappingForName(item.code || item.name || '');
-                            return (!has) ? acc + 1 : acc;
+                            const key = normalizeNameForFile(item.code || item.name || '');
+                            return !previewAvailableSync(key) ? acc + 1 : acc;
                         } catch (e) { return acc; }
                     }, 0);
-                    const parentNo = np.parentElement || np.closest('div');
+
+                    const parentHas = hasCb ? (hasCb.parentElement || hasCb.closest('div')) : null;
+                    if (parentHas) { const span = parentHas.querySelector('.filter-count'); if (span) span.textContent = ' (' + countHas + ')'; }
+                    const parentNo = noCb ? (noCb.parentElement || noCb.closest('div')) : null;
                     if (parentNo) { const span = parentNo.querySelector('.filter-count'); if (span) span.textContent = ' (' + countNo + ')'; }
                 }
             } catch (e) { /* ignore */ }
         }
 
-        // Helper: check generated alerts mapping (alertsLinks/getAlertsFiles) for media files
-        function hasPreviewMappingForName(codeOrDisplay) {
-            try {
-                const name = normalizeNameForFile(codeOrDisplay || '');
-                if (!name) return false;
-                const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
-                if (typeof window.getAlertsFiles === 'function') {
-                    const files = window.getAlertsFiles(name) || [];
-                    if (files.some(matchesMedia)) return true;
-                } else if (typeof window.alertsLinks !== 'undefined') {
-                    const files = window.alertsLinks[name] || [];
-                    if (files.some(matchesMedia)) return true;
-                }
-            } catch (e) {}
-            return false;
-        }
-
-        // Build category filters and type filters from alertsTable data
+        
         function buildCategoryFilters() {
             const container = document.getElementById('categoryFilters');
             if (!container || typeof alertsTable === 'undefined' || !Array.isArray(alertsTable)) return;
@@ -411,7 +394,7 @@
             });
         }
 
-        // Build year checkboxes (2024 or earlier / 2025)
+        
         function buildYearFilters() {
             const container = document.getElementById('yearFilters');
             if (!container) return;
@@ -430,7 +413,7 @@
             });
         }
 
-        // Render the alerts table from the `alertsTable` data source.
+        
         function renderAlertsTable() {
             const list = document.getElementById('alertList'); if (!list) return; list.innerHTML = '';
             if (typeof alertsTable === 'undefined' || !Array.isArray(alertsTable)) return;
@@ -450,7 +433,7 @@
                 name.appendChild(starEl);
                 const desc = document.createElement('div'); desc.className = 'item-desc'; desc.innerHTML = item.description || '';
 
-                // compute categories and types (set dataset values for filtering/sorting)
+                
                 let cats = [];
                 if (Array.isArray(item.categories)) cats = item.categories.map(String);
                 else if (item && item.categories && typeof item.categories === 'string') cats = item.categories.split(',').map(s => s.trim()).filter(Boolean);
@@ -465,19 +448,19 @@
                 else if (item && item.type && typeof item.type === 'string') types = item.type.split(',').map(s => s.trim()).filter(Boolean);
                 if (types.length) types.sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
 
-                // build an info row similar to noobpoints: Type • Categories • Year
+                
                 const info = document.createElement('div'); info.className = 'item-langs';
                 const typePart = (types.length) ? types.join(', ') : '';
                 const catPart = (cats.length) ? cats.join(', ') : '';
-                // year: show bucket label per project rules — '2024 of eerder' when exactly 2024, otherwise '2025'
+                
                 const yearBucket = (String(item.year || '').trim() === '2024') ? '2024 of eerder' : '2025';
                 const infoParts = [];
                 if (typePart) infoParts.push({ text: typePart, facet: 'type' });
                 if (catPart) infoParts.push({ text: catPart, facet: 'category' });
-                // always show the year bucket (per requirement: missing/empty -> 2025)
+                
                 infoParts.push({ text: yearBucket, facet: 'year' });
 
-                // render clickable parts separated by a bullet
+                
                 info.innerHTML = '';
                 infoParts.forEach((p, idx) => {
                     const span = document.createElement('span');
@@ -491,7 +474,7 @@
                 });
 
                 left.appendChild(name);
-                // mobile inline code row (similar to noobpoints mobile UI)
+                
                 const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = item.code || '';
                 const mobileCodeRow = document.createElement('div'); mobileCodeRow.className = 'mobile-code-row';
                 const mobileCodeLeft = document.createElement('div'); mobileCodeLeft.className = 'mobile-code-left';
@@ -502,14 +485,14 @@
                 mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
                 mobileCodeRow.appendChild(mobileCodeLeft);
                 mobileCodeRow.appendChild(mobileCopyBtn);
-                // insert mobile row
+                
                 left.appendChild(mobileCodeRow);
                 if (info.textContent) left.appendChild(info);
                 left.appendChild(desc);
 
                 const meta = document.createElement('div'); meta.className = 'item-meta';
                 const code = document.createElement('div'); code.className = 'item-code'; code.textContent = item.code || '';
-                // Add desktop copy button (will be hidden on mobile via CSS). Mobile copy remains in the mobile row.
+                
                 const actions = document.createElement('div'); actions.className = 'item-actions';
                 const copyBtn = document.createElement('button');
                 copyBtn.type = 'button';
@@ -522,36 +505,24 @@
 
                 main.appendChild(left); main.appendChild(meta); li.appendChild(main);
 
-                // attach dataset attributes for filters/preview
+                
                 li.dataset.name = (item.name || '').toString();
                 li.dataset.desc = (item.description || '').toString();
                 li.dataset.code = (item.code || '').toString();
                 if (cats.length) li.dataset.categories = cats.join('|');
                 if (types.length) li.dataset.types = types.join('|');
-                // store year as-is (string) for filtering; treat missing as ''
+                
                 li.dataset.year = (item.year == null) ? '' : String(item.year);
-
-                // mark whether a preview mapping exists (so filters can use it fast)
-                try {
-                    const hasPreview = hasPreviewMappingForName(item.code || item.name || '');
-                    li.dataset.hasPreview = hasPreview ? '1' : '0';
-                } catch (e) { li.dataset.hasPreview = '0'; }
 
                 list.appendChild(li);
             });
-
-            // ensure the preview filters toggle the listing when changed
-            try {
-                const pf = document.getElementById('filterHasPreview'); if (pf) pf.addEventListener('change', () => { refreshFilters(); });
-                const np = document.getElementById('filterNoPreview'); if (np) np.addEventListener('change', () => { refreshFilters(); });
-            } catch(e) {}
         }
 
-        // Hook voor de sort select in de sidebar
+        
         function applySort() {
             const sel = document.getElementById('sortSelect'); if (!sel) return;
             const [colStr, dir] = sel.value.split(':'); const col = parseInt(colStr, 10);
-            // set sortDirection so a single call to sortTable yields requested direction
+            
             sortDirection[col] = (dir === 'asc') ? 'asc' : 'desc';
             sortTable(col);
         }
@@ -563,7 +534,7 @@
             return (text || '').toString().replace(/[^a-z0-9]/gi, '').toLowerCase();
         }
 
-        // Update favorite star indicators for alerts list items
+        
         function updateFavIndicators() {
             try {
                 const nodes = Array.from(document.querySelectorAll('.fav-indicator'));
@@ -603,23 +574,23 @@
                     </div>
                 </div>`;
             document.body.appendChild(overlay);
-            // small inline popup inside overlay for feedback (link copied / favorited)
+            
             const popup = document.createElement('div');
             popup.className = 'preview-popup';
             popup.style.display = 'none';
             document.body.appendChild(popup);
-            // expose popup on overlay so showPreview can access it
+            
             overlay._previewPopup = popup;
             overlay.querySelector('.preview-close').addEventListener('click', () => { popup.remove(); overlay.remove(); });
             overlay.addEventListener('click', (e) => { if (e.target === overlay) { popup.remove(); overlay.remove(); } });
             return overlay;
         }
 
-        // showPreview supports two call styles for backward compatibility:
-        //  - showPreview(folder, displayName)
-        //  - showPreview(folder, code, displayName)
-        // When a code is provided (e.g. '<cj>') we prefer it for lookup (after
-        // normalizing) so angle-brackets do not prevent matching a preview file.
+        
+        
+        
+        
+        
         function showPreview(folder, codeOrDisplay, displayName) {
             let code = undefined;
             let display = undefined;
@@ -642,7 +613,7 @@
                 });
             });
 
-            // favorite and share buttons
+            
             try {
                 const favBtn = overlay.querySelector('.preview-fav');
                 const shareBtn = overlay.querySelector('.preview-share');
@@ -655,7 +626,7 @@
                     favBtn.title = isFav ? 'Verwijder favoriet' : 'Markeer als favoriet';
                 };
                 const popup = overlay._previewPopup;
-                // helper to show a small inline toast (re-uses popup appended to body)
+                
                 const showPopup = (msg) => {
                     try {
                         if (!popup) return;
@@ -683,9 +654,9 @@
                 }
             } catch (e) { /* ignore */ }
 
-            // Try mapping lookup with the normalized code first (if available),
-            // then fall back to the normalized display name. Do not perform any
-            // network probing here — only use the generated mapping.
+            
+            
+            
             try {
                 const tryNames = [];
                 if (code) tryNames.push(normalizeNameForFile(code));
@@ -721,7 +692,7 @@
                     }
                 }
             } catch (e) {
-                // ignore and fall through to no-preview message
+                
             }
 
             body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
@@ -747,7 +718,7 @@
             return false;
         }
 
-        // on load, check for focus param in URL
+        
         (function handleFocusFromUrl() {
             try {
                 const params = new URLSearchParams(window.location.search);
@@ -755,27 +726,27 @@
                 if (!focus) return;
                 const [page, key] = focus.split(':');
                 if (page === 'alerts' && key) {
-                    // wait a short while for rows to be rendered
+                    
                     setTimeout(() => { scrollAndHighlightByKey(key); }, 300);
                 }
             } catch (e) { /* ignore */ }
         })();
 
-        // Helper to check if a preview file exists (image -> audio -> video)
-        // Use HTTP HEAD (or GET with Range) to avoid downloading the whole file.
-        // Calls cb(true/false) when detection is complete.
+        
+        
+        
         async function _checkUrlExists(url) {
             try {
-                // Try HEAD first (no body downloaded)
+                
                 const head = await fetch(url, { method: 'HEAD' });
                 if (head && head.ok) return true;
-                // If server doesn't like HEAD (405/501), try a small ranged GET
+                
                 if (head && (head.status === 405 || head.status === 501)) {
                     const getr = await fetch(url, { method: 'GET', headers: { 'Range': 'bytes=0-0' } });
                     return Boolean(getr && getr.ok);
                 }
             } catch (e) {
-                // network error or CORS; try small ranged GET as fallback
+                
                 try {
                     const getr = await fetch(url, { method: 'GET', headers: { 'Range': 'bytes=0-0' } });
                     return Boolean(getr && getr.ok);
@@ -786,13 +757,13 @@
             return false;
         }
 
-        // previewExists supports two call styles:
-        //  - previewExists(folder, displayName, cb)
-        //  - previewExists(folder, code, displayName, cb)
+        
+        
+        
         function previewExists(folder, codeOrDisplay, displayName, cb) {
             let code = undefined;
             let display = undefined;
-            // Normalize arguments: allow (folder, display, cb)
+            
             if (typeof cb === 'undefined' && typeof displayName === 'function') {
                 cb = displayName;
                 display = codeOrDisplay;
@@ -817,13 +788,29 @@
                     }
                 }
             } catch (e) {
-                // ignore
+                
             }
 
             cb(false);
         }
 
-        // Attach preview handlers to first-column names and mark those with previews
+        // Synchronous check (using generated mapping) to determine whether
+        // a given normalized name has media files available for preview.
+        function previewAvailableSync(name) {
+            try {
+                const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
+                if (typeof window.getAlertsFiles === 'function') {
+                    const files = window.getAlertsFiles(name) || [];
+                    if (files.some(matchesMedia)) return true;
+                } else if (typeof window.alertsLinks !== 'undefined') {
+                    const files = window.alertsLinks[name] || [];
+                    if (files.some(matchesMedia)) return true;
+                }
+            } catch (e) { /* ignore */ }
+            return false;
+        }
+
+        
         function attachPreviewHandlers(){
             const rows = document.querySelectorAll('#alertList li');
             rows.forEach(r => {
@@ -838,33 +825,33 @@
                 });
             });
 
-            // Intercept any anchor that points to a local alerts media file or folder
-            // so the media isn't loaded until the preview overlay is requested.
+            
+            
             const anchors = document.querySelectorAll('#alertList a[href]');
             anchors.forEach(a => {
                 try {
                     const href = a.getAttribute('href') || '';
                     const lower = href.toLowerCase();
-                    // If the link targets the alerts folder or a media file extension, intercept it
+                    
                     const isLocalAlert = lower.includes('/alerts/') || lower.match(/\.(mp4|webm|mp3|ogg)(?:$|[?#])/i);
                     if (isLocalAlert) {
                         a.addEventListener('click', (ev) => {
                             ev.preventDefault();
-                            // Derive a display name from the filename or the link text
+                            
                             const filename = href.split('/').pop().split(/[?#]/)[0] || a.innerText.trim();
                             const name = filename.replace(/\.[^/.]+$/, '');
                             showPreview('alerts', name);
                         });
-                        // avoid the browser prefetching the resource
+                        
                         a.rel = (a.rel || '') + ' noopener';
                     }
                 } catch (e) {
-                    // ignore
+                    
                 }
             });
         }
 
-        // Apply a filter when an info-part is clicked (alerts page)
+        
         function applyFilterFromInfoAlerts(facet, text) {
             if (!text) return;
             const matchInContainer = (id) => {
@@ -892,7 +879,7 @@
                 if (matchInContainer(preferred[facet])) { try { refreshFilters(); } catch(e){}; return; }
             }
 
-            // fallback: try all known containers
+            
             const all = ['categoryFilters','typeFilters','yearFilters'];
             for (const id of all) {
                 if (matchInContainer(id)) { try { refreshFilters(); } catch(e){}; return; }
@@ -905,19 +892,42 @@
             const el = document.getElementById('rowCount'); if (el) el.textContent = visibleCount;
         }
 
-        // Initialize on DOMContentLoaded: render table, attach handlers, build filters and apply initial state
+        
         document.addEventListener("DOMContentLoaded", function() {
+            // Ensure page starts with no filters selected on normal load.
+            // This clears any checkbox/text state so the UI shows *no filters* by default.
+            try {
+                const panel = document.getElementById('filterPanel');
+                if (panel) {
+                    const checks = Array.from(panel.querySelectorAll('input[type="checkbox"]'));
+                    checks.forEach(cb => { try { cb.checked = false; } catch(e){} });
+                    const texts = Array.from(panel.querySelectorAll('input[type="text"], input[type="search"]'));
+                    texts.forEach(t => { try { t.value = ''; } catch(e){} });
+                }
+                // also clear top-level search input if present
+                const s = document.getElementById('searchInput'); if (s) s.value = '';
+            } catch (e) { /* ignore */ }
+
             renderAlertsTable();
             buildCategoryFilters();
             buildTypeFilters();
             buildYearFilters();
-                // wire the global favorites checkbox (always present in HTML) to filtering
+                
                 try {
                     const favEl = document.getElementById('filterFavorites');
                     if (favEl) favEl.addEventListener('change', () => { refreshFilters(); computeFilterCountsAlerts(); });
                 } catch (e) {}
 
-                // show/hide the favorites filter depending on whether any favorites exist
+                try {
+                    const hasEl = document.getElementById('filterHasPreview');
+                    if (hasEl) hasEl.addEventListener('change', () => { refreshFilters(); computeFilterCountsAlerts(); });
+                } catch (e) {}
+                try {
+                    const noEl = document.getElementById('filterNoPreview');
+                    if (noEl) noEl.addEventListener('change', () => { refreshFilters(); computeFilterCountsAlerts(); });
+                } catch (e) {}
+
+                
                 function updateFavoritesFilterVisibility() {
                     try {
                         const favWrap = document.getElementById('favoritesFilter');
@@ -928,7 +938,7 @@
                         const has = favCount > 0;
                         if (details) details.style.display = has ? '' : 'none';
                         if (countSpan) countSpan.textContent = has ? ' (' + favCount + ')' : '';
-                        // ensure checkbox unchecked when hiding
+                        
                         const cb = document.getElementById('filterFavorites'); if (!has && cb) cb.checked = false;
                     } catch (e) { /* ignore */ }
                 }
@@ -942,15 +952,15 @@
                         }
                     } catch (e) {}
                 });
-            // wire search input to refresh filters
+            
             const searchEl = document.getElementById('searchInput'); if (searchEl) searchEl.addEventListener('input', () => { refreshFilters(); });
-            // compute initial counts and visibility
-            // compute initial counts and visibility
+            
+            
             computeFilterCountsAlerts();
             refreshFilters();
             attachPreviewHandlers();
             try { updateFavIndicators(); } catch (e) {}
-            // apply initial sort according to selector value
+            
             const sel = document.getElementById('sortSelect');
             if (sel) {
                 const [colStr, dir] = sel.value.split(':');
@@ -959,7 +969,7 @@
             }
             sortTable(0);
             updateRowCount();
-            // Listen for active filter removal events from the chips
+            
             window.addEventListener('activeFilter:remove', (ev) => {
                 try {
                     const { type, value } = ev.detail || {};
@@ -984,12 +994,20 @@
                             const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
                             if (input) input.checked = false;
                         }
+                    } else if (type === 'preview') {
+                        try {
+                            if (value === 'has') {
+                                const el = document.getElementById('filterHasPreview'); if (el) el.checked = false;
+                            } else if (value === 'no') {
+                                const el = document.getElementById('filterNoPreview'); if (el) el.checked = false;
+                            }
+                        } catch (e) {}
                     }
-                    // refresh filters after change
+                    
                     refreshFilters();
                 } catch (e) { console.error('failed to handle activeFilter:remove', e); }
             });
-            // Clear all filters when requested by the active-filters UI
+            
             window.addEventListener('activeFilter:clear', () => {
                 try {
                     const s = document.getElementById('searchInput'); if (s) s.value = '';
@@ -1000,10 +1018,12 @@
                         inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
                     });
                     try { const fav = document.getElementById('filterFavorites'); if (fav) fav.checked = false; } catch (e) {}
+                    try { const has = document.getElementById('filterHasPreview'); if (has) { has.checked = false; has.dispatchEvent(new Event('change')); } } catch (e) {}
+                    try { const nop = document.getElementById('filterNoPreview'); if (nop) { nop.checked = false; nop.dispatchEvent(new Event('change')); } } catch (e) {}
                     refreshFilters();
                 } catch (e) { console.error('failed to clear filters (alerts)', e); }
             });
-            // expose functions for inline handlers
+            
             window.applySort = applySort;
             window.sortTable = sortTable;
         });
