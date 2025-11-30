@@ -340,6 +340,9 @@ const alertsLinks = {
   "mosterd": [
     "alerts/mosterd.mp4"
   ],
+  "mus": [
+    "alerts/mus.webm"
+  ],
   "mythbusters": [
     "alerts/mythbusters.mp4"
   ],
@@ -471,6 +474,9 @@ const alertsLinks = {
   ],
   "theroom": [
     "alerts/theroom.webm"
+  ],
+  "tito": [
+    "alerts/tito.mp4"
   ],
   "toetjes": [
     "alerts/toetjes.webm"

@@ -55,6 +55,8 @@
                     </div>
                 </details>
 
+
+
                 <details class="filter-option" open>
                     <summary>Type alert</summary>
                     <div class="filter-group">
@@ -78,6 +80,24 @@
                     <div class="filter-group">
                         <div id="yearFilters" style="margin:6px 0">
                             <!-- Year checkboxes will be injected here by js/alerts.js -->
+                        </div>
+                    </div>
+                </details>
+
+                <details class="filter-option" closed>
+                    <summary>Voorbeeld beschikbaar</summary>
+                    <div class="filter-group">
+                        <div style="display:flex; flex-direction:column; gap:6px; margin:6px 0;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <input type="checkbox" id="filterHasPreview" />
+                                <label for="filterHasPreview" style="font-weight:normal;"> Heeft voorbeeld</label>
+                                <span class="filter-count" style="margin-left:6px;color:#666"></span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <input type="checkbox" id="filterNoPreview" />
+                                <label for="filterNoPreview" style="font-weight:normal;"> Geen voorbeeld</label>
+                                <span class="filter-count" style="margin-left:6px;color:#666"></span>
+                            </div>
                         </div>
                     </div>
                 </details>

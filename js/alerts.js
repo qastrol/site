@@ -200,6 +200,22 @@
                         if (!(window.favorites && window.favorites.isFav('alerts', key))) show = false;
                     }
                 } catch (e) {}
+                    // preview/no-preview filter
+                    try {
+                        const pf = document.getElementById('filterHasPreview');
+                        const np = document.getElementById('filterNoPreview');
+                        const pfChecked = pf && pf.checked;
+                        const npChecked = np && np.checked;
+                        // If only 'Has preview' is checked -> show only items with preview
+                        if (pfChecked && !npChecked) {
+                            if (li.dataset.hasPreview !== '1') show = false;
+                        }
+                        // If only 'No preview' is checked -> show only items without preview
+                        else if (npChecked && !pfChecked) {
+                            if (li.dataset.hasPreview === '1') show = false;
+                        }
+                        // if neither or both are checked -> no preview-based filtering
+                    } catch (e) {}
                 li.style.display = show ? '' : 'none';
                 if (show) visibleCount++;
             });
@@ -294,6 +310,56 @@
                     }
                 });
             }
+
+            // preview counts: compute how many items have a preview available
+            try {
+                const pf = document.getElementById('filterHasPreview');
+                if (pf) {
+                    const count = alertsTable.reduce((acc, item) => {
+                        try {
+                            // only count items that also match current search/types/categories/years
+                            if (!itemMatchesFilters(item, searchLower, selCats, selTypes, selYears)) return acc;
+                            const has = hasPreviewMappingForName(item.code || item.name || '');
+                            return has ? acc + 1 : acc;
+                        } catch (e) { return acc; }
+                    }, 0);
+                    const parent = pf.parentElement || pf.closest('div');
+                    if (parent) { const span = parent.querySelector('.filter-count'); if (span) span.textContent = ' (' + count + ')'; }
+                }
+            } catch (e) { /* ignore preview count failures */ }
+
+            // no-preview counts: compute how many items explicitly have no preview mapping
+            try {
+                const np = document.getElementById('filterNoPreview');
+                if (np) {
+                    const countNo = alertsTable.reduce((acc, item) => {
+                        try {
+                            if (!itemMatchesFilters(item, searchLower, selCats, selTypes, selYears)) return acc;
+                            const has = hasPreviewMappingForName(item.code || item.name || '');
+                            return (!has) ? acc + 1 : acc;
+                        } catch (e) { return acc; }
+                    }, 0);
+                    const parentNo = np.parentElement || np.closest('div');
+                    if (parentNo) { const span = parentNo.querySelector('.filter-count'); if (span) span.textContent = ' (' + countNo + ')'; }
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        // Helper: check generated alerts mapping (alertsLinks/getAlertsFiles) for media files
+        function hasPreviewMappingForName(codeOrDisplay) {
+            try {
+                const name = normalizeNameForFile(codeOrDisplay || '');
+                if (!name) return false;
+                const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
+                if (typeof window.getAlertsFiles === 'function') {
+                    const files = window.getAlertsFiles(name) || [];
+                    if (files.some(matchesMedia)) return true;
+                } else if (typeof window.alertsLinks !== 'undefined') {
+                    const files = window.alertsLinks[name] || [];
+                    if (files.some(matchesMedia)) return true;
+                }
+            } catch (e) {}
+            return false;
         }
 
         // Build category filters and type filters from alertsTable data
@@ -465,8 +531,20 @@
                 // store year as-is (string) for filtering; treat missing as ''
                 li.dataset.year = (item.year == null) ? '' : String(item.year);
 
+                // mark whether a preview mapping exists (so filters can use it fast)
+                try {
+                    const hasPreview = hasPreviewMappingForName(item.code || item.name || '');
+                    li.dataset.hasPreview = hasPreview ? '1' : '0';
+                } catch (e) { li.dataset.hasPreview = '0'; }
+
                 list.appendChild(li);
             });
+
+            // ensure the preview filters toggle the listing when changed
+            try {
+                const pf = document.getElementById('filterHasPreview'); if (pf) pf.addEventListener('change', () => { refreshFilters(); });
+                const np = document.getElementById('filterNoPreview'); if (np) np.addEventListener('change', () => { refreshFilters(); });
+            } catch(e) {}
         }
 
         // Hook voor de sort select in de sidebar

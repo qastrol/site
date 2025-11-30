@@ -312,4 +312,5 @@
 	{ name: "Find Luigi", description: "De iconische minigame van New Super Mario Bros en Super Mario 64", code: "<luigi>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "Zo gaat het in Minecraft", description: "Een iconische Nederlandse Minecraft parodie. Besef.", code: "<zogaat>", category: ["Internet", "Gaming"], type: "Video-alert", year: 2025},
 	{ name: "Welke lijsttrekker ben jij?", description: "Welke van de 26 lijsttrekkers ben jij?", code: "<lijsttrekker>", category: ["Nederland"], type: "Audio-alert", year: 2025},,
-	{ name: "Tito Dick \"Dickman\"", description: "Tito Dick \"Dickman\", een karakter van één van de slechtst beoordeelde tekenfilms allertijden: The Nutshack", code: "<tito>", category: ["TV"], type: "Video-alert", year: 2025}];
+	{ name: "Tito Dick \"Dickman\"", description: "Tito Dick \"Dickman\", een karakter van één van de slechtst beoordeelde tekenfilms allertijden: The Nutshack", code: "<tito>", category: ["TV"], type: "Video-alert", year: 2025},
+	{ name: "De Mus", description: "Tsjielp tsjielp tsjielp", code: "<mus>", category: ["Dieren"], type: "Video-alert", year: 2025}];
