@@ -728,7 +728,7 @@
     },
     {
         "name": "Illuminati",
-        "description": "Ook wel bekend als het X-files thema â”",
+        "description": "Ook wel bekend als het X-files thema”",
         "category": [
             "Meme"
         ],
