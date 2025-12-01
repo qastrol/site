@@ -315,6 +315,9 @@ const soundeffectsLinks = {
   "teams": [
     "soundeffects/teams.mp3"
   ],
+  "thee": [
+    "soundeffects/thee.mp3"
+  ],
   "tickle": [
     "soundeffects/tickle.mp3"
   ],
@@ -377,6 +380,9 @@ const soundeffectsLinks = {
   ],
   "yup": [
     "soundeffects/yup.mp3"
+  ],
+  "zml": [
+    "soundeffects/zml.mp3"
   ],
   "zombie": [
     "soundeffects/zombie.mp3"

@@ -1140,5 +1140,22 @@
             "Gaming"
         ],
         "length": 820
+    },
+    {
+        "name": "Zondag met Lubach jingle",
+        "code": "(zml)",
+        "description": "De jingle van Zondag met Lubach",
+        "category": [
+            "TV"
+        ],
+    },
+    {
+        "name": "Een vers kopje thee",
+        "code": "(thee)",
+        "description": "René Froger: Een vers kopje thee",
+        "category": [
+            "TV"
+        ],
+        
     }
 ];

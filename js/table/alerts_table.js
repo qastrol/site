@@ -312,4 +312,6 @@
 	{ name: "Welke lijsttrekker ben jij?", description: "Welke van de 26 lijsttrekkers ben jij?", code: "<lijsttrekker>", category: ["Nederland"], type: "Audio-alert", year: 2025},
 	{ name: "Tito Dick \"Dickman\"", description: "Tito Dick \"Dickman\", een karakter van één van de slechtst beoordeelde tekenfilms allertijden: The Nutshack", code: "<tito>", category: ["TV"], type: "Video-alert", year: 2025},
 	{ name: "De Mus", description: "Tsjielp tsjielp tsjielp", code: "<mus>", category: ["Dieren"], type: "Video-alert", year: 2025},
-	{ name: "3D Pinball for Windows - Space Cadet", description: "Speel het iconische pinballspel van Windows XP: Space Cadet. Je kan niet de flippers bewegen, maar wel zieke scores behalen. Je hebt 30 seconden om een kaulo harde score te zetten", code: "<pinball>", category: ["Gaming"], type: "Interactieve alert", year: 2025}];
+	{ name: "3D Pinball for Windows - Space Cadet", description: "Speel het iconische pinballspel van Windows XP: Space Cadet. Je kan niet de flippers bewegen, maar wel zieke scores behalen. Je hebt 30 seconden om een kaulo harde score te zetten", code: "<pinball>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
+	{ name: "Alert voor bioscoop", description: "Beschrijving voor bioscoop", code: "<bioscoop>" },
+	{ name: "Alert voor hartslag", description: "Beschrijving voor hartslag", code: "<hartslag>" }];
