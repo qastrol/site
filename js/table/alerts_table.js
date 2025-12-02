@@ -314,4 +314,7 @@
 	{ name: "De Mus", description: "Tsjielp tsjielp tsjielp", code: "<mus>", category: ["Dieren"], type: "Video-alert", year: 2025},
 	{ name: "3D Pinball for Windows - Space Cadet", description: "Speel het iconische pinballspel van Windows XP: Space Cadet. Je kan niet de flippers bewegen, maar wel zieke scores behalen. Je hebt 30 seconden om een kaulo harde score te zetten", code: "<pinball>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "Qastrol's hartslag", description: "Zie de actuele hartslag van Qastrol", code: "<hartslag>", category: ["Qastrol"], type: "Interactieve alert", year: 2025},
-	{ name: "Pikachu's Jukebox", description: "Eén van de outro-nummers van het tweede deel van de Kanto anime en de Orange Island anime speelt af", code: "<pikachu>", category: ["TV"], type: "Video-alert", year: 2025},];
+	{ name: "Pikachu's Jukebox", description: "Eén van de outro-nummers van het tweede deel van de Kanto anime en de Orange Island anime speelt af", code: "<pikachu>", category: ["TV"], type: "Video-alert", year: 2025},,
+	{ name: "Alert voor blj", description: "Beschrijving voor blj", code: "<blj>" },
+	{ name: "Alert voor dobbel", description: "Beschrijving voor dobbel", code: "<dobbel>" },
+	{ name: "Alert voor rubiks", description: "Beschrijving voor rubiks", code: "<rubiks>" }];
