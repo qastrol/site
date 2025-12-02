@@ -318,5 +318,5 @@
 	{ name: "Super Mario 64: BLJ", description: "Mario doet een BLJ", code: "<blj>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "Gooi een dobbelsteen", description: "Gooi een dobbelsteen met een mogelijke worp tussen 1-6", code: "<dobbel>", category: ["Dagelijks leven"], type: "Interactieve alert", year: 2025},
 	{ name: "Rubik's kubus", description: "Een interactieve weergave van een Rubik's kubus die automatisch opgelost wordt", code: "<rubiks>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
-	{ name: "Shaun het Schaap intro", description: "De Shaun het Schaap intro, maar dan met Lord Wout", code: "<shaun>", category: ["Lord Wout", "Intro"], type: "Video-alert", year: 2025},
+	{ name: "Shaun het Schaap: Lord Wout", description: "De Shaun het Schaap intro, maar dan met Lord Wout", code: "<shaun>", category: ["Lord Wout", "Intro"], type: "Video-alert", year: 2025},
 ];

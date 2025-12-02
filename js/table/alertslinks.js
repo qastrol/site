@@ -256,9 +256,6 @@ const alertsLinks = {
   "humbertotantoe": [
     "alerts/humbertotantoe.webm"
   ],
-  "humbertotantoeleeg": [
-    "alerts/HumbertotantoeLeeg.webm"
-  ],
   "iamsteve": [
     "alerts/iamsteve.mp4"
   ],
@@ -456,6 +453,9 @@ const alertsLinks = {
   ],
   "rutte": [
     "alerts/rutte.mp4"
+  ],
+  "shaun": [
+    "alerts/shaun.mp4"
   ],
   "shrek": [
     "alerts/shrek.webm"
