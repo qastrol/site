@@ -10,6 +10,15 @@ video_ext = ('.mp4', '.webm', '.mov', '.mkv')
 # Audio extensies
 audio_ext = ('.mp3', '.wav', '.ogg', '.m4a')
 
+# Audio-only compression settings (less aggressive than before)
+# Adjust these values if you want different tradeoff between size and quality.
+# Examples: '192k', '256k'
+AUDIO_BITRATE = "192k"
+# If set to an integer 0-9 for libmp3lame VBR quality, use QMODE = True and set AUDIO_QUALITY
+# Lower numbers mean better quality for VBR (0 best, 9 worst). If QMODE is True, -q:a is used.
+QMODE = False
+AUDIO_QUALITY = 2
+
 def compress_video(input_path):
     temp_path = input_path + ".tmp.mp4"
 
@@ -46,14 +55,21 @@ def compress_video(input_path):
 def compress_audio(input_path):
     temp_path = input_path + ".tmp.mp3"
 
+    # For audio-only files we use a higher bitrate / quality to avoid
+    # over-compressing voice/sfx. Default uses CBR via -b:a, but can be
+    # switched to VBR (libmp3lame -q:a) by setting QMODE = True above.
     command = [
         "ffmpeg",
         "-i", input_path,
         "-c:a", "libmp3lame",
-        "-b:a", "96k",
-        "-y",
-        temp_path
     ]
+
+    if QMODE:
+        command += ["-q:a", str(AUDIO_QUALITY)]
+    else:
+        command += ["-b:a", AUDIO_BITRATE]
+
+    command += ["-y", temp_path]
 
     try:
         subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)

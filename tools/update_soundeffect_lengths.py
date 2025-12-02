@@ -33,6 +33,8 @@ import os
 import re
 import sys
 import argparse
+import shutil
+from datetime import datetime
 from pathlib import Path
 
 JS_PATH = Path("js/table/soundeffects_table.js")
@@ -45,7 +47,12 @@ def normalize_key(s: str) -> str:
 
 
 def get_mp3_durations(sfx_dir: Path):
-    """Return mapping normalized_name -> duration_ms for .mp3 files found."""
+    """Return mapping basename -> duration_ms for .mp3 files found.
+
+    Uses the MP3 filename (without extension) as the key. This matches the
+    convention where a JS entry's `code` value (without surrounding
+    parentheses) equals the mp3 filename.
+    """
     try:
         from mutagen.mp3 import MP3
     except Exception as e:
@@ -64,7 +71,7 @@ def get_mp3_durations(sfx_dir: Path):
                 continue
             path = Path(root) / fn
             base = path.stem
-            key = normalize_key(base)
+            key = base  # use raw basename: e.g. 'airhorn'
             try:
                 audio = MP3(path)
                 length_s = float(audio.info.length)
@@ -78,6 +85,9 @@ def get_mp3_durations(sfx_dir: Path):
 def update_js_file(js_path: Path, durations: dict, dry_run: bool = False) -> tuple[int,int]:
     """Update or insert `length: <ms>` in objects inside soundeffects_table.js.
 
+    Matching uses the object's `code` field (if present). If `code` is like
+    "(airhorn)", the parentheses are stripped and compared to mp3 basenames.
+
     Returns (updated_count, total_matched)
     """
     if not js_path.exists():
@@ -85,89 +95,113 @@ def update_js_file(js_path: Path, durations: dict, dry_run: bool = False) -> tup
 
     content = js_path.read_text(encoding='utf-8')
 
-    # Extract the array body of soundeffectsTable for simpler searching
-    arr_match = re.search(r"const\s+soundeffectsTable\s*=\s*\[", content)
-    if not arr_match:
-        raise RuntimeError("Could not find 'const soundeffectsTable = [' in JS file")
+    # Find each object inside the array and process individually so we can
+    # match on the object's `code` field (preferred) or fallback to `name`.
+    obj_re = re.compile(r"\{(?P<obj>.*?)\}(?=\s*,|\s*\n)", re.S)
 
-    # We'll find each object by locating the pattern: { ... name: "..." ... }
-    # Use a regex that captures an object starting with '{' and containing name: "..."
-    # and non-greedily continues until the next '\n\t},' or '\n];' etc.
-    obj_re = re.compile(r"\{\s*name\s*:\s*\"(?P<name>.*?)\"(?P<body>.*?)\}(?=\s*,|\s*\n)", re.S)
+    new_parts = []
+    last_end = 0
+    updated_count = 0
+    total_matched = 0
 
-    def replace_obj(m: re.Match) -> str:
-        name = m.group('name')
-        body = m.group('body')
+    for m in obj_re.finditer(content):
+        start, end = m.span()
         obj_text = m.group(0)
-        key = normalize_key(name)
-        matched = key in durations
-        if not matched:
-            return obj_text  # unchanged
-        ms = durations[key]
-        # Check if length property exists
-        if re.search(r"\blength\s*:\s*[^,}\n]+", body):
-            # replace existing length value
-            new_body = re.sub(r"\blength\s*:\s*[^,}\n]+", f"length: {ms}", body)
-            new_obj = "{" + f"name: \"{name}\"" + new_body + "}"
-            return new_obj
+        obj_body = m.group('obj')
+
+        # find code field
+        code_match = re.search(r'["\']?code["\']?\s*:\s*["\'](?P<code>[^"\']+)["\']', obj_body)
+        key = None
+        if code_match:
+            code_val = code_match.group('code').strip()
+            # strip surrounding parentheses
+            if code_val.startswith('(') and code_val.endswith(')'):
+                code_val = code_val[1:-1]
+            key = code_val
         else:
-            # insert length before the final close of object
-            # attempt to preserve indentation: find last non-whitespace before final '}'
-            # assemble: original up to just before '}', then add ', length: <ms>' then '}'
-            # But body already starts with the rest after the name; we need to append length before closing brace
-            # Simplest: if body.strip().endswith(',') then place ' length: <ms>' before final comma? safer to insert ', length: <ms>' before the '}'
-            # Build new object by removing trailing spaces then inserting
-            stripped = obj_text.rstrip()
-            # find position of final '}' in obj_text
-            # We'll remove the final '}' and append ', length: {ms}}' with same spacing
-            # But ensure we don't introduce double commas
-            # If the object already ends with a comma just before '}', avoid double comma
-            # Example endings: '...\n\t},' or '...\n\t}'
-            # We'll search backwards for the last non-space char before the final '}'
-            # Find index of final '}' relative to obj_text
+            # fallback to name field
+            name_match = re.search(r'["\']?name["\']?\s*:\s*["\'](?P<name>[^"\']+)["\']', obj_body)
+            if name_match:
+                # normalize name similarly to previous behavior
+                key = normalize_key(name_match.group('name'))
+
+        # Append unchanged chunk before this object
+        new_parts.append(content[last_end:start])
+
+        if key is None:
+            # no key to match; leave object unchanged
+            new_parts.append(obj_text)
+            last_end = end
+            continue
+
+        # Determine if this object corresponds to a file we have duration for
+        matched = key in durations
+        # If we didn't find by exact code filename, also try normalized name lookup
+        if not matched:
+            alt_key = normalize_key(key)
+            if alt_key in durations:
+                key = alt_key
+                matched = True
+
+        if not matched:
+            new_parts.append(obj_text)
+            last_end = end
+            continue
+
+        total_matched += 1
+        ms = durations[key]
+
+        # Check for existing length property
+        if re.search(r'["\']?length["\']?\s*:\s*\d+', obj_body):
+            # replace the existing length number using a callable replacement
+            def repl(m):
+                return m.group(1) + str(ms)
+
+            new_obj_text = re.sub(r'(["\']?length["\']?\s*:\s*)(\d+)', repl, obj_text)
+            if new_obj_text != obj_text:
+                updated_count += 1
+            new_parts.append(new_obj_text)
+        else:
+            # insert length before the final '}' of the object
             last_brace_idx = obj_text.rfind('}')
             before = obj_text[:last_brace_idx]
             after = obj_text[last_brace_idx:]
-            # Trim trailing whitespace from 'before'
             bt = before.rstrip()
+            # determine indentation for the inserted line by examining last line
+            nl = before.rfind('\n')
+            indent = ''
+            if nl != -1:
+                line = before[nl+1:]
+                m_ind = re.match(r'(\s*)', line)
+                indent = m_ind.group(1)
+
             if bt.endswith(','):
-                new_before = bt + f" length: {ms}"
+                new_before = bt + f"\n{indent}\"length\": {ms}"
             else:
-                new_before = bt + f", length: {ms}"
-            # Preserve whatever whitespace was between bt and '}' by capturing spaces in 'after'
-            new_obj = new_before + after
-            return new_obj
+                new_before = bt + f",\n{indent}\"length\": {ms}"
 
-    new_content, n = obj_re.subn(replace_obj, content)
-
-    # n is number of object matches attempted; but replace_obj only changes when key present
-    # Count actual updates by diffing occurrences of 'length:' for keys
-    updated_count = 0
-    for k, ms in durations.items():
-        # Build pattern to check presence of name followed by length: ms
-        pat = re.compile(rf"name\s*:\s*\".*?\".*?length\s*:\s*{ms}", re.S)
-        if pat.search(new_content):
+            new_obj = new_before + '\n' + after
             updated_count += 1
+            new_parts.append(new_obj)
+
+        last_end = end
+
+    # Append remainder
+    new_parts.append(content[last_end:])
+    new_content = ''.join(new_parts)
 
     # Make backup and write
     if updated_count > 0 and not dry_run:
-        bak_path = js_path.with_suffix(js_path.suffix + BACKUP_SUFFIX)
-        if not bak_path.exists():
-            js_path.rename(bak_path)
-            # write new content to original path
-            js_path.write_text(new_content, encoding='utf-8')
-        else:
-            # if backup exists, create a timestamped backup
-            import time
-            ts = int(time.time())
-            bak_path2 = js_path.with_name(js_path.name + f".{ts}.bak")
-            js_path.rename(bak_path2)
-            js_path.write_text(new_content, encoding='utf-8')
+        ts = int(datetime.now().timestamp())
+        bak_path = js_path.with_name(js_path.name + f".{ts}.bak")
+        shutil.copy2(js_path, bak_path)
+        js_path.write_text(new_content, encoding='utf-8')
+        print(f"Backup written to: {bak_path}")
     elif dry_run:
-        # just show counts
+        # dry-run: do not modify file
         pass
 
-    return updated_count, len(durations)
+    return updated_count, total_matched
 
 
 def main(argv):

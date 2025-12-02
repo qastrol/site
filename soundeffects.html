@@ -102,6 +102,8 @@
                         <option value="2:desc">Beschrijving (Z → A)</option>
                     <option value="3:asc">Lengte (kort → lang)</option>
                     <option value="3:desc">Lengte (lang → kort)</option>
+                    <option value="4:asc">Geluidsnaam (A → Z)</option>
+                    <option value="4:desc">Geluidsnaam (Z → A)</option>
                 </select>
                 <div class="row-count" aria-live="polite">Aantal sound effects: <span id="counter">0</span></div>
                 <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
@@ -116,8 +118,8 @@
                     <span class="header-sub">/</span>
                     <button class="header-btn" onclick="sortTable(2)">Beschrijving</button>
                 </div>
-                <div class="header-meta">
-                    <button class="header-btn" disabled>Geluidsnaam</button>
+                    <div class="header-meta">
+                    <button class="header-btn" onclick="sortTable(4)">Geluidsnaam</button>
                     <div>Actie</div>
                 </div>
             </div>

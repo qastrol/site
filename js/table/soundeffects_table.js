@@ -323,7 +323,7 @@
         "name": "Mosterd",
         "description": "Mosterd - Reitse Spanninga",
         "category": [
-            "FryslÃ¢n",
+            "Fryslân",
             "TV"
         ],
         "length": 720,
@@ -1148,7 +1148,8 @@
         "category": [
             "TV"
         ],
-    },
+    "length": 3088
+},
     {
         "name": "Een vers kopje thee",
         "code": "(thee)",
@@ -1156,6 +1157,13 @@
         "category": [
             "TV"
         ],
-        
+    "length": 3007
+},
+    {
+        "name": "Swoosh",
+        "description": "Alsof een voorwerp wordt gezwaaid",
+        "category": [],
+        "length": 360,
+        "code": "(swoosh)"
     }
 ];

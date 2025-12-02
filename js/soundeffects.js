@@ -23,7 +23,7 @@
         }
 
 
-        let sortDirection = [true, true, true, true]; // array om de sorteer volgorde bij te houden (extra voor lengte)
+        let sortDirection = [true, true, true, true, true]; // array om de sorteer volgorde bij te houden (extra voor lengte en code)
 
         // Functie om de tabel te sorteren (operates on list)
         function sortTable(n) {
@@ -45,6 +45,13 @@
                     const al = parseInt(a.dataset.length || '0', 10) || 0;
                     const bl = parseInt(b.dataset.length || '0', 10) || 0;
                     return al - bl;
+                });
+            } else if (n === 4) {
+                // sort by geluidsnaam / code (dataset.code or .item-code)
+                items.sort((a, b) => {
+                    const ac = (a.dataset.code || (a.querySelector('.item-code') && a.querySelector('.item-code').innerText) || '').toString().toLowerCase();
+                    const bc = (b.dataset.code || (b.querySelector('.item-code') && b.querySelector('.item-code').innerText) || '').toString().toLowerCase();
+                    return ac.localeCompare(bc, 'nl', { sensitivity: 'base' });
                 });
             } else {
                 const colMap = { 0: '.item-name', 2: '.item-desc' };
@@ -229,6 +236,8 @@
                 const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer geluidsnaam'; btn.addEventListener('click', function() { copyToClipboard(this); });
                 actions.appendChild(btn);
                 meta.appendChild(codeEl);
+                // allow clicking the code element to sort by geluidsnaam
+                try { codeEl.style.cursor = 'pointer'; codeEl.title = 'Klik om te sorteren op geluidsnaam'; codeEl.addEventListener('click', () => sortTable(4)); } catch (e) {}
                 meta.appendChild(actions);
 
                 main.appendChild(left); main.appendChild(meta); li.appendChild(main);

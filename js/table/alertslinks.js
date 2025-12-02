@@ -57,6 +57,9 @@ const alertsLinks = {
   "bioscoop": [
     "alerts/bioscoop.mp4"
   ],
+  "blj": [
+    "alerts/blj.webm"
+  ],
   "blooper": [
     "alerts/blooper.webm"
   ],
@@ -270,6 +273,9 @@ const alertsLinks = {
   ],
   "iwon": [
     "alerts/iwon.webm"
+  ],
+  "jeanmineur": [
+    "alerts/jeanmineur.mp4"
   ],
   "jerma": [
     "alerts/jerma.mp4"

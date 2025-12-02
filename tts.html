@@ -109,6 +109,8 @@
                         <option value="3:desc">Taal (Z → A)</option>
                         <option value="4:asc">Beschrijving (A → Z)</option>
                         <option value="4:desc">Beschrijving (Z → A)</option>
+                        <option value="5:asc">Stemnaam (code) (A → Z)</option>
+                        <option value="5:desc">Stemnaam (code) (Z → A)</option>
                     </select>
                     <div class="row-count" aria-live="polite">Aantal stemmen: <span id="rowCount">0</span></div>
                     <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
@@ -127,7 +129,7 @@
                         <button class="header-btn" onclick="sortTable(4)">Beschrijving</button>
                     </div>
                     <div class="header-meta">
-                        <button class="header-btn" disabled>Stemnaam</button>
+                        <button class="header-btn" onclick="sortTable(5)">Stemnaam</button>
                         <div style="width:12px"></div>
                         <div>Actie</div>
                     </div>

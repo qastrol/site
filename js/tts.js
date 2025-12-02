@@ -185,12 +185,17 @@ function renderTtsTable() {
     li.dataset.code = (item.code || '').toString();
 
         list.appendChild(li);
+        // allow clicking the desktop code element to sort by stem code/name
+        try {
+            const codeEl = li.querySelector('.item-code');
+            if (codeEl) { codeEl.style.cursor = 'pointer'; codeEl.title = 'Klik om te sorteren op stemnaam'; codeEl.addEventListener('click', () => sortTable(5)); }
+        } catch (e) {}
     });
 }
 
 
 
-    let sortDirection = [true, true, true, true, true]; 
+    let sortDirection = [true, true, true, true, true, true]; 
 
         
         function sortTable(n) {
@@ -202,6 +207,19 @@ function renderTtsTable() {
             
             const colMap = { 0: '.item-name', 1: null, 2: null, 3: '.item-langs', 4: '.item-desc' };
             const sel = colMap[n];
+
+            // support sorting by stem code/name (dataset.code / .item-code) as column 5
+            if (n === 5) {
+                items.sort((a, b) => {
+                    const ac = (a.dataset.code || (a.querySelector('.item-code') && a.querySelector('.item-code').innerText) || '').toString().toLowerCase();
+                    const bc = (b.dataset.code || (b.querySelector('.item-code') && b.querySelector('.item-code').innerText) || '').toString().toLowerCase();
+                    return ac.localeCompare(bc, 'nl', { sensitivity: 'base' });
+                });
+                if (!sortDirection[n]) items.reverse();
+                items.forEach(it => list.appendChild(it));
+                sortDirection[n] = !sortDirection[n];
+                return;
+            }
 
             const isNumeric = items.every(li => {
                 let txt = '';
