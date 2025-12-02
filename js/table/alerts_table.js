@@ -314,7 +314,9 @@
 	{ name: "De Mus", description: "Tsjielp tsjielp tsjielp", code: "<mus>", category: ["Dieren"], type: "Video-alert", year: 2025},
 	{ name: "3D Pinball for Windows - Space Cadet", description: "Speel het iconische pinballspel van Windows XP: Space Cadet. Je kan niet de flippers bewegen, maar wel zieke scores behalen. Je hebt 30 seconden om een kaulo harde score te zetten", code: "<pinball>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "Qastrol's hartslag", description: "Zie de actuele hartslag van Qastrol", code: "<hartslag>", category: ["Qastrol"], type: "Interactieve alert", year: 2025},
-	{ name: "Pikachu's Jukebox", description: "Eén van de outro-nummers van het tweede deel van de Kanto anime en de Orange Island anime speelt af", code: "<pikachu>", category: ["TV"], type: "Video-alert", year: 2025},,
+	{ name: "Pikachu's Jukebox", description: "Eén van de outro-nummers van het tweede deel van de Kanto anime en de Orange Island anime speelt af", code: "<pikachu>", category: ["TV"], type: "Video-alert", year: 2025},
 	{ name: "Super Mario 64: BLJ", description: "Mario doet een BLJ", code: "<blj>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "Gooi een dobbelsteen", description: "Gooi een dobbelsteen met een mogelijke worp tussen 1-6", code: "<dobbel>", category: ["Dagelijks leven"], type: "Interactieve alert", year: 2025},
-	{ name: "Rubik's kubus", description: "Een interactieve weergave van een Rubik's kubus die automatisch opgelost wordt", code: "<rubiks>", category: ["Gaming"], type: "Interactieve alert", year: 2025}];
+	{ name: "Rubik's kubus", description: "Een interactieve weergave van een Rubik's kubus die automatisch opgelost wordt", code: "<rubiks>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
+	{ name: "Shaun het Schaap intro", description: "De Shaun het Schaap intro, maar dan met Lord Wout", code: "<shaun>", category: ["Lord Wout", "Intro"], type: "Video-alert", year: 2025},
+];
