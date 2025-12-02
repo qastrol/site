@@ -5,7 +5,7 @@
         "category": [
             "Meme"
         ],
-        "length": 4872,
+        "length": 3960,
         "code": "(airhorn)"
     },
     {
@@ -14,7 +14,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 1824,
+        "length": 1536,
         "code": "(alweereenwinnaar)"
     },
     {
@@ -23,7 +23,7 @@
         "category": [
             "Meme"
         ],
-        "length": 2232,
+        "length": 2040,
         "code": "(augh)"
     },
     {
@@ -32,7 +32,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1541,
+        "length": 1515,
         "code": "(biem)"
     },
     {
@@ -42,7 +42,7 @@
             "Meme",
             "TV"
         ],
-        "length": 624,
+        "length": 408,
         "code": "(bonk)"
     },
     {
@@ -51,7 +51,7 @@
         "category": [
             "Meme"
         ],
-        "length": 496,
+        "length": 340,
         "code": "(bruh)"
     },
     {
@@ -60,7 +60,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 3528,
+        "length": 2040,
         "code": "(cave)"
     },
     {
@@ -69,7 +69,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 3117,
+        "length": 2952,
         "code": "(challenger)"
     },
     {
@@ -78,7 +78,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 4728,
+        "length": 4336,
         "code": "(creeper)"
     },
     {
@@ -88,7 +88,7 @@
             "Natuur",
             "TV"
         ],
-        "length": 4464,
+        "length": 3864,
         "code": "(crickets)"
     },
     {
@@ -97,7 +97,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1104,
+        "length": 624,
         "code": "(cringe)"
     },
     {
@@ -106,7 +106,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2448,
+        "length": 1656,
         "code": "(criticalhit)"
     },
     {
@@ -115,7 +115,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 744,
+        "length": 696,
         "code": "(crowbar)"
     },
     {
@@ -124,7 +124,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1896,
+        "length": 1632,
         "code": "(damage)"
     },
     {
@@ -133,7 +133,7 @@
         "category": [
             "TV"
         ],
-        "length": 3553,
+        "length": 3239,
         "code": "(disappointed)"
     },
     {
@@ -142,7 +142,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 444,
+        "length": 392,
         "code": "(door)"
     },
     {
@@ -151,7 +151,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1872,
+        "length": 1656,
         "code": "(drink)"
     },
     {
@@ -160,7 +160,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1728,
+        "length": 1464,
         "code": "(eat)"
     },
     {
@@ -169,7 +169,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 993,
+        "length": 470,
         "code": "(enderman)"
     },
     {
@@ -187,7 +187,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2880,
+        "length": 1656,
         "code": "(failure)"
     },
     {
@@ -196,7 +196,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 3936,
+        "length": 2208,
         "code": "(fallguys)"
     },
     {
@@ -205,7 +205,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3892,
+        "length": 3762,
         "code": "(fart)"
     },
     {
@@ -214,7 +214,7 @@
         "category": [
             "TV"
         ],
-        "length": 7285,
+        "length": 7131,
         "code": "(finale)"
     },
     {
@@ -223,7 +223,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2064,
+        "length": 1728,
         "code": "(gameover)"
     },
     {
@@ -233,7 +233,7 @@
             "Meme",
             "Internet"
         ],
-        "length": 648,
+        "length": 408,
         "code": "(gas)"
     },
     {
@@ -242,7 +242,7 @@
         "category": [
             "TV"
         ],
-        "length": 2647,
+        "length": 2691,
         "code": "(goeiemiddag)"
     },
     {
@@ -251,7 +251,7 @@
         "category": [
             "TV"
         ],
-        "length": 1176,
+        "length": 1104,
         "code": "(heybuurman)"
     },
     {
@@ -269,7 +269,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3024,
+        "length": 2928,
         "code": "(intro)"
     },
     {
@@ -278,7 +278,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1032,
+        "length": 648,
         "code": "(join)"
     },
     {
@@ -287,7 +287,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 720,
+        "length": 288,
         "code": "(kloppen)"
     },
     {
@@ -297,7 +297,7 @@
             "TV",
             "Internet"
         ],
-        "length": 2445,
+        "length": 1541,
         "code": "(knolpower)"
     },
     {
@@ -306,7 +306,7 @@
         "category": [
             "Computer"
         ],
-        "length": 552,
+        "length": 288,
         "code": "(leave)"
     },
     {
@@ -316,7 +316,7 @@
             "Gaming",
             "Natuur"
         ],
-        "length": 705,
+        "length": 522,
         "code": "(meow)"
     },
     {
@@ -335,7 +335,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1584,
+        "length": 360,
         "code": "(oef)"
     },
     {
@@ -344,7 +344,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1800,
+        "length": 1560,
         "code": "(opjemuil)"
     },
     {
@@ -353,7 +353,7 @@
         "category": [
             "Computer"
         ],
-        "length": 504,
+        "length": 240,
         "code": "(ping)"
     },
     {
@@ -362,7 +362,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3792,
+        "length": 1992,
         "code": "(pipe)"
     },
     {
@@ -371,7 +371,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1071,
+        "length": 575,
         "code": "(rctlaugh)"
     },
     {
@@ -380,7 +380,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 3056,
+        "length": 2482,
         "code": "(rctscream)"
     },
     {
@@ -390,7 +390,7 @@
             "Meme",
             "Internet"
         ],
-        "length": 2304,
+        "length": 912,
         "code": "(scorn)"
     },
     {
@@ -399,7 +399,7 @@
         "category": [
             "TV"
         ],
-        "length": 3657,
+        "length": 3239,
         "code": "(shock)"
     },
     {
@@ -408,7 +408,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3239,
+        "length": 2664,
         "code": "(sinisterlaugh)"
     },
     {
@@ -417,7 +417,7 @@
         "category": [
             "TV"
         ],
-        "length": 6382,
+        "length": 6243,
         "code": "(slimstemens)"
     },
     {
@@ -426,7 +426,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 4519,
+        "length": 3579,
         "code": "(sus)"
     },
     {
@@ -435,7 +435,7 @@
         "category": [
             "TV"
         ],
-        "length": 2520,
+        "length": 1944,
         "code": "(taxonweb)"
     },
     {
@@ -445,7 +445,7 @@
             "Meme",
             "TV"
         ],
-        "length": 2112,
+        "length": 840,
         "code": "(tickle)"
     },
     {
@@ -454,7 +454,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2560,
+        "length": 2064,
         "code": "(tnt)"
     },
     {
@@ -463,7 +463,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 3056,
+        "length": 2456,
         "code": "(toilet)"
     },
     {
@@ -472,7 +472,7 @@
         "category": [
             "TV"
         ],
-        "length": 2508,
+        "length": 1750,
         "code": "(twohours)"
     },
     {
@@ -481,7 +481,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1320,
+        "length": 672,
         "code": "(usb)"
     },
     {
@@ -490,7 +490,7 @@
         "category": [
             "TV"
         ],
-        "length": 967,
+        "length": 940,
         "code": "(verdomme)"
     },
     {
@@ -499,7 +499,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1032,
+        "length": 648,
         "code": "(villager)"
     },
     {
@@ -509,7 +509,7 @@
             "Meme",
             "Internet"
         ],
-        "length": 3144,
+        "length": 2880,
         "code": "(vineboom)"
     },
     {
@@ -518,7 +518,7 @@
         "category": [
             "TV"
         ],
-        "length": 1959,
+        "length": 1907,
         "code": "(watgoed)"
     },
     {
@@ -527,7 +527,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1045,
+        "length": 444,
         "code": "(whip)"
     },
     {
@@ -537,7 +537,7 @@
             "Meme",
             "TV"
         ],
-        "length": 3056,
+        "length": 2273,
         "code": "(witch)"
     },
     {
@@ -547,7 +547,7 @@
             "Gaming",
             "Natuur"
         ],
-        "length": 444,
+        "length": 261,
         "code": "(woef)"
     },
     {
@@ -557,7 +557,7 @@
             "Meme",
             "Internet"
         ],
-        "length": 4232,
+        "length": 2168,
         "code": "(wow)"
     },
     {
@@ -566,7 +566,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2194,
+        "length": 1724,
         "code": "(zombie)"
     },
     {
@@ -575,7 +575,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 3265,
+        "length": 3004,
         "code": "(ns)"
     },
     {
@@ -584,7 +584,7 @@
         "category": [
             "TV"
         ],
-        "length": 3120,
+        "length": 3161,
         "code": "(boulevard)"
     },
     {
@@ -593,7 +593,7 @@
         "category": [
             "TV"
         ],
-        "length": 5486,
+        "length": 4989,
         "code": "(hema)"
     },
     {
@@ -603,7 +603,7 @@
             "Meme",
             "Gaming"
         ],
-        "length": 1704,
+        "length": 1440,
         "code": "(missed)"
     },
     {
@@ -613,7 +613,7 @@
             "Meme",
             "Gaming"
         ],
-        "length": 1968,
+        "length": 1584,
         "code": "(ohmygod)"
     },
     {
@@ -622,7 +622,7 @@
         "category": [
             "TV"
         ],
-        "length": 4841,
+        "length": 3318,
         "code": "(ah)"
     },
     {
@@ -631,7 +631,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1881,
+        "length": 1802,
         "code": "(shutdown)"
     },
     {
@@ -641,7 +641,7 @@
             "Meme",
             "TV"
         ],
-        "length": 579,
+        "length": 684,
         "code": "(yup)"
     },
     {
@@ -650,7 +650,7 @@
         "category": [
             "Meme"
         ],
-        "length": 4598,
+        "length": 4441,
         "code": "(violin)"
     },
     {
@@ -659,7 +659,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1019,
+        "length": 810,
         "code": "(error)"
     },
     {
@@ -668,7 +668,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1567,
+        "length": 522,
         "code": "(punch)"
     },
     {
@@ -677,7 +677,7 @@
         "category": [
             "Meme"
         ],
-        "length": 7393,
+        "length": 7314,
         "code": "(wide)"
     },
     {
@@ -687,7 +687,7 @@
             "TV",
             "Meme"
         ],
-        "length": 1440,
+        "length": 792,
         "code": "(wauw)"
     },
     {
@@ -696,7 +696,7 @@
         "category": [
             "Computer"
         ],
-        "length": 4911,
+        "length": 3396,
         "code": "(startup)"
     },
     {
@@ -705,7 +705,7 @@
         "category": [
             "Computer"
         ],
-        "length": 2743,
+        "length": 2612,
         "code": "(internet)"
     },
     {
@@ -714,7 +714,7 @@
         "category": [
             "Natuur"
         ],
-        "length": 960,
+        "length": 408,
         "code": "(eendje)"
     },
     {
@@ -723,7 +723,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1008,
+        "length": 576,
         "code": "(fortnite)"
     },
     {
@@ -732,7 +732,7 @@
         "category": [
             "Meme"
         ],
-        "length": 7889,
+        "length": 7419,
         "code": "(illuminati)"
     },
     {
@@ -741,7 +741,7 @@
         "category": [
             "TV"
         ],
-        "length": 7918,
+        "length": 7896,
         "code": "(ehet)"
     },
     {
@@ -750,7 +750,7 @@
         "category": [
             "Meme"
         ],
-        "length": 5472,
+        "length": 4632,
         "code": "(boos)"
     },
     {
@@ -759,7 +759,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1933,
+        "length": 1306,
         "code": "(rizz)"
     },
     {
@@ -768,7 +768,7 @@
         "category": [
             "Meme"
         ],
-        "length": 5146,
+        "length": 3918,
         "code": "(shocking)"
     },
     {
@@ -777,7 +777,7 @@
         "category": [
             "Meme"
         ],
-        "length": 2978,
+        "length": 940,
         "code": "(ding)"
     },
     {
@@ -786,7 +786,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3004,
+        "length": 1384,
         "code": "(aww)"
     },
     {
@@ -795,7 +795,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1032,
+        "length": 504,
         "code": "(applepay)"
     },
     {
@@ -804,7 +804,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1934,
+        "length": 914,
         "code": "(alert)"
     },
     {
@@ -813,7 +813,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3082,
+        "length": 2978,
         "code": "(money)"
     },
     {
@@ -822,7 +822,7 @@
         "category": [
             "Natuur"
         ],
-        "length": 1176,
+        "length": 209,
         "code": "(quack)"
     },
     {
@@ -831,7 +831,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3709,
+        "length": 3213,
         "code": "(helaas)"
     },
     {
@@ -840,7 +840,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 2064,
+        "length": 418,
         "code": "(camera)"
     },
     {
@@ -849,7 +849,7 @@
         "category": [
             "Meme"
         ],
-        "length": 810,
+        "length": 731,
         "code": "(scratch)"
     },
     {
@@ -859,7 +859,7 @@
             "Meme",
             "TV"
         ],
-        "length": 862,
+        "length": 836,
         "code": "(hellothere)"
     },
     {
@@ -868,7 +868,7 @@
         "category": [
             "Computer"
         ],
-        "length": 2403,
+        "length": 1306,
         "code": "(samsung)"
     },
     {
@@ -877,7 +877,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1620,
+        "length": 1437,
         "code": "(boing)"
     },
     {
@@ -886,7 +886,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 653,
+        "length": 601,
         "code": "(pan)"
     },
     {
@@ -895,7 +895,7 @@
         "category": [
             "TV"
         ],
-        "length": 888,
+        "length": 522,
         "code": "(hammer)"
     },
     {
@@ -904,7 +904,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1776,
+        "length": 672,
         "code": "(confetti)"
     },
     {
@@ -913,7 +913,7 @@
         "category": [
             "Computer"
         ],
-        "length": 2821,
+        "length": 1463,
         "code": "(error10)"
     },
     {
@@ -922,7 +922,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 1344,
+        "length": 768,
         "code": "(klik)"
     },
     {
@@ -931,7 +931,7 @@
         "category": [
             "TV"
         ],
-        "length": 1056,
+        "length": 264,
         "code": "(bite)"
     },
     {
@@ -940,7 +940,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 1384,
+        "length": 1228,
         "code": "(glas)"
     },
     {
@@ -949,7 +949,7 @@
         "category": [
             "Natuur"
         ],
-        "length": 1646,
+        "length": 1515,
         "code": "(moo)"
     },
     {
@@ -958,7 +958,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 5094,
+        "length": 1202,
         "code": "(question)"
     },
     {
@@ -967,7 +967,7 @@
         "category": [
             "TV"
         ],
-        "length": 1202,
+        "length": 888,
         "code": "(sword)"
     },
     {
@@ -976,7 +976,7 @@
         "category": [
             "TV"
         ],
-        "length": 1149,
+        "length": 1071,
         "code": "(buzzer)"
     },
     {
@@ -985,7 +985,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1384,
+        "length": 888,
         "code": "(charge)"
     },
     {
@@ -994,7 +994,7 @@
         "category": [
             "Computer"
         ],
-        "length": 985,
+        "length": 384,
         "code": "(teams)"
     },
     {
@@ -1003,7 +1003,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1933,
+        "length": 1646,
         "code": "(badum)"
     },
     {
@@ -1012,7 +1012,7 @@
         "category": [
             "Meme"
         ],
-        "length": 522,
+        "length": 366,
         "code": "(chomp)"
     },
     {
@@ -1021,7 +1021,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1071,
+        "length": 836,
         "code": "(niceshot)"
     },
     {
@@ -1030,7 +1030,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 8359,
+        "length": 4310,
         "code": "(doorbell)"
     },
     {
@@ -1039,7 +1039,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 2586,
+        "length": 2273,
         "code": "(train)"
     },
     {
@@ -1048,7 +1048,7 @@
         "category": [
             "Meme"
         ],
-        "length": 496,
+        "length": 261,
         "code": "(pop)"
     },
     {
@@ -1057,7 +1057,7 @@
         "category": [
             "TV"
         ],
-        "length": 1080,
+        "length": 1056,
         "code": "(tv)"
     },
     {
@@ -1066,7 +1066,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1900,
+        "length": 1437,
         "code": "(whatsapp)"
     },
     {
@@ -1075,7 +1075,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 2456,
+        "length": 2429,
         "code": "(kraak)"
     },
     {
@@ -1084,7 +1084,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1149,
+        "length": 784,
         "code": "(true)"
     },
     {
@@ -1094,7 +1094,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1646
+        "length": 1593
     },
     {
         "name": "Ocarina of Time 'A' noot",
@@ -1103,7 +1103,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 742
+        "length": 758
     },
     {
         "name": "Ocarina of Time 'C-up' noot",
@@ -1112,7 +1112,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 982
+        "length": 993
     },
     {
         "name": "Ocarina of Time 'C-down' noot",
@@ -1121,7 +1121,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 877
+        "length": 888
     },
     {
         "name": "Ocarina of Time 'C-left' noot",
@@ -1130,7 +1130,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 989
+        "length": 993
     },
     {
         "name": "Ocarina of Time 'C-right' noot",
@@ -1139,7 +1139,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 820
+        "length": 810
     },
     {
         "name": "Zondag met Lubach jingle",
@@ -1148,7 +1148,7 @@
         "category": [
             "TV"
         ],
-    "length": 3088
+    "length": 2978
 },
     {
         "name": "Een vers kopje thee",
@@ -1157,13 +1157,13 @@
         "category": [
             "TV"
         ],
-    "length": 3007
+    "length": 2900
 },
     {
         "name": "Swoosh",
         "description": "Alsof een voorwerp wordt gezwaaid",
         "category": [],
-        "length": 360,
+        "length": 192,
         "code": "(swoosh)"
     }
 ];

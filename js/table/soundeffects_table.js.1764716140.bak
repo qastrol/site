@@ -1,0 +1,1169 @@
+﻿const soundeffectsTable = [
+    {
+        "name": "Luchthoorn",
+        "description": "Een typische meme-luchthoorn / airhorn",
+        "category": [
+            "Meme"
+        ],
+        "length": 4200,
+        "code": "(airhorn)"
+    },
+    {
+        "name": "Alweer Een Winnaar",
+        "description": "Alweer een winnaar! Een kermis-sound effect",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 1536,
+        "code": "(alweereenwinnaar)"
+    },
+    {
+        "name": "Meme gaap",
+        "description": "HUUUUUUUAAAAAAAAAAGH",
+        "category": [
+            "Meme"
+        ],
+        "length": 1968,
+        "code": "(augh)"
+    },
+    {
+        "name": "Biem",
+        "description": "BIEM!",
+        "category": [
+            "Meme"
+        ],
+        "length": 679,
+        "code": "(biem)"
+    },
+    {
+        "name": "Bonk",
+        "description": "BONK!",
+        "category": [
+            "Meme",
+            "TV"
+        ],
+        "length": 312,
+        "code": "(bonk)"
+    },
+    {
+        "name": "Bruh",
+        "description": "Bruh",
+        "category": [
+            "Meme"
+        ],
+        "length": 183,
+        "code": "(bruh)"
+    },
+    {
+        "name": "Minecraft: Grotgeluid",
+        "description": "Minecraft grotgeluid",
+        "category": [
+            "Gaming"
+        ],
+        "length": 2040,
+        "code": "(cave)"
+    },
+    {
+        "name": "Smash Bros: Challenger Approaching",
+        "description": "Een nieuwe challenger in Super Smash Bros",
+        "category": [
+            "Gaming"
+        ],
+        "length": 2976,
+        "code": "(challenger)"
+    },
+    {
+        "name": "Minecraft: Creeper",
+        "description": "Creeper explosie geluid",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1123,
+        "code": "(creeper)"
+    },
+    {
+        "name": "Fluitende Krekels",
+        "description": "Krekels die fluiten ðŸ˜´",
+        "category": [
+            "Natuur",
+            "TV"
+        ],
+        "length": 3864,
+        "code": "(crickets)"
+    },
+    {
+        "name": "Cringe",
+        "description": "Cringe",
+        "category": [
+            "Meme"
+        ],
+        "length": 624,
+        "code": "(cringe)"
+    },
+    {
+        "name": "Super Smash Bros: Critical Hit",
+        "description": "Een critical hit in Super Smash Bros.",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1608,
+        "code": "(criticalhit)"
+    },
+    {
+        "name": "Half-Life 1: Crowbar",
+        "description": "Wanneer je met een crowbar slaat in Half-Life 1",
+        "category": [
+            "Gaming"
+        ],
+        "length": 600,
+        "code": "(crowbar)"
+    },
+    {
+        "name": "Look At All This Damage",
+        "description": "Look at all this damage!",
+        "category": [
+            "Meme"
+        ],
+        "length": 672,
+        "code": "(damage)"
+    },
+    {
+        "name": "SpongeBob: Teleurstelling",
+        "description": "Wanneer iets teleurstellends gebeurd in Spongebob",
+        "category": [
+            "TV"
+        ],
+        "length": 3135,
+        "code": "(disappointed)"
+    },
+    {
+        "name": "Minecraft: Deur",
+        "description": "Een Minecraft deur",
+        "category": [
+            "Gaming"
+        ],
+        "length": 287,
+        "code": "(door)"
+    },
+    {
+        "name": "Minecraft: Drinken",
+        "description": "Wanneer je drinkt in Minecraft",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1632,
+        "code": "(drink)"
+    },
+    {
+        "name": "Minecraft: Eten",
+        "description": "Wanneer je eet in Minecraft",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1464,
+        "code": "(eat)"
+    },
+    {
+        "name": "Minecraft: Enderman",
+        "description": "Wanneer een Enderman teleporteerd",
+        "category": [
+            "Gaming"
+        ],
+        "length": 470,
+        "code": "(enderman)"
+    },
+    {
+        "name": "Euroschreeuw",
+        "description": "AAAAAAAAAAAAAAA",
+        "category": [
+            "Meme"
+        ],
+        "length": 1680,
+        "code": "(euroschreeuw)"
+    },
+    {
+        "name": "Smash Bros: Failure",
+        "description": "\"Failure\" - Super Smash Bros Melee aankondiger",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1656,
+        "code": "(failure)"
+    },
+    {
+        "name": "Fall Guys",
+        "description": "Wanneer je een ronde verliest in Fall Guys",
+        "category": [
+            "Gaming"
+        ],
+        "length": 2232,
+        "code": "(fallguys)"
+    },
+    {
+        "name": "Reverb Fart",
+        "description": "Reverb Scheetgeluid",
+        "category": [
+            "Meme"
+        ],
+        "length": 3657,
+        "code": "(fart)"
+    },
+    {
+        "name": "De Slimste Mens: Finale",
+        "description": "De finale van De Slimste Mens is gespeeld!",
+        "category": [
+            "TV"
+        ],
+        "length": 7131,
+        "code": "(finale)"
+    },
+    {
+        "name": "New Super Mario Bros: Game Over",
+        "description": "Game over in New Super Mario Bros.",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1224,
+        "code": "(gameover)"
+    },
+    {
+        "name": "Gas",
+        "description": "Gas - Jerma985",
+        "category": [
+            "Meme",
+            "Internet"
+        ],
+        "length": 408,
+        "code": "(gas)"
+    },
+    {
+        "name": "Goeiemiddag",
+        "description": "Goeiemiddag",
+        "category": [
+            "TV"
+        ],
+        "length": 2534,
+        "code": "(goeiemiddag)"
+    },
+    {
+        "name": "Hey Buurman",
+        "description": "Ajeto buur!",
+        "category": [
+            "TV"
+        ],
+        "length": 1032,
+        "code": "(heybuurman)"
+    },
+    {
+        "name": "Hier Een Euro!",
+        "description": "AAAAAAAA!",
+        "category": [
+            "Meme"
+        ],
+        "length": 1800,
+        "code": "(hiereeneuro)"
+    },
+    {
+        "name": "Community Sound Effect ",
+        "description": "ðŸ˜³",
+        "category": [
+            "Meme"
+        ],
+        "length": 2808,
+        "code": "(intro)"
+    },
+    {
+        "name": "Discord: call join",
+        "description": "Iemand joined de Discord call",
+        "category": [
+            "Computer"
+        ],
+        "length": 672,
+        "code": "(join)"
+    },
+    {
+        "name": "Kloppen",
+        "description": "Iemand klopt op de deur",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 0,
+        "code": "(kloppen)"
+    },
+    {
+        "name": "Knolpower",
+        "description": "Het is tijd voor wat Knolpower! Dikke vette peace!",
+        "category": [
+            "TV",
+            "Internet"
+        ],
+        "length": 1541,
+        "code": "(knolpower)"
+    },
+    {
+        "name": "Discord: call leave",
+        "description": "Iemand verlaat de Discord call",
+        "category": [
+            "Computer"
+        ],
+        "length": 288,
+        "code": "(leave)"
+    },
+    {
+        "name": "Miauw",
+        "description": "Een miauwende kat in Minecraft",
+        "category": [
+            "Gaming",
+            "Natuur"
+        ],
+        "length": 444,
+        "code": "(meow)"
+    },
+    {
+        "name": "Mosterd",
+        "description": "Mosterd - Reitse Spanninga",
+        "category": [
+            "Fryslân",
+            "TV"
+        ],
+        "length": 576,
+        "code": "(mosterd)"
+    },
+    {
+        "name": "Minecraft damage gekregen",
+        "description": "Oef - Minecraft Steve",
+        "category": [
+            "Gaming"
+        ],
+        "length": 360,
+        "code": "(oef)"
+    },
+    {
+        "name": "Op Je Muil, Gauw",
+        "description": "Op je muil, gauw!",
+        "category": [
+            "Meme"
+        ],
+        "length": 1464,
+        "code": "(opjemuil)"
+    },
+    {
+        "name": "Discord melding",
+        "description": "Discord-ping geluid",
+        "category": [
+            "Computer"
+        ],
+        "length": 240,
+        "code": "(ping)"
+    },
+    {
+        "name": "Vallende pijp",
+        "description": "een pijp die valt",
+        "category": [
+            "Meme"
+        ],
+        "length": 1992,
+        "code": "(pipe)"
+    },
+    {
+        "name": "RCT2 Laugh",
+        "description": "RCT2 lachen geluid",
+        "category": [
+            "Gaming"
+        ],
+        "length": 549,
+        "code": "(rctlaugh)"
+    },
+    {
+        "name": "RCT2 Scream",
+        "description": "RCT2 schreeuw geluid",
+        "category": [
+            "Gaming"
+        ],
+        "length": 2482,
+        "code": "(rctscream)"
+    },
+    {
+        "name": "SCORN",
+        "description": "SCORN - Jerma985",
+        "category": [
+            "Meme",
+            "Internet"
+        ],
+        "length": 912,
+        "code": "(scorn)"
+    },
+    {
+        "name": "SpongeBob: Shock",
+        "description": "Wanneer iets schokkends in SpongeBob gebeurt",
+        "category": [
+            "TV"
+        ],
+        "length": 3239,
+        "code": "(shock)"
+    },
+    {
+        "name": "Sinister Laugh",
+        "description": "Sinister lachen geluid",
+        "category": [
+            "Meme"
+        ],
+        "length": 2664,
+        "code": "(sinisterlaugh)"
+    },
+    {
+        "name": "Slimste Mens Bumper",
+        "description": "Het bumpergeluid van De Slimste Mens (ter Wereld)",
+        "category": [
+            "TV"
+        ],
+        "length": 6243,
+        "code": "(slimstemens)"
+    },
+    {
+        "name": "Sus",
+        "description": "Het geluid wanneer je je rol ziet in Among Us. Sus",
+        "category": [
+            "Gaming"
+        ],
+        "length": 3579,
+        "code": "(sus)"
+    },
+    {
+        "name": "Taxonweb",
+        "description": "Taxonweb.be",
+        "category": [
+            "TV"
+        ],
+        "length": 696,
+        "code": "(taxonweb)"
+    },
+    {
+        "name": "Tickle",
+        "description": "Een tekenfilm kietel geluid",
+        "category": [
+            "Meme",
+            "TV"
+        ],
+        "length": 864,
+        "code": "(tickle)"
+    },
+    {
+        "name": "Minecraft TNT",
+        "description": "Een Minecraft TNT explosie",
+        "category": [
+            "Gaming"
+        ],
+        "length": 2064,
+        "code": "(tnt)"
+    },
+    {
+        "name": "Doorgespoelde WC",
+        "description": "Een WC die doorgespoeld wordt",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 2299,
+        "code": "(toilet)"
+    },
+    {
+        "name": "2 Uur Later",
+        "description": "2 uur later - SpongeBob SquarePants",
+        "category": [
+            "TV"
+        ],
+        "length": 1724,
+        "code": "(twohours)"
+    },
+    {
+        "name": "USB Connect",
+        "description": "Wanneer een USB-apparaat wordt verbonden aan de PC",
+        "category": [
+            "Computer"
+        ],
+        "length": 672,
+        "code": "(usb)"
+    },
+    {
+        "name": "Verdomme",
+        "description": "\"Verdomme\" - Martien Meiland",
+        "category": [
+            "TV"
+        ],
+        "length": 810,
+        "code": "(verdomme)"
+    },
+    {
+        "name": "Minecraft Villager",
+        "description": "Minecraft Villager geluid",
+        "category": [
+            "Gaming"
+        ],
+        "length": 624,
+        "code": "(villager)"
+    },
+    {
+        "name": "Vineboom",
+        "description": "De Vineboom meme",
+        "category": [
+            "Meme",
+            "Internet"
+        ],
+        "length": 2760,
+        "code": "(vineboom)"
+    },
+    {
+        "name": "Wat Goed",
+        "description": "\"Wat goed\" - Martien Meiland",
+        "category": [
+            "TV"
+        ],
+        "length": 1776,
+        "code": "(watgoed)"
+    },
+    {
+        "name": "Whip",
+        "description": "ZWEEPslag",
+        "category": [
+            "Meme"
+        ],
+        "length": 444,
+        "code": "(whip)"
+    },
+    {
+        "name": "Witch laugh",
+        "description": "Een enge heksenlach",
+        "category": [
+            "Meme",
+            "TV"
+        ],
+        "length": 2299,
+        "code": "(witch)"
+    },
+    {
+        "name": "Minecraft Hond",
+        "description": "Minecraft hond",
+        "category": [
+            "Gaming",
+            "Natuur"
+        ],
+        "length": 261,
+        "code": "(woef)"
+    },
+    {
+        "name": "Wow (Anime)",
+        "description": "Het anime \"Wow\" geluid, veel gebruikt als meme",
+        "category": [
+            "Meme",
+            "Internet"
+        ],
+        "length": 2168,
+        "code": "(wow)"
+    },
+    {
+        "name": "Minecraft Zombie",
+        "description": "Minecraft zombie",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1698,
+        "code": "(zombie)"
+    },
+    {
+        "name": "NS omroepgeluid",
+        "description": "Het omroepgeluid op het NS-treinstation. Beste reizigers!",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 3004,
+        "code": "(ns)"
+    },
+    {
+        "name": "RTL Boulevard tune",
+        "description": "De tune van RTL Boulevard!",
+        "category": [
+            "TV"
+        ],
+        "length": 3004,
+        "code": "(boulevard)"
+    },
+    {
+        "name": "HEMA fluiten",
+        "description": "Het fluitdeuntje van de HEMA!",
+        "category": [
+            "TV"
+        ],
+        "length": 4989,
+        "code": "(hema)"
+    },
+    {
+        "name": "Oh I Missed",
+        "description": "Oh I missed! Wario heeft iets gemist in Mario Party 1",
+        "category": [
+            "Meme",
+            "Gaming"
+        ],
+        "length": 1296,
+        "code": "(missed)"
+    },
+    {
+        "name": "Oh My God",
+        "description": "Wario heeft het helemaal gehad in Mario Party 1 en gooit er een vloekterm uit",
+        "category": [
+            "Meme",
+            "Gaming"
+        ],
+        "length": 1560,
+        "code": "(ohmygod)"
+    },
+    {
+        "name": "Albert Heijn",
+        "description": "Het deuntje van de Albert Heijn",
+        "category": [
+            "TV"
+        ],
+        "length": 888,
+        "code": "(ah)"
+    },
+    {
+        "name": "Windows XP Shutdown",
+        "description": "Het geluid wanneer je Windows XP afsluit",
+        "category": [
+            "Computer"
+        ],
+        "length": 1646,
+        "code": "(shutdown)"
+    },
+    {
+        "name": "Peter Griffin - Yup",
+        "description": "Peter Griffin die yup zegt",
+        "category": [
+            "Meme",
+            "TV"
+        ],
+        "length": 504,
+        "code": "(yup)"
+    },
+    {
+        "name": "Sad violin",
+        "description": "Een zeer verdrietige viool, van de meme",
+        "category": [
+            "Meme"
+        ],
+        "length": 4441,
+        "code": "(violin)"
+    },
+    {
+        "name": "Windows XP: Error",
+        "description": "Een foutmelding in Windows XP",
+        "category": [
+            "Computer"
+        ],
+        "length": 784,
+        "code": "(error)"
+    },
+    {
+        "name": "Punch",
+        "description": "Er wordt een klap uitgedeeld",
+        "category": [
+            "Meme"
+        ],
+        "length": 549,
+        "code": "(punch)"
+    },
+    {
+        "name": "Wide walking",
+        "description": "Iemand loopt heel wijd, de meme",
+        "category": [
+            "Meme"
+        ],
+        "length": 7210,
+        "code": "(wide)"
+    },
+    {
+        "name": "Wow",
+        "description": "Eddy Wally zegt \"Wow\"",
+        "category": [
+            "TV",
+            "Meme"
+        ],
+        "length": 816,
+        "code": "(wauw)"
+    },
+    {
+        "name": "Windows XP Startup",
+        "description": "Je start je Windows XP computer op",
+        "category": [
+            "Computer"
+        ],
+        "length": 3344,
+        "code": "(startup)"
+    },
+    {
+        "name": "Inbelinternet",
+        "description": "Het geluid van het opstarten van inbelinternet",
+        "category": [
+            "Computer"
+        ],
+        "length": 2482,
+        "code": "(internet)"
+    },
+    {
+        "name": "Kwak",
+        "description": "kwak",
+        "category": [
+            "Natuur"
+        ],
+        "length": 432,
+        "code": "(eendje)"
+    },
+    {
+        "name": "Fortnite",
+        "description": "Je gaat neer in Fortnite",
+        "category": [
+            "Gaming"
+        ],
+        "length": 456,
+        "code": "(fortnite)"
+    },
+    {
+        "name": "Illuminati",
+        "description": "Ook wel bekend als het X-files thema”",
+        "category": [
+            "Meme"
+        ],
+        "length": 7262,
+        "code": "(illuminati)"
+    },
+    {
+        "name": "Eigen Huis en Tuin",
+        "description": "De Eigen Huis en Tuin jingle",
+        "category": [
+            "TV"
+        ],
+        "length": 7728,
+        "code": "(ehet)"
+    },
+    {
+        "name": "Boos",
+        "description": "Boze meme schreeuw (angry)",
+        "category": [
+            "Meme"
+        ],
+        "length": 4656,
+        "code": "(boos)"
+    },
+    {
+        "name": "Rizz",
+        "description": "Geluidje",
+        "category": [
+            "Meme"
+        ],
+        "length": 1306,
+        "code": "(rizz)"
+    },
+    {
+        "name": "Schokkend moment",
+        "description": "Meme geluidje voor een schokkende onthulling",
+        "category": [
+            "Meme"
+        ],
+        "length": 3944,
+        "code": "(shocking)"
+    },
+    {
+        "name": "Quiz",
+        "description": "Een geluidje alsof je een punt krijgt in een quiz",
+        "category": [
+            "Meme"
+        ],
+        "length": 940,
+        "code": "(ding)"
+    },
+    {
+        "name": "Aww",
+        "description": "Aww, wat schattig!",
+        "category": [
+            "Meme"
+        ],
+        "length": 1411,
+        "code": "(aww)"
+    },
+    {
+        "name": "Apple Pay",
+        "description": "Het geluid van een succesvolle Apple Pay betaling",
+        "category": [
+            "Computer"
+        ],
+        "length": 432,
+        "code": "(applepay)"
+    },
+    {
+        "name": "Metal Gear Solid: Alert",
+        "description": "!",
+        "category": [
+            "Gaming"
+        ],
+        "length": 914,
+        "code": "(alert)"
+    },
+    {
+        "name": "Geld",
+        "description": "Geld geluid",
+        "category": [
+            "Meme"
+        ],
+        "length": 2926,
+        "code": "(money)"
+    },
+    {
+        "name": "Eend Quack",
+        "description": "Eend quack geluid",
+        "category": [
+            "Natuur"
+        ],
+        "length": 235,
+        "code": "(quack)"
+    },
+    {
+        "name": "Verdrietige trompet",
+        "description": "Een teleurgesteld meme trompetje",
+        "category": [
+            "Meme"
+        ],
+        "length": 3030,
+        "code": "(helaas)"
+    },
+    {
+        "name": "Camera",
+        "description": "Het geluid van een camera die een foto maakt",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 418,
+        "code": "(camera)"
+    },
+    {
+        "name": "LP Scratch",
+        "description": "Een lp scratch geluidseffect, bij een 'huh' moment",
+        "category": [
+            "Meme"
+        ],
+        "length": 653,
+        "code": "(scratch)"
+    },
+    {
+        "name": "Hello There",
+        "description": "Hello there! General Kenobi!",
+        "category": [
+            "Meme",
+            "TV"
+        ],
+        "length": 522,
+        "code": "(hellothere)"
+    },
+    {
+        "name": "Samsung melding",
+        "description": "Het meldinggeluid van een Samsung telefoon",
+        "category": [
+            "Computer"
+        ],
+        "length": 1332,
+        "code": "(samsung)"
+    },
+    {
+        "name": "Boing",
+        "description": "Boing geluidseffect",
+        "category": [
+            "Meme"
+        ],
+        "length": 1463,
+        "code": "(boing)"
+    },
+    {
+        "name": "Pan",
+        "description": "Een klap met een pan",
+        "category": [
+            "Gaming"
+        ],
+        "length": 496,
+        "code": "(pan)"
+    },
+    {
+        "name": "Hamer",
+        "description": "Een klap met een hamer",
+        "category": [
+            "TV"
+        ],
+        "length": 549,
+        "code": "(hammer)"
+    },
+    {
+        "name": "Confetti",
+        "description": "Confetti geluidseffect",
+        "category": [
+            "Meme"
+        ],
+        "length": 672,
+        "code": "(confetti)"
+    },
+    {
+        "name": "Foutmelding (Windows 10)",
+        "description": "Foutmelding in Windows 10",
+        "category": [
+            "Computer"
+        ],
+        "length": 1567,
+        "code": "(error10)"
+    },
+    {
+        "name": "Muisklik",
+        "description": "Een klik geluidseffect",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 192,
+        "code": "(klik)"
+    },
+    {
+        "name": "Bijt",
+        "description": "Een bijt geluidseffect",
+        "category": [
+            "TV"
+        ],
+        "length": 288,
+        "code": "(bite)"
+    },
+    {
+        "name": "Glas breekt",
+        "description": "Het geluid van brekend glas",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 1071,
+        "code": "(glas)"
+    },
+    {
+        "name": "Koe: Boe",
+        "description": "Een koe loeit",
+        "category": [
+            "Natuur"
+        ],
+        "length": 1437,
+        "code": "(moo)"
+    },
+    {
+        "name": "Ace Attorney: Vraagteken",
+        "description": "Wanneer Phoenix Wright zich iets afvraagt in Ace Attorney",
+        "category": [
+            "Gaming"
+        ],
+        "length": 1202,
+        "code": "(question)"
+    },
+    {
+        "name": "Zwaard trekken",
+        "description": "Het geluid van een zwaard dat getrokken wordt",
+        "category": [
+            "TV"
+        ],
+        "length": 758,
+        "code": "(sword)"
+    },
+    {
+        "name": "Quiz Buzzer",
+        "description": "Het geluid van een quiz buzzer",
+        "category": [
+            "TV"
+        ],
+        "length": 993,
+        "code": "(buzzer)"
+    },
+    {
+        "name": "iPhone Opladen",
+        "description": "Het geluid van een iPhone die wordt opgeladen",
+        "category": [
+            "Computer"
+        ],
+        "length": 888,
+        "code": "(charge)"
+    },
+    {
+        "name": "Microsoft Teams",
+        "description": "Het geluid van een Microsoft Teams berichtmelding",
+        "category": [
+            "Computer"
+        ],
+        "length": 408,
+        "code": "(teams)"
+    },
+    {
+        "name": "Badum Tss",
+        "description": "Badum tss! Het geluid van een drum voor een grap",
+        "category": [
+            "Meme"
+        ],
+        "length": 1646,
+        "code": "(badum)"
+    },
+    {
+        "name": "Chomp",
+        "description": "Een geluidseffect van een grote hap",
+        "category": [
+            "Meme"
+        ],
+        "length": 366,
+        "code": "(chomp)"
+    },
+    {
+        "name": "Wii Sports: Nice Shot",
+        "description": "'Nice shot!' - Wii Sports",
+        "category": [
+            "Gaming"
+        ],
+        "length": 836,
+        "code": "(niceshot)"
+    },
+    {
+        "name": "Deurbel",
+        "description": "Het geluid van een deurbel",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 4232,
+        "code": "(doorbell)"
+    },
+    {
+        "name": "Trein",
+        "description": "Het geluid van een voorbijrijdende trein",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 2299,
+        "code": "(train)"
+    },
+    {
+        "name": "Ballon Pop Geluid",
+        "description": "Een ballon die kapot gaat",
+        "category": [
+            "Meme"
+        ],
+        "length": 235,
+        "code": "(pop)"
+    },
+    {
+        "name": "TV-ruis Geluid",
+        "description": "Het geluid van een oude televisie zonder signaal",
+        "category": [
+            "TV"
+        ],
+        "length": 912,
+        "code": "(tv)"
+    },
+    {
+        "name": "WhatsApp",
+        "description": "Je hebt een bericht gekregen",
+        "category": [
+            "Computer"
+        ],
+        "length": 1437,
+        "code": "(whatsapp)"
+    },
+    {
+        "name": "Krakende deur",
+        "description": "Het geluid van een krakende deur",
+        "category": [
+            "Dagelijkse leven"
+        ],
+        "length": 2273,
+        "code": "(kraak)"
+    },
+    {
+        "name": "Correct dingding!",
+        "description": "Als je iets correct hebt",
+        "category": [
+            "Meme"
+        ],
+        "length": 784,
+        "code": "(true)"
+    },
+    {
+        "name": "Kwaadaardige lach",
+        "code": "(evillaugh)",
+        "description": "Kwaadaardig lach geluidseffect",
+        "category": [
+            "Meme"
+        ],
+        "length": 1463
+    },
+    {
+        "name": "Ocarina of Time 'A' noot",
+        "code": "(oa)",
+        "description": "De 'A' noot van de Ocarina of Time",
+        "category": [
+            "Gaming"
+        ],
+        "length": 601
+    },
+    {
+        "name": "Ocarina of Time 'C-up' noot",
+        "code": "(oup)",
+        "description": "De 'C-Up' noot van de Ocarina of Time",
+        "category": [
+            "Gaming"
+        ],
+        "length": 836
+    },
+    {
+        "name": "Ocarina of Time 'C-down' noot",
+        "code": "(odown)",
+        "description": "De 'C-Down' noot van de Ocarina of Time",
+        "category": [
+            "Gaming"
+        ],
+        "length": 731
+    },
+    {
+        "name": "Ocarina of Time 'C-left' noot",
+        "code": "(oleft)",
+        "description": "De 'C-Left' noot van de Ocarina of Time",
+        "category": [
+            "Gaming"
+        ],
+        "length": 862
+    },
+    {
+        "name": "Ocarina of Time 'C-right' noot",
+        "code": "(oright)",
+        "description": "De 'C-Right' noot van de Ocarina of Time",
+        "category": [
+            "Gaming"
+        ],
+        "length": 679
+    },
+    {
+        "name": "Zondag met Lubach jingle",
+        "code": "(zml)",
+        "description": "De jingle van Zondag met Lubach",
+        "category": [
+            "TV"
+        ],
+    "length": 2978
+},
+    {
+        "name": "Een vers kopje thee",
+        "code": "(thee)",
+        "description": "René Froger: Een vers kopje thee",
+        "category": [
+            "TV"
+        ],
+    "length": 2900
+},
+    {
+        "name": "Swoosh",
+        "description": "Alsof een voorwerp wordt gezwaaid",
+        "category": [],
+        "length": 192,
+        "code": "(swoosh)"
+    }
+];
