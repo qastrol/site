@@ -2,7 +2,7 @@
     /* Light mode kleuren */
     --background-color: #ffffff;
     --text-color: #000000;
-    --nav-background-color: #4CAF50;
+    --nav-background-color: #614caf;
     --nav-text-color: #ffffff;
     --table-background-color: #ffffff;
     --table-text-color: #000000;
@@ -235,6 +235,15 @@ button:hover {
     text-decoration: none;
     font-weight: 700;
     font-size: 1.35rem;
+}
+
+/* Logo used in the header when replacing the text site title */
+.site-branding .nav-logo {
+    height: 44px;
+    max-height: 100%;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .site-nav ul {
@@ -500,6 +509,32 @@ main.tekst {
 .quick-card.tts { background: var(--card-tts); }
 .quick-card.sfx { background: var(--card-sfx); }
 .quick-card.donate { background: var(--card-donate); }
+
+/* Page title cards: visually similar to quick-cards but larger and not clickable */
+.page-title-card {
+    width: 320px;
+    height: 120px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+    margin: 0 auto 18px auto;
+}
+.page-title-card .emoji { font-size: 44px; line-height:1; }
+.page-title-card .label { margin-top: 8px; font-size: 1.5rem; text-align:center; }
+
+.page-title-card.alerts { background: var(--card-alerts); }
+.page-title-card.tts { background: var(--card-tts); }
+.page-title-card.sfx { background: var(--card-sfx); }
+
+@media (max-width: 599px) {
+    .page-title-card { width: 160px; height: 100px; }
+    .page-title-card .emoji { font-size: 36px; }
+}
 
 /* Mobile: arrange quick-cards in a 2x2 grid and keep card size equal to desktop
    Do not shrink cards on small viewports; center the grid within the content. */
@@ -1157,4 +1192,71 @@ details.filter-option:not([open]) > summary::after {
     background: rgba(6,58,107,0.08);
 }
 .active-filter-chip:focus-within{ outline: 2px solid rgba(6,58,107,0.12); }
+
+#site-footer {
+    /* Static footer that sits after page content (not fixed to viewport) */
+    position: static;
+    background: var(--nav-background-color);
+    color: var(--nav-text-color);
+    box-shadow: 0 -1px 4px rgba(0,0,0,0.06);
+}
+
+#site-footer {
+    /* Ensure background spans the full viewport width even when body has horizontal padding.
+       Use a full-bleed technique: make footer viewport-wide and offset it to the left edge.
+    */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    box-sizing: border-box;
+}
+
+#site-footer .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* button on top, links below */
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    gap: 10px;
+}
+
+#site-footer .footer-links {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#site-footer .footer-links a {
+    color: var(--nav-text-color);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+#site-footer .footer-links a:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+#back-to-top {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--nav-text-color);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+#back-to-top:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+@media (max-width: 600px) {
+    #site-footer .footer-inner { flex-direction: column; gap: 8px; padding: 10px 12px; }
+}
 

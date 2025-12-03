@@ -6,11 +6,17 @@ const soundeffectsLinks = {
   "airhorn": [
     "soundeffects/airhorn.mp3"
   ],
+  "airhorn2": [
+    "soundeffects/airhorn2.mp3"
+  ],
   "alert": [
     "soundeffects/alert.mp3"
   ],
   "alweereenwinnaar": [
     "soundeffects/alweereenwinnaar.mp3"
+  ],
+  "anvil": [
+    "soundeffects/anvil.mp3"
   ],
   "applepay": [
     "soundeffects/applepay.mp3"
@@ -32,6 +38,9 @@ const soundeffectsLinks = {
   ],
   "boing": [
     "soundeffects/boing.mp3"
+  ],
+  "boksbel": [
+    "soundeffects/boksbel.mp3"
   ],
   "bonk": [
     "soundeffects/bonk.mp3"
@@ -69,6 +78,9 @@ const soundeffectsLinks = {
   "creeper": [
     "soundeffects/creeper.mp3"
   ],
+  "cricket": [
+    "soundeffects/cricket.mp3"
+  ],
   "crickets": [
     "soundeffects/crickets.mp3"
   ],
@@ -84,8 +96,17 @@ const soundeffectsLinks = {
   "damage": [
     "soundeffects/damage.mp3"
   ],
+  "dash": [
+    "soundeffects/dash.mp3"
+  ],
+  "dial": [
+    "soundeffects/dial.mp3"
+  ],
   "ding": [
     "soundeffects/ding.mp3"
+  ],
+  "disappear": [
+    "soundeffects/disappear.mp3"
   ],
   "disappointed": [
     "soundeffects/disappointed.mp3"
@@ -98,6 +119,9 @@ const soundeffectsLinks = {
   ],
   "drink": [
     "soundeffects/drink.mp3"
+  ],
+  "duolingo": [
+    "soundeffects/duolingo.mp3"
   ],
   "eat": [
     "soundeffects/eat.mp3"
@@ -150,6 +174,12 @@ const soundeffectsLinks = {
   "goeiemiddag": [
     "soundeffects/goeiemiddag.mp3"
   ],
+  "golfclap": [
+    "soundeffects/golfclap.mp3"
+  ],
+  "goofy": [
+    "soundeffects/goofy.mp3"
+  ],
   "hammer": [
     "soundeffects/hammer.mp3"
   ],
@@ -165,14 +195,14 @@ const soundeffectsLinks = {
   "heybuurman": [
     "soundeffects/heybuurman.mp3"
   ],
+  "heylisten": [
+    "soundeffects/heylisten.mp3"
+  ],
   "hiereeneuro": [
     "soundeffects/hiereeneuro.mp3"
   ],
   "illuminati": [
     "soundeffects/illuminati.mp3"
-  ],
-  "iluminati": [
-    "soundeffects/iluminati.mp3"
   ],
   "internet": [
     "soundeffects/internet.mp3"
@@ -195,8 +225,14 @@ const soundeffectsLinks = {
   "kraak": [
     "soundeffects/kraak.mp3"
   ],
+  "kwek": [
+    "soundeffects/kwek.mp3"
+  ],
   "leave": [
     "soundeffects/leave.mp3"
+  ],
+  "lock": [
+    "soundeffects/lock.mp3"
   ],
   "meow": [
     "soundeffects/meow.mp3"
@@ -212,6 +248,9 @@ const soundeffectsLinks = {
   ],
   "mosterd": [
     "soundeffects/mosterd.mp3"
+  ],
+  "mushroom": [
+    "soundeffects/mushroom.mp3"
   ],
   "niceshot": [
     "soundeffects/niceshot.mp3"
@@ -246,6 +285,12 @@ const soundeffectsLinks = {
   "pan": [
     "soundeffects/pan.mp3"
   ],
+  "pb": [
+    "soundeffects/pb.mp3"
+  ],
+  "phone": [
+    "soundeffects/phone.mp3"
+  ],
   "ping": [
     "soundeffects/ping.mp3"
   ],
@@ -270,8 +315,17 @@ const soundeffectsLinks = {
   "rctscream": [
     "soundeffects/rctscream.mp3"
   ],
+  "ring": [
+    "soundeffects/ring.mp3"
+  ],
   "rizz": [
     "soundeffects/rizz.mp3"
+  ],
+  "runescape": [
+    "soundeffects/runescape.mp3"
+  ],
+  "runfall": [
+    "soundeffects/runfall.mp3"
   ],
   "samsung": [
     "soundeffects/samsung.mp3"
@@ -281,6 +335,9 @@ const soundeffectsLinks = {
   ],
   "scratch": [
     "soundeffects/scratch.mp3"
+  ],
+  "shield": [
+    "soundeffects/shield.mp3"
   ],
   "shock": [
     "soundeffects/shock.mp3"
@@ -294,11 +351,17 @@ const soundeffectsLinks = {
   "sinisterlaugh": [
     "soundeffects/sinisterlaugh.mp3"
   ],
+  "slag": [
+    "soundeffects/slag.mp3"
+  ],
   "slimstemens": [
     "soundeffects/slimstemens.mp3"
   ],
   "startup": [
     "soundeffects/startup.mp3"
+  ],
+  "steam": [
+    "soundeffects/steam.mp3"
   ],
   "sus": [
     "soundeffects/sus.mp3"
@@ -332,9 +395,6 @@ const soundeffectsLinks = {
   ],
   "true": [
     "soundeffects/true.mp3"
-  ],
-  "tv": [
-    "soundeffects/tv.mp3"
   ],
   "twohours": [
     "soundeffects/twohours.mp3"
@@ -371,6 +431,9 @@ const soundeffectsLinks = {
   ],
   "witch": [
     "soundeffects/witch.mp3"
+  ],
+  "woah": [
+    "soundeffects/woah.mp3"
   ],
   "woef": [
     "soundeffects/woef.mp3"

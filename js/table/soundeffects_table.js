@@ -23,7 +23,7 @@
         "category": [
             "Meme"
         ],
-        "length": 2040,
+        "length": 1992,
         "code": "(augh)"
     },
     {
@@ -60,7 +60,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2040,
+        "length": 1944,
         "code": "(cave)"
     },
     {
@@ -69,7 +69,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2952,
+        "length": 2808,
         "code": "(challenger)"
     },
     {
@@ -78,7 +78,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 4336,
+        "length": 4310,
         "code": "(creeper)"
     },
     {
@@ -88,7 +88,7 @@
             "Natuur",
             "TV"
         ],
-        "length": 3864,
+        "length": 3840,
         "code": "(crickets)"
     },
     {
@@ -106,7 +106,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1656,
+        "length": 1608,
         "code": "(criticalhit)"
     },
     {
@@ -124,7 +124,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1632,
+        "length": 1344,
         "code": "(damage)"
     },
     {
@@ -187,7 +187,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1656,
+        "length": 1584,
         "code": "(failure)"
     },
     {
@@ -196,7 +196,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2208,
+        "length": 2160,
         "code": "(fallguys)"
     },
     {
@@ -251,7 +251,7 @@
         "category": [
             "TV"
         ],
-        "length": 1104,
+        "length": 1056,
         "code": "(heybuurman)"
     },
     {
@@ -297,7 +297,7 @@
             "TV",
             "Internet"
         ],
-        "length": 1541,
+        "length": 1515,
         "code": "(knolpower)"
     },
     {
@@ -306,7 +306,7 @@
         "category": [
             "Computer"
         ],
-        "length": 288,
+        "length": 264,
         "code": "(leave)"
     },
     {
@@ -316,7 +316,7 @@
             "Gaming",
             "Natuur"
         ],
-        "length": 522,
+        "length": 496,
         "code": "(meow)"
     },
     {
@@ -380,7 +380,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 2482,
+        "length": 2456,
         "code": "(rctscream)"
     },
     {
@@ -408,7 +408,7 @@
         "category": [
             "Meme"
         ],
-        "length": 2664,
+        "length": 2638,
         "code": "(sinisterlaugh)"
     },
     {
@@ -417,7 +417,7 @@
         "category": [
             "TV"
         ],
-        "length": 6243,
+        "length": 6165,
         "code": "(slimstemens)"
     },
     {
@@ -426,7 +426,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 3579,
+        "length": 3553,
         "code": "(sus)"
     },
     {
@@ -445,7 +445,7 @@
             "Meme",
             "TV"
         ],
-        "length": 840,
+        "length": 816,
         "code": "(tickle)"
     },
     {
@@ -472,7 +472,7 @@
         "category": [
             "TV"
         ],
-        "length": 1750,
+        "length": 1698,
         "code": "(twohours)"
     },
     {
@@ -481,7 +481,7 @@
         "category": [
             "Computer"
         ],
-        "length": 672,
+        "length": 624,
         "code": "(usb)"
     },
     {
@@ -527,7 +527,7 @@
         "category": [
             "Meme"
         ],
-        "length": 444,
+        "length": 392,
         "code": "(whip)"
     },
     {
@@ -557,7 +557,7 @@
             "Meme",
             "Internet"
         ],
-        "length": 2168,
+        "length": 2064,
         "code": "(wow)"
     },
     {
@@ -566,7 +566,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 1724,
+        "length": 1672,
         "code": "(zombie)"
     },
     {
@@ -593,7 +593,7 @@
         "category": [
             "TV"
         ],
-        "length": 4989,
+        "length": 4963,
         "code": "(hema)"
     },
     {
@@ -613,7 +613,7 @@
             "Meme",
             "Gaming"
         ],
-        "length": 1584,
+        "length": 1560,
         "code": "(ohmygod)"
     },
     {
@@ -622,7 +622,7 @@
         "category": [
             "TV"
         ],
-        "length": 3318,
+        "length": 3291,
         "code": "(ah)"
     },
     {
@@ -659,7 +659,7 @@
         "category": [
             "Computer"
         ],
-        "length": 810,
+        "length": 784,
         "code": "(error)"
     },
     {
@@ -677,7 +677,7 @@
         "category": [
             "Meme"
         ],
-        "length": 7314,
+        "length": 7288,
         "code": "(wide)"
     },
     {
@@ -687,7 +687,7 @@
             "TV",
             "Meme"
         ],
-        "length": 792,
+        "length": 720,
         "code": "(wauw)"
     },
     {
@@ -696,7 +696,7 @@
         "category": [
             "Computer"
         ],
-        "length": 3396,
+        "length": 3318,
         "code": "(startup)"
     },
     {
@@ -759,7 +759,7 @@
         "category": [
             "Meme"
         ],
-        "length": 1306,
+        "length": 1254,
         "code": "(rizz)"
     },
     {
@@ -777,7 +777,7 @@
         "category": [
             "Meme"
         ],
-        "length": 940,
+        "length": 914,
         "code": "(ding)"
     },
     {
@@ -795,7 +795,7 @@
         "category": [
             "Computer"
         ],
-        "length": 504,
+        "length": 456,
         "code": "(applepay)"
     },
     {
@@ -804,7 +804,7 @@
         "category": [
             "Gaming"
         ],
-        "length": 914,
+        "length": 836,
         "code": "(alert)"
     },
     {
@@ -831,7 +831,7 @@
         "category": [
             "Meme"
         ],
-        "length": 3213,
+        "length": 3161,
         "code": "(helaas)"
     },
     {
@@ -859,7 +859,7 @@
             "Meme",
             "TV"
         ],
-        "length": 836,
+        "length": 653,
         "code": "(hellothere)"
     },
     {
@@ -913,7 +913,7 @@
         "category": [
             "Computer"
         ],
-        "length": 1463,
+        "length": 1358,
         "code": "(error10)"
     },
     {
@@ -940,7 +940,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 1228,
+        "length": 1202,
         "code": "(glas)"
     },
     {
@@ -967,7 +967,7 @@
         "category": [
             "TV"
         ],
-        "length": 888,
+        "length": 862,
         "code": "(sword)"
     },
     {
@@ -985,7 +985,7 @@
         "category": [
             "Computer"
         ],
-        "length": 888,
+        "length": 862,
         "code": "(charge)"
     },
     {
@@ -1030,7 +1030,7 @@
         "category": [
             "Dagelijkse leven"
         ],
-        "length": 4310,
+        "length": 4075,
         "code": "(doorbell)"
     },
     {
@@ -1052,21 +1052,12 @@
         "code": "(pop)"
     },
     {
-        "name": "TV-ruis Geluid",
-        "description": "Het geluid van een oude televisie zonder signaal",
-        "category": [
-            "TV"
-        ],
-        "length": 1056,
-        "code": "(tv)"
-    },
-    {
         "name": "WhatsApp",
         "description": "Je hebt een bericht gekregen",
         "category": [
             "Computer"
         ],
-        "length": 1437,
+        "length": 1411,
         "code": "(whatsapp)"
     },
     {
@@ -1157,13 +1148,174 @@
         "category": [
             "TV"
         ],
-    "length": 2900
+    "length": 2873
 },
     {
         "name": "Swoosh",
         "description": "Alsof een voorwerp wordt gezwaaid",
-        "category": [],
+        "category": ["Meme"],
         "length": 192,
         "code": "(swoosh)"
+    },
+    {
+        "name": "Airhorn",
+        "description": "Het airhorn geluidseffect van Discord",
+        "category": ["Meme"],
+        "length": 1358,
+        "code": "(airhorn2)"
+    },
+    {
+        "name": "Anvil",
+        "description": "Een vallend aambeeld geluidseffect",
+        "category": ["Meme"],
+        "length": 1056,
+        "code": "(anvil)"
+    },
+    {
+        "name": "Boksbel",
+        "description": "Het geluid van een bel in een bokswedstrijd",
+        "category": ["Meme"],
+        "length": 2016,
+        "code": "(boksbel)"
+    },
+    {
+        "name": "Cricket",
+        "description": "Fluitende krekels",
+        "category": ["Meme"],
+        "length": 2090,
+        "code": "(cricket)"
+    },
+    {
+        "name": "Dash",
+        "description": "Geluid van iemand die snel wegrent",
+        "category": ["Meme"],
+        "length": 672,
+        "code": "(dash)"
+    },
+    {
+        "name": "Telefoon dial",
+        "description": "Wanneer je een knopje indrukt op een telefoon",
+        "category": ["Dagelijkse leven"],
+        "length": 192,
+        "code": "(dial)"
+    },
+    {
+        "name": "Disappear",
+        "description": "Meme verdwijn geluidseffect",
+        "category": ["Meme"],
+        "length": 1176,
+        "code": "(disappear)"
+    },
+    {
+        "name": "Duolingo correct",
+        "description": "Wanneer je een vraag goed hebt in Duolingo",
+        "category": ["Internet"],
+        "length": 528,
+        "code": "(duolingo)"
+    },
+    {
+        "name": "Golf Clap",
+        "description": "Een type applaus dat vaak gebruikt wordt in golfwedstrijden",
+        "category": ["Meme"],
+        "length": 2220,
+        "code": "(golfclap)"
+    },
+    {
+        "name": "Goofy schreeuw",
+        "description": "Goofy schreeuwt",
+        "category": ["Meme"],
+        "length": 2136,
+        "code": "(goofy)"
+    },
+    {
+        "name": "Hey, listen!",
+        "description": "Navi uit The Legend of Zelda: Ocarina of Time zegt 'Hey, listen!'",
+        "category": ["Gaming"],
+        "length": 1296,
+        "code": "(heylisten)"
+    },
+    {
+        "name": "Eend kwek",
+        "description": "Een eend die kwekt",
+        "category": ["Dieren"],
+        "length": 157,
+        "code": "(kwek)"
+    },
+    {
+        "name": "Telefoon ontgrendelen",
+        "description": "Het geluid van het ontgrendelen van een telefoon",
+        "category": ["Dagelijkse leven"],
+        "length": 144,
+        "code": "(lock)"
+    },
+    {
+        "name": "Mario paddenstoel",
+        "description": "Mario groeit door een paddenstoel te pakken",
+        "category": ["Gaming"],
+        "length": 1008,
+        "code": "(mushroom)"
+    },
+    {
+        "name": "Trackmania: PB!",
+        "description": "Je hebt een PB in Trackmania!",
+        "category": ["Gaming"],
+        "length": 1045,
+        "code": "(pb)"
+    },
+    {
+        "name": "Telefoon ring",
+        "description": "Het geluid van een telefoon die overgaat",
+        "category": ["Dagelijkse leven"],
+        "length": 1176,
+        "code": "(phone)"
+    },
+    {
+        "name": "Telefoon ring 2",
+        "description": "Het geluid van een telefoon die overgaat (tweede versie)",
+        "category": ["Dagelijkse leven"],
+        "length": 2664,
+        "code": "(ring)"
+    },
+    {
+        "name": "Old School RuneScape death",
+        "description": "Oh dear, you have died. - Old School RuneScape",
+        "category": ["Gaming"],
+        "length": 3120,
+        "code": "(runescape)"
+    },
+    {
+        "name": "Rennen en uitglijden",
+        "description": "Iemand rent en glijdt uit",
+        "category": ["TV"],
+        "length": 4632,
+        "code": "(runfall)"
+    },
+    {
+        "name": "Fortnite shield",
+        "description": "Wanneer je een schild potion gebruikt in Fortnite",
+        "category": ["Gaming"],
+        "length": 6296,
+        "code": "(shield)"
+    },
+    {
+        "name": "Dragon Ball Z slag",
+        "description": "Wanneer er een harde klap is in Dragon Ball Z",
+        "category": ["TV"],
+        "length": 1176,
+        "code": "(slag)"
+    },
+    {
+        "name": "Steam melding",
+        "description": "Iemand stuurt een bericht op Steam",
+        "category": ["Gaming"],
+        "length": 552,
+        "code": "(steam)"
+    },
+    {
+        "name": "Mario: Woah",
+        "description": "Woah! - Mario 64",
+        "category": ["Gaming"],
+        "length": 888,
+        "code": "(woah)"
     }
 ];

@@ -189,6 +189,39 @@
                 // fallback: insert as first child of main area
                 const main = document.querySelector('.main-area'); if (main) main.insertBefore(banner, main.firstChild);
             }
+
+            // If the user manually interacts with any filter controls, treat that
+            // as a "Nee, dank je" response: remove stored filters and dismiss
+            // the banner so it doesn't reappear later.
+            const dismissByUser = () => {
+                try { localStorage.removeItem(storageKeyFor(page)); } catch(e) {}
+                try { if (banner && banner.parentNode) banner.remove(); } catch(e) {}
+            };
+
+            // Attach listeners to the filter panel so the first user interaction
+            // dismisses the banner. Use `{ once: true }` so they auto-remove.
+            const panelEl = document.getElementById('filterPanel');
+            if (panelEl) {
+                try {
+                    panelEl.addEventListener('change', dismissByUser, { once: true });
+                    panelEl.addEventListener('input', dismissByUser, { once: true });
+                } catch (e) {
+                    // older browsers may not support options object; fallback
+                    panelEl.addEventListener('change', dismissByUser);
+                    panelEl.addEventListener('input', dismissByUser);
+                }
+            } else {
+                // fallback: observe clicks on any inputs/selects inside the banner's vicinity
+                const nearby = document.querySelector('.main-area') || document.body;
+                const clickHandler = (ev) => {
+                    const t = ev.target;
+                    if (t && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'BUTTON' || t.tagName === 'TEXTAREA')) {
+                        dismissByUser();
+                        nearby.removeEventListener('click', clickHandler);
+                    }
+                };
+                nearby.addEventListener('click', clickHandler);
+            }
         }
     });
 })();

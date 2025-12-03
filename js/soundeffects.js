@@ -276,6 +276,8 @@
             if (!text) return;
             const container = document.getElementById('categoryFilters');
             if (!container) return;
+            // ensure the filters group is expanded so user sees the checkbox
+            try { const details = container.closest && container.closest('details.filter-option'); if (details && !details.open) details.open = true; } catch(e) {}
             const inputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
             for (const input of inputs) {
                 const lab = input.nextElementSibling ? input.nextElementSibling.textContent.trim() : '';

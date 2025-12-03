@@ -90,13 +90,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 info.innerHTML = '';
                 infoParts.forEach((p, idx) => {
-                    const span = document.createElement('span');
-                    span.className = 'info-part';
-                    span.textContent = p.text;
-                    span.style.cursor = 'pointer';
-                    span.dataset.facet = p.facet;
-                    span.addEventListener('click', () => applyFilterFromInfoNoob(p.facet, p.text));
-                    info.appendChild(span);
+                    const isSplitFacet = (p.facet === 'category' || p.facet === 'type');
+                    if (isSplitFacet && p.text && p.text.indexOf(',') !== -1) {
+                        const parts = p.text.split(',').map(s => s.trim()).filter(Boolean);
+                        parts.forEach((part, i2) => {
+                            const span = document.createElement('span');
+                            span.className = 'info-part';
+                            span.textContent = part;
+                            span.style.cursor = 'pointer';
+                            span.dataset.facet = p.facet;
+                            span.addEventListener('click', () => applyFilterFromInfoNoob(p.facet, part));
+                            info.appendChild(span);
+                            if (i2 < parts.length - 1) info.appendChild(document.createTextNode(', '));
+                        });
+                    } else {
+                        const span = document.createElement('span');
+                        span.className = 'info-part';
+                        span.textContent = p.text;
+                        span.style.cursor = 'pointer';
+                        span.dataset.facet = p.facet;
+                        span.addEventListener('click', () => applyFilterFromInfoNoob(p.facet, p.text));
+                        info.appendChild(span);
+                    }
                     if (idx < infoParts.length - 1) info.appendChild(document.createTextNode(' • '));
                 });
 
@@ -466,10 +481,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (facet === 'type') { if (matchInContainer('typeFilters')) { refreshTable(); computeFilterCountsNoob(); return; } }
-        if (facet === 'category') { if (matchInContainer('categoryFilters')) { refreshTable(); computeFilterCountsNoob(); return; } }
+        if (facet === 'type') {
+            try { const c = document.getElementById('typeFilters'); const d = c && c.closest && c.closest('details.filter-option'); if (d && !d.open) d.open = true; } catch(e) {}
+            if (matchInContainer('typeFilters')) { refreshTable(); computeFilterCountsNoob(); return; }
+        }
+        if (facet === 'category') {
+            try { const c = document.getElementById('categoryFilters'); const d = c && c.closest && c.closest('details.filter-option'); if (d && !d.open) d.open = true; } catch(e) {}
+            if (matchInContainer('categoryFilters')) { refreshTable(); computeFilterCountsNoob(); return; }
+        }
 
-        // fallback: try both
+        // fallback: try both and open groups if needed
+        try { const c1 = document.getElementById('categoryFilters'); const d1 = c1 && c1.closest && c1.closest('details.filter-option'); if (d1 && !d1.open) d1.open = true; } catch(e) {}
+        try { const c2 = document.getElementById('typeFilters'); const d2 = c2 && c2.closest && c2.closest('details.filter-option'); if (d2 && !d2.open) d2.open = true; } catch(e) {}
         if (matchInContainer('categoryFilters') || matchInContainer('typeFilters')) { refreshTable(); computeFilterCountsNoob(); return; }
     }
 

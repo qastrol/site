@@ -463,13 +463,30 @@
                 
                 info.innerHTML = '';
                 infoParts.forEach((p, idx) => {
-                    const span = document.createElement('span');
-                    span.className = 'info-part';
-                    span.textContent = p.text;
-                    span.style.cursor = 'pointer';
-                    span.dataset.facet = p.facet;
-                    span.addEventListener('click', () => applyFilterFromInfoAlerts(p.facet, p.text));
-                    info.appendChild(span);
+                    // If the part represents multiple categories/types joined by commas,
+                    // split them so each can be clicked independently (e.g. "Gaming, TV").
+                    const isSplitFacet = (p.facet === 'category' || p.facet === 'type');
+                    if (isSplitFacet && p.text && p.text.indexOf(',') !== -1) {
+                        const parts = p.text.split(',').map(s => s.trim()).filter(Boolean);
+                        parts.forEach((part, i2) => {
+                            const span = document.createElement('span');
+                            span.className = 'info-part';
+                            span.textContent = part;
+                            span.style.cursor = 'pointer';
+                            span.dataset.facet = p.facet;
+                            span.addEventListener('click', () => applyFilterFromInfoAlerts(p.facet, part));
+                            info.appendChild(span);
+                            if (i2 < parts.length - 1) info.appendChild(document.createTextNode(', '));
+                        });
+                    } else {
+                        const span = document.createElement('span');
+                        span.className = 'info-part';
+                        span.textContent = p.text;
+                        span.style.cursor = 'pointer';
+                        span.dataset.facet = p.facet;
+                        span.addEventListener('click', () => applyFilterFromInfoAlerts(p.facet, p.text));
+                        info.appendChild(span);
+                    }
                     if (idx < infoParts.length - 1) info.appendChild(document.createTextNode(' • '));
                 });
 
@@ -875,13 +892,24 @@
                 'year': 'yearFilters'
             };
 
+            function openGroupFor(id) {
+                try {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    const details = el.closest && el.closest('details.filter-option');
+                    if (details && !details.open) details.open = true;
+                } catch (e) {}
+            }
+
             if (facet && preferred[facet]) {
+                // open the filter group so user sees the matched checkbox
+                openGroupFor(preferred[facet]);
                 if (matchInContainer(preferred[facet])) { try { refreshFilters(); } catch(e){}; return; }
             }
 
-            
             const all = ['categoryFilters','typeFilters','yearFilters'];
             for (const id of all) {
+                openGroupFor(id);
                 if (matchInContainer(id)) { try { refreshFilters(); } catch(e){}; return; }
             }
         }

@@ -21,10 +21,12 @@
     <div id="navbar"></div>
 
     <div class="content tekst">
-    <h1>Text To Speech-stemmen</h1>
-    <p>Hieronder staan de beschikbare TTS-stemmen. Kopieer de stemnaam naar het tekstvak van de kanaalpunten-redeem om deze te gebruiken in de stream. 
-        
-    <p>Er zijn verschillende TTS-stemmen beschikbaar, zoals de gewone stemmen van Google en  Microsoft, maar ook AI-stemmen van ElevenLabs en TTSMonster. Je kan meerdere stemmen tegelijk gebruiken in je donatiebericht.</p>
+    <div class="page-title-card tts" aria-hidden="true">
+        <div class="emoji">🗣️</div>
+        <div class="label"><strong>Text To Speech-stemmen</strong></div>
+    </div>
+    <p>TTS-stemmen lezen (een deel) van je donatiebericht voor tijdens de KerstKnallers-livestream. 
+        Je kan een TTS-stem toevoegen aan je donatiebericht door de "stemcode" toe te voegen aan je donatiebericht, bijvoorbeeld <code>vanrossem:</code> om de stem van Maarten van Rossem te gebruiken. Je kan bij elke donatie één of meerdere stemmen tegelijk gebruiken in je donatiebericht.</p>
         
         <p>De AI-stemmen van ElevenLabs werken zowel in het Engels als Nederlands. Bij de stemmen van Microsoft en Google verschilt dit per stem. De AI stemmen van TTSMonster werken alleen in het Engels.</p>
         
@@ -44,8 +46,6 @@
                     </div>
                 </details>
 
-                <!-- sort selector moved to main area above the table -->
-
                 <details class="filter-option" open>
                     <summary>Favorieten</summary>
                     <div class="filter-group">
@@ -60,7 +60,7 @@
                 </details>
 
                 <details class="filter-option" open>
-                    <summary>Categorieën</summary>
+                    <summary>TTS-dienst</summary>
                     <div class="filter-group">
                         <div id="categoryFilters"></div>
                     </div>
@@ -70,6 +70,13 @@
                     <summary>AI</summary>
                     <div class="filter-group">
                         <div id="typeFilters"></div>
+                    </div>
+                </details>
+                
+                <details class="filter-option">
+                    <summary>Categorie</summary>
+                    <div class="filter-group">
+                        <div id="sourceFilters"></div>
                     </div>
                 </details>
 
@@ -101,8 +108,8 @@
                     <select id="sortSelect" onchange="applySort()" style="padding:6px;">
                         <option value="0:asc">Naam (A → Z)</option>
                         <option value="0:desc">Naam (Z → A)</option>
-                        <option value="1:asc">TTS (A → Z)</option>
-                        <option value="1:desc">TTS (Z → A)</option>
+                        <option value="1:asc">TTS-dienst (A → Z)</option>
+                        <option value="1:desc">TTS-dienst (Z → A)</option>
                         <option value="2:asc">Type stem (A → Z)</option>
                         <option value="2:desc">Type stem (Z → A)</option>
                         <option value="3:asc">Taal (A → Z)</option>

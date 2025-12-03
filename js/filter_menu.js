@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const applyBtn = document.createElement('button');
         applyBtn.className = 'overlay-apply';
         applyBtn.type = 'button';
+        // Default text — will be updated to show the number of visible results
         applyBtn.textContent = 'Filters toepassen';
         footer.appendChild(applyBtn);
         panelWrap.appendChild(footer);
@@ -85,6 +86,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
         closeBtn.addEventListener('click', () => closeOverlay());
         applyBtn.addEventListener('click', () => closeOverlay());
+        // Update the apply button text to show the current visible result count.
+        function getVisibleCountFallback() {
+            // Try common list IDs used across pages
+            const selectors = ['#alertList li', '#soundEffectsList li', '#ttsList li', '#redeemList li', '#alertTable tr', '#soundEffectsTable tr', '#ttsTable tr', '#redeemTable tr'];
+            for (const sel of selectors) {
+                const nodes = document.querySelectorAll(sel);
+                if (nodes && nodes.length > 0) {
+                    // count only visible ones
+                    const visible = Array.from(nodes).filter(n => n.style.display !== 'none');
+                    return visible.length;
+                }
+            }
+            return 0;
+        }
+
+        function getCurrentCount() {
+            // Prefer the page's #rowCount element if present (scripts update this)
+            const rc = document.getElementById('rowCount');
+            if (rc && rc.textContent !== undefined && rc.textContent !== null) {
+                const v = parseInt(rc.textContent, 10);
+                if (!isNaN(v)) return v;
+            }
+            return getVisibleCountFallback();
+        }
+
+        function updateApplyText() {
+            const count = getCurrentCount();
+            // Localize simple pluralization (Dutch)
+            const text = `Toon ${count} resultaat${count === 1 ? '' : 'en'}`;
+            applyBtn.textContent = text;
+        }
+
+        // Keep the button updated when filters change. Many pages update #rowCount;
+        // use a MutationObserver on that element if present, otherwise listen for
+        // input/change on the overlay content.
+        const rowCountEl = document.getElementById('rowCount');
+        let rowObserver = null;
+        if (rowCountEl) {
+            rowObserver = new MutationObserver(updateApplyText);
+            rowObserver.observe(rowCountEl, { childList: true, characterData: true, subtree: true });
+        }
+
+        // Listen for changes inside the overlay (checkboxes, selects, inputs)
+        const contentMutHandler = (ev) => { updateApplyText(); };
+        contentHolder.addEventListener('input', contentMutHandler);
+        contentHolder.addEventListener('change', contentMutHandler);
+
+        // Update immediately after creation
+        updateApplyText();
         overlay.addEventListener('click', (ev) => {
             if (ev.target === overlay) closeOverlay();
         });
@@ -136,6 +186,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         overlay.classList.remove('open');
         movedPanelState = null;
+        // disconnect any observers/listeners on the overlay
+        const overlayEl = document.getElementById('mobileFilterOverlay');
+        if (overlayEl) {
+            const content = overlayEl.querySelector('.overlay-content');
+            if (content) {
+                content.removeEventListener('input', () => {});
+                content.removeEventListener('change', () => {});
+            }
+        }
     }
 
     // Wire mobile filter open buttons (added to pages under the sort control)

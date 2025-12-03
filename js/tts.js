@@ -129,6 +129,11 @@ function renderTtsTable() {
     const infoParts = [];
     if (item.category) infoParts.push({ text: item.category, facet: 'category' });
     if (item.type) infoParts.push({ text: item.type, facet: 'gender' });
+    // include source (origin) as a filterable facet; support array or string
+    if (item.source) {
+        const srcText = Array.isArray(item.source) ? item.source.join(', ') : String(item.source);
+        infoParts.push({ text: srcText, facet: 'source' });
+    }
     if (humanLangs) infoParts.push({ text: humanLangs, facet: 'lang' });
     if (item.isAI) infoParts.push({ text: 'AI-stem', facet: 'type' });
     if (item.supportsAudioTags) infoParts.push({ text: 'Ondersteunt audio tags', facet: 'audio' });
@@ -136,13 +141,28 @@ function renderTtsTable() {
     
     info.innerHTML = '';
     infoParts.forEach((p, idx) => {
-        const span = document.createElement('span');
-        span.className = 'info-part';
-        span.textContent = p.text;
-        span.style.cursor = 'pointer';
-        span.dataset.facet = p.facet;
-        span.addEventListener('click', () => applyFilterFromInfoTts(p.facet, p.text));
-        info.appendChild(span);
+        const isSplitFacet = (p.facet === 'category' || p.facet === 'type' || p.facet === 'gender' || p.facet === 'source');
+        if (isSplitFacet && p.text && p.text.indexOf(',') !== -1) {
+            const parts = p.text.split(',').map(s => s.trim()).filter(Boolean);
+            parts.forEach((part, i2) => {
+                const span = document.createElement('span');
+                span.className = 'info-part';
+                span.textContent = part;
+                span.style.cursor = 'pointer';
+                span.dataset.facet = p.facet;
+                span.addEventListener('click', () => applyFilterFromInfoTts(p.facet, part));
+                info.appendChild(span);
+                if (i2 < parts.length - 1) info.appendChild(document.createTextNode(', '));
+            });
+        } else {
+            const span = document.createElement('span');
+            span.className = 'info-part';
+            span.textContent = p.text;
+            span.style.cursor = 'pointer';
+            span.dataset.facet = p.facet;
+            span.addEventListener('click', () => applyFilterFromInfoTts(p.facet, p.text));
+            info.appendChild(span);
+        }
         if (idx < infoParts.length - 1) info.appendChild(document.createTextNode(' • '));
     });
         left.appendChild(info);
@@ -177,6 +197,13 @@ function renderTtsTable() {
 
     li.dataset.name = (item.name || '').toString();
     li.dataset.category = (item.category || '').toString();
+    // expose source values as '|' separated list for matching
+    let dsSources = '';
+    if (item.source) {
+        if (Array.isArray(item.source)) dsSources = item.source.map(s=>s.toString().trim()).filter(Boolean).join('|');
+        else dsSources = String(item.source).trim();
+    }
+    li.dataset.source = dsSources;
     li.dataset.gender = (item.type || '').toString();
     li.dataset.isai = item.isAI ? '1' : '0';
     li.dataset.supportsaudiotags = item.supportsAudioTags ? '1' : '0';
@@ -276,6 +303,8 @@ function renderTtsTable() {
         
         const checkedCategoryInputs = Array.from(document.querySelectorAll('#categoryFilters input[data-type="category"]:checked'));
         const checkedCats = checkedCategoryInputs.map(cb => cb.value);
+        const checkedSourceInputs = Array.from(document.querySelectorAll('#sourceFilters input[data-type="source"]:checked'));
+        const checkedSources = checkedSourceInputs.map(cb => cb.value);
     const aiCheckbox = document.querySelector('#filterAI');
     const normalCheckbox = document.querySelector('#filterNormal');
     const aiChecked = aiCheckbox ? aiCheckbox.checked : false;
@@ -299,6 +328,13 @@ function renderTtsTable() {
                 const categoryText = row.dataset.category || '';
                 let categoryMatch = true;
                 if (checkedCats.length > 0) categoryMatch = checkedCats.indexOf(categoryText) !== -1;
+
+                // source matching: row.dataset.source contains '|' separated values
+                const rowSourceValues = (row.dataset.source || '').split('|').map(s=>s.trim()).filter(Boolean);
+                let sourceMatch = true;
+                if (checkedSources.length > 0) {
+                    sourceMatch = checkedSources.some(cs => rowSourceValues.indexOf(cs) !== -1);
+                }
 
                 
                 let aiMatch = true;
@@ -331,7 +367,7 @@ function renderTtsTable() {
                     genderMatch = checkedGenders.indexOf(rowGender) !== -1;
                 }
 
-                const matchFound = textMatch && categoryMatch && aiMatch && langMatch && genderMatch && supportsMatch;
+                const matchFound = textMatch && categoryMatch && sourceMatch && aiMatch && langMatch && genderMatch && supportsMatch;
                 row.style.display = matchFound ? '' : 'none';
             });
 
@@ -362,6 +398,12 @@ function renderTtsTable() {
             if (catContainer) {
                 const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]:checked'));
                 boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'category', label: lab, value: cb.value }); });
+            }
+            // source (Categorie) active filters
+            const srcContainer = document.getElementById('sourceFilters');
+            if (srcContainer) {
+                const boxes = Array.from(srcContainer.querySelectorAll('input[type="checkbox"]:checked'));
+                boxes.forEach(cb => { const lab = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value; active.push({ type: 'source', label: lab, value: cb.value }); });
             }
             
             const typeContainer = document.getElementById('typeFilters');
@@ -398,6 +440,7 @@ function computeFilterCounts() {
     const checkedCats = Array.from(document.querySelectorAll('#categoryFilters input[data-type="category"]:checked')).map(c=>c.value);
     const checkedLangs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked')).map(c=>c.value);
     const checkedGenders = Array.from(document.querySelectorAll('#genderFilters input[data-type="gender"]:checked')).map(c=>c.value);
+    const checkedSources = Array.from(document.querySelectorAll('#sourceFilters input[data-type="source"]:checked')).map(c=>c.value);
     const aiCheckbox = document.querySelector('#filterAI');
     const normalCheckbox = document.querySelector('#filterNormal');
     const aiChecked = aiCheckbox ? aiCheckbox.checked : false;
@@ -415,6 +458,7 @@ function computeFilterCounts() {
 
         
         let selCats = checkedCats.slice();
+        let selSources = checkedSources.slice();
         let selLangs = checkedLangs.slice();
         let selGenders = checkedGenders.slice();
         let selAi = aiChecked;
@@ -424,6 +468,7 @@ function computeFilterCounts() {
 
         
         if (type === 'category') selCats = [];
+        if (type === 'source') selSources = [];
         if (type === 'lang') selLangs = [];
         if (type === 'gender') selGenders = [];
         if (type === 'type') { selAi = false; selNormal = false; }
@@ -431,6 +476,7 @@ function computeFilterCounts() {
 
         
         if (type === 'category') selCats = [value];
+        if (type === 'source') selSources = [value];
         else if (type === 'lang') selLangs = [value];
         else if (type === 'gender') selGenders = [value];
         else if (type === 'type') {
@@ -447,6 +493,17 @@ function computeFilterCounts() {
             
             if (selCats.length > 0) {
                 if (!item.category || selCats.indexOf(item.category) === -1) return acc;
+            }
+            if (selSources.length > 0) {
+                // normalize item.source to array
+                let rowSources = [];
+                if (item.source) {
+                    if (Array.isArray(item.source)) rowSources = item.source.map(s=>s.toString().trim());
+                    else rowSources = [String(item.source).trim()];
+                }
+                if (rowSources.length === 0) return acc;
+                const intersects = selSources.some(s => rowSources.indexOf(s) !== -1);
+                if (!intersects) return acc;
             }
             
             if (selAi || selNormal) {
@@ -498,8 +555,14 @@ function computeFilterCounts() {
             const data = (typeof ttsTable !== 'undefined' && Array.isArray(ttsTable)) ? ttsTable : [];
             const categories = new Set();
             const langs = new Set();
+            const sources = new Set();
             data.forEach(item => {
                 if (item.category) categories.add(item.category);
+                // collect source values (support string or array)
+                if (item.source) {
+                    if (Array.isArray(item.source)) item.source.forEach(s => { if (s) sources.add(s); });
+                    else if (typeof item.source === 'string') sources.add(item.source);
+                }
                 (item.languages || []).forEach(l => langs.add(l));
             });
 
@@ -719,6 +782,23 @@ function computeFilterCounts() {
                 lw.appendChild(langCount);
                 langContainer.appendChild(lw);
             });
+
+            // Build source (Categorie) filters
+            const sourceContainer = document.getElementById('sourceFilters');
+            if (sourceContainer) {
+                sourceContainer.innerHTML = '';
+                const srcList = Array.from(sources).sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+                srcList.forEach(src => {
+                    const lw = document.createElement('label');
+                    lw.style.display = 'block'; lw.style.marginBottom = '6px';
+                    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.setAttribute('data-type', 'source'); cb.value = src;
+                    cb.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
+                    lw.appendChild(cb);
+                    const span = document.createElement('span'); span.style.fontWeight = 'normal'; span.textContent = ' ' + src; lw.appendChild(span);
+                    const countSpan = document.createElement('span'); countSpan.className = 'filter-count'; countSpan.style.marginLeft = '6px'; countSpan.style.color = '#666'; countSpan.textContent = ''; lw.appendChild(countSpan);
+                    sourceContainer.appendChild(lw);
+                });
+            }
         }
 
     
@@ -968,10 +1048,32 @@ function updateFavIndicators() {
             }
 
             
-            if (facet === 'category') { if (matchInContainer('categoryFilters')) { searchTable(); computeFilterCounts(); return; } }
-            if (facet === 'gender') { if (matchInContainer('genderFilters')) { searchTable(); computeFilterCounts(); return; } }
+            function openGroupFor(id) {
+                try {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    const details = el.closest && el.closest('details.filter-option');
+                    if (details && !details.open) details.open = true;
+                } catch (e) {}
+            }
 
-            
+            if (facet === 'category') {
+                openGroupFor('categoryFilters');
+                if (matchInContainer('categoryFilters')) { searchTable(); computeFilterCounts(); return; }
+            }
+            if (facet === 'source') {
+                openGroupFor('sourceFilters');
+                // try matching the source checkbox values
+                if (matchInContainer('sourceFilters')) { searchTable(); computeFilterCounts(); return; }
+            }
+            if (facet === 'gender') {
+                openGroupFor('genderFilters');
+                if (matchInContainer('genderFilters')) { searchTable(); computeFilterCounts(); return; }
+            }
+
+            // fallback: try opening both groups then match
+            openGroupFor('typeFilters');
+            openGroupFor('categoryFilters');
             if (matchInContainer('typeFilters') || matchInContainer('categoryFilters')) { searchTable(); computeFilterCounts(); return; }
         }
 
@@ -1035,6 +1137,11 @@ window.addEventListener('activeFilter:remove', (ev) => {
                 const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
                 if (input) input.checked = false;
             }
+        } else if (type === 'source') {
+            const container = document.getElementById('sourceFilters'); if (container) {
+                const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
+                if (input) input.checked = false;
+            }
         } else if (type === 'gender') {
             const container = document.getElementById('genderFilters'); if (container) {
                 const input = Array.from(container.querySelectorAll('input[type="checkbox"]')).find(i => i.value === value);
@@ -1056,7 +1163,7 @@ window.addEventListener('activeFilter:clear', () => {
     try {
         const s = document.getElementById('searchInput'); if (s) s.value = '';
         
-        ['categoryFilters','typeFilters','genderFilters','languageFilters','audioTagFilters'].forEach(id => {
+        ['categoryFilters','typeFilters','genderFilters','languageFilters','audioTagFilters','sourceFilters'].forEach(id => {
             const c = document.getElementById(id);
             if (!c) return;
             const inputs = Array.from(c.querySelectorAll('input[type="checkbox"]'));

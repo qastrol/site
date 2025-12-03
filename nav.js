@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Quick switch for navigation variants.
     // Change `NAV_VARIANT` to 'kerst' to enable the KerstKnallers variant.
     // One quick edit: set NAV_VARIANT = 'kerst' (default is 'default').
-    const NAV_VARIANT = 'default'; // 'default' | 'kerst'
+    const NAV_VARIANT = 'kerst'; // 'default' | 'kerst'
 
     const homeHref = NAV_VARIANT === 'kerst' ? 'kerstknallers.html' : 'index.html';
     const secondLinkHref = NAV_VARIANT === 'kerst' ? 'alerts.html' : 'noobpoints.html';
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <header class="site-header">
                 <div class="nav-container">
                     <div class="site-branding">
-                        <a href="${homeHref}" class="site-title">Qastrol</a>
+                        <a href="${homeHref}" class="site-title"><img src="images/logo.png" alt="Logo's" class="nav-logo"></a>
                     </div>
                     <nav class="site-nav" aria-label="Hoofd navigatie">
                         <ul id="nav-menu">
@@ -42,12 +42,33 @@ document.addEventListener("DOMContentLoaded", function () {
     // Voeg de navigatie HTML toe aan de container
     navContainer.innerHTML = navHTML;
 
+    // Footer HTML: knop bovenaan, links hieronder
+    const footerHTML = `
+        <footer id="site-footer">
+            <div class="footer-inner">
+                <div class="footer-top">
+                    <button id="back-to-top" title="Terug naar boven">Terug naar boven</button>
+                </div>
+                <div class="footer-links">
+                    <a href="kerstknallers.html">Home</a>
+                    <a href="alerts.html">Alerts</a>
+                    <a href="tts.html">TTS</a>
+                    <a href="soundeffects.html">Sound Effects</a>
+                </div>
+            </div>
+        </footer>
+    `;
+
+    // Append footer to the end of the body so it appears on every page
+    document.body.insertAdjacentHTML('beforeend', footerHTML);
+
     // After injecting the header into the page, adjust page spacing so the header
     // doesn't overlap content (especially on mobile). Then initialize behavior.
     function adjustContentForHeader() {
         const header = document.querySelector('.site-header');
         const content = document.querySelector('.content');
         const navMenu = document.getElementById('nav-menu');
+        const footer = document.getElementById('site-footer');
         if (header && content) {
             // set top padding equal to header height so content is never hidden
             const h = header.offsetHeight;
@@ -56,6 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (navMenu) {
                 navMenu.style.top = h + 'px';
             }
+                // footer is static (not fixed), so it sits after the content
+                // and does not require extra bottom padding here.
         }
     }
 
@@ -115,5 +138,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 hamburger.setAttribute('aria-expanded', 'false');
             }
         });
+
+        // Back-to-top knop gedrag
+        const backToTop = document.getElementById('back-to-top');
+        if (backToTop) {
+            backToTop.addEventListener('click', (ev) => {
+                ev.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     }
 });
