@@ -453,6 +453,33 @@ main.tekst {
     color: var(--text-color);
 }
 
+/* Small helper: visually-hidden class for accessibility */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap; border: 0; padding: 0; margin: -1px;
+}
+
+/* Donation tester: make textarea and results match the surrounding .tekst styles */
+#donation-tester textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid var(--table-border-color);
+    border-radius: 6px;
+    background: var(--input-background);
+    color: var(--input-text-color);
+}
+
+#donation-tester .tester-result ol {
+    margin: 8px 0 0 20px;
+}
+
+#donation-tester .tester-controls button {
+    padding: 8px 12px;
+}
+
 .tekst p {
     margin-bottom: 1.2em;
     color: var(--text-color);

@@ -85,7 +85,19 @@
         <p>Als je de <code>&lt;noobpower&gt;</code> alert wilt gebruiken, en na de alert de <code>gijs:</code> stem 'dit is een test' willen laten zeggen, daarna de <code>vanrossem:</code> stem 'hallo' wilt laten zeggen en daarna het <code>(fart)</code> sound effect wilt laten afspelen, in die volgorde, dan kan ziet je KerstKnallers-donatie er zo uit:</p>
         <p><code> &lt;noobpower&gt; gijs: dit is een test vanrossem: hallo (fart)</code></p>
 
+        <!-- Voorbeeld tester: gebruiker kan een donatiebericht invoeren en testen -->
+            <p><strong>Test je donatie</strong></p>
+            <p>Hier kan je eventueel je donatiebericht plakken om te controleren of alerts, TTS-stemmen en soundeffects correct herkend worden.</p>
+            <label for="donationTestInput" class="visually-hidden">Donatievoorbeeld</label>
+            <textarea id="donationTestInput" rows="3" style="width: 100%;" placeholder=""></textarea>
+            <div class="tester-controls" style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+                <button id="donationTestBtn">Test</button>
+                <div id="donationTestStatus" aria-live="polite" style="margin-left:12px;color:var(--muted-text-color)"></div>
+            </div>
+            <div id="donationTestResult" class="tester-result"></div>
+
     </div>
+    <br><br>
 
     </div>
 
@@ -97,6 +109,7 @@
     <script src="js/table/soundeffects_table.js"></script>
     <script src="js/table/noobpoints_table.js"></script>
     <script src="js/index.js"></script>
+    <script src="js/test_donation.js"></script>
     
 </body>
 </html>
