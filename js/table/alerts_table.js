@@ -77,7 +77,7 @@
 	{ name: "Lego Island: Brick by Brick", description: "Brick by Brick van Lego Island wordt afgespeeld 😳", code: "<brickbybrick>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Mario Kart: Communication Error", description: "POV: je raakt gedisconnected in Mario Kart", code: "<communicationerror>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "Dit is DVD reclame", description: "Dit is de geweldige DVD-technologie! <a href=\"https://www.youtube.com/watch?v=ZtlBCrP9ySo\">Bron</a>", code: "<dvd>", category: ["TV"], type: "Video-alert", year: 2024},
-	{ name: "Fryslân", description: "Fryslân Boppe (de entrance animatie van DeJelman)", code: "<fryslan>", category: ["Fryslân"], type: "Video-alert", year: 2024},
+	{ name: "Fryslân compilatie", description: "Fryslân Boppe (de entrance animatie van DeJelman)", code: "<fryslan>", category: ["Fryslân"], type: "Video-alert", year: 2024},
 	{ name: "You got Noob-Power!", description: "Je krijgt Noob-Power in F-Zero X", code: "<fzeronoob>", category: ["Gaming"], type: "Video-alert", year: 2024},
 	{ name: "GIGAVIS", description: "Het is de GIGACHAD van de vissen :O", code: "<gigavis>", category: ["Meme", "Dagelijks leven", "Dieren"], type: "Video-alert", year: 2024},
 	{ name: "Kruip in de huid van...", description: "Kruip in de huid van een bekend iemand...", code: "<kruipindehuid>", category: ["Radio"], type: "Video-alert", year: 2024},
@@ -307,7 +307,7 @@
 	{ name: "Curb Your Enthusiasm credits", description: "De meme van een rollende aftiteling met Curb Your Enthusiasm", code: "<curb>", category: ["Meme", "TV"], type: "Video-alert", year: 2025},
 	{ name: "Spoken van HARD", description: "Spoken van HARD", code: "<hardspoken>", category: ["Internet", "Nederland"], type: "Video-alert", year: 2025},
 	{ name: "Jerma's Thanksgiving wens", description: "Happy Thanksgiving van Jerma", code: "<jerma>", category: ["Twitch"], type: "Video-alert", year: 2025},
-	{ name: "Find Luigi", description: "De iconische minigame van New Super Mario Bros en Super Mario 64", code: "<luigi>", category: ["Gaming"], type: "Video-alert", year: 2025},
+	{ name: "Find Luigi", description: "De iconische minigame van New Super Mario Bros en Super Mario 64 DS", code: "<luigi>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "Zo gaat het in Minecraft", description: "Een iconische Nederlandse Minecraft parodie. Besef.", code: "<zogaat>", category: ["Internet", "Gaming"], type: "Video-alert", year: 2025},
 	{ name: "Welke lijsttrekker ben jij?", description: "Welke van de 26 lijsttrekkers ben jij?", code: "<lijsttrekker>", category: ["Nederland"], type: "Audio-alert", year: 2025},
 	{ name: "Tito Dick \"Dickman\"", description: "Tito Dick \"Dickman\", een karakter van één van de slechtst beoordeelde tekenfilms allertijden: The Nutshack", code: "<tito>", category: ["TV"], type: "Video-alert", year: 2025},
@@ -321,4 +321,7 @@
 	{ name: "Shaun het Schaap: Lord Wout", description: "De Shaun het Schaap intro, maar dan met Lord Wout", code: "<shaun>", category: ["Lord Wout", "Intro"], type: "Video-alert", year: 2025},
 	{ name: "Quiz", description: "Speel de quiz: krijg een quizvraag en beantwoord die binnen 20 seconden.", code: "<quiz>", category: ["Twitch"], type: "Interactieve alert", year: 2025},
 	{ name: "67", description: "Het oorspronkelijke 67 filmpje", code: "<67>", category: ["Meme", "Internet"], type: "Video-alert", year: 2025},
-];
+	{ name: "Shrek ASMR", description: "Een zeer vervloekte ASMR-uitvoering van de film Shrek. <a href=\"https://www.youtube.com/watch?v=Glkj749ik7w\">Bron</a>", code: "<shrekasmr>", category: ["Internet", "Film"], type: "Video-alert", year: 2025},
+	{ name: "Fortnite Default Dance", description: "De iconische default dance uit Fortnite", code: "<default>", category: ["Gaming"], type: "Video-alert", year: 2025},
+	{ name: "SEGA", description: "De iconische SEGA jingle van de SEGA Genesis", code: "<sega>", category: ["Gaming"], type: "Video-alert", year: 2025},
+	{ name: "SpongeBob fluit", description: "De fluit van SpongeBob uit de intro", code: "<spongefluit>", category: ["TV"], type: "Video-alert", year: 2025},];
