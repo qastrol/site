@@ -570,7 +570,7 @@ main.tekst {
 .page-title-card.sfx { background: var(--card-sfx); }
 
 @media (max-width: 599px) {
-    .page-title-card { width: 160px; height: 100px; }
+    .page-title-card { width: 200px; height: 150px; }
     .page-title-card .emoji { font-size: 36px; }
 }
 

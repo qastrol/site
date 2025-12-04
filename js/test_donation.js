@@ -376,6 +376,14 @@
                     // can attach it to an explicit TTS (combine before/after text).
                     parsed._freeText = parsedObj.freeText || '';
                     renderResults(out, parsed);
+                    // Smoothly scroll the results into view so the user sees them
+                    // without needing to manually scroll. Center the results in
+                    // the viewport for best visibility.
+                    try {
+                        out.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } catch (e) {
+                        // fallback: do nothing
+                    }
                     status.textContent = `Gevonden: ${parsed.length}`;
                 }, 50);
         });
