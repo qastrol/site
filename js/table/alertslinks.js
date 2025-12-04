@@ -12,11 +12,17 @@ const alertsLinks = {
   "2euro": [
     "alerts/2euro.mp4"
   ],
+  "369": [
+    "alerts/369.webm"
+  ],
   "3euro": [
     "alerts/3euro.mp4"
   ],
   "5euro": [
     "alerts/5euro.mp4"
+  ],
+  "67": [
+    "alerts/67.mp4"
   ],
   "7grandfeest": [
     "alerts/7grandfeest.webm"
