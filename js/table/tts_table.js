@@ -11,7 +11,7 @@ const ttsTable = [
     { name: "NPO1 Zenderstem", code: "npo1:", description: "De zenderstem van Nederland 1", category: "ElevenLabs", type: "Mannelijk", source: ["TV"], isAI: true, languages: ["*"] },
     { name: "SBS6 Zenderstem", code: "sbs6:", description: "De zenderstem van SBS6.", category: "ElevenLabs", type: "Mannelijk", source: ["TV"], isAI: true, languages: ["*"] },
     { name: "Geert Wilders", code: "wilders:", description: "Geert Wilders, partijleider van de PVV", category: "ElevenLabs", type: "Mannelijk", source: ["Politiek"], isAI: true, languages: ["*"] },
-    { name: "Enzo Knol", code: "enzoknol:", description: "Enzo Knolpower!", category: "ElevenLabs", type: "Mannelijk", source: ["YouTube"], isAI: true, languages: ["*"] },
+    { name: "Enzo Knol", code: "enzoknol:", description: "Enzo Knolpower!", category: "ElevenLabs", type: "Mannelijk", source: ["Internet"], isAI: true, languages: ["*"] },
     { name: "ASMR-stem", code: "asmr:", description: "Een Engelse ASMR stem die niet in het Nederlands werkt!", category: "TTSMonster", type: "Vrouwelijk", source: ["Internet"], isAI: true, languages: ["en"] },
     { name: "Baldi", code: "baldi:", description: "Baldi van Baldi's Basics!", category: "TTSMonster", type: "Mannelijk", source: ["Gaming"], isAI: true, languages: ["en"] },
     { name: "Joe Biden", code: "biden:", description: "Joe Biden! Joe Biden!", category: "TTSMonster", type: "Mannelijk", source: ["Politiek"], isAI: true, languages: ["en"] },
@@ -49,7 +49,7 @@ const ttsTable = [
     { name: "Piepstem", code: "piepstem:", description: "Harry Piekema was het! De zelfde stem als 'joep:', maar dan een hogere stemtoon. Bekend van Among Us", source: ["TTS-stem"], category: "Google", type: "Mannelijk", isAI: false, languages: ["nl"] },
     { name: "Gerard Joling", code: "joling:", description: "Gerard Joling als TTS-stem!", category: "ElevenLabs", type: "Mannelijk", source: ["Muziek", "Presentator"], isAI: true, supportsAudioTags: true, languages: ["*"] },
     { name: "Frans Bauer", code: "bauer:", description: "Frans Bauer als TTS-stem!", category: "ElevenLabs", type: "Mannelijk", source: ["Muziek", "Presentator"], isAI: true, supportsAudioTags: true, languages: ["*"] },
-    { name: "Qastrol", code: "qastrol:", description: "Qastrol als AI-stem!", category: "ElevenLabs", type: "Mannelijk", isAI: true, source: ["Twitch"], supportsAudioTags: true, languages: ["*"] },
+    { name: "Qastrol", code: "qastrol:", description: "Qastrol als AI-stem!", category: "ElevenLabs", type: "Mannelijk", isAI: true, source: ["Internet"], supportsAudioTags: true, languages: ["*"] },
     { name: "Sinterklaas", code: "sinterklaas:", description: "Sinterklaas als AI-stem! Dag hoor!", category: "ElevenLabs", type: "Mannelijk", source: ["TV"], isAI: true, supportsAudioTags: true, languages: ["*"] },
     // Google-stemmen (toegevoegd). Voor Google stemmen: isAI: false, category: "Google", taal altijd Nederlands
     { name: "Google Emma", code: "emma:", description: "Google TTS (Nederlands)", category: "Google", type: "Vrouwelijk", source: ["TTS-stem"], isAI: false, languages: ["nl"] },
