@@ -127,6 +127,9 @@ const alertsLinks = {
   "damage": [
     "alerts/damage.mp4"
   ],
+  "default": [
+    "alerts/default.webm"
+  ],
   "desertbus": [
     "alerts/desertbus.webm"
   ],
@@ -448,6 +451,9 @@ const alertsLinks = {
   "reposted": [
     "alerts/reposted.mp4"
   ],
+  "rick": [
+    "alerts/rick.webm"
+  ],
   "ringweg": [
     "alerts/ringweg.mp4"
   ],
@@ -460,11 +466,17 @@ const alertsLinks = {
   "rutte": [
     "alerts/rutte.mp4"
   ],
+  "sega": [
+    "alerts/sega.webm"
+  ],
   "shaun": [
     "alerts/shaun.mp4"
   ],
   "shrek": [
     "alerts/shrek.webm"
+  ],
+  "shrekasmr": [
+    "alerts/shrekasmr.mp4"
   ],
   "sie": [
     "alerts/sie.mp4"
@@ -489,6 +501,9 @@ const alertsLinks = {
   ],
   "spongebob": [
     "alerts/spongebob.webm"
+  ],
+  "spongefluit": [
+    "alerts/spongefluit.webm"
   ],
   "steve": [
     "alerts/steve.mp4"
