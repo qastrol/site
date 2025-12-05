@@ -68,9 +68,9 @@
                 const code = token.trim();
                 const found = findTts(code);
                 if (found) {
-                    const t = { type: 'tts', start, end, requested: code, resolved: found.code, name: found.name, textPieces: [] };
+                    const t = { type: 'tts', start, end, requested: code, resolved: found.code, name: found.name, textPieces: [], supportsAudioTags: !!found.supportsAudioTags };
                     tokens.push(t);
-                    lastTtsVoice = { requested: code, resolved: found.code, name: found.name };
+                    lastTtsVoice = { requested: code, resolved: found.code, name: found.name, supportsAudioTags: !!found.supportsAudioTags };
                 } else {
                     // Unknown colon token: treat as literal text so it can be
                     // attached to nearby TTS by later processing.
@@ -141,7 +141,7 @@
                 }
                 // no next TTS: create a default TTS using lastTtsVoice if available
                 if (lastTtsVoice) {
-                    const newTts = { type: 'tts', start: g.start, end: g.end, requested: '<inferred>', resolved: lastTtsVoice.resolved, name: lastTtsVoice.name, textPieces: [g.text.trim()] };
+                    const newTts = { type: 'tts', start: g.start, end: g.end, requested: '<inferred>', resolved: lastTtsVoice.resolved, name: lastTtsVoice.name, textPieces: [g.text.trim()], supportsAudioTags: !!lastTtsVoice.supportsAudioTags };
                     // insert after leftIdx
                     tokens.splice(leftIdx+1, 0, newTts);
                     continue;
@@ -156,7 +156,7 @@
                     continue;
                 }
                 if (lastTtsVoice) {
-                    const newTts = { type: 'tts', start: g.start, end: g.end, requested: '<inferred>', resolved: lastTtsVoice.resolved, name: lastTtsVoice.name, textPieces: [g.text.trim()] };
+                    const newTts = { type: 'tts', start: g.start, end: g.end, requested: '<inferred>', resolved: lastTtsVoice.resolved, name: lastTtsVoice.name, textPieces: [g.text.trim()], supportsAudioTags: !!lastTtsVoice.supportsAudioTags };
                     tokens.splice(0, 0, newTts);
                     continue;
                 }
@@ -171,7 +171,7 @@
                 resultsOut.push({ type: 'alert', requested: t.requested, resolved: t.resolved, name: t.name });
             } else if (t.type === 'tts') {
                 const combined = (t.textPieces || []).filter(Boolean).join(' ').trim();
-                resultsOut.push({ type: 'tts', requested: t.requested, resolved: t.resolved, name: t.name, text: combined });
+                resultsOut.push({ type: 'tts', requested: t.requested, resolved: t.resolved, name: t.name, text: combined, supportsAudioTags: !!t.supportsAudioTags });
             } else if (t.type === 'sfx') {
                 resultsOut.push({ type: 'sfx', requested: t.requested, resolved: t.resolved, name: t.name });
             } else if (t.type === 'sfx-ai') {
@@ -217,7 +217,8 @@
                 name: 'Willekeurige stem',
                 text: trailing,
                 isDefault: true,
-                defaultTextProvided: true
+                defaultTextProvided: true,
+                supportsAudioTags: false
             };
 
             // Insert the default TTS immediately after the last alert so the
@@ -254,10 +255,6 @@
         const freeText = parsed._freeText || '';
         const seq = Array.isArray(parsed) ? parsed.slice() : (parsed.results ? parsed.results.slice() : []);
 
-        // If parsed was passed as an object (results array), handle that
-        // transparently.
-        const baseSeq = Array.isArray(parsed) ? seq : seq;
-
         // Move the first alert to the front if present
         const firstAlertIndex = seq.findIndex(p => p.type === 'alert');
         const ordered = [];
@@ -289,14 +286,24 @@
                 return li;
             }
             if (it.type === 'tts') {
-                const spoken = it.text || '(geen tekst)';
+                const spokenRaw = it.text || '(geen tekst)';
+                // If the voice supports audio tags, strip them for display but keep
+                // a note of the tags used.
+                let spoken = spokenRaw;
+                let tags = [];
+                if (it.supportsAudioTags) {
+                    const tagRx = /\[([^\]]+)\]/g;
+                    tags = [];
+                    spoken = spokenRaw.replace(tagRx, (m, g1) => { tags.push(g1.trim()); return ' '; }).replace(/\s+/g,' ').trim();
+                    if (!spoken) spoken = '(geen tekst)';
+                }
                 if (it.isDefault) li.textContent = `Standaard TTS: ${it.name} (${it.resolved || 'random:'}) zegt: ${spoken}`;
                 else {
-                    // Prefer the resolved voice code (actual TTS) over the
-                    // requested placeholder so inferred/default markers like
-                    // '<inferred>' are not shown to users.
                     const code = it.resolved || it.requested || '';
                     li.textContent = `TTS: ${it.name} (${code}) zegt: ${spoken}`;
+                }
+                if (tags.length) {
+                    li.textContent += ` (audio tag${tags.length>1?'s':''}: ` + tags.map(t=>`[${t}]`).join(', ') + ')';
                 }
                 return li;
             }
