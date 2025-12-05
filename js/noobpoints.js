@@ -1,27 +1,27 @@
-// noobpoints.js — render and control the Redeems table from noobPointsTable
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Support both styles: a top-level `const noobPointsTable = [...]` or an assignment to `window.noobPointsTable`.
+
     if (typeof noobPointsTable === 'undefined' && typeof window.noobPointsTable === 'undefined') {
         console.warn('noobPointsTable not found');
         return;
     }
 
-    // prefer the lexical binding if present, otherwise fall back to window property
+
     const dataSource = (typeof noobPointsTable !== 'undefined') ? noobPointsTable : window.noobPointsTable;
 
-    // prefer the new list container, fall back to legacy table body if present
+
     const listEl = document.getElementById('redeemList');
     const tbody = document.getElementById('redeemTable');
     const searchInput = document.getElementById('searchInput');
     const counter = document.getElementById('rowCount');
-    // cost filter elements
+
     const minCostInput = document.getElementById('minCostInput');
     const maxCostInput = document.getElementById('maxCostInput');
     const costRangeMin = document.getElementById('costRangeMin');
     const costRangeMax = document.getElementById('costRangeMax');
 
     function renderNoobPointsTable(items) {
-        // If new list container exists, render into it; otherwise render into tbody
+
         if (listEl) listEl.innerHTML = '';
         if (tbody) tbody.innerHTML = '';
         items.forEach(item => {
@@ -30,23 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const descHtml = item.description || '';
             const costText = item.cost != null ? String(item.cost) : '';
 
-            // Build li element
+
             if (listEl) {
-                // compute categories for this item (support many input shapes) and sort them
+
                 let cats = [];
                 if (Array.isArray(item.categories)) cats = item.categories.map(String);
                 else if (item && item.categories && typeof item.categories === 'string') cats = item.categories.split(',').map(s => s.trim()).filter(Boolean);
                 else if (Array.isArray(item.category)) cats = item.category.map(String);
                 else if (item && item.category && typeof item.category === 'string') cats = item.category.split(',').map(s => s.trim()).filter(Boolean);
-                if (cats.length) cats.sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+                if (cats.length) cats.sort((a, b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
 
-                // compute type(s) for this item (new optional field 'type' or 'types')
+
                 let types = [];
                 if (Array.isArray(item.types)) types = item.types.map(String);
                 else if (item && item.types && typeof item.types === 'string') types = item.types.split(',').map(s => s.trim()).filter(Boolean);
                 else if (Array.isArray(item.type)) types = item.type.map(String);
                 else if (item && item.type && typeof item.type === 'string') types = item.type.split(',').map(s => s.trim()).filter(Boolean);
-                if (types.length) types.sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+                if (types.length) types.sort((a, b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
 
                 const li = document.createElement('li');
                 li.className = 'item-listing__item';
@@ -66,10 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (e) { starEl.textContent = ''; }
                 name.appendChild(starEl);
 
-                // info row: cost and categories
-                // Inline code element for mobile: shown between name and info on small screens
+
+
                 const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = code;
-                // Mobile copy row: a mobile-only row containing label, code and a copy button
+
                 const mobileCodeRow = document.createElement('div'); mobileCodeRow.className = 'mobile-code-row';
                 const mobileCodeLeft = document.createElement('div'); mobileCodeLeft.className = 'mobile-code-left';
                 const mobileLabel = document.createElement('span'); mobileLabel.className = 'mobile-code-label'; mobileLabel.textContent = 'Redeemcode:';
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const desc = document.createElement('div'); desc.className = 'item-desc'; desc.innerHTML = descHtml;
                 left.appendChild(name);
-                // insert mobile code row (hidden on desktop via CSS)
+
                 left.appendChild(mobileCodeRow);
                 if (info.textContent) left.appendChild(info);
                 left.appendChild(desc);
@@ -127,14 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const actions = document.createElement('div'); actions.className = 'item-actions';
                 const copyBtn = document.createElement('button'); copyBtn.textContent = 'Kopieer'; copyBtn.className = 'copy-code'; copyBtn.type = 'button'; copyBtn.addEventListener('click', (ev) => copyToClipboard(code, ev.currentTarget));
                 actions.appendChild(copyBtn);
-                // note: cost is shown in the info row; do not duplicate it in meta
+
                 meta.appendChild(codeEl); meta.appendChild(actions);
 
                 main.appendChild(left); main.appendChild(meta); li.appendChild(main);
                 listEl.appendChild(li);
             }
 
-            // Legacy table rendering (kept for compatibility)
+
             if (tbody) {
                 const tr = document.createElement('tr');
                 tr.dataset.code = code; tr.dataset.cost = costText; tr.dataset.name = nameText;
@@ -153,8 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         updateCounter();
         attachPreviewHandlers();
-        try { updateFavIndicators(); } catch (e) {}
-        // render active filters UI
+        try { updateFavIndicators(); } catch (e) { }
+
         try {
             const active = [];
             const s = document.getElementById('searchInput');
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cats && cats.length) {
                 const catContainer = document.getElementById('categoryFilters');
                 cats.forEach(v => {
-                    const labEl = catContainer ? Array.from(catContainer.querySelectorAll('input')).find(i=>i.value===v) : null;
+                    const labEl = catContainer ? Array.from(catContainer.querySelectorAll('input')).find(i => i.value === v) : null;
                     const lab = labEl && labEl.nextElementSibling ? labEl.nextElementSibling.textContent : v;
                     active.push({ type: 'category', label: lab, value: v });
                 });
@@ -172,28 +172,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (types && types.length) {
                 const typeContainer = document.getElementById('typeFilters');
                 types.forEach(v => {
-                    const labEl = typeContainer ? Array.from(typeContainer.querySelectorAll('input')).find(i=> (i.value||'').trim().toLowerCase() === (v||'').trim().toLowerCase()) : null;
+                    const labEl = typeContainer ? Array.from(typeContainer.querySelectorAll('input')).find(i => (i.value || '').trim().toLowerCase() === (v || '').trim().toLowerCase()) : null;
                     const lab = labEl && labEl.nextElementSibling ? labEl.nextElementSibling.textContent : v;
                     active.push({ type: 'type', label: lab, value: v });
                 });
             }
-            // cost range
+
             const min = (minCostInput && minCostInput.value) ? minCostInput.value.trim() : '';
             const max = (maxCostInput && maxCostInput.value) ? maxCostInput.value.trim() : '';
             if (min || max) {
                 const label = 'Kosten: ' + (min || '-') + ' → ' + (max || '-');
-                active.push({ type: 'cost', label: label, value: JSON.stringify({min, max}) });
+                active.push({ type: 'cost', label: label, value: JSON.stringify({ min, max }) });
             }
             if (window.activeFilters && typeof window.activeFilters.render === 'function') window.activeFilters.render(document.getElementById('activeFiltersContainer'), active);
         } catch (e) { console.error('active filters render failed (noobpoints)', e); }
     }
 
-    // --- Preview helpers (image/audio/video in /alerts/ or iframe fallback) ---
+
     function normalizeNameForFile(text) {
         return (text || '').toString().replace(/[^a-z0-9]/gi, '').toLowerCase();
     }
 
-    // Update favorite star indicators for noobpoints list/table
+
     function updateFavIndicators() {
         try {
             const nodes = Array.from(document.querySelectorAll('.fav-indicator'));
@@ -234,8 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         document.body.appendChild(overlay);
         const popup = document.createElement('div'); popup.className = 'preview-popup'; popup.style.display = 'none'; document.body.appendChild(popup);
-        overlay.querySelector('.preview-close').addEventListener('click', () => { try { popup.remove(); } catch(e){}; overlay.remove(); });
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) { try { popup.remove(); } catch(e){}; overlay.remove(); } });
+        overlay.querySelector('.preview-close').addEventListener('click', () => { try { popup.remove(); } catch (e) { }; overlay.remove(); });
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) { try { popup.remove(); } catch (e) { }; overlay.remove(); } });
         return overlay;
     }
 
@@ -253,25 +253,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-            // favorite & share
+
         try {
             const key = normalizeNameForFile(code || displayName || '');
             const favBtn = overlay.querySelector('.preview-fav');
             const shareBtn = overlay.querySelector('.preview-share');
             const page = 'noobpoints';
             const updateFavUi = () => { if (!favBtn) return; const isFav = window.favorites && window.favorites.isFav(page, key); favBtn.textContent = isFav ? '★' : '☆'; };
-            const showPopup = (msg) => { try { if (!popup) return; popup.textContent = msg; popup.style.display = 'block'; popup.style.opacity = '1'; setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200); setTimeout(() => { try { popup.style.display = 'none'; } catch(e){} }, 1450); } catch(e){} };
-            if (favBtn) { favBtn.addEventListener('click', () => { try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) {} }); updateFavUi(); }
-            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); }); } catch (e) {} }); }
-        } catch (e) {}
+            const showPopup = (msg) => { try { if (!popup) return; popup.textContent = msg; popup.style.display = 'block'; popup.style.opacity = '1'; setTimeout(() => { popup.style.transition = 'opacity 0.25s ease'; popup.style.opacity = '0'; }, 1200); setTimeout(() => { try { popup.style.display = 'none'; } catch (e) { } }, 1450); } catch (e) { } };
+            if (favBtn) { favBtn.addEventListener('click', () => { try { const added = window.favorites.toggle(page, key); updateFavUi(); showPopup(added ? 'Favoriet toegevoegd' : 'Favoriet verwijderd'); } catch (e) { } }); updateFavUi(); }
+            if (shareBtn) { shareBtn.addEventListener('click', () => { try { const url = window.favorites ? window.favorites.makeShareUrl(page, key) : (window.location.href + `?focus=${page}:${key}`); navigator.clipboard.writeText(url).then(() => { showPopup('Link gekopieerd'); }).catch(() => { showPopup('Link gekopieerd'); }); } catch (e) { } }); }
+        } catch (e) { }
 
-        // Prefer generated mapping (alertsLinks) which lists files present in /alerts/
-        // This avoids creating elements which could trigger downloads at page load.
+
+
         try {
             const matchesVideo = (f) => /\.(mp4|webm)(?:$|[?#])/i.test(f);
             const mappingFiles = (typeof window.getAlertsFiles === 'function') ? window.getAlertsFiles(name) : (window.alertsLinks && window.alertsLinks[name]) || [];
             if (mappingFiles && mappingFiles.length > 0) {
-                // Prefer video files (.webm/.mp4) but accept audio (.mp3/.ogg) as fallback
+
                 const prefer = ['.webm', '.mp4'];
                 const audioExts = ['.mp3', '.ogg'];
                 let chosen = null;
@@ -304,10 +304,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (e) {
-            // continue to fallback behavior if mapping not available
+
         }
 
-        // fallback: if no mapping present, try iframe mapping (youtube/twitch) first
+
         const iframes = (typeof window.noobpointsIframes !== 'undefined') ? window.noobpointsIframes : null;
         const mapped = iframes && (iframes[name] || iframes[code]);
         if (mapped) {
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // final fallback: perform a lightweight HTTP check for video existence and then create element
+
         const base = `${folder}/${name}`;
         (async () => {
             const tryHead = async (url) => {
@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
             }
-            // check audio extensions as fallback
+
             for (const ext of ['.mp3', '.ogg']) {
                 const url = base + ext;
                 if (await tryHead(url)) {
@@ -362,14 +362,14 @@ document.addEventListener('DOMContentLoaded', () => {
             body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>';
         })();
     }
-    
-    // Compute per-filter counts for redeems (categories & types).
+
+
     function computeFilterCountsNoob() {
         if (!Array.isArray(dataSource)) return;
         const searchLower = (searchInput?.value || '').toLowerCase().trim();
         const [minCost, maxCost] = getSelectedCostRange();
 
-        // categories
+
         const catContainer = document.getElementById('categoryFilters');
         if (catContainer) {
             const boxes = Array.from(catContainer.querySelectorAll('input[type="checkbox"]'));
@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // types
+
         const typeContainer = document.getElementById('typeFilters');
         if (typeContainer) {
             const boxes = Array.from(typeContainer.querySelectorAll('input[type="checkbox"]'));
@@ -401,11 +401,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-    // Helper to check if a preview video exists (only .webm/.mp4 for redeems)
-    // Prefer the generated mapping to avoid network probes. Calls cb(true/false).
+
+
     function previewExists(folder, codeOrName, cb) {
         const name = normalizeNameForFile(codeOrName);
-        // 1) check generated mapping for video files
+
         try {
             const matchesMedia = (f) => /\.(mp4|webm|mp3|ogg)(?:$|[?#])/i.test(f);
             if (typeof window.getAlertsFiles === 'function') {
@@ -416,10 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (files.some(matchesMedia)) { cb(true); return; }
             }
         } catch (e) {
-            // ignore and fall back
+
         }
 
-        // 2) fallback: lightweight HTTP HEAD / Range check for video files
+
         (async () => {
             const base = `${folder}/${name}`;
             const tryHead = async (url) => {
@@ -443,14 +443,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (await tryHead(base + ext)) { cb(true); return; }
             }
 
-            // 3) finally check iframe mapping as last resort
+
             const iframes = (typeof window.noobpointsIframes !== 'undefined') ? window.noobpointsIframes : null;
             const mapped = iframes && (iframes[name] || iframes[codeOrName]);
             cb(Boolean(mapped));
         })();
     }
 
-    // Apply a filter when an info-part is clicked (noobpoints page)
+
     function applyFilterFromInfoNoob(facet, text) {
         if (!text) return;
         const matchInContainer = (id) => {
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (facet === 'cost') {
-            // extract number and set as minCostInput
+
             const m = text.match(/(\d+)/);
             if (m) {
                 const v = m[1];
@@ -482,23 +482,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (facet === 'type') {
-            try { const c = document.getElementById('typeFilters'); const d = c && c.closest && c.closest('details.filter-option'); if (d && !d.open) d.open = true; } catch(e) {}
+            try { const c = document.getElementById('typeFilters'); const d = c && c.closest && c.closest('details.filter-option'); if (d && !d.open) d.open = true; } catch (e) { }
             if (matchInContainer('typeFilters')) { refreshTable(); computeFilterCountsNoob(); return; }
         }
         if (facet === 'category') {
-            try { const c = document.getElementById('categoryFilters'); const d = c && c.closest && c.closest('details.filter-option'); if (d && !d.open) d.open = true; } catch(e) {}
+            try { const c = document.getElementById('categoryFilters'); const d = c && c.closest && c.closest('details.filter-option'); if (d && !d.open) d.open = true; } catch (e) { }
             if (matchInContainer('categoryFilters')) { refreshTable(); computeFilterCountsNoob(); return; }
         }
 
-        // fallback: try both and open groups if needed
-        try { const c1 = document.getElementById('categoryFilters'); const d1 = c1 && c1.closest && c1.closest('details.filter-option'); if (d1 && !d1.open) d1.open = true; } catch(e) {}
-        try { const c2 = document.getElementById('typeFilters'); const d2 = c2 && c2.closest && c2.closest('details.filter-option'); if (d2 && !d2.open) d2.open = true; } catch(e) {}
+
+        try { const c1 = document.getElementById('categoryFilters'); const d1 = c1 && c1.closest && c1.closest('details.filter-option'); if (d1 && !d1.open) d1.open = true; } catch (e) { }
+        try { const c2 = document.getElementById('typeFilters'); const d2 = c2 && c2.closest && c2.closest('details.filter-option'); if (d2 && !d2.open) d2.open = true; } catch (e) { }
         if (matchInContainer('categoryFilters') || matchInContainer('typeFilters')) { refreshTable(); computeFilterCountsNoob(); return; }
     }
 
-    // Attach preview handlers to first-column names and mark those with previews
-    function attachPreviewHandlers(){
-        // handle list items first
+
+    function attachPreviewHandlers() {
+
         const listRows = document.querySelectorAll('#redeemList li');
         listRows.forEach(r => {
             const first = r.querySelector('.item-name');
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
             previewExists('alerts', code || display, (exists) => { if (exists) newFirst.classList.add('has-preview'); });
         });
 
-        // legacy table rows
+
         const rows = document.querySelectorAll('#redeemTable tr');
         rows.forEach(r => {
             const first = r.querySelector('td:first-child');
@@ -528,8 +528,8 @@ document.addEventListener('DOMContentLoaded', () => {
             previewExists('alerts', code || display, (exists) => { if (exists) newFirst.classList.add('has-preview'); });
         });
 
-        // Intercept anchors inside the list/table that point to alert videos so they
-        // don't trigger navigation or downloads; open preview overlay instead.
+
+
         const anchors = document.querySelectorAll('#redeemList a[href], #redeemTable a[href]');
         anchors.forEach(a => {
             try {
@@ -549,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Return array of selected category strings (exact match). If none, returns []
+
     function getSelectedCategories() {
         const container = document.getElementById('categoryFilters');
         if (!container) return [];
@@ -560,12 +560,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function getSelectedTypes() {
         const selected = [];
         const checkboxes = document.querySelectorAll('#typeFilters input[type="checkbox"]:checked');
-        // Voeg .trim() en .toLowerCase() toe om spaties en hoofdletters te elimineren
+
         checkboxes.forEach(cb => selected.push(cb.value.trim().toLowerCase()));
         return selected;
     }
 
-    // Determine whether an item matches the selected categories and search text
+
     function itemMatchesFilters(item, searchLower, selectedCats, selectedTypes, minCost, maxCost) {
         if (!item) return false;
         const name = (item.name || '').toLowerCase();
@@ -573,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const code = (item.code || '').toLowerCase();
         const textMatch = (!searchLower) || name.indexOf(searchLower) !== -1 || desc.indexOf(searchLower) !== -1 || code.indexOf(searchLower) !== -1;
 
-        // build categories array (support item.categories or item.category)
+
         let cats = [];
         if (Array.isArray(item.categories)) cats = item.categories.map(String);
         else if (item && item.categories && typeof item.categories === 'string') cats = item.categories.split(',').map(s => s.trim()).filter(Boolean);
@@ -581,30 +581,30 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (item && item.category && typeof item.category === 'string') cats = item.category.split(',').map(s => s.trim()).filter(Boolean);
 
         if (!selectedCats || selectedCats.length === 0) {
-            // still must respect text match
+
             if (!textMatch) return false;
         } else {
-            if (cats.length === 0) return false; // if categories selected but item has none, hide
+            if (cats.length === 0) return false;
             const intersects = selectedCats.some(sc => cats.includes(sc));
             if (!intersects) return false;
         }
 
-        // type filtering: if selectedTypes set, ensure item has at least one of them
+
         if (selectedTypes && selectedTypes.length > 0) {
-            // build types array (support item.types or item.type)
+
             let tarr = [];
             if (Array.isArray(item.types)) tarr = item.types.map(String);
             else if (item && item.types && typeof item.types === 'string') tarr = item.types.split(',').map(s => s.trim()).filter(Boolean);
             else if (Array.isArray(item.type)) tarr = item.type.map(String);
             else if (item && item.type && typeof item.type === 'string') tarr = item.type.split(',').map(s => s.trim()).filter(Boolean);
-            // normalize item types for comparison (trim + lowercase)
+
             tarr = tarr.map(t => (t || '').toString().trim().toLowerCase()).filter(Boolean);
             if (tarr.length === 0) return false;
             const intersectsTypes = selectedTypes.some(st => tarr.includes(st));
             if (!intersectsTypes) return false;
         }
 
-        // cost filtering: if minCost/maxCost are numbers, ensure item.cost is within range
+
         if (typeof minCost === 'number' && typeof maxCost === 'number') {
             const costVal = (item.cost == null) ? 0 : Number(item.cost);
             if (isNaN(costVal)) return false;
@@ -614,11 +614,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     }
 
-    // Rebuild the visible table from the dataSource and current filters
+
     function getSelectedCostRange() {
-        // Determine a sensible global min/max from the data source (works even when
-        // the visual range inputs are not present). Treat empty text inputs as
-        // "no override" and fall back to the global bounds.
+
+
+
         let globalMin = Infinity, globalMax = -Infinity;
         if (Array.isArray(dataSource)) {
             dataSource.forEach(item => {
@@ -632,7 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isFinite(globalMin)) globalMin = 0;
         if (!isFinite(globalMax)) globalMax = 0;
 
-        // Read text inputs; treat empty string / missing value as "use global"
+
         const rawMin = (minCostInput && typeof minCostInput.value === 'string') ? minCostInput.value.trim() : '';
         const rawMax = (maxCostInput && typeof maxCostInput.value === 'string') ? maxCostInput.value.trim() : '';
         let mn = rawMin === '' ? globalMin : Number(rawMin);
@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isFinite(mn)) mn = globalMin;
         if (!isFinite(mx)) mx = globalMax;
 
-        // clamp to global bounds
+
         if (mn < globalMin) mn = globalMin;
         if (mx > globalMax) mx = globalMax;
         if (mn > mx) mn = mx;
@@ -652,14 +652,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCats = getSelectedCategories();
         const selectedTypes = getSelectedTypes();
         const [minCost, maxCost] = getSelectedCostRange();
-        try { console.debug('refreshTable', { searchLower, selectedCats, selectedTypes, minCost, maxCost }); } catch (e) {}
+        try { console.debug('refreshTable', { searchLower, selectedCats, selectedTypes, minCost, maxCost }); } catch (e) { }
         const filtered = dataSource.filter(item => itemMatchesFilters(item, searchLower, selectedCats, selectedTypes, minCost, maxCost));
-        try { console.debug('filtered count', filtered.length); } catch (e) {}
+        try { console.debug('filtered count', filtered.length); } catch (e) { }
         renderNoobPointsTable(filtered);
     }
 
     function showCopyToast(message) {
-        // remove existing toast if present
+
         const existing = document.getElementById('copyToast');
         if (existing) existing.remove();
         const t = document.createElement('div');
@@ -682,12 +682,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function copyToClipboard(text, sourceBtn) {
         if (!text) return;
-        // prefer modern Clipboard API, fallback to execCommand
+
         const doFallback = (txt) => {
             try {
                 const ta = document.createElement('textarea');
                 ta.value = txt;
-                // prevent scrolling to bottom
+
                 ta.style.position = 'fixed'; ta.style.left = '-9999px';
                 document.body.appendChild(ta);
                 ta.select();
@@ -701,16 +701,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const afterCopySuccess = () => {
             if (isMobile) {
-                // on mobile do not change button text — show small toast at bottom
+
                 showCopyToast(`${text} gekopieerd`);
             } else if (sourceBtn) {
-                // change button text briefly on desktop
+
                 const orig = sourceBtn.textContent;
                 sourceBtn.textContent = 'Gekopieerd ✓';
                 sourceBtn.disabled = true;
                 setTimeout(() => { sourceBtn.textContent = orig; sourceBtn.disabled = false; }, 1200);
             } else {
-                // fallback console log
+
                 console.log('Copied', text);
             }
         };
@@ -719,7 +719,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navigator.clipboard.writeText(text).then(() => {
                 afterCopySuccess();
             }).catch(err => {
-                // fallback method
+
                 const ok = doFallback(text);
                 if (ok) afterCopySuccess();
                 else console.warn('clipboard failed', err);
@@ -745,25 +745,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function sortTable(columnIndex, numeric = false) {
-        // Try list view first
+
         const list = listEl;
         if (list) {
             const items = Array.from(list.querySelectorAll('li'));
             if (items.length === 0) return;
-            // Support sorting by different columns. For list view we prefer dataset values for
-            // cost/type/categories when available to avoid relying on inner DOM structure.
+
+
             if (columnIndex === 3) {
-                // cost - numeric
+
                 items.sort((a, b) => ((Number(a.dataset.cost) || 0) - (Number(b.dataset.cost) || 0)));
             } else if (columnIndex === 4) {
-                // type - string compare using dataset.types (may be pipe-separated)
+
                 items.sort((a, b) => {
                     const at = (a.dataset.types || '').toLowerCase();
                     const bt = (b.dataset.types || '').toLowerCase();
                     return at.localeCompare(bt, 'nl', { sensitivity: 'base' });
                 });
             } else if (columnIndex === 5) {
-                // categories - string compare using dataset.categories
+
                 items.sort((a, b) => {
                     const ac = (a.dataset.categories || '').toLowerCase();
                     const bc = (b.dataset.categories || '').toLowerCase();
@@ -783,7 +783,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return aText.localeCompare(bText, undefined, { numeric: true });
                 });
             }
-            // respect dataset on list for order tracking
+
             const order = list.dataset.sortOrder === 'asc' ? -1 : 1;
             list.dataset.sortOrder = list.dataset.sortOrder === 'asc' ? 'desc' : 'asc';
             if (order === -1) items.reverse();
@@ -791,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Fallback to legacy tbody sort
+
         if (!tbody) return;
         const rows = Array.from(tbody.querySelectorAll('tr'));
         if (rows.length === 0) return;
@@ -806,22 +806,22 @@ document.addEventListener('DOMContentLoaded', () => {
         rows.forEach(r => tbody.appendChild(r));
     }
 
-    // wire events
+
     document.getElementById('searchBtn')?.addEventListener('click', searchTable);
     searchInput?.addEventListener('input', () => { refreshTable(); });
 
-    // enable sorting by clicking the table headers if present
+
     document.querySelectorAll('#redeemTableHeader th.sortable').forEach((th, idx) => {
         th.style.cursor = 'pointer';
         th.addEventListener('click', () => {
-            // headers are: Name, Code, Description, Cost, Actions
+
             const columnIndex = Number(th.dataset.col) || idx;
             const numeric = th.dataset.numeric === 'true';
             sortTable(columnIndex, numeric);
         });
     });
 
-    // Build category filters from dataSource: same UI as other pages
+
     function buildCategoryFilters() {
         const container = document.getElementById('categoryFilters');
         if (!container) return;
@@ -841,7 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const cats = Array.from(categories).sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+        const cats = Array.from(categories).sort((a, b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
         container.innerHTML = '';
         if (cats.length === 0) {
             container.innerHTML = '<small>Geen categorieën gevonden.</small>';
@@ -878,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Build type filters from dataSource (new 'type' or 'types' field)
+
     function buildTypeFilters() {
         const container = document.getElementById('typeFilters');
         if (!container) return;
@@ -898,7 +898,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const arr = Array.from(types).sort((a,b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
+        const arr = Array.from(types).sort((a, b) => a.localeCompare(b, 'nl', { sensitivity: 'base' }));
         container.innerHTML = '';
         if (arr.length === 0) { container.innerHTML = '<small>Geen types gevonden.</small>'; return; }
 
@@ -907,12 +907,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const wrapper = document.createElement('div');
             wrapper.style.display = 'flex'; wrapper.style.gap = '6px'; wrapper.style.alignItems = 'center'; wrapper.style.marginBottom = '4px';
             const input = document.createElement('input'); input.type = 'checkbox'; input.id = id; input.value = t;
-            // log changes to help debug filtering issues
-                input.addEventListener('change', (ev) => {
-                    try { console.debug('type checkbox changed', { value: input.value, checked: input.checked }); } catch (e) {}
-                    refreshTable();
-                    computeFilterCountsNoob();
-                });
+
+            input.addEventListener('change', (ev) => {
+                try { console.debug('type checkbox changed', { value: input.value, checked: input.checked }); } catch (e) { }
+                refreshTable();
+                computeFilterCountsNoob();
+            });
             const label = document.createElement('label'); label.htmlFor = id; label.style.fontWeight = 'normal'; label.textContent = t;
             const countSpan = document.createElement('span');
             countSpan.className = 'filter-count';
@@ -923,10 +923,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialize cost filter inputs and (optional) sliders based on dataSource values
+
     function initializeCostFilter() {
         if (!Array.isArray(dataSource)) return;
-        // determine global min/max from the data set
+
         let min = Infinity, max = -Infinity;
         dataSource.forEach(item => {
             if (!item) return;
@@ -938,27 +938,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isFinite(min)) min = 0;
         if (!isFinite(max)) max = 0;
 
-        // Require number inputs at minimum
+
         if (!minCostInput || !maxCostInput) return;
 
-        // Set placeholders to show global bounds but keep values empty by default
+
         minCostInput.placeholder = String(min);
         maxCostInput.placeholder = String(max);
-        // Clear current values so placeholders are visible and filters are inactive on load
+
         minCostInput.value = '';
         maxCostInput.value = '';
-        // Also set min/max attributes on the number inputs for nicer UX
-        try { minCostInput.min = String(min); minCostInput.max = String(max); } catch (e) {}
-        try { maxCostInput.min = String(min); maxCostInput.max = String(max); } catch (e) {}
 
-        // When the user types, update filtering in real time. We do not force clamping
-        // while typing; clamping can occur on blur if desired.
+        try { minCostInput.min = String(min); minCostInput.max = String(max); } catch (e) { }
+        try { maxCostInput.min = String(min); maxCostInput.max = String(max); } catch (e) { }
+
+
+
         minCostInput.addEventListener('input', () => { refreshTable(); });
         maxCostInput.addEventListener('input', () => { refreshTable(); });
 
-        // If the optional range slider inputs exist, wire them up as well (preserve
-        // previous behavior). They remain optional and the number inputs work even
-        // when they are absent.
+
+
+
         if (costRangeMin && costRangeMax) {
             const step = 10;
             costRangeMin.min = String(min);
@@ -968,7 +968,7 @@ document.addEventListener('DOMContentLoaded', () => {
             costRangeMax.max = String(max);
             costRangeMax.step = String(step);
 
-            // initialize slider positions to global bounds
+
             costRangeMin.value = String(min);
             costRangeMax.value = String(max);
 
@@ -986,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             function syncFromInputs() {
-                // when number inputs change, sync them back to the sliders
+
                 let a = Number(minCostInput.value);
                 let b = Number(maxCostInput.value);
                 if (!isFinite(a)) a = min; if (!isFinite(b)) b = max;
@@ -1002,14 +1002,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             costRangeMin.addEventListener('input', syncFromRange);
             costRangeMax.addEventListener('input', syncFromRange);
-            costRangeMin.addEventListener('pointerdown', function(ev){
-                // original behavior: only allow drag when pressing near the thumb
+            costRangeMin.addEventListener('pointerdown', function (ev) {
+
                 const rect = costRangeMin.getBoundingClientRect();
                 const pct = (Number(costRangeMin.value) - Number(costRangeMin.min)) / (Number(costRangeMin.max) - Number(costRangeMin.min) || 1);
                 const thumbX = rect.left + Math.max(0, Math.min(1, pct)) * rect.width;
                 if (Math.abs(ev.clientX - thumbX) > 14) { ev.preventDefault(); ev.stopImmediatePropagation(); }
             });
-            costRangeMax.addEventListener('pointerdown', function(ev){
+            costRangeMax.addEventListener('pointerdown', function (ev) {
                 const rect = costRangeMax.getBoundingClientRect();
                 const pct = (Number(costRangeMax.value) - Number(costRangeMax.min)) / (Number(costRangeMax.max) - Number(costRangeMax.min) || 1);
                 const thumbX = rect.left + Math.max(0, Math.min(1, pct)) * rect.width;
@@ -1021,20 +1021,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // initial setup: build filters and render
+
     buildCategoryFilters();
     buildTypeFilters();
-    // initialize the cost filter controls (sets min/max and wires events)
+
     initializeCostFilter();
     renderNoobPointsTable(dataSource);
-    // initial counts for filters
+
     computeFilterCountsNoob();
-    // Ensure list/table is sorted alphabetically by name on initial load
+
     try { sortTable(0); } catch (e) { /* ignore if sortTable unavailable */ }
-    // expose total redeems count for the index page (stored as a simple value)
+
     try { localStorage.setItem('redeemsCount', String(dataSource.length)); } catch (e) { /* noop */ }
 
-    // applySort: expose a global function so the inline onchange in the select works
+
     function applySortInternal() {
         const sel = document.getElementById('sortSelect');
         if (!sel) return;
@@ -1044,16 +1044,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const numeric = th && th.dataset.numeric === 'true';
         const tbodyEl = document.getElementById('redeemTable');
         if (!tbodyEl) return;
-        // The sortTable implementation toggles tbody.dataset.sortOrder; to force a specific
-        // direction we set it to the opposite before calling sortTable.
+
+
         tbodyEl.dataset.sortOrder = (dir === 'asc') ? 'desc' : 'asc';
         sortTable(col, numeric);
     }
 
-    // Scroll & highlight handler for shared focus links (noobpoints)
+
     function scrollAndHighlightByKey(key) {
         try {
-            // prefer list items
+
             const listRows = Array.from(document.querySelectorAll('#redeemList li'));
             for (const r of listRows) {
                 const name = (r.dataset.name || (r.querySelector('.item-name-text') && r.querySelector('.item-name-text').textContent) || '').toString();
@@ -1069,7 +1069,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // fallback to legacy table rows
+
             const trs = Array.from(document.querySelectorAll('#redeemTable tr'));
             for (const tr of trs) {
                 const name = (tr.dataset.name || '').toString();
@@ -1088,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
-    // Handle focus param/hash on initial load: ?focus=noobpoints:<key> or #noobpoints:<key>
+
     (function handleFocusFromUrl() {
         try {
             const params = new URLSearchParams(window.location.search);
@@ -1096,23 +1096,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!focus) return;
             const [page, key] = focus.split(':');
             if (page === 'noobpoints' && key) {
-                setTimeout(() => { try { scrollAndHighlightByKey(key); } catch (e) {} }, 300);
+                setTimeout(() => { try { scrollAndHighlightByKey(key); } catch (e) { } }, 300);
             }
         } catch (e) { /* ignore */ }
     })();
 
-    // expose globally for the inline onchange / button handlers in the HTML
+
     window.applySort = applySortInternal;
-    // expose sortTable so inline header buttons (onclick="sortTable(...)") work
+
     window.sortTable = sortTable;
 
-    // wire the global favorites checkbox (always present in HTML) to filtering
+
     try {
         const favEl = document.getElementById('filterFavorites');
         if (favEl) favEl.addEventListener('change', () => { refreshTable(); computeFilterCountsNoob(); });
-    } catch (e) {}
+    } catch (e) { }
 
-    // show/hide the favorites filter depending on whether any favorites exist
+
     function updateFavoritesFilterVisibility() {
         try {
             const favWrap = document.getElementById('favoritesFilter');
@@ -1126,44 +1126,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const cb = document.getElementById('filterFavorites'); if (!has && cb) cb.checked = false;
         } catch (e) { /* ignore */ }
     }
-    try { updateFavoritesFilterVisibility(); } catch (e) {}
+    try { updateFavoritesFilterVisibility(); } catch (e) { }
     window.addEventListener('favorites:changed', (ev) => {
         try {
             const p = ev && ev.detail && ev.detail.page;
             if (!p || p === 'noobpoints') {
                 updateFavoritesFilterVisibility();
-                try { updateFavIndicators(); } catch (e) {}
+                try { updateFavIndicators(); } catch (e) { }
             }
-        } catch (e) {}
+        } catch (e) { }
     });
 
-    // apply initial sort according to the selector value
-    // listen for chip removal events
+
+
     window.addEventListener('activeFilter:remove', (ev) => {
         try {
             const { type, value } = ev.detail || {};
             if (!type) return;
             if (type === 'search') { if (searchInput) searchInput.value = ''; }
-            else if (type === 'category') { const c = document.getElementById('categoryFilters'); if (c) { const input = Array.from(c.querySelectorAll('input')).find(i=>i.value===value); if (input) input.checked = false; } }
-            else if (type === 'type') { const t = document.getElementById('typeFilters'); if (t) { const input = Array.from(t.querySelectorAll('input')).find(i=> (i.value||'').trim().toLowerCase() === (value||'').trim().toLowerCase()); if (input) input.checked = false; } }
-            else if (type === 'cost') { try { const obj = JSON.parse(value); if (minCostInput) minCostInput.value = ''; if (maxCostInput) maxCostInput.value = ''; } catch(e) { if (minCostInput) minCostInput.value = ''; if (maxCostInput) maxCostInput.value = ''; } }
+            else if (type === 'category') { const c = document.getElementById('categoryFilters'); if (c) { const input = Array.from(c.querySelectorAll('input')).find(i => i.value === value); if (input) input.checked = false; } }
+            else if (type === 'type') { const t = document.getElementById('typeFilters'); if (t) { const input = Array.from(t.querySelectorAll('input')).find(i => (i.value || '').trim().toLowerCase() === (value || '').trim().toLowerCase()); if (input) input.checked = false; } }
+            else if (type === 'cost') { try { const obj = JSON.parse(value); if (minCostInput) minCostInput.value = ''; if (maxCostInput) maxCostInput.value = ''; } catch (e) { if (minCostInput) minCostInput.value = ''; if (maxCostInput) maxCostInput.value = ''; } }
             refreshTable();
         } catch (e) { console.error('failed to handle activeFilter:remove (noobpoints)', e); }
     });
 
-    // Clear all filters when requested by the active-filters UI
+
     window.addEventListener('activeFilter:clear', () => {
         try {
             if (searchInput) searchInput.value = '';
             if (minCostInput) minCostInput.value = '';
             if (maxCostInput) maxCostInput.value = '';
-            ['categoryFilters','typeFilters'].forEach(id => {
+            ['categoryFilters', 'typeFilters'].forEach(id => {
                 const c = document.getElementById(id);
                 if (!c) return;
                 const inputs = Array.from(c.querySelectorAll('input[type="checkbox"]'));
                 inputs.forEach(i => { if (i.checked) { i.checked = false; i.dispatchEvent(new Event('change')); } });
             });
-            try { const fav = document.getElementById('filterFavorites'); if (fav) fav.checked = false; } catch(e) {}
+            try { const fav = document.getElementById('filterFavorites'); if (fav) fav.checked = false; } catch (e) { }
             refreshTable();
             computeFilterCountsNoob();
         } catch (e) { console.error('failed to clear filters (noobpoints)', e); }

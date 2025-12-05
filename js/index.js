@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
         alerts: 'alerts.html',
         soundEffects: 'soundeffects.html',
         tts: 'tts.html',
-        redeems: 'noobpoints.html'  // Voeg de URL van de redeems-pagina toe
+        redeems: 'noobpoints.html'
     };
 
-    // Try to show counts in this order of preference:
-    // 1) read the in-memory centralized arrays (js/table/*) if they were included
-    // 2) read a previously stored value from localStorage (set by the individual pages)
-    // 3) fallback to fetching the page HTML and counting table rows (may miss client-rendered rows)
+
+
+
+
     const localKeyMap = {
         alerts: 'alertsCount',
         soundEffects: 'soundEffectCount',
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const el = document.getElementById(`${key}Count`);
         if (!el) return;
 
-        // 1) try centralized arrays
+
         try {
             if (key === 'alerts' && typeof alertsTable !== 'undefined' && Array.isArray(alertsTable)) {
                 el.textContent = String(alertsTable.length);
@@ -40,10 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
         } catch (err) {
-            // ignore and try other methods
+
         }
 
-        // 2) try localStorage (pages may store counts after rendering)
+
         const storedKey = localKeyMap[key];
         if (storedKey) {
             const stored = localStorage.getItem(storedKey);
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // 3) fallback to fetching the page HTML and counting rows
+
         fetch(url)
             .then(response => response.text())
             .then(html => {

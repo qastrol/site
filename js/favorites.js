@@ -1,24 +1,24 @@
-// favorites.js — simple localStorage-backed favorites helper
-(function(){
-    const OLD_STORAGE_KEY = 'kk_favorites_v1';
+
+(function () {
+    const OLD_STORAGE_KEY = 'qastrol_favorites_v1';
     const STORAGE_KEY = 'qastrol_favorites_v1';
 
     function readAll() {
         try {
-            // Prefer new key
+
             let raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) {
-                // migrate from old key if present
+
                 const old = localStorage.getItem(OLD_STORAGE_KEY);
                 if (old) {
                     try {
-                        // copy old to new key
+
                         localStorage.setItem(STORAGE_KEY, old);
-                        // remove old key to avoid duplication
-                        try { localStorage.removeItem(OLD_STORAGE_KEY); } catch (e) {}
+
+                        try { localStorage.removeItem(OLD_STORAGE_KEY); } catch (e) { }
                         raw = old;
                     } catch (e) {
-                        // fall back to using old raw if set failed
+
                         raw = old;
                     }
                 }
@@ -47,8 +47,8 @@
             else { arr.splice(idx, 1); added = false; }
             all[page] = arr;
             writeAll(all);
-            // dispatch event so pages can react
-            try { window.dispatchEvent(new CustomEvent('favorites:changed', { detail: { page, key, added } })); } catch (e) {}
+
+            try { window.dispatchEvent(new CustomEvent('favorites:changed', { detail: { page, key, added } })); } catch (e) { }
             return added;
         },
         count(page) { return api.get(page).length; },

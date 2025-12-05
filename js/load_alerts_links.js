@@ -1,7 +1,7 @@
-// Small loader helpers to read the generated alertsLinks mapping
-// this file expects js/table/alertslinks.js to have been included first.
 
-(function(){
+
+
+(function () {
   function getFilesFor(normalizedName) {
     if (typeof window.alertsLinks === 'undefined') return [];
     return window.alertsLinks[normalizedName] || [];

@@ -18,7 +18,6 @@
 <body>
 
 
-    <!-- Navigatiebalk wordt hier geladen -->
     <div id="navbar"></div>
     <div class="content tekst">
     <div class="page-title-card alerts" aria-hidden="true">
@@ -35,7 +34,6 @@
 
     </div>
         <div class="panel-grid">
-            <!-- Filter panel: on mobile the whole panel is collapsed by default and expanded via the button -->
             <aside class="sidebar filter-panel" id="filterPanel">
                 <button class="filter-toggle" id="filterToggle" aria-expanded="false">Filters</button>
                 <h3 class="filter-title">Filters</h3>
@@ -64,7 +62,6 @@
                     <summary>Type alert</summary>
                     <div class="filter-group">
                         <div id="typeFilters" style="margin:6px 0">
-                            <!-- Type checkboxes will be injected here by js/alerts.js -->
                         </div>
                     </div>
                 </details>
@@ -73,7 +70,6 @@
                     <summary>Categorieën</summary>
                     <div class="filter-group">
                         <div id="categoryFilters" style="margin:6px 0">
-                            <!-- Category checkboxes will be injected here by js/alerts.js -->
                         </div>
                     </div>
                 </details>
@@ -82,7 +78,6 @@
                     <summary>Alert afkomstig uit</summary>
                     <div class="filter-group">
                         <div id="yearFilters" style="margin:6px 0">
-                            <!-- Year checkboxes will be injected here by js/alerts.js -->
                         </div>
                     </div>
                 </details>
@@ -105,7 +100,6 @@
                     </div>
                 </details>
 
-                <!-- Sorteer selector is displayed above the table in the main area -->
             </aside>
 
             <main class="main-area">
@@ -126,7 +120,6 @@
                     <div class="row-count" aria-live="polite">Aantal alerts: <span id="rowCount">0</span></div>
                     <button class="mobile-filter-open" aria-label="Open filters">Filters</button>
                 </div>
-                <!-- Responsive listing replaces the old table to show items as rows/cards -->
                 <div id="activeFiltersContainer" class="active-filters" style="display:none;margin-bottom:8px"></div>
                 <div class="item-listing__header" role="toolbar" aria-label="Sorteer kolommen">
                     <div class="header-left">
@@ -145,13 +138,11 @@
                     </div>
                 </div>
                 <ul id="alertList" class="item-listing">
-                    <!-- items are rendered by js/alerts.js from alertsTable -->
                 </ul>
                 <br><br>
             </main>
         </div>
 
-    <!-- Generated alerts links (created by tools/generate_alerts_links.py) -->
     <script src="js/table/alertslinks.js"></script>
     <script src="js/load_alerts_links.js"></script>
     <script src="js/filter_menu.js"></script>
