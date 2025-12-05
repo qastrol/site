@@ -324,4 +324,5 @@
 	{ name: "Shrek ASMR", description: "Een zeer vervloekte ASMR-uitvoering van de film Shrek. <a href=\"https://www.youtube.com/watch?v=Glkj749ik7w\">Bron</a>", code: "<shrekasmr>", category: ["Internet", "Film"], type: "Video-alert", year: 2025},
 	{ name: "Fortnite Default Dance", description: "De iconische default dance uit Fortnite", code: "<default>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "SEGA", description: "De iconische SEGA jingle van de SEGA Genesis", code: "<sega>", category: ["Gaming"], type: "Video-alert", year: 2025},
-	{ name: "SpongeBob fluit", description: "De fluit van SpongeBob uit de intro", code: "<spongefluit>", category: ["TV"], type: "Video-alert", year: 2025},];
+	{ name: "SpongeBob fluit", description: "De fluit van SpongeBob uit de intro", code: "<spongefluit>", category: ["TV"], type: "Video-alert", year: 2025},,
+	{ name: "Alert voor rick", description: "Beschrijving voor rick", code: "<rick>" }];
