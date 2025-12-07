@@ -428,6 +428,13 @@ button:hover {
 
 #mobileFilterOverlay .overlay-apply:active { transform: translateY(1px); }
 
+#mobileFilterOverlay .sidebar.filter-panel {
+    /* Binnen de overlay moet het paneel ook 100% breed zijn */
+    width: 100%;
+    max-width: none; /* Verwijder een eventuele vaste max-breedte van de desktop-sidebar */
+    margin: 0; /* Verwijder eventuele centrering of marges */
+}
+
 #mobileFilterOverlay .overlay-header {
     display: flex;
     align-items: center;
@@ -448,6 +455,7 @@ button:hover {
     padding: 16px;
     -webkit-overflow-scrolling: touch;
 }
+
 
 /* Ensure page content starts below fixed header */
 .content { padding-top: 72px; }
