@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const toggle = document.querySelector('.filter-toggle');
 
         function applyInitial() {
+            // Don't collapse/expand if panel is currently in the mobile overlay
+            const overlay = document.getElementById('mobileFilterOverlay');
+            if (overlay && overlay.classList.contains('open')) {
+                return;
+            }
+            
             if (window.innerWidth <= MOBILE_BREAKPOINT) {
 
                 panel.classList.add('collapsed');
