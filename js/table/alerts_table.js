@@ -320,7 +320,7 @@
 	{ name: "Rubik's kubus", description: "Een interactieve weergave van een Rubik's kubus die automatisch opgelost wordt", code: "<rubiks>", category: ["Gaming"], type: "Interactieve alert", year: 2025},
 	{ name: "Shaun het Schaap: Lord Wout", description: "De Shaun het Schaap intro, maar dan met Lord Wout", code: "<shaun>", category: ["Lord Wout", "Intro"], type: "Video-alert", year: 2025},
 	{ name: "Quiz", description: "Speel de quiz: krijg een quizvraag en beantwoord die binnen 20 seconden.", code: "<quiz>", category: ["Twitch"], type: "Interactieve alert", year: 2025},
-	{ name: "67", description: "Het oorspronkelijke 67 filmpje", code: "<67>", category: ["Meme", "Internet"], type: "Video-alert", year: 2025},
+	{ name: "67", description: "⁶🤷⁷", code: "<67>", category: ["Meme", "Internet"], type: "Video-alert", year: 2025},
 	{ name: "Shrek ASMR", description: "Een zeer vervloekte ASMR-uitvoering van de film Shrek. <a href=\"https://www.youtube.com/watch?v=Glkj749ik7w\">Bron</a>", code: "<shrekasmr>", category: ["Internet", "Film"], type: "Video-alert", year: 2025},
 	{ name: "Fortnite Default Dance", description: "De iconische default dance uit Fortnite", code: "<default>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "SEGA", description: "De iconische SEGA jingle van de SEGA Genesis", code: "<sega>", category: ["Gaming"], type: "Video-alert", year: 2025},
