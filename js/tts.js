@@ -292,6 +292,12 @@ function updateRowCount() {
     const items = Array.from(document.querySelectorAll('#ttsList li'));
     const visibleRowCount = items.reduce((acc, r) => acc + (r.style.display !== 'none' ? 1 : 0), 0);
     document.getElementById("rowCount").textContent = visibleRowCount;
+    
+    // Toon/verberg "geen resultaten" bericht
+    const noResultsMsg = document.getElementById('noResultsMessage');
+    if (noResultsMsg) {
+        noResultsMsg.style.display = visibleRowCount === 0 ? 'block' : 'none';
+    }
 }
 
 

@@ -20,6 +20,12 @@ function updateCounter() {
     const items = Array.from(document.querySelectorAll('#soundEffectsList li'));
     const visibleRows = items.filter(r => r.style.display !== 'none').length;
     document.getElementById('counter').textContent = visibleRows;
+    
+    // Toon/verberg "geen resultaten" bericht
+    const noResultsMsg = document.getElementById('noResultsMessage');
+    if (noResultsMsg) {
+        noResultsMsg.style.display = visibleRows === 0 ? 'block' : 'none';
+    }
 }
 
 

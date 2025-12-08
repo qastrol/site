@@ -735,6 +735,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!counter) return;
         const total = (listEl ? listEl.querySelectorAll('li').length : 0) || (tbody ? tbody.querySelectorAll('tr').length : 0);
         counter.textContent = total;
+        
+        // Toon/verberg "geen resultaten" bericht
+        const noResultsMsg = document.getElementById('noResultsMessage');
+        if (noResultsMsg) {
+            noResultsMsg.style.display = total === 0 ? 'block' : 'none';
+        }
     }
 
     function searchTable() {

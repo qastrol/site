@@ -219,6 +219,12 @@ function refreshFilters() {
         if (show) visibleCount++;
     });
     const rc = document.getElementById('rowCount'); if (rc) rc.textContent = visibleCount;
+    
+    // Toon/verberg "geen resultaten" bericht
+    const noResultsMsg = document.getElementById('noResultsMessage');
+    if (noResultsMsg) {
+        noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
 
     computeFilterCountsAlerts();
 
@@ -918,6 +924,12 @@ function updateRowCount() {
     const items = Array.from(document.querySelectorAll('#alertList li'));
     const visibleCount = items.filter(it => it.style.display !== 'none').length;
     const el = document.getElementById('rowCount'); if (el) el.textContent = visibleCount;
+    
+    // Toon/verberg "geen resultaten" bericht
+    const noResultsMsg = document.getElementById('noResultsMessage');
+    if (noResultsMsg) {
+        noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
 }
 
 
