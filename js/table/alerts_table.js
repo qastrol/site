@@ -154,7 +154,6 @@
 	{ name: "Harde Hugo: WWE karakter", description: "Harde Hugo is een worstelaar in WWE", code: "<hugowwe>", category: ["Sport", "Harde Hugo"], type: "Video-alert", year: 2024},
 	{ name: "I am Steve", description: "Hij is Steve (van A Minecraft Movie). <a href=\"https://www.youtube.com/watch?v=ykEjEcjPXEE\">Bron</a>", code: "<steve>", category: ["Gaming", "Film"], type: "Video-alert", year: 2024},
 	{ name: "Karbonkel", description: "Karbonkel laat Mik schrikken 😱 (van Ik Mik Loreland)", code: "<karbonkel>", category: ["TV"], type: "Video-alert", year: 2024},
-	{ name: "Kruip in de huid van... KerstKnallers!", description: "Welke KerstKnallers streamer ben jij?", code: "<kersthuid>", category: ["KerstKnallers"], type: "Video-alert", year: 2024},
 	{ name: "KerstKnallers: donatie", description: "Een gewone KerstKnallers donatie", code: "<kerstknallers>", category: ["KerstKnallers"], type: "Video-alert", year: 2024},
 	{ name: "Kerstonweb.be", description: "Een speciale Kerstknallers versie van een Belgische belastingsaangiftereclame", code: "<kerstonweb>", category: ["België", "KerstKnallers"], type: "Video-alert", year: 2024},
 	{ name: "Knolpower!", description: "Het is tijd voor wat knolpower!", code: "<knolpower>", category: ["Internet"], type: "Video-alert", year: 2024},
