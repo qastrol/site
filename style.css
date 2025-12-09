@@ -1360,3 +1360,46 @@ details.filter-option:not([open]) > summary::after {
     #site-footer .footer-inner { flex-direction: column; gap: 8px; padding: 10px 12px; }
 }
 
+/* Restore filters melding - dark mode support */
+[data-theme="dark"] .restore-filters-banner {
+    background: rgba(255, 224, 130, 0.08) !important;
+    border-color: #6b5d00 !important;
+}
+
+[data-theme="dark"] .restore-filters-banner > div:first-child > div:first-child {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .restore-filters-banner > div:first-child > div:last-child {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .btn-restore-yes,
+[data-theme="dark"] .btn-restore-no {
+    background-color: #555555;
+    color: #ffffff;
+    border: 1px solid #666666;
+}
+
+[data-theme="dark"] .btn-restore-yes:hover,
+[data-theme="dark"] .btn-restore-no:hover {
+    background-color: #777777;
+    border-color: #888888;
+}
+
+[data-theme="dark"] .btn-restore-yes {
+    background-color: #4a6b3a;
+}
+
+[data-theme="dark"] .btn-restore-yes:hover {
+    background-color: #5a7b4a;
+}
+
+[data-theme="dark"] .btn-restore-no {
+    background-color: #6b4a3a;
+}
+
+[data-theme="dark"] .btn-restore-no:hover {
+    background-color: #7b5a4a;
+}
+

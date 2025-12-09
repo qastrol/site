@@ -69,32 +69,99 @@
     }
 
     function buildSummary(state) {
-        const bits = [];
         if (!state) return '';
+
+        const page = detectPage();
+
+        // Ordered groups per page
+        const GROUPS_BY_PAGE = {
+            alerts: [
+                { name: 'Zoekopdracht', match: (v) => v.type === 'text' && v.id === 'searchInput' },
+                { name: 'Favorieten', match: (v, el) => v.id === 'filterFavorites' || inContainer(el, 'favoritesFilter') },
+                { name: 'Type alert', match: (v, el) => inContainer(el, 'typeFilters') },
+                { name: 'Categorieën', match: (v, el) => inContainer(el, 'categoryFilters') },
+                { name: 'Alert afkomstig uit', match: (v, el) => inContainer(el, 'yearFilters') },
+                { name: 'Voorbeeld beschikbaar', match: (v) => v.id === 'filterHasPreview' || v.id === 'filterNoPreview' }
+            ],
+            tts: [
+                { name: 'Zoekopdracht', match: (v) => v.type === 'text' && v.id === 'searchInput' },
+                { name: 'Favorieten', match: (v, el) => v.id === 'filterFavorites' || inContainer(el, 'favoritesFilter') },
+                { name: 'TTS-dienst', match: (v, el) => inContainer(el, 'categoryFilters') },
+                { name: 'AI', match: (v, el) => inContainer(el, 'typeFilters') },
+                { name: 'Categorieën', match: (v, el) => inContainer(el, 'sourceFilters') },
+                { name: 'Ondersteun audio tags', match: (v, el) => inContainer(el, 'audioTagFilters') },
+                { name: 'Type stem', match: (v, el) => inContainer(el, 'genderFilters') },
+                { name: 'Talen', match: (v, el) => inContainer(el, 'languageFilters') },
+                { name: 'Stem afkomstig uit', match: (v, el) => inContainer(el, 'yearFilters') }
+            ],
+            soundeffects: [
+                { name: 'Zoekopdracht', match: (v) => v.type === 'text' && v.id === 'searchInput' },
+                { name: 'Favorieten', match: (v, el) => v.id === 'filterFavorites' || inContainer(el, 'favoritesFilter') },
+                { name: 'Lengte', match: (v) => v.type === 'number' && (v.id === 'minLength' || v.id === 'maxLength') },
+                { name: 'Categorieën', match: (v, el) => inContainer(el, 'categoryFilters') },
+                { name: 'Geluid afkomstig uit', match: (v, el) => inContainer(el, 'yearFilters') }
+            ]
+        };
+
+        const groups = GROUPS_BY_PAGE[page] || [];
+        const result = groups.map(g => ({ name: g.name, items: [] }));
+
+        // Helper: check if an element sits inside a container with given id
+        function inContainer(el, containerId) {
+            if (!el || !containerId) return false;
+            let p = el.parentElement;
+            while (p) {
+                if (p.id === containerId) return true;
+                p = p.parentElement;
+            }
+            return false;
+        }
+
+        // Helper: resolve label for a checkbox/text input
+        function resolveLabel(v) {
+            let label = humanLabelFor(v.id, '');
+            if (!label || label === v.id) {
+                try {
+                    const found = document.querySelector('#filterPanel input[type="checkbox"][value="' + CSS.escape(v.value) + '"]');
+                    if (found && found.nextElementSibling) label = found.nextElementSibling.textContent.trim();
+                } catch (e) { /* ignore */ }
+            }
+            if (!label) {
+                if (v.value === 'ai') label = 'AI';
+                else if (v.value === 'normal') label = 'Gewone TTS';
+                else label = v.value;
+            }
+            return label;
+        }
+
+        // Collect active filters
         for (const k in state) {
             const v = state[k];
+            const el = v.id ? document.getElementById(v.id) : null;
+
             if (v.type === 'checkbox' && v.checked) {
-
-                let label = humanLabelFor(v.id, '');
-                if (!label || label === v.id) {
-
-                    try {
-                        const found = document.querySelector('#filterPanel input[type="checkbox"][value="' + CSS.escape(v.value) + '"]');
-                        if (found && found.nextElementSibling) label = found.nextElementSibling.textContent.trim();
-                    } catch (e) { }
+                const label = resolveLabel(v);
+                const grp = result.find(g => g.items && g.name && groups.find(def => def.name === g.name && def.match(v, el)));
+                if (grp) grp.items.push(label);
+            } else if ((v.type === 'text' || v.type === 'number') && v.value !== '' && v.value !== null) {
+                const grpDef = groups.find(def => def.match(v, el));
+                if (grpDef) {
+                    const grp = result.find(g => g.name === grpDef.name);
+                    if (grp) {
+                        if (v.id === 'minLength') grp.items.push('van ' + v.value + 's');
+                        else if (v.id === 'maxLength') grp.items.push('tot ' + v.value + 's');
+                        else grp.items.push('"' + String(v.value) + '"');
+                    }
                 }
-
-                if (!label) {
-                    if (v.value === 'ai') label = 'AI-stemmen';
-                    else if (v.value === 'normal') label = 'Gewone TTS';
-                    else label = v.value;
-                }
-                bits.push(label);
-            } else if ((v.type === 'text' || v.type === 'number') && v.value) {
-                const label = humanLabelFor(v.id, v.id || 'zoek');
-                bits.push(label + ': "' + String(v.value) + '"');
             }
         }
+
+        // Build summary in configured order
+        const bits = [];
+        result.forEach(g => {
+            if (g.items.length) bits.push(g.name + ': ' + g.items.join(', '));
+        });
+
         return bits.join(' · ');
     }
 
@@ -138,7 +205,7 @@
         const left = document.createElement('div');
         left.style.flex = '1';
         const p = document.createElement('div'); p.style.fontWeight = '600'; p.textContent = 'Wil je verder met je laatstgebruikte filters?';
-        const s = document.createElement('div'); s.style.fontSize = '0.95rem'; s.style.color = '#333'; s.textContent = summary || '';
+        const s = document.createElement('div'); s.style.fontSize = '0.95rem'; s.style.color = 'var(--text-color)'; s.textContent = summary || '';
         left.appendChild(p); left.appendChild(s);
 
         const right = document.createElement('div');
