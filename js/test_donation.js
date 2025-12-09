@@ -20,6 +20,73 @@
         if (typeof soundeffectsTable === 'undefined') return null;
         return soundeffectsTable.find(s => (s.code || '').toLowerCase() === code.toLowerCase()) || null;
     }
+
+    function parseEnhancedSfx(code) {
+        // Parse soundeffect code with potential enhancements
+        // e.g., "(^fart)", "(<<<fart)", "(_>>%fart)"
+        // Returns: { base: 'fart', effects: ['2x Pitch omhoog', '3x Sneller afspelen', ...] }
+        
+        if (!code || !code.startsWith('(') || !code.endsWith(')')) {
+            return { base: code, effects: [] };
+        }
+        
+        const content = code.slice(1, -1); // Remove parentheses
+        const effectChars = new Set(['^', '_', '>', '<', '%', '#']);
+        
+        let effectCounts = {
+            'pitch_up': 0,
+            'pitch_down': 0,
+            'faster': 0,
+            'slower': 0,
+            'echo': 0,
+            'robot': 0
+        };
+        
+        let effectLabels = {
+            'pitch_up': 'Pitch omhoog',
+            'pitch_down': 'Pitch omlaag',
+            'faster': 'Sneller afspelen',
+            'slower': 'langzamer afspelen',
+            'echo': 'Echo',
+            'robot': 'Roboteffect'
+        };
+        
+        let base = '';
+        
+        for (const char of content) {
+            if (effectChars.has(char)) {
+                if (char === '^') effectCounts['pitch_up']++;
+                else if (char === '_') effectCounts['pitch_down']++;
+                else if (char === '>') effectCounts['faster']++;
+                else if (char === '<') {
+                    // Only apply slower effect once
+                    if (effectCounts['slower'] === 0) effectCounts['slower']++;
+                }
+                else if (char === '%') effectCounts['echo']++;
+                else if (char === '#') effectCounts['robot']++;
+            } else {
+                base += char;
+            }
+        }
+        
+        // Build effects array with counts
+        let effects = [];
+        for (const [effectKey, count] of Object.entries(effectCounts)) {
+            if (count > 0) {
+                const label = effectLabels[effectKey];
+                if (effectKey === 'slower') {
+                    // Slower is always shown as "1x langzamer afspelen"
+                    effects.push(`1x ${label}`);
+                } else if (count === 1) {
+                    effects.push(label);
+                } else {
+                    effects.push(`${count}x ${label}`);
+                }
+            }
+        }
+        
+        return { base, effects };
+    }
     function randomTts() {
         if (typeof ttsTable === 'undefined' || ttsTable.length === 0) return { name: 'Random', code: 'random:' };
         return ttsTable[Math.floor(Math.random() * ttsTable.length)];
@@ -61,9 +128,30 @@
                 }
             } else if (token.startsWith('(')) {
                 const code = token.trim();
-                const found = findSfx(code);
-                if (found) tokens.push({ type: 'sfx', start, end, requested: code, resolved: found.code, name: found.name });
-                else tokens.push({ type: 'sfx-ai', start, end, prompt: code, resolved: code, name: 'AI soundeffect met de prompt' });
+                const parsed = parseEnhancedSfx(code);
+                const baseCode = `(${parsed.base})`;
+                const found = findSfx(baseCode);
+                
+                if (found) {
+                    tokens.push({ 
+                        type: 'sfx', 
+                        start, 
+                        end, 
+                        requested: code, 
+                        resolved: found.code, 
+                        name: found.name,
+                        effects: parsed.effects
+                    });
+                }
+                else tokens.push({ 
+                    type: 'sfx-ai', 
+                    start, 
+                    end, 
+                    prompt: code, 
+                    resolved: code, 
+                    name: 'AI soundeffect met de prompt',
+                    effects: []
+                });
             } else if (token.endsWith(':')) {
                 const code = token.trim();
                 const found = findTts(code);
@@ -173,9 +261,9 @@
                 const combined = (t.textPieces || []).filter(Boolean).join(' ').trim();
                 resultsOut.push({ type: 'tts', requested: t.requested, resolved: t.resolved, name: t.name, text: combined, supportsAudioTags: !!t.supportsAudioTags });
             } else if (t.type === 'sfx') {
-                resultsOut.push({ type: 'sfx', requested: t.requested, resolved: t.resolved, name: t.name });
+                resultsOut.push({ type: 'sfx', requested: t.requested, resolved: t.resolved, name: t.name, effects: t.effects || [] });
             } else if (t.type === 'sfx-ai') {
-                resultsOut.push({ type: 'sfx-ai', prompt: t.prompt, resolved: t.resolved, name: t.name });
+                resultsOut.push({ type: 'sfx-ai', prompt: t.prompt, resolved: t.resolved, name: t.name, effects: t.effects || [] });
             }
         }
 
@@ -308,11 +396,19 @@
                 return li;
             }
             if (it.type === 'sfx') {
-                li.textContent = `Soundeffect: ${it.name} ${it.resolved} speelt af`;
+                let text = `Soundeffect: ${it.name} ${it.resolved} speelt af`;
+                if (it.effects && it.effects.length > 0) {
+                    text += ` met ${it.effects.join(', ')}`;
+                }
+                li.textContent = text;
                 return li;
             }
             if (it.type === 'sfx-ai') {
-                li.textContent = `Soundeffect: ${it.name} ${it.prompt || it.resolved} speelt af`;
+                let text = `Soundeffect: ${it.name} ${it.prompt || it.resolved} speelt af`;
+                if (it.effects && it.effects.length > 0) {
+                    text += ` met ${it.effects.join(', ')}`;
+                }
+                li.textContent = text;
                 return li;
             }
             return li;
