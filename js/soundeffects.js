@@ -87,8 +87,14 @@ function sortTable(n) {
 
 function searchTable() { refreshTable(); computeFilterCountsSound(); }
 
+function getSelectedYears() {
+    const container = document.getElementById('yearFilters');
+    if (!container) return [];
+    const checked = Array.from(container.querySelectorAll('input[type="checkbox"]:checked'));
+    return checked.map(cb => cb.value);
+}
 
-function itemMatchesFilters(item, searchLower, selectedCats) {
+function itemMatchesFilters(item, searchLower, selectedCats, selectedYears) {
     if (!item) return false;
     const name = (item.name || '').toLowerCase();
     const desc = (item.description || '').toLowerCase();
@@ -100,6 +106,12 @@ function itemMatchesFilters(item, searchLower, selectedCats) {
     else if (Array.isArray(item.category)) cats = item.category.map(String);
     else if (item && item.category && typeof item.category === 'string') cats = item.category.split(',').map(s => s.trim()).filter(Boolean);
 
+    // Year filtering
+    if (Array.isArray(selectedYears) && selectedYears.length > 0) {
+        const y = (item.year == null) ? '' : String(item.year).trim();
+        const bucket = (y === '2024' || y === '' || parseInt(y) <= 2024) ? '2024_or_earlier' : '2025';
+        if (!selectedYears.includes(bucket)) return false;
+    }
 
     if (!selectedCats || selectedCats.length === 0) return textMatch;
 
@@ -137,8 +149,9 @@ function refreshTable() {
     const input = document.getElementById('searchInput');
     const searchLower = input ? (input.value || '').toLowerCase() : '';
     const selectedCats = getSelectedCategories();
+    const selectedYears = getSelectedYears();
 
-    let filtered = soundeffectsTable.filter(item => itemMatchesFilters(item, searchLower, selectedCats));
+    let filtered = soundeffectsTable.filter(item => itemMatchesFilters(item, searchLower, selectedCats, selectedYears));
 
     try {
         const favCb = document.getElementById('filterFavorites');
@@ -239,7 +252,7 @@ function refreshTable() {
 
         const codeEl = document.createElement('div'); codeEl.className = 'item-code'; codeEl.textContent = item.code || '';
         const actions = document.createElement('div'); actions.className = 'item-actions';
-        const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer geluidsnaam'; btn.addEventListener('click', function () { copyToClipboard(this); });
+        const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function () { copyToClipboard(this); });
         actions.appendChild(btn);
         meta.appendChild(codeEl);
 
@@ -358,28 +371,85 @@ function buildCategoryFilters() {
     });
 }
 
+function buildYearFilters() {
+    const container = document.getElementById('yearFilters');
+    if (!container) return;
+    container.innerHTML = '';
+    const choices = [
+        { val: '2024_or_earlier', label: '2024 of eerder' },
+        { val: '2025', label: '2025' }
+    ];
+    choices.forEach(c => {
+        const id = 'year-' + c.val;
+        const wrapper = document.createElement('div'); 
+        wrapper.style.display = 'flex'; 
+        wrapper.style.gap = '6px'; 
+        wrapper.style.alignItems = 'center'; 
+        wrapper.style.marginBottom = '4px';
+        const input = document.createElement('input'); 
+        input.type = 'checkbox'; 
+        input.id = id; 
+        input.value = c.val; 
+        input.addEventListener('change', () => { searchTable(); computeFilterCountsSound(); });
+        const label = document.createElement('label'); 
+        label.htmlFor = id; 
+        label.style.fontWeight = 'normal'; 
+        label.textContent = c.label;
+        const countSpan = document.createElement('span'); 
+        countSpan.className = 'filter-count'; 
+        countSpan.style.marginLeft = '6px'; 
+        countSpan.style.color = '#666'; 
+        countSpan.textContent = '';
+        wrapper.appendChild(input); 
+        wrapper.appendChild(label); 
+        wrapper.appendChild(countSpan); 
+        container.appendChild(wrapper);
+    });
+}
+
 
 function computeFilterCountsSound() {
     if (typeof soundeffectsTable === 'undefined' || !Array.isArray(soundeffectsTable)) return;
     const input = document.getElementById('searchInput');
     const searchLower = input ? (input.value || '').toLowerCase() : '';
+    
     const container = document.getElementById('categoryFilters');
-    if (!container) return;
-    const boxes = Array.from(container.querySelectorAll('input[type="checkbox"]'));
-    boxes.forEach(cb => {
-        const cat = cb.value;
-
-        const count = soundeffectsTable.reduce((acc, item) => {
-            if (!item) return acc;
-            if (itemMatchesFilters(item, searchLower, [cat])) return acc + 1;
-            return acc;
-        }, 0);
-        const parent = cb.parentElement || cb.closest('div');
-        if (parent) {
-            const span = parent.querySelector('.filter-count');
-            if (span) span.textContent = ' (' + count + ')';
-        }
-    });
+    if (container) {
+        const boxes = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+        boxes.forEach(cb => {
+            const cat = cb.value;
+            const count = soundeffectsTable.reduce((acc, item) => {
+                if (!item) return acc;
+                if (itemMatchesFilters(item, searchLower, [cat], [])) return acc + 1;
+                return acc;
+            }, 0);
+            const parent = cb.parentElement || cb.closest('div');
+            if (parent) {
+                const span = parent.querySelector('.filter-count');
+                if (span) span.textContent = ' (' + count + ')';
+            }
+        });
+    }
+    
+    const yearContainer = document.getElementById('yearFilters');
+    if (yearContainer) {
+        const yearBoxes = Array.from(yearContainer.querySelectorAll('input[type="checkbox"]'));
+        yearBoxes.forEach(cb => {
+            const yearVal = cb.value;
+            const count = soundeffectsTable.reduce((acc, item) => {
+                if (!item) return acc;
+                const y = (item.year == null) ? '' : String(item.year).trim();
+                const bucket = (y === '2024' || y === '' || parseInt(y) <= 2024) ? '2024_or_earlier' : '2025';
+                if (bucket === yearVal && itemMatchesFilters(item, searchLower, [], [])) return acc + 1;
+                return acc;
+            }, 0);
+            const parent = cb.parentElement || cb.closest('div');
+            if (parent) {
+                const span = parent.querySelector('.filter-count');
+                if (span) span.textContent = ' (' + count + ')';
+            }
+        });
+    }
 }
 
 
@@ -533,6 +603,7 @@ function renderSoundEffectsTable() {
 document.addEventListener("DOMContentLoaded", function () {
     renderSoundEffectsTable();
     buildCategoryFilters();
+    buildYearFilters();
 
 
     try {

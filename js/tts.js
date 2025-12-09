@@ -208,6 +208,7 @@ function renderTtsTable() {
         li.dataset.isai = item.isAI ? '1' : '0';
         li.dataset.supportsaudiotags = item.supportsAudioTags ? '1' : '0';
         li.dataset.languages = (Array.isArray(item.languages) ? item.languages : (item.languages ? [item.languages] : [])).join(',');
+        li.dataset.year = (item.year != null) ? String(item.year) : '';
 
         li.dataset.code = (item.code || '').toString();
 
@@ -325,6 +326,9 @@ function searchTable() {
     const checkedGenderInputs = Array.from(document.querySelectorAll('#genderFilters input[data-type="gender"]:checked'));
     const checkedGenders = checkedGenderInputs.map(cb => cb.value);
 
+    const checkedYearInputs = Array.from(document.querySelectorAll('#yearFilters input[data-type="year"]:checked'));
+    const checkedYears = checkedYearInputs.map(cb => cb.value);
+
 
     rows.forEach(row => {
         const text = row.innerText || '';
@@ -373,7 +377,14 @@ function searchTable() {
             genderMatch = checkedGenders.indexOf(rowGender) !== -1;
         }
 
-        const matchFound = textMatch && categoryMatch && sourceMatch && aiMatch && langMatch && genderMatch && supportsMatch;
+        let yearMatch = true;
+        if (checkedYears.length > 0) {
+            const y = (row.dataset.year || '').trim();
+            const bucket = (y === '2024' || y === '' || parseInt(y) <= 2024) ? '2024_or_earlier' : '2025';
+            yearMatch = checkedYears.indexOf(bucket) !== -1;
+        }
+
+        const matchFound = textMatch && categoryMatch && sourceMatch && aiMatch && langMatch && genderMatch && supportsMatch && yearMatch;
         row.style.display = matchFound ? '' : 'none';
     });
 
@@ -447,6 +458,7 @@ function computeFilterCounts() {
     const checkedLangs = Array.from(document.querySelectorAll('#languageFilters input[data-type="lang"]:checked')).map(c => c.value);
     const checkedGenders = Array.from(document.querySelectorAll('#genderFilters input[data-type="gender"]:checked')).map(c => c.value);
     const checkedSources = Array.from(document.querySelectorAll('#sourceFilters input[data-type="source"]:checked')).map(c => c.value);
+    const checkedYears = Array.from(document.querySelectorAll('#yearFilters input[data-type="year"]:checked')).map(c => c.value);
     const aiCheckbox = document.querySelector('#filterAI');
     const normalCheckbox = document.querySelector('#filterNormal');
     const aiChecked = aiCheckbox ? aiCheckbox.checked : false;
@@ -467,6 +479,7 @@ function computeFilterCounts() {
         let selSources = checkedSources.slice();
         let selLangs = checkedLangs.slice();
         let selGenders = checkedGenders.slice();
+        let selYears = checkedYears.slice();
         let selAi = aiChecked;
         let selNormal = normalChecked;
         let selSupportsTrue = supportsChecked;
@@ -477,6 +490,7 @@ function computeFilterCounts() {
         if (type === 'source') selSources = [];
         if (type === 'lang') selLangs = [];
         if (type === 'gender') selGenders = [];
+        if (type === 'year') selYears = [];
         if (type === 'type') { selAi = false; selNormal = false; }
         if (type === 'audio') { selSupportsTrue = false; selSupportsFalse = false; }
 
@@ -485,6 +499,7 @@ function computeFilterCounts() {
         if (type === 'source') selSources = [value];
         else if (type === 'lang') selLangs = [value];
         else if (type === 'gender') selGenders = [value];
+        else if (type === 'year') selYears = [value];
         else if (type === 'type') {
             if (value === 'ai') { selAi = true; selNormal = false; }
             else if (value === 'normal') { selAi = false; selNormal = true; }
@@ -534,6 +549,13 @@ function computeFilterCounts() {
                 const rowGender = (item.type || '').toString().trim();
                 if (selGenders.indexOf(rowGender) === -1) return acc;
             }
+            
+            if (selYears.length > 0) {
+                const y = (item.year == null) ? '' : String(item.year).trim();
+                const bucket = (y === '2024' || y === '' || parseInt(y) <= 2024) ? '2024_or_earlier' : '2025';
+                if (selYears.indexOf(bucket) === -1) return acc;
+            }
+            
             return acc + 1;
         }, 0);
 
@@ -807,9 +829,47 @@ function buildCategoryFilters() {
     }
 }
 
+function buildYearFilters() {
+    const container = document.getElementById('yearFilters');
+    if (!container) return;
+    container.innerHTML = '';
+    const choices = [
+        { val: '2024_or_earlier', label: '2024 of eerder' },
+        { val: '2025', label: '2025' }
+    ];
+    choices.forEach(c => {
+        const id = 'year-' + c.val;
+        const wrapper = document.createElement('div'); 
+        wrapper.style.display = 'flex'; 
+        wrapper.style.gap = '6px'; 
+        wrapper.style.alignItems = 'center'; 
+        wrapper.style.marginBottom = '4px';
+        const input = document.createElement('input'); 
+        input.type = 'checkbox'; 
+        input.id = id; 
+        input.value = c.val; 
+        input.setAttribute('data-type', 'year');
+        input.addEventListener('change', () => { searchTable(); computeFilterCounts(); });
+        const label = document.createElement('label'); 
+        label.htmlFor = id; 
+        label.style.fontWeight = 'normal'; 
+        label.textContent = c.label;
+        const countSpan = document.createElement('span'); 
+        countSpan.className = 'filter-count'; 
+        countSpan.style.marginLeft = '6px'; 
+        countSpan.style.color = '#666'; 
+        countSpan.textContent = '';
+        wrapper.appendChild(input); 
+        wrapper.appendChild(label); 
+        wrapper.appendChild(countSpan); 
+        container.appendChild(wrapper);
+    });
+}
+
 
 renderTtsTable();
 buildCategoryFilters();
+buildYearFilters();
 
 try {
     const favEl = document.getElementById('filterFavorites');
