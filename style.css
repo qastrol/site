@@ -748,6 +748,7 @@ main.tekst {
 .sidebar { overflow-x: hidden; }
 .sidebar .filter-group input[type="text"],
 .sidebar .filter-group input[type="search"],
+.sidebar .filter-group input[type="number"],
 .sidebar .filter-group select {
     width: 100%;
     max-width: 100%;
@@ -802,6 +803,7 @@ main.tekst {
 /* Reduce default width slightly for long inputs so they don't push layout on very small screens */
 @media (max-width: 420px) {
     .sidebar .filter-group input[type="text"],
+    .sidebar .filter-group input[type="number"],
     .sidebar .filter-group select {
         max-width: calc(100% - 8px);
     }
