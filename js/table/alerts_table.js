@@ -322,6 +322,6 @@
 	{ name: "Douwe: Ardio, amore, ardio", description: "Jij moet niet huilen", code: "<ardio>", category: ["Muziek"], type: "Muziek-alert", year: 2025},
 	{ name: "Toad Kerstnummer", description: "Toad zingt één van de 7 klassieke kerstnummers", code: "<toad>", category: ["Gaming", "Muziek"], type: "Video-alert", year: 2025},
 	{ name: "Cover van De Smurfen", description: "Laat een willekeurige cover afspelen van één van De Smurfen cd's. Met hits als 'Natte schoenen'.", code: "<smurfen>", category: ["Muziek"], type: "Video-alert", year: 2025},
-	{ name: "Let it go (ClownWC cover)", description: "Een emotionele cover over clownwc's van Johano1RCT, op 10 december gestreamd bij KerstKnallers", code: "<letitgo>", category: ["KerstKnallers", "Muziek"], type: "Video-alert", year: 2025},
 	{ name: "Prikkelalarm", description: "Als er te veel prikkels zijn, kan je het prikkelalarm inzetten", code: "<prikkelalarm>", category: ["KerstKnallers"], type: "Video-alert", year: 2025},
+	{ name: "KerstKnallers WIDM intro", description: "Een KerstKnallers-intro in de stijl van Wie is de Mol?", code: "<widm>", category: ["KerstKnallers", "TV", "Intro"], type: "Video-alert", year: 2025},
 ];

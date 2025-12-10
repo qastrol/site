@@ -1,5 +1,5 @@
 
-function copyToClipboard(button) {
+function copyToClipboard(button, label) {
     const li = button.closest('li');
     if (!li) return;
 
@@ -8,11 +8,57 @@ function copyToClipboard(button) {
     const codeInline = inlineEl ? inlineEl.innerText.trim() : '';
     const code = codeFromData || codeInline || (li.dataset.name || '').replace(/[^a-z0-9]/gi, '');
     if (!code) return;
-    navigator.clipboard.writeText(code).then(() => {
-        alert(`Code '${code}' gekopieerd naar het klembord!`);
-    }).catch(err => {
-        console.error('Kopiëren mislukt', err);
-    });
+    
+    const doFallback = (txt) => {
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = txt;
+            ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand('copy');
+            ta.remove();
+            return ok;
+        } catch (e) { return false; }
+    };
+
+    const onSuccess = () => {
+        const msg = (label ? label + ' ' : '') + code + ' gekopieerd';
+        try { showCopyToast && showCopyToast(msg); } catch (e) { alert(msg); }
+    };
+
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(code).then(() => { onSuccess(); }).catch(err => {
+            const ok = doFallback(code);
+            if (ok) onSuccess(); else console.error('Kopiëren mislukt', err);
+        });
+    } else {
+        const ok = doFallback(code);
+        if (ok) onSuccess(); else console.warn('clipboard niet ondersteund');
+    }
+}
+
+function showCopyToast(msg) {
+    try {
+        const prev = document.getElementById('sfxCopyToast'); if (prev) prev.remove();
+        const t = document.createElement('div');
+        t.id = 'sfxCopyToast';
+        t.textContent = msg;
+        t.style.position = 'fixed';
+        t.style.left = '50%';
+        t.style.bottom = '16px';
+        t.style.transform = 'translateX(-50%)';
+        t.style.background = 'rgba(0,0,0,0.85)';
+        t.style.color = '#fff';
+        t.style.padding = '8px 12px';
+        t.style.borderRadius = '6px';
+        t.style.zIndex = 4000;
+        t.style.fontSize = '0.95rem';
+        t.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+        document.body.appendChild(t);
+        setTimeout(() => { try { t.style.transition = 'opacity 0.25s'; t.style.opacity = '0'; } catch (e) { } }, 1200);
+        setTimeout(() => { try { t.remove(); } catch (e) { } }, 1500);
+    } catch (e) { /* ignore */ }
 }
 
 
@@ -228,6 +274,13 @@ function refreshTable() {
                 if (idx < cats.length - 1) info.appendChild(document.createTextNode(', '));
             });
         }
+        if (cats.length && item.year) info.appendChild(document.createTextNode(' \u00A0•\u00A0 '));
+        if (item.year) {
+            const yearSpan = document.createElement('span');
+            yearSpan.className = 'info-year';
+            yearSpan.textContent = String(item.year);
+            info.appendChild(yearSpan);
+        }
 
         const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
 
@@ -240,7 +293,7 @@ function refreshTable() {
         mobileCodeLeft.appendChild(mobileLabel);
         mobileCodeLeft.appendChild(codeInline);
         const mobileCopyBtn = document.createElement('button'); mobileCopyBtn.type = 'button'; mobileCopyBtn.className = 'mobile-copy-code'; mobileCopyBtn.textContent = 'Kopieer';
-        mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget, 'Geluidsnaam'));
         mobileCodeRow.appendChild(mobileCodeLeft);
         mobileCodeRow.appendChild(mobileCopyBtn);
 
@@ -252,7 +305,7 @@ function refreshTable() {
 
         const codeEl = document.createElement('div'); codeEl.className = 'item-code'; codeEl.textContent = item.code || '';
         const actions = document.createElement('div'); actions.className = 'item-actions';
-        const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function () { copyToClipboard(this); });
+        const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function () { copyToClipboard(this, 'Geluidsnaam'); });
         actions.appendChild(btn);
         meta.appendChild(codeEl);
 
@@ -562,6 +615,13 @@ function renderSoundEffectsTable() {
                 if (idx < cats.length - 1) info.appendChild(document.createTextNode(', '));
             });
         }
+        if (cats.length && item.year) info.appendChild(document.createTextNode(' \u00A0•\u00A0 '));
+        if (item.year) {
+            const yearSpan = document.createElement('span');
+            yearSpan.className = 'info-year';
+            yearSpan.textContent = String(item.year);
+            info.appendChild(yearSpan);
+        }
         const desc = document.createElement('div'); desc.className = 'item-desc'; desc.textContent = item.description || '';
         left.appendChild(name);
         const codeInline = document.createElement('div'); codeInline.className = 'item-code-inline'; codeInline.textContent = item.code || '';
@@ -572,7 +632,7 @@ function renderSoundEffectsTable() {
         mobileCodeLeft2.appendChild(mobileLabel2);
         mobileCodeLeft2.appendChild(codeInline);
         const mobileCopyBtn2 = document.createElement('button'); mobileCopyBtn2.type = 'button'; mobileCopyBtn2.className = 'mobile-copy-code'; mobileCopyBtn2.textContent = 'Kopieer';
-        mobileCopyBtn2.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        mobileCopyBtn2.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget, 'Geluidsnaam'));
         mobileCodeRow2.appendChild(mobileCodeLeft2);
         mobileCodeRow2.appendChild(mobileCopyBtn2);
         left.appendChild(mobileCodeRow2);
@@ -581,7 +641,7 @@ function renderSoundEffectsTable() {
         const meta = document.createElement('div'); meta.className = 'item-meta';
         const codeEl = document.createElement('div'); codeEl.className = 'item-code'; codeEl.textContent = item.code || '';
         const actions = document.createElement('div'); actions.className = 'item-actions';
-        const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function () { copyToClipboard(this); });
+        const btn = document.createElement('button'); btn.className = 'copy-code'; btn.textContent = 'Kopieer'; btn.addEventListener('click', function () { copyToClipboard(this, 'Geluidsnaam'); });
         actions.appendChild(btn);
         meta.appendChild(codeEl);
         meta.appendChild(actions);
@@ -783,8 +843,10 @@ function showPreview(folder, displayName, code) {
     const copyBtn = overlay.querySelector('.preview-copy');
     titleEl.textContent = displayName;
     copyBtn.addEventListener('click', () => {
+        const msg = 'Geluidsnaam ' + code + ' gekopieerd';
         navigator.clipboard.writeText(code || displayName).then(() => {
             copyBtn.textContent = 'Gekopieerd ✓';
+            showCopyToast(msg);
             setTimeout(() => copyBtn.textContent = 'Kopieer geluidsnaam', 1200);
         });
     });

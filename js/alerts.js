@@ -1,5 +1,5 @@
 
-function copyToClipboard(button) {
+function copyToClipboard(button, label) {
     const li = button.closest && button.closest('li');
     const codeEl = li ? li.querySelector('.item-code') : null;
     const effectName = codeEl ? codeEl.innerText.trim() : '';
@@ -19,13 +19,14 @@ function copyToClipboard(button) {
     };
 
     const onSuccess = () => {
-        try { showCopyToast(effectName + ' gekopieerd!'); } catch (e) { }
+        const msg = (label ? label + ' ' : '') + effectName + ' gekopieerd';
+        try { showCopyToast(msg); } catch (e) { }
     };
 
     if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
         navigator.clipboard.writeText(effectName).then(() => { onSuccess(); }).catch(err => {
             const ok = doFallback(effectName);
-            if (ok) onSuccess(); else console.error('Kopiëren mislukt', err);
+            if (ok) onSuccess(); else console.error('Kopieëren mislukt', err);
         });
     } else {
         const ok = doFallback(effectName);
@@ -505,7 +506,7 @@ function renderAlertsTable() {
         mobileCodeLeft.appendChild(mobileLabel);
         mobileCodeLeft.appendChild(codeInline);
         const mobileCopyBtn = document.createElement('button'); mobileCopyBtn.type = 'button'; mobileCopyBtn.className = 'mobile-copy-code'; mobileCopyBtn.textContent = 'Kopieer';
-        mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget, 'Alertcode'));
         mobileCodeRow.appendChild(mobileCodeLeft);
         mobileCodeRow.appendChild(mobileCopyBtn);
 
@@ -521,7 +522,7 @@ function renderAlertsTable() {
         copyBtn.type = 'button';
         copyBtn.className = 'copy-code';
         copyBtn.textContent = 'Kopieer';
-        copyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        copyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget, 'Alertcode'));
         actions.appendChild(copyBtn);
         meta.appendChild(code);
         meta.appendChild(actions);
@@ -630,8 +631,10 @@ function showPreview(folder, codeOrDisplay, displayName) {
     const copyBtn = overlay.querySelector('.preview-copy');
     titleEl.textContent = display || '';
     copyBtn.addEventListener('click', () => {
+        const msg = 'Alertcode ' + code + ' gekopieerd';
         navigator.clipboard.writeText(code || '').then(() => {
             copyBtn.textContent = 'Gekopieerd ✓';
+            showCopyToast(msg);
             setTimeout(() => copyBtn.textContent = 'Kopieer alertcode', 1200);
         });
     });

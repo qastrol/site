@@ -1,6 +1,6 @@
 
 
-function copyToClipboard(button) {
+function copyToClipboard(button, label) {
     const li = button.closest && button.closest('li');
     const codeEl = li ? li.querySelector('.item-code') : null;
     const codeText = codeEl ? codeEl.innerText.trim() : '';
@@ -20,13 +20,14 @@ function copyToClipboard(button) {
     };
 
     const onSuccess = () => {
-        try { showCopyToast && showCopyToast(codeText + ' gekopieerd!'); } catch (e) { alert(codeText + ' gekopieerd!'); }
+        const msg = (label ? label + ' ' : '') + codeText + ' gekopieerd';
+        try { showCopyToast && showCopyToast(msg); } catch (e) { alert(msg); }
     };
 
     if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
         navigator.clipboard.writeText(codeText).then(() => { onSuccess(); }).catch(err => {
             const ok = doFallback(codeText);
-            if (ok) onSuccess(); else console.error('Kopiëren mislukt', err);
+            if (ok) onSuccess(); else console.error('Kopieëren mislukt', err);
         });
     } else {
         const ok = doFallback(codeText);
@@ -105,7 +106,7 @@ function renderTtsTable() {
         mobileCopyBtn.type = 'button';
         mobileCopyBtn.className = 'mobile-copy-code';
         mobileCopyBtn.textContent = 'Kopieer';
-        mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        mobileCopyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget, 'Stemnaam'));
         mobileCodeRow.appendChild(mobileCodeLeft);
         mobileCodeRow.appendChild(mobileCopyBtn);
         left.appendChild(mobileCodeRow);
@@ -137,6 +138,7 @@ function renderTtsTable() {
         if (humanLangs) infoParts.push({ text: humanLangs, facet: 'lang' });
         if (item.isAI) infoParts.push({ text: 'AI-stem', facet: 'type' });
         if (item.supportsAudioTags) infoParts.push({ text: 'Ondersteunt audio tags', facet: 'audio' });
+        if (item.year) infoParts.push({ text: String(item.year), facet: 'year' });
 
 
         info.innerHTML = '';
@@ -185,7 +187,7 @@ function renderTtsTable() {
         copyBtn.type = 'button';
         copyBtn.className = 'copy-code';
         copyBtn.textContent = 'Kopieer';
-        copyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget));
+        copyBtn.addEventListener('click', (ev) => copyToClipboard(ev.currentTarget, 'Stemnaam'));
         actions.appendChild(copyBtn);
 
         meta.appendChild(code);
@@ -977,8 +979,10 @@ function showPreview(folder, displayName, code) {
     const copyBtn = overlay.querySelector('.preview-copy');
     titleEl.textContent = displayName;
     copyBtn.addEventListener('click', () => {
+        const msg = 'Stemnaam ' + code + ' gekopieerd';
         navigator.clipboard.writeText(code || displayName).then(() => {
             copyBtn.textContent = 'Gekopieerd ✓';
+            showCopyToast(msg);
             setTimeout(() => copyBtn.textContent = 'Kopieer stemnaam', 1200);
         });
     });
