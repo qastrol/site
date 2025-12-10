@@ -36,6 +36,9 @@ const alertsLinks = {
   "alarmo": [
     "alerts/alarmo.mp4"
   ],
+  "ardio": [
+    "alerts/ardio.webm"
+  ],
   "attention": [
     "alerts/attention.webm"
   ],
@@ -205,6 +208,9 @@ const alertsLinks = {
   "griddy": [
     "alerts/griddy.webm"
   ],
+  "haloboring": [
+    "alerts/haloboring.mp4"
+  ],
   "hard": [
     "alerts/hard.webm"
   ],
@@ -280,8 +286,8 @@ const alertsLinks = {
   "indetuin": [
     "alerts/indetuin.webm"
   ],
-  "instructionbook": [
-    "alerts/instructionbook.webm"
+  "instructions": [
+    "alerts/instructions.webm"
   ],
   "iwon": [
     "alerts/iwon.webm"
@@ -336,6 +342,9 @@ const alertsLinks = {
   ],
   "labourday": [
     "alerts/labourday.mp4"
+  ],
+  "letitgo": [
+    "alerts/letitgo.webm"
   ],
   "lievemensen": [
     "alerts/lievemensen.webm"
@@ -424,8 +433,14 @@ const alertsLinks = {
   "peggle3": [
     "alerts/peggle3.mp4"
   ],
+  "peskyplumbers": [
+    "alerts/peskyplumbers.webm"
+  ],
   "pif": [
     "alerts/pif.webm"
+  ],
+  "prikkelalarm": [
+    "alerts/prikkelalarm.webm"
   ],
   "professioneel": [
     "alerts/professioneel.mp4"
