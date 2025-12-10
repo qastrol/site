@@ -343,9 +343,6 @@ const alertsLinks = {
   "labourday": [
     "alerts/labourday.mp4"
   ],
-  "letitgo": [
-    "alerts/letitgo.webm"
-  ],
   "lievemensen": [
     "alerts/lievemensen.webm"
   ],
@@ -574,11 +571,17 @@ const alertsLinks = {
   "turf": [
     "alerts/turf.mp4"
   ],
+  "uhohsticky": [
+    "alerts/uhohsticky.mp3"
+  ],
   "urigeller": [
     "alerts/urigeller.mp4"
   ],
   "usedtoknow": [
     "alerts/usedtoknow.mp4"
+  ],
+  "veryhard": [
+    "alerts/veryhard.mp3"
   ],
   "visintro": [
     "alerts/visintro.webm"
@@ -624,6 +627,9 @@ const alertsLinks = {
   ],
   "westereen": [
     "alerts/westereen.mp4"
+  ],
+  "widm": [
+    "alerts/widm.webm"
   ],
   "woutgenieter": [
     "alerts/woutgenieter.webm"
