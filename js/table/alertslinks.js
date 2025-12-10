@@ -88,6 +88,9 @@ const alertsLinks = {
   "brein": [
     "alerts/brein.mp4"
   ],
+  "brickbybrick": [
+    "alerts/brickbybrick.mp3"
+  ],
   "brickinthewall": [
     "alerts/brickinthewall.mp4"
   ],
@@ -256,6 +259,9 @@ const alertsLinks = {
   "hotelmario": [
     "alerts/hotelmario.webm"
   ],
+  "how": [
+    "alerts/how.mp4"
+  ],
   "hugoduro": [
     "alerts/hugoduro.mp4"
   ],
@@ -306,6 +312,9 @@ const alertsLinks = {
   ],
   "kauloperron": [
     "alerts/kauloperron.mp4"
+  ],
+  "kerstonweb": [
+    "alerts/kerstonweb.mp4"
   ],
   "kippenrijder": [
     "alerts/kippenrijder.webm"
@@ -504,6 +513,9 @@ const alertsLinks = {
   ],
   "spongefluit": [
     "alerts/spongefluit.webm"
+  ],
+  "sportschannel": [
+    "alerts/sportschannel.mp4"
   ],
   "steve": [
     "alerts/steve.mp4"
