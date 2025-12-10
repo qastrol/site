@@ -324,6 +324,6 @@
 	{ name: "SEGA", description: "De iconische SEGA jingle van de SEGA Genesis", code: "<sega>", category: ["Gaming"], type: "Video-alert", year: 2025},
 	{ name: "SpongeBob fluit", description: "De fluit van SpongeBob uit de intro", code: "<spongefluit>", category: ["TV"], type: "Video-alert", year: 2025},
 	{ name: "Rickroll", description: "Never gonna give you up", code: "<rick>", category: ["Meme"], type: "Video-alert", year: 2025},
-	{ name: "Douwe: Ardio, amore, ardio", description: "Jij moet niet huilen", code: "<ardio>", category: ["Muziek"], type: "Muziek-alert", year: 2025},,
-	{ name: "Alert voor toad", description: "Beschrijving voor toad", code: "<toad>" },
-	{ name: "Alert voor video", description: "Beschrijving voor video", code: "<video>" }];
+	{ name: "Douwe: Ardio, amore, ardio", description: "Jij moet niet huilen", code: "<ardio>", category: ["Muziek"], type: "Muziek-alert", year: 2025},
+	{ name: "Toad Kerstnummer", description: "Toad zingt één van de 7 klassieke kerstnummers", code: "<toad>", category: ["Gaming", "Muziek"], type: "Video-alert", year: 2025},
+];
