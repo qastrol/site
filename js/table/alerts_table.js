@@ -321,4 +321,5 @@
 	{ name: "Rickroll", description: "Never gonna give you up", code: "<rick>", category: ["Meme"], type: "Video-alert", year: 2025},
 	{ name: "Douwe: Ardio, amore, ardio", description: "Jij moet niet huilen", code: "<ardio>", category: ["Muziek"], type: "Muziek-alert", year: 2025},
 	{ name: "Toad Kerstnummer", description: "Toad zingt één van de 7 klassieke kerstnummers", code: "<toad>", category: ["Gaming", "Muziek"], type: "Video-alert", year: 2025},
+	{ name: "Cover van De Smurfen", description: "Laat een willekeurige cover afspelen van één van De Smurfen cd's. Met hits als 'Natte schoenen'.", code: "<smurfen>", category: ["Muziek"], type: "Video-alert", year: 2025}
 ];
