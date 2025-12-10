@@ -969,7 +969,7 @@ function createPreviewOverlay() {
     return overlay;
 }
 
-function showPreview(folder, displayName) {
+function showPreview(folder, displayName, code) {
     const name = normalizeNameForFile(displayName);
     const overlay = createPreviewOverlay();
     const titleEl = overlay.querySelector('#preview-title');
@@ -977,7 +977,7 @@ function showPreview(folder, displayName) {
     const copyBtn = overlay.querySelector('.preview-copy');
     titleEl.textContent = displayName;
     copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(displayName).then(() => {
+        navigator.clipboard.writeText(code || displayName).then(() => {
             copyBtn.textContent = 'Gekopieerd ✓';
             setTimeout(() => copyBtn.textContent = 'Kopieer stemnaam', 1200);
         });
@@ -1063,8 +1063,9 @@ function attachPreviewHandlers() {
         const first = r.querySelector('.item-name');
         if (!first) return;
         const display = first.innerText.trim();
+        const code = r.dataset.code || display;
         first.title = 'Klik voor voorbeeld';
-        first.addEventListener('click', () => showPreview('tts', display));
+        first.addEventListener('click', () => showPreview('tts', display, code));
         previewExists('tts', display, (exists) => { if (exists) first.classList.add('has-preview'); });
     });
 }

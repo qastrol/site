@@ -775,7 +775,7 @@ function createPreviewOverlay() {
     return overlay;
 }
 
-function showPreview(folder, displayName) {
+function showPreview(folder, displayName, code) {
     const name = normalizeNameForFile(displayName);
     const overlay = createPreviewOverlay();
     const titleEl = overlay.querySelector('#preview-title');
@@ -783,7 +783,7 @@ function showPreview(folder, displayName) {
     const copyBtn = overlay.querySelector('.preview-copy');
     titleEl.textContent = displayName;
     copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(displayName).then(() => {
+        navigator.clipboard.writeText(code || displayName).then(() => {
             copyBtn.textContent = 'Gekopieerd ✓';
             setTimeout(() => copyBtn.textContent = 'Kopieer geluidsnaam', 1200);
         });
@@ -886,15 +886,16 @@ function attachPreviewHandlers() {
         if (!first) return;
         const li = first.closest && first.closest('li');
 
-        const display = (li && li.dataset.code) ? (li.dataset.code) : first.innerText.trim();
+        const code = (li && li.dataset.code) ? (li.dataset.code) : first.innerText.trim();
+        const display = (li && li.dataset.name) ? (li.dataset.name) : first.innerText.trim();
         first.title = 'Klik voor voorbeeld';
 
         try {
-            const key = normalizeNameForFile(display);
+            const key = normalizeNameForFile(code);
             if (window && window.soundeffectsLinks && Array.isArray(window.soundeffectsLinks[key]) && window.soundeffectsLinks[key].length > 0) {
 
                 first.classList.add('has-preview');
-                first.addEventListener('click', () => showPreview('soundeffects', display));
+                first.addEventListener('click', () => showPreview('soundeffects', display, code));
                 return;
             }
         } catch (e) {
@@ -902,8 +903,8 @@ function attachPreviewHandlers() {
         }
 
 
-        first.addEventListener('click', () => showPreview('soundeffects', display));
-        previewExists('soundeffects', display, (exists) => {
+        first.addEventListener('click', () => showPreview('soundeffects', display, code));
+        previewExists('soundeffects', code, (exists) => {
             if (exists) first.classList.add('has-preview');
         });
     });

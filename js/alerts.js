@@ -630,7 +630,7 @@ function showPreview(folder, codeOrDisplay, displayName) {
     const copyBtn = overlay.querySelector('.preview-copy');
     titleEl.textContent = display || '';
     copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(display || '').then(() => {
+        navigator.clipboard.writeText(code || '').then(() => {
             copyBtn.textContent = 'Gekopieerd ✓';
             setTimeout(() => copyBtn.textContent = 'Kopieer alertcode', 1200);
         });
