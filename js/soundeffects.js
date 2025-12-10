@@ -836,7 +836,7 @@ function createPreviewOverlay() {
 }
 
 function showPreview(folder, displayName, code) {
-    const name = normalizeNameForFile(displayName);
+    const name = normalizeNameForFile(code || displayName);
     const overlay = createPreviewOverlay();
     const titleEl = overlay.querySelector('#preview-title');
     const body = overlay.querySelector('#preview-body');
@@ -856,7 +856,7 @@ function showPreview(folder, displayName, code) {
 
 
     try {
-        const key = normalizeNameForFile(displayName);
+        const key = normalizeNameForFile(code || displayName);
         if (window && window.soundeffectsLinks && Array.isArray(window.soundeffectsLinks[key]) && window.soundeffectsLinks[key].length > 0) {
             body.innerHTML = '';
             const audioPath = window.soundeffectsLinks[key][0];

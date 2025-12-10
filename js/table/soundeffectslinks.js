@@ -357,6 +357,9 @@ const soundeffectsLinks = {
   "slimstemens": [
     "soundeffects/slimstemens.mp3"
   ],
+  "slip": [
+    "soundeffects/slip.mp3"
+  ],
   "startup": [
     "soundeffects/startup.mp3"
   ],
