@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Quick switch for navigation variants.
     // Change `NAV_VARIANT` to 'kerst' to enable the KerstKnallers variant.
     // One quick edit: set NAV_VARIANT = 'kerst' (default is 'default').
-    const NAV_VARIANT = 'kerst'; // 'default' | 'kerst'
+    const NAV_VARIANT = 'default'; // 'default' | 'kerst'
 
     const homeHref = NAV_VARIANT === 'kerst' ? 'kerstknallers.html' : 'index.html';
     const secondLinkHref = NAV_VARIANT === 'kerst' ? 'alerts.html' : 'noobpoints.html';
