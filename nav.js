@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <header class="site-header">
                 <div class="nav-container">
                     <div class="site-branding">
-                        <a href="${homeHref}" class="site-title"><img src="images/logo.png" alt="Logo's" class="nav-logo"></a>
+                        <a href="${homeHref}" class="site-title"><img src="images/QastrolLogo.png" alt="Logo's" class="nav-logo"></a>
                     </div>
                     <nav class="site-nav" aria-label="Hoofd navigatie">
                         <ul id="nav-menu">
