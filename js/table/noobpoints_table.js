@@ -197,7 +197,6 @@ const noobPointsTable = [
 	{ name: "Narwal van der Zee!", code: "narwal", description: "Hij zwemt door de zee (de entrance video van NarwalvanderZee)", cost: 4100, type: "Video-alert", category: ["Dieren"] },
 	{ name: "Nederland 1 bumper", code: "nederland1", description: "De reclame start", cost: 1830, type: "Video-alert", category: ["TV"] },
 	{ name: "Here comes Pac-Man", code: "pacman", description: "Yoyoyoyoyoyoyo", cost: 4440, type: "Video-alert", category: ["Gaming", "Meme"] },
-	{ name: "Peggle 3", code: "peggle3", description: "Peggle 3 wordt aangekondigd bij E3", cost: 2540, type: "Video-alert", category: ["Gaming"] },
 	{ name: "Hotel Mario: Pesky Plumbers", code: "peskyplumbers", description: "Deel 2 van de intro van Hotel Mario. Dear Pesky Plumbers, the koopalings and I have taken over the Mushroom Kingdom", cost: 4930, type: "Video-alert", category: ["Gaming"] },
 	{ name: "Play it Forward: Nederland 1", code: "pif", description: "Een Play it Forward logo in de stijl van Nederland 1 in de jaren '90", cost: 5020, type: "Video-alert", category: [] },
 	{ name: "Prikkelalarm", code: "prikkelalarm", description: "Als er te veel prikkels zijn, kan je het prikkelalarm inzetten", cost: 2820, type: "Video-alert", category: ["KerstKnallers"] },
