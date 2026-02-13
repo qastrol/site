@@ -3159,7 +3159,7 @@ function displayQuestion() {
         answersDisplayEl.innerHTML = '';
     } else if (currentRound === 'opendeur') {
         questionEl.textContent = currentQuestion.question;
-        questionInfoEl.textContent = `Vraag van: ${currentQuestion.from} - Typ antwoorden (4 in totaal)`;
+        questionInfoEl.textContent = `Typ antwoorden (4 in totaal)`;
         answersDisplayEl.innerHTML = '<p class="placeholder-text">Antwoorden verschijnen hier als je ze typt...</p>';
     } else if (currentRound === 'puzzel') {
         questionEl.textContent = 'Puzzel - Vind de drie kernwoorden';
