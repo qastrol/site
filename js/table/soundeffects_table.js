@@ -1469,14 +1469,6 @@
         "code": "(woah)",
         "year": 2025
     },
-        {
-        "name": "Steam melding",
-        "description": "Iemand stuurt een bericht op Steam",
-        "category": ["Gaming"],
-        "length": 552,
-        "code": "(steam)",
-        "year": 2025
-    },
     {
         "name": "Extreem!",
         "description": "De extreme jongens",
