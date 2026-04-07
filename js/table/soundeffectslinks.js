@@ -147,6 +147,9 @@ const soundeffectsLinks = {
   "evillaugh": [
     "soundeffects/evillaugh.mp3"
   ],
+  "extreem": [
+    "soundeffects/extreem.mp3"
+  ],
   "failure": [
     "soundeffects/failure.mp3"
   ],
@@ -182,6 +185,9 @@ const soundeffectsLinks = {
   ],
   "hammer": [
     "soundeffects/hammer.mp3"
+  ],
+  "heftig": [
+    "soundeffects/heftig.mp3"
   ],
   "helaas": [
     "soundeffects/helaas.mp3"
