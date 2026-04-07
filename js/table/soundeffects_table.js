@@ -1480,7 +1480,7 @@
     {
         "name": "Extreem!",
         "description": "De extreme jongens",
-        "category": [],
+        "category": ["TV"],
         "length": 2826,
         "code": "(extreem)",
         "year": 2025
@@ -1488,7 +1488,7 @@
     {
         "name": "Heftig!",
         "description": "'Heftig' - een smurf",
-        "category": [],
+        "category": ["TV"],
         "length": 1896,
         "code": "(heftig)",
         "year": 2025
@@ -1496,7 +1496,7 @@
     {
         "name": "slip",
         "description": "Tekenfilm uitglijd geluidje",
-        "category": [],
+        "category": ["TV"],
         "length": 1152,
         "code": "(slip)",
         "year": 2025
