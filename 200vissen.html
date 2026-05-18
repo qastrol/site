@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐟 WELKOM OP DE 200 VISSEN STREAMWEBSITE!! 🐟</title>
+    <style>
+        /* ECHTE JAREN '90 STYLING */
+        body {
+            background-color: #000080; /* Marineblauw */
+            background-image: radial-gradient(#0000ff 20%, transparent 20%), radial-gradient(#000080 20%, transparent 20%);
+            background-size: 20px 20px;
+            color: #00FF00; /* Neon groen text */
+            font-family: "Courier New", Courier, monospace;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            border: 5px ridge #ff00ff;
+            background-color: #000;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #ffff00;
+            text-shadow: 3px 3px #ff0000;
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        .blink {
+            animation: blinker 1s linear infinite;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        .marquee-container {
+            background-color: #ffff00;
+            color: #000;
+            font-weight: bold;
+            padding: 5px;
+            margin-bottom: 20px;
+            border: 3px dashed #000;
+        }
+
+        /* RETRO CONTROLEPANEEL (ZOEKEN & FILTEREN) */
+        .search-panel {
+            background-color: #c0c0c0; /* Windows 95 grijs */
+            color: #000;
+            border-top: 3px solid #fff;
+            border-left: 3px solid #fff;
+            border-right: 3px solid #808080;
+            border-bottom: 3px solid #808080;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 5px 5px 0px #000;
+        }
+
+        .search-panel h2 {
+            background-color: #000080;
+            color: #fff;
+            margin: -15px -15px 15px -15px;
+            padding: 5px;
+            font-size: 1.2em;
+            text-align: left;
+        }
+
+        .search-panel label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .retro-input, .retro-select {
+            background-color: #fff;
+            color: #000;
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            padding: 5px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 1em;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        .retro-input:focus, .retro-select:focus {
+            outline: 2px solid #ff00ff;
+        }
+
+        /* Het overzicht van de games */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        /* COMIC SANS REQUEST PANEEL */
+.request-panel {
+    background-color: #000000; /* Zwart achtergrond voor extra retro contrast */
+    color: #ff00ff; /* Felroze/Magenta tekst */
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    border: 3px double #00FF00; /* Dubbele neon groene rand */
+    padding: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 5px 5px 0px #ff0000; /* Rode retro schaduw */
+}
+
+.request-panel h3 {
+    color: #ffff00; /* Gele titel */
+    margin-top: 0;
+    font-size: 1.3em;
+    text-shadow: 2px 2px #0000ff;
+}
+
+.command-highlight {
+    background-color: #ffff00;
+    color: #000000;
+    padding: 2px 6px;
+    font-weight: bold;
+    border: 1px dashed #000;
+}
+
+        .game-card {
+            background-color: #c0c0c0; /* Windows 95 grijs */
+            color: #000;
+            border-top: 3px solid #fff;
+            border-left: 3px solid #fff;
+            border-right: 3px solid #808080;
+            border-bottom: 3px solid #808080;
+            padding: 10px;
+            box-shadow: 5px 5px 0px #000;
+        }
+
+        .game-card h3 {
+            background-color: #000080;
+            color: #fff;
+            margin: -10px -10px 10px -10px;
+            padding: 5px;
+            font-size: 1.1em;
+        }
+
+        .game-details {
+            font-size: 0.9em;
+        }
+
+        .platform-badge {
+            display: inline-block;
+            background-color: #ff00ff;
+            color: white;
+            padding: 2px 5px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            border-top: 2px dashed #00FF00;
+            padding-top: 20px;
+        }
+
+        .counter {
+            background: #000;
+            color: #ff0000;
+            padding: 5px 10px;
+            font-family: 'Digital', sans-serif;
+            border: 2px inset #808080;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>××× DE 200 VISSEN STREAM ×××</h1>
+        <p class="blink">!!! WARNING: ENORME HOEVEELHEID VISGAMES GEDETECTEERD !!!</p>
+    </header>
+
+    <div class="marquee-container">
+        <marquee scrollamount="5">+++ WELKOM VISLIEFHEBBERS! HIER VIND JE DE ULTIEME LIJST MET VISGAMES +++ VRAAG JE GAMES AAN IN DE STREAM +++ NETSCAPE NAVIGATOR GOEDGEKEURD +++</marquee>
+    </div>
+
+    <center>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Under_construction_graphic.gif" alt="Under Construction">
+        <p style="color: #ffff00;">Deze pagina is geoptimaliseerd voor 800x600 resolutie.</p>
+    </center>
+
+    <div class="request-panel">
+    <h3>📢 Hoe werkt de stream? 📢</h3>
+    <p>Tussen elke game is een poll te zien waarin kan worden gestemd op de volgende visgame. <br> Met <span class="command-highlight">!request [gamenaam]</span> kan je een game toevoegen aan de aankomende poll! Er is een limiet op twee suggesties, maximaal 1 per gebruiker. <br> Wil je je suggestie weghalen? Doe dan <span class="command-highlight">!request delete</span>. <br> Met !voteskip kan je een stemming voor de volgende game forceren.</p>
+</div>
+
+    <div class="search-panel">
+        <h2>💻 SORTEREN EN FILTEREN</h2>
+        <label for="search-box">Zoek visgame:</label>
+        <input type="text" id="search-box" class="retro-input" placeholder="Typ hier...">
+
+        <label for="platform-filter">Platform:</label>
+        <select id="platform-filter" class="retro-select">
+            <option value="ALL">-- ALLES --</option>
+            <option value="PC">PC</option>
+            <option value="Flash">Flash</option>
+            <option value="Switch">Switch</option>
+            <option value="N64">N64</option>
+            <option value="GameCube">GameCube</option>
+            <option value="Wii">Wii</option>
+            <option value="GBC">GBC</option>
+            <option value="GB">GB</option>
+            <option value="GBA">GBA</option>
+            <option value="DS">DS</option>
+            <option value="NDS">NDS</option>
+            <option value="3DS">3DS</option>
+            <option value="PS4">PS4</option>
+            <option value="Android">Android</option>
+        </select>
+
+        <label for="sort-select">Sorteer op:</label>
+        <select id="sort-select" class="retro-select">
+            <option value="NAME_AZ">Naam (A-Z)</option>
+            <option value="NAME_ZA">Naam (Z-A)</option>
+            <option value="SERIES_AZ">Serie (A-Z)</option>
+            <option value="SERIES_ZA">Serie (Z-A)</option>
+            <option value="PLATFORM_AZ">Platform (A-Z)</option>
+            <option value="PLATFORM_ZA">Platform (Z-A)</option>
+        </select>
+    </div>
+
+    <h2>🐟 De Vis-Database (<span id="game-count">0</span> van de <span id="total-count">0</span> games getoond)</h2>
+    
+    <div class="games-grid" id="games-container"></div>
+
+    <footer>
+        <p>Deze pagina is gemaakt in 2026.</p>
+        <p>Aantal bezoekers sinds vandaag: <span class="counter">0002384</span></p>
+        <p>
+            <img src="https://i.sstatic.net/GGV7n.png" alt="IE logo">
+        </p>
+    </footer>
+
+    <script>
+        // Jouw visgames.json data direct ingeladen in het script
+        const visGames = [
+          { "Name": "Brighter Shores", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Dave the Diver", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Stardew Valley", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Old School RuneScape", "Platform": "PC", "Series": "RuneScape", "Short": "OSRS" },
+          { "Name": "Terraria", "Platform": "PC", "Series": "Terraria", "Short": null },
+          { "Name": "SEGA Bass Fishing", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Hades", "Platform": "PC", "Series": "Hades", "Short": null },
+          { "Name": "The Legend of Zelda: Link's Awakening", "Platform": "PC", "Series": "Zelda", "Short": "Zelda: Link's Awakening" },
+          { "Name": "Minecraft", "Platform": "PC", "Series": "Minecraft", "Short": null },
+          { "Name": "Fortnite", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Don't Starve", "Platform": "PC", "Series": "Don't Starve", "Short": null },
+          { "Name": "Skyrim", "Platform": "PC", "Series": "Elder Scrolls", "Short": null },
+          { "Name": "Fishing Planet", "Platform": "PC", "Series": "Fishing Planet", "Short": null },
+          { "Name": "Dredge", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Habbo Hotel Origins", "Platform": "PC", "Series": "Habbo", "Short": null },
+          { "Name": "Fisher Man", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Hop 'n Hook", "Platform": "PC", "Series": "Hop 'n Hook", "Short": null },
+          { "Name": "Call of the Wild: The Angler", "Platform": "PC", "Series": "Call of the Wild", "Short": "Cotw: The Angler" },
+          { "Name": "Fishing Adventure", "Platform": "PC", "Series": "Fishing Adventure", "Short": null },
+          { "Name": "JaDa Fishin'", "Platform": "PC", "Series": "JaDa Fishin'", "Short": null },
+          { "Name": "WEBFISHING", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Garry's Mod", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Rust", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Starbound", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Subnautica", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "ASTRONEER", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "The Forest", "Platform": "PC", "Series": "The Forest", "Short": null },
+          { "Name": "Valheim", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Core Keeper", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "No Man's Sky", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Grand Theft Auto V", "Platform": "PC", "Series": "GTA", "Short": "Grand Theft Auto V" },
+          { "Name": "Rimworld", "Platform": "PC", "Series": null, "Short": "Rimworld" },
+          { "Name": "Trackmania", "Platform": "PC", "Series": "Trackmania", "Short": null },
+          { "Name": "Age of Empires 2", "Platform": "PC", "Series": "Age of Empires", "Short": null },
+          { "Name": "BigTime Fishing", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "Angry Birds double fishing", "Platform": "Flash", "Series": "Angry Birds", "Short": "Angry Birds Fishing" },
+          { "Name": "Pee Fishing", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "Dora Fishing", "Platform": "Flash", "Series": "Dora", "Short": null },
+          { "Name": "Mr Bean Fishing", "Platform": "Flash", "Series": "Mr Bean", "Short": null },
+          { "Name": "MATH FISHER PRIME NUMBERS", "Platform": "Flash", "Series": null, "Short": "Math Fisher Prime" },
+          { "Name": "BB Bathtub", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "Kitten Dream", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "Coca-Cola Ice Fishing", "Platform": "Flash", "Series": null, "Short": "Coca-Cola Fishing" },
+          { "Name": "Fox Kids Fishing", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "LEGO City - Tree Fishing", "Platform": "Flash", "Series": "LEGO", "Short": "LEGO Tree Fishing" },
+          { "Name": "Lake Fishing 2.0", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "Jake the Pirate Hook", "Platform": "Flash", "Series": null, "Short": "Jake Pirate Hook" },
+          { "Name": "Fish Pirate", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "Fair Game", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "Bugs Bunny Gone Fishin'", "Platform": "Flash", "Series": "Looney Tunes", "Short": "Bugs Bunny Fishing" },
+          { "Name": "Ceiling Cat Fishing", "Platform": "Flash", "Series": null, "Short": null },
+          { "Name": "つって！つって！ヤドン", "Platform": "Flash", "Series": "Pokemon", "Short": "つって！つって！ヤドン" },
+          { "Name": "Animal Crossing: New Horizons", "Platform": "Switch", "Series": "Animal Crossing", "Short": "AC: New Horizons" },
+          { "Name": "The Legend of Zelda: Breath of the Wild", "Platform": "Switch", "Series": "Zelda", "Short": "Breath of the Wild" },
+          { "Name": "The Legend of Zelda: Tears of the Kingdom", "Platform": "Switch", "Series": "Zelda", "Short": "Tears of the Kingdom" },
+          { "Name": "Fire Emblem: Three Houses", "Platform": "Switch", "Series": "Fire Emblem", "Short": "FE: Three Houses" },
+          { "Name": "Pokémon LeafGreen", "Platform": "Switch", "Series": "Pokemon", "Short": null },
+          { "Name": "Super Mario Party Jamboree", "Platform": "Switch", "Series": "Mario Party", "Short": "Mario Party Jamboree" },
+          { "Name": "WarioWare: Move It", "Platform": "Switch", "Series": "WarioWare", "Short": null },
+          { "Name": "51 Worldwide Games", "Platform": "Switch", "Series": "Clubhouse Games", "Short": null },
+          { "Name": "Part Time UFO", "Platform": "Switch", "Series": null, "Short": null },
+          { "Name": "Super Mario Odyssey", "Platform": "Switch", "Series": "Mario", "Short": null },
+          { "Name": "Mario Kart World", "Platform": "Switch", "Series": "Mario Kart", "Short": null },
+          { "Name": "The Legend of Zelda: Ocarina of Time", "Platform": "N64", "Series": "Zelda", "Short": "Ocarina of Time" },
+          { "Name": "The Legend of Zelda: Majora's Mask", "Platform": "N64", "Series": "Zelda", "Short": "Majora's Mask" },
+          { "Name": "Harvest Moon 64", "Platform": "N64", "Series": "Harvest Moon", "Short": null },
+          { "Name": "Animal Crossing 1", "Platform": "GameCube", "Series": "Animal Crossing", "Short": null },
+          { "Name": "The Legend of Zelda: Twilight Princess", "Platform": "GameCube", "Series": "Zelda", "Short": "Twilight Princess" },
+          { "Name": "Wii Play", "Platform": "Wii", "Series": "Wii", "Short": null },
+          { "Name": "WarioWare: Smooth Moves", "Platform": "Wii", "Series": "WarioWare", "Short": "WarioWare: Smooth Moves" },
+          { "Name": "The Legend of the River King GB", "Platform": "GBC", "Series": "River King", "Short": null },
+          { "Name": "Pokémon Red", "Platform": "GB", "Series": "Pokemon", "Short": null },
+          { "Name": "Professor Layton and the Last Specter", "Platform": "DS", "Series": "Professor Layton", "Short": "Layton: Last Specter" },
+          { "Name": "AR Games", "Platform": "3DS", "Series": null, "Short": null },
+          { "Name": "Dreams", "Platform": "PS4", "Series": null, "Short": null },
+          { "Name": "Donkey Kong Country", "Platform": "GBA", "Series": "Donkey Kong", "Short": null },
+          { "Name": "About Fishing", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Mario Party DS", "Platform": "NDS", "Series": "Mario Party", "Short": null },
+          { "Name": "RuneScape 3", "Platform": "PC", "Series": "RuneScape", "Short": null },
+          { "Name": "Mario Party 3", "Platform": "N64", "Series": "Mario Party", "Short": null },
+          { "Name": "Shovel Knight", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Mango's Fisharium", "Platform": "PC", "Series": null, "Short": null },
+          { "Name": "Aquarium Land: Vissekom Wereld", "Platform": "Android", "Series": null, "Short": "Aquarium Land" },
+          { "Name": "Fishing Baron: visspel", "Platform": "Android", "Series": null, "Short": null },
+          { "Name": "Vissen en leven", "Platform": "Android", "Series": null, "Short": null },
+          { "Name": "Professional Fishing", "Platform": "Android", "Series": null, "Short": null },
+          { "Name": "Catch and Feed", "Platform": "Android", "Series": null, "Short": null },
+          { "Name": "Vissen voor kinderen", "Platform": "Android", "Series": null, "Short": null }
+        ];
+
+        // Zet het totale aantal vast in de UI
+        document.getElementById('total-count').innerText = visGames.length;
+
+        const container = document.getElementById('games-container');
+        const searchBox = document.getElementById('search-box');
+        const platformFilter = document.getElementById('platform-filter');
+        const sortSelect = document.getElementById('sort-select');
+
+        // De filter-, sorteer- en renderfunctie
+        function filterenSorterenEnRenderen() {
+            const zoekTerm = searchBox.value.toLowerCase();
+            const geselecteerdPlatform = platformFilter.value;
+            const sorteerWijze = sortSelect.value;
+
+            // Maak de container eerst helemaal leeg
+            container.innerHTML = '';
+
+            // 1. Filter de lijst op basis van zoekterm en platform
+            let gefilterdeGames = visGames.filter(game => {
+                const matchtZoekterm = game.Name.toLowerCase().includes(zoekTerm) || 
+                                      (game.Series && game.Series.toLowerCase().includes(zoekTerm));
+                
+                const matchtPlatform = geselecteerdPlatform === 'ALL' || game.Platform === geselecteerdPlatform;
+
+                return matchtZoekterm && matchtPlatform;
+            });
+
+            // 2. Sorteer de gefilterde lijst op de gekozen manier
+            gefilterdeGames.sort((a, b) => {
+                // Maak hulp-variabelen voor de velden (en vervang null door 'Geen' om foutloos te sorteren)
+                const nameA = a.Name;
+                const nameB = b.Name;
+                const seriesA = a.Series ? a.Series : 'Geen';
+                const seriesB = b.Series ? b.Series : 'Geen';
+                const platformA = a.Platform;
+                const platformB = b.Platform;
+
+                switch (sorteerWijze) {
+                    case 'NAME_AZ':
+                        return nameA.localeCompare(nameB);
+                    case 'NAME_ZA':
+                        return nameB.localeCompare(nameA);
+                    case 'SERIES_AZ':
+                        return seriesA.localeCompare(seriesB);
+                    case 'SERIES_ZA':
+                        return seriesB.localeCompare(seriesA);
+                    case 'PLATFORM_AZ':
+                        return platformA.localeCompare(platformB);
+                    case 'PLATFORM_ZA':
+                        return platformB.localeCompare(platformA);
+                    default:
+                        return 0;
+                }
+            });
+
+            // Update de teller
+            document.getElementById('game-count').innerText = gefilterdeGames.length;
+
+            // 3. Render de resultaten op het scherm
+            gefilterdeGames.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                
+                card.innerHTML = `
+                    <h3>${game.Name}</h3>
+                    <div class="game-details">
+                        <strong>Serie:</strong> ${game.Series ? game.Series : 'Geen'} <br>
+                        <span class="platform-badge">${game.Platform}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Luister naar alle veranderingen in het controlepaneel
+        searchBox.addEventListener('input', filterenSorterenEnRenderen);
+        platformFilter.addEventListener('change', filterenSorterenEnRenderen);
+        sortSelect.addEventListener('change', filterenSorterenEnRenderen);
+
+        // Eerste keer opstarten van de pagina: filterenSorterenEnRenderen voert direct de 'NAME_AZ' sortering uit!
+        filterenSorterenEnRenderen();
+    </script>
+</body>
+</html>
