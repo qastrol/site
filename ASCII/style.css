@@ -1,0 +1,32 @@
+body {
+  background: #111;
+  color: #ddd;
+  font-family: monospace;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.controls {
+  margin-bottom: 15px;
+}
+
+.controls label {
+  display: block;
+  margin: 5px 0;
+}
+
+pre {
+  background: white;
+  color: #000;
+  padding: 15px;
+  overflow: auto;
+  white-space: pre;
+
+  /* Normale webtekstgrootte */
+  font-family: "Cascadia Mono", "JetBrains Mono", "Fira Code", "DejaVu Sans Mono", monospace;
+  font-size: 16px;
+  line-height: 1.1;
+}
