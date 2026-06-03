@@ -13,7 +13,6 @@ const thresholdValue = document.getElementById("thresholdValue");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-// Alle 256 braille characters van U+2800 tot U+28FF
 const chars = (() => {
   let s = "";
   for (let i = 0x2800; i <= 0x28FF; i++) {
@@ -21,8 +20,6 @@ const chars = (() => {
   }
   return s;
 })();
-
-
 
 let image = new Image();
 
@@ -58,15 +55,14 @@ fileInput.addEventListener("change", e => {
 });
 
 function generateASCII() {
-  const asciiWidthChars = Math.max(1, parseInt(widthRange.value)); // sliderbreedte in karakters
+  const asciiWidthChars = Math.max(1, parseInt(widthRange.value)); 
   const contrast = parseFloat(contrastRange.value);
   const threshold = parseInt(thresholdRange.value);
   const invert = invertCheckbox.checked;
   const transparentMode = transparentSelect.value;
 
-  // 1 braille-char = 2 pixels breed × 4 pixels hoog
   const pixelWidth = asciiWidthChars * 2;
-  const pixelHeight = Math.round(pixelWidth * (image.height / image.width)); // behoud aspect ratio
+  const pixelHeight = Math.round(pixelWidth * (image.height / image.width)); 
   const asciiHeightChars = Math.max(1, Math.floor(pixelHeight / 4));
 
   canvas.width = pixelWidth;
@@ -81,7 +77,6 @@ function generateASCII() {
     for (let xChar = 0; xChar < asciiWidthChars; xChar++) {
       let brailleDots = 0;
 
-      // Loop over 2x4 pixels per braille-char
       for (let py = 0; py < 4; py++) {
         for (let px = 0; px < 2; px++) {
           const x = xChar * 2 + px;
@@ -95,7 +90,7 @@ function generateASCII() {
           let brightness;
 
           if (a === 0 && transparentMode === "transparent") {
-            brightness = 0; // maakt het braillepunt uit
+            brightness = 0; 
           } else if (a === 0) {
             brightness = transparentMode === "white" ? 255 : 0;
           } else {
@@ -106,10 +101,8 @@ function generateASCII() {
           brightness = Math.max(0, Math.min(255, brightness));
           if (invert) brightness = 255 - brightness;
 
-          // Bepaal of dot aan of uit moet zijn (threshold)
           if (brightness > threshold) {
-            // braille dots index: px + py*2 ? Braille dot mapping aanpassen
-            const dotMap = [0x01,0x08,0x02,0x10,0x04,0x20,0x40,0x80]; // standaard mapping
+            const dotMap = [0x01,0x08,0x02,0x10,0x04,0x20,0x40,0x80]; 
             brailleDots |= dotMap[py * 2 + px];
           }
         }
