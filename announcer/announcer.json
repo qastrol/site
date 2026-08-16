@@ -8,26 +8,6 @@
     "description": "A brief description of your sound pack",
 
     "sounds": {
-        "carhit": {
-
-        },
-
-        "checkpoint": {
-
-        },
-
-        "checkpoint-yes": {
-
-        },
-
-        "checkpoint-no": {
-
-        },
-
-        "lap": {
-
-        },
-
         "medal": {
             "_info": "Medal sounds. IMPORTANT: Filename MUST contain: 'author', 'gold', 'silver', or 'bronze'",
             "gold.wav": "https://github.com/qastrol/site/tree/main/announcer/Horstfred/medal/gold1.wav",
