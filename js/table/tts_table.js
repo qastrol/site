@@ -97,7 +97,7 @@ const ttsTable = [
     { name: "Miel Monteur", code: "miel:", description: "miel:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Gert Verhulst", code: "verhulst:", description: "verhulst:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Bert", code: "bert:", description: "bert:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
-    { name: "Dilan Yesilgoz", code: "yesilgoz:", description: "yesilgoz:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
+    { name: "Dilan Yesilgoz", code: "yesilgoz:", description: "yesilgoz:", category: "Cartesia", type: "Vrouwelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Frank Lammers", code: "lammers:", description: "lammers:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Gele Buurman", code: "gelebuurman:", description: "gelebuurman:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Herman van der Zandt", code: "vanderzandt:", description: "vanderzandt:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
