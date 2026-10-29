@@ -23,7 +23,7 @@ const ttsTable = [
     { name: "Plankton", code: "plankton:", description: "Plankton (van de Engelse Spongebob)", category: "TTSMonster", source: ["Tekenfilms"], type: "Mannelijk", isAI: true, languages: ["en"], year: 2024 },
     { name: "Ben Shapiro", code: "shapiro:", description: "Ben Shapiro", category: "TTSMonster", type: "Mannelijk", isAI: true, source: ["Presentator"], languages: ["en"], year: 2024 },
     { name: "Stanley Parable aankondiger", code: "stanleyparable:", description: "de aankondiger van The Stanley Parable", category: "TTSMonster", source: ["Gaming"], type: "Mannelijk", isAI: true, languages: ["en"], year: 2024 },
-    { name: "SpongeBob SquarePants", code: "spongebob:", description: "Spongebob Squarepants", category: "Cartesia", source: ["Tekenfilms"], type: "Mannelijk", isAI: true, languages: ["en"], year: 2024 },
+    { name: "SpongeBob SquarePants", code: "spongebob:", description: "Spongebob Squarepants (de Nederlandse versie)", category: "Cartesia", source: ["Tekenfilms"], type: "Mannelijk", isAI: true, languages: ["en"], year: 2024 },
     { name: "Watchmojo", code: "watchmojo:", description: "de aankondiger van Watch Mojo", category: "TTSMonster", type: "Mannelijk", isAI: true, source: ["Internet"], languages: ["en"], year: 2024 },
     { name: "The Weeknd", code: "weeknd:", description: "The Weekend zingt je bericht", category: "TTSMonster", type: "Mannelijk", isAI: true, source: ["Muziek"], languages: ["en"], year: 2024 },
     { name: "Eva Jinek", code: "jinek:", description: "Eva Jinek maar dan als AI", category: "Cartesia", type: "Vrouwelijk", isAI: true, source: ["Presentator", "TV"], supportsAudioTags: true, languages: ["*"], year: 2024 },
