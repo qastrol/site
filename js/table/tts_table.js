@@ -7,7 +7,6 @@ const ttsTable = [
     { name: "Microsoft David", code: "david:", description: "De Engelse mannelijke Microsoft-stem.", category: "Microsoft", type: "Mannelijk", source: ["TTS-stem"], isAI: false, languages: ["en"], year: 2024 },
     { name: "Donald Trump", code: "trump:", description: "Donald Trump als Engelse AI-stem", category: "TTSMonster", type: "Mannelijk", source: ["Politiek"], isAI: true, languages: ["en"], year: 2024 },
     { name: "Maarten van Rossem", code: "vanrossem:", description: "Maarten van Rossem, bekend van o.a. De Slimste Mens", type: "Mannelijk", source: ["TV"], category: "Cartesia", isAI: true, supportsAudioTags: true, languages: ["*"], year: 2024 },
-    { name: "NPO1 Zenderstem", code: "npo1:", description: "De zenderstem van Nederland 1", category: "ElevenLabs", type: "Mannelijk", source: ["TV"], isAI: true, languages: ["*"], year: 2024 },
     { name: "Geert Wilders", code: "wilders:", description: "Geert Wilders, partijleider van de PVV", category: "Cartesia", type: "Mannelijk", source: ["Politiek"], isAI: true, languages: ["*"], year: 2025 },
     { name: "Enzo Knol", code: "enzoknol:", description: "Enzo Knolpower!", category: "Cartesia", type: "Mannelijk", source: ["Internet"], isAI: true, languages: ["*"], year: 2024 },
     { name: "ASMR-stem", code: "asmr:", description: "Een Engelse ASMR stem die niet in het Nederlands werkt!", category: "TTSMonster", type: "Vrouwelijk", source: ["Internet"], isAI: true, languages: ["en"], year: 2024 },
@@ -113,4 +112,5 @@ const ttsTable = [
     { name: "Redcat", code: "redcat:", description: "redcat:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
     { name: "René van der Gijp", code: "vandergijp:", description: "vandergijp:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
     { name: "NPO2", code: "npo2:", description: "npo2:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
+    { name: "Tom Waes", code: "waes:", description: "waes:", category: "Cartesia", type: "Mannelijk", source: ["TTS-stem"], isAI: true, languages: ["*"], year: 2026 },
 ];

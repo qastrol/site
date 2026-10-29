@@ -379,12 +379,15 @@ function searchTable() {
             genderMatch = checkedGenders.indexOf(rowGender) !== -1;
         }
 
-        let yearMatch = true;
-        if (checkedYears.length > 0) {
-            const y = (row.dataset.year || '').trim();
-            const bucket = (y === '2024' || y === '' || parseInt(y) <= 2024) ? '2024_or_earlier' : '2025';
-            yearMatch = checkedYears.indexOf(bucket) !== -1;
-        }
+// In searchTable() en computeFilterCounts():
+let yearMatch = true;
+if (checkedYears.length > 0) {
+    const y = (row.dataset.year || '').trim();
+    let bucket = '2024_or_earlier';
+    if (y === '2026') bucket = '2026';
+    else if (y === '2025') bucket = '2025';
+    yearMatch = checkedYears.indexOf(bucket) !== -1;
+}
 
         const matchFound = textMatch && categoryMatch && sourceMatch && aiMatch && langMatch && genderMatch && supportsMatch && yearMatch;
         row.style.display = matchFound ? '' : 'none';
@@ -552,11 +555,13 @@ function computeFilterCounts() {
                 if (selGenders.indexOf(rowGender) === -1) return acc;
             }
             
-            if (selYears.length > 0) {
-                const y = (item.year == null) ? '' : String(item.year).trim();
-                const bucket = (y === '2024' || y === '' || parseInt(y) <= 2024) ? '2024_or_earlier' : '2025';
-                if (selYears.indexOf(bucket) === -1) return acc;
-            }
+if (selYears.length > 0) {
+    const y = (item.year == null) ? '' : String(item.year).trim();
+    let bucket = '2024_or_earlier';
+    if (y === '2026') bucket = '2026';
+    else if (y === '2025') bucket = '2025';
+    if (selYears.indexOf(bucket) === -1) return acc;
+}
             
             return acc + 1;
         }, 0);
@@ -784,7 +789,7 @@ function buildCategoryFilters() {
     const langList = Array.from(langs).sort((a, b) => { if (a === '*') return -1; if (b === '*') return 1; return a.localeCompare(b); });
 
     const langLabel = (code) => {
-        if (code === '*') return 'Engels & Nederlands';
+        if (code === '*') return 'Meertalig';
         if (code === 'en') return 'Engels';
         if (code === 'nl') return 'Nederlands';
         return code;
@@ -837,7 +842,8 @@ function buildYearFilters() {
     container.innerHTML = '';
     const choices = [
         { val: '2024_or_earlier', label: '2024 of eerder' },
-        { val: '2025', label: '2025' }
+        { val: '2025', label: '2025' },
+        { val: '2026', label: '2026' }
     ];
     choices.forEach(c => {
         const id = 'year-' + c.val;

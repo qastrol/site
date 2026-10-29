@@ -165,11 +165,13 @@ function itemMatchesFilters(item, searchLower, selectedCats, selectedTypes, year
     }
 
 
-    if (Array.isArray(yearSel) && yearSel.length > 0) {
-        const y = (item.year == null) ? '' : String(item.year).trim();
-        const bucket = (y === '2024') ? '2024_or_earlier' : '2025';
-        if (!yearSel.includes(bucket)) return false;
-    }
+if (Array.isArray(yearSel) && yearSel.length > 0) {
+    const y = (item.year == null) ? '' : String(item.year).trim();
+    let bucket = '2024_or_earlier';
+    if (y === '2026') bucket = '2026';
+    else if (y === '2025') bucket = '2025';
+    if (!yearSel.includes(bucket)) return false;
+}
 
     return true;
 }
@@ -408,7 +410,8 @@ function buildYearFilters() {
     container.innerHTML = '';
     const choices = [
         { val: '2024_or_earlier', label: '2024 of eerder' },
-        { val: '2025', label: '2025' }
+        { val: '2025', label: '2025' },
+        { val: '2026', label: '2026' }
     ];
     choices.forEach(c => {
         const id = 'yeard-' + c.val;

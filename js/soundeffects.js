@@ -430,7 +430,8 @@ function buildYearFilters() {
     container.innerHTML = '';
     const choices = [
         { val: '2024_or_earlier', label: '2024 of eerder' },
-        { val: '2025', label: '2025' }
+        { val: '2025', label: '2025' },
+        { val: '2026', label: '2026' }
     ];
     choices.forEach(c => {
         const id = 'year-' + c.val;
@@ -484,7 +485,7 @@ function computeFilterCountsSound() {
         });
     }
     
-    const yearContainer = document.getElementById('yearFilters');
+const yearContainer = document.getElementById('yearFilters');
     if (yearContainer) {
         const yearBoxes = Array.from(yearContainer.querySelectorAll('input[type="checkbox"]'));
         yearBoxes.forEach(cb => {
@@ -492,7 +493,10 @@ function computeFilterCountsSound() {
             const count = soundeffectsTable.reduce((acc, item) => {
                 if (!item) return acc;
                 const y = (item.year == null) ? '' : String(item.year).trim();
-                const bucket = (y === '2024' || y === '' || parseInt(y) <= 2024) ? '2024_or_earlier' : '2025';
+                let bucket = '2024_or_earlier';
+                if (y === '2026') bucket = '2026';
+                else if (y === '2025') bucket = '2025';
+                
                 if (bucket === yearVal && itemMatchesFilters(item, searchLower, [], [])) return acc + 1;
                 return acc;
             }, 0);
