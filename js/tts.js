@@ -117,7 +117,7 @@ function renderTtsTable() {
         const langLabel = (codes) => {
             if (!codes || codes.length === 0) return '';
             const mapped = codes.map(c => {
-                if (c === '*') return 'Engels & Nederlands';
+                if (c === '*') return 'Meertalig';
                 if (c === 'en') return 'Engels';
                 if (c === 'nl') return 'Nederlands';
                 return c;
