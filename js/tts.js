@@ -978,7 +978,10 @@ function createPreviewOverlay() {
 }
 
 function showPreview(folder, displayName, code) {
-    const name = normalizeNameForFile(displayName);
+    // Use the code from ttsTable (e.g. "adriaan:", "david:") for audio file lookup,
+    // falling back to normalized display name if code is not available
+    const codeKey = code ? normalizeNameForFile(code.replace(':', '')) : normalizeNameForFile(displayName || '');
+    const name = codeKey;
     const overlay = createPreviewOverlay();
     const titleEl = overlay.querySelector('#preview-title');
     const body = overlay.querySelector('#preview-body');
@@ -995,7 +998,9 @@ function showPreview(folder, displayName, code) {
 
 
     try {
-        const key = normalizeNameForFile(displayName || '');
+        // Use the code from ttsTable for favorites lookup, falling back to display name
+        const codeKey = code ? normalizeNameForFile(code.replace(':', '')) : normalizeNameForFile(displayName || '');
+        const key = codeKey;
         const favBtn = overlay.querySelector('.preview-fav');
         const shareBtn = overlay.querySelector('.preview-share');
         const page = 'tts';
@@ -1011,18 +1016,9 @@ function showPreview(folder, displayName, code) {
 
 
     const base = `${folder}/${name}`;
-    let tried = false;
-
-    function tryImage(exts, i) {
-        if (i >= exts.length) return tryAudio(['.mp3', '.ogg', '.wav'], 0);
-        const img = new Image();
-        img.onload = () => { body.innerHTML = ''; body.appendChild(img); };
-        img.onerror = () => tryImage(exts, i + 1);
-        img.src = base + exts[i];
-    }
 
     function tryAudio(exts, i) {
-        if (i >= exts.length) return tryVideo(['.webm', '.mp4', '.ogg'], 0);
+        if (i >= exts.length) { body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>'; return; }
         const a = document.createElement('audio');
         a.controls = true; a.preload = 'metadata';
         a.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(a); };
@@ -1030,40 +1026,21 @@ function showPreview(folder, displayName, code) {
         a.src = base + exts[i];
     }
 
-    function tryVideo(exts, i) {
-        if (i >= exts.length) { body.innerHTML = '<div class="preview-notfound">Geen voorbeeld beschikbaar.</div>'; return; }
-        const v = document.createElement('video');
-        v.controls = true; v.preload = 'metadata'; v.style.maxHeight = '60vh';
-        v.oncanplaythrough = () => { body.innerHTML = ''; body.appendChild(v); };
-        v.onerror = () => tryVideo(exts, i + 1);
-        v.src = base + exts[i];
-    }
-
-    tryImage(['.png', '.jpg', '.jpeg', '.gif', '.webp'], 0);
+    tryAudio(['.mp3'], 0);
 }
 
 
-function previewExists(folder, displayName, cb) {
-    const name = normalizeNameForFile(displayName);
+function previewExists(folder, displayName, code, cb) {
+    // Use the code from ttsTable for audio file lookup, matching showPreview normalization
+    const codeKey = code ? normalizeNameForFile(code.replace(':', '')) : normalizeNameForFile(displayName || '');
+    const name = codeKey;
     const base = `${folder}/${name}`;
 
-    const img = new Image();
-    let done = false;
-    img.onload = () => { if (!done) { done = true; cb(true); } };
-    img.onerror = () => {
-
-        const a = document.createElement('audio');
-        a.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
-        a.onerror = () => {
-
-            const v = document.createElement('video');
-            v.oncanplaythrough = () => { if (!done) { done = true; cb(true); } };
-            v.onerror = () => { if (!done) { done = true; cb(false); } };
-            v.src = base + '.mp4';
-        };
-        a.src = base + '.mp3';
-    };
-    img.src = base + '.png';
+    const a = document.createElement('audio');
+    a.oncanplaythrough = () => { cb(true); };
+    a.onerror = () => { cb(false); };
+    a.src = base + '.mp3';
+    a.load();
 }
 
 
@@ -1076,7 +1053,7 @@ function attachPreviewHandlers() {
         const code = r.dataset.code || display;
         first.title = 'Klik voor voorbeeld';
         first.addEventListener('click', () => showPreview('tts', display, code));
-        previewExists('tts', display, (exists) => { if (exists) first.classList.add('has-preview'); });
+        previewExists('tts', display, code, (exists) => { if (exists) first.classList.add('has-preview'); });
     });
 }
 
