@@ -113,6 +113,7 @@ const ttsTable = [
     { name: "Tom Waes", code: "waes:", description: "Tom Waes, Belgisch presentator bekend van Reizen Waes", category: "Cartesia", type: "Mannelijk", source: ["TV", "Presentator"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Marcel van Roosmalen", code: "vanroosmalen:", description: "Marcel van Roosmalen, columnist, auteur en presentator", category: "Cartesia", type: "Mannelijk", source: ["TV", "Presentator"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Henri Bontenbal", code: "bontenbal:", description: "Henri Bontenbal, leider van het CDA", category: "Cartesia", type: "Mannelijk", source: ["Politiek"], isAI: true, languages: ["*"], year: 2026 },
+    { name: "Caroline van der Plas", code: "vanderplas:", description: "Caroline van der Plas, politicus voor de BBB", category: "Cartesia", type: "Vrouwelijk", source: ["Politiek"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Philippe Geubels", code: "philippe:", description: "Philippe Geubels, cabaretier en presentator, bekend van o.a. De Slimste Mens ter Wereld (België)", category: "Cartesia", type: "Mannelijk", source: ["TV", "Presentator"], isAI: true, languages: ["*"], year: 2026 },
     { name: "Paul de Leeuw", code: "deleeuw:", description: "Paul de Leeuw, presentator", category: "Cartesia", type: "Mannelijk", source: ["TV", "Presentator"], isAI: true, languages: ["*"], year: 2026 },
 ];

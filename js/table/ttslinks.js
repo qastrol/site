@@ -164,6 +164,9 @@ const ttsLinks = {
   ],
   "deleeuw": [
     "tts/deleeuw.mp3"
+  ],
+    "vanderplas": [
+    "tts/vanderplas.mp3"
   ]
 };
 window.ttsLinks = ttsLinks;
