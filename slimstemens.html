@@ -7,7 +7,7 @@
   <meta name="description" content="De Slimste Mens van Twitch bij KerstKnallers: zaterdag 12 december van 18:00-19:00">
   <link rel="icon" type="image/x-icon" href="assets\slimstemens.png">
   <title>De Slimste Mens van Twitch: Kerstknallers</title>
-  <style>
+<style>
     @font-face {
       font-family: "Formula Condensed";
       src: url("assets/fonts/FormulaCondensed-Bold.otf") format("opentype");
@@ -85,27 +85,6 @@
       width: auto;
       height: 1.55em;
       object-fit: contain;
-    }
-
-    .live-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 13px;
-      border: 1px solid rgba(255, 243, 216, 0.45);
-      border-radius: 999px;
-      color: var(--cream);
-      font-size: 0.9rem;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-    }
-
-    .live-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #ff554d;
-      box-shadow: 0 0 12px rgba(255, 85, 77, 0.8);
     }
 
     .lobby {
@@ -196,13 +175,6 @@
       line-height: 1.55;
     }
 
-    footer {
-      padding-top: 22px;
-      color: rgb(255, 255, 255);
-      font-size: 0.88rem;
-      text-align: center;
-    }
-
     @media (max-width: 720px) {
       .page-shell {
         width: min(100% - 28px, 560px);
@@ -216,11 +188,6 @@
       .brand {
         gap: 8px;
         font-size: 1.15rem;
-      }
-
-      .live-label {
-        padding: 7px 9px;
-        font-size: 0.72rem;
       }
 
       .lobby {
@@ -241,19 +208,6 @@
       .lobby-brand {
         gap: 0.15em;
         font-size: clamp(1.2rem, 5.2vw, 1.8rem);
-      }
-    }
-
-    @media (max-width: 420px) {
-      .live-label {
-        gap: 6px;
-        font-size: 0.65rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
       }
     }
   </style>
